@@ -17,57 +17,6 @@
 <template>
   <div class="testcase padding56">
     <div class="testcase-content padding20">
-      <div class="testcase-tap">
-        <h3>测试用例管理</h3>
-        <p>任务序号: {{ taskNo }}</p>
-      </div>
-      <div class="title">
-        {{ $t('report.baseInfo') }}
-      </div>
-      <div class="report-app--info">
-        <el-row :gutter="20">
-          <el-col
-            :span="22"
-            class="app-table"
-          >
-            <el-table
-              :data="tableData"
-              border
-              style="width: 100%"
-            >
-              <el-table-column
-                fixed
-                prop="task.taskNo"
-                :label="$t('myApp.taskNumber')"
-                width="250"
-              />
-              <el-table-column
-                prop="appVersion"
-                :label="$t('common.version')"
-                width="120"
-              />
-              <el-table-column
-                prop="appName"
-                :label="$t('report.packageName')"
-              />
-              <el-table-column
-                prop="uploadUser"
-                :label="$t('report.uploadUser')"
-              />
-              <el-table-column
-                prop="task.beginTime"
-                :label="$t('report.startTime')"
-                width="200"
-              />
-              <el-table-column
-                prop="task.endTime"
-                :label="$t('report.endTime')"
-                width="200"
-              />
-            </el-table>
-          </el-col>
-        </el-row>
-      </div>
       <div class="testCasetitle">
         <div class="title">
           {{ $t('atp.testCase') }}
@@ -75,204 +24,401 @@
         <div class="case-main">
           <div class="test-tree">
             <el-tree
-              :data="testCase"
+              :data="testCaseList"
               :props="defaultProps"
+              node-key="id"
+              ref="treeList"
               @node-click="handleNodeClick"
+              default-expand-all
+              highlight-current
             />
           </div>
-          <div class="case-detail">
-            <el-table
-              :data="caseData"
-              style="width: 100%"
-              :row-style="tableRowStyle"
-            >
-              <el-table-column
-                fixed
-                prop="casename"
-                label="用例名称"
-                width="300"
-              />
-              <el-table-column
-                prop="Prerequisites"
-                label="预置条件"
-                width="300"
-              />
-              <el-table-column
-                prop="testprocedure"
-                label="测试步骤"
-                width="300"
-              />
-              <el-table-column
-                prop="expectedresult"
-                label="预期结果"
-                width="300"
-              />
-            </el-table>
+          <div
+            class="case-detail"
+            v-for="(item, index) in caseDataTable"
+            :key="index"
+          >
+            <el-row :gutter="20">
+              <el-col :span="22">
+                <h3>{{ $t('atp.caseName') }}</h3>
+                <p>{{ item.name }}</p>
+                <h3>{{ $t('atp.caseDetail') }}</h3>
+                <p>{{ item.description }}</p>
+              </el-col>
+            </el-row>
           </div>
         </div>
-        <div class="start-button">
-          <el-button
-            id="start_test_button"
-            type="primary"
-            @click="jumpTo"
+      </div>
+      <div class="test-image">
+        <img
+          src="../../assets/images/test.png"
+          alt
+        >
+      </div>
+      <div>
+        <div class="title">
+          上传应用
+        </div>
+        <div style="width:500px,margin-left:30px">
+          <el-form
+            :model="packageForm"
+            label-width="150px"
+            :rules="rules"
           >
-            {{ $t('atp.startTest') }}
-          </el-button>
+            <el-form-item
+              :label="$t('atp.appPackage')"
+              prop="fileList"
+            >
+              <el-upload
+                ref="upload"
+                action=""
+                :limit="1"
+                :on-exceed="handleExceed"
+                :on-change="handleChange"
+                :on-remove="handleDelte"
+                :file-list="packageForm.fileList"
+                :auto-upload="false"
+                accept=".csar"
+              >
+                <el-button
+                  slot="trigger"
+                  size="small"
+                  type="primary"
+                  plain
+                >
+                  {{ $t('atp.uploadApp') }}
+                </el-button>
+                <em
+                  class="el-icon-warning"
+                  style="margin-left:20px"
+                />
+                {{ $t('atp.onlyCsar') }}
+                {{ $t('atp.packageSizeLimit') }}
+              </el-upload>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
+      <div class="start-button">
+        <el-button
+          id="start_test_button"
+          type="primary"
+          size="large"
+          @click="startTest"
+        >
+          {{ $t('atp.startTest') }}
+        </el-button>
+      </div>
     </div>
+    <!-- 依赖弹框 -->
+    <el-dialog
+      :visible.sync="dialogVisible"
+      :title="$t('atp.dependencyDetail')"
+      class="dependency-detail"
+    >
+      <div>
+        <h3>{{ $t('atp.versionDependency') }}：</h3>
+        <el-table
+          :data="dependencyData"
+        >
+          <el-table-column
+            prop="name"
+            :label="$t('atp.packageName')"
+          />
+          <el-table-column
+            prop="version"
+            :label="$t('atp.version')"
+          />
+        </el-table>
+      </div>
+      <div>
+        <h3>{{ $t('atp.testTask') }}</h3>
+        <el-table
+          :data="TestNumber"
+        >
+          <el-table-column
+            prop="name"
+            :label="$t('atp.testItems')"
+          />
+          <el-table-column
+            prop="number"
+            :label="$t('atp.caseNumber')"
+          />
+        </el-table>
+      </div>
+      <div
+        class="button-center"
+      >
+        <el-button
+          type="primary"
+          @click="cancel()"
+        >
+          {{ $t('atp.cancel') }}
+        </el-button>
+        <el-button
+          type="primary"
+          @click="ConfirmTest()"
+        >
+          {{ $t('atp.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import { Atp } from '../../tools/api.js'
+import { TESTNAME } from '../../tools/testdataname.js'
 export default {
   name: 'TestCase',
   data () {
     return {
-      testCase: [
+      packageForm: {
+        fileList: []
+      },
+      dialogVisible: false,
+      testCaseList: [
         {
-          label: '病毒扫描',
-          children: [
-            {
-              label: '待添加'
-            }
-          ]
+          // label: '病毒扫描',
+          label: '安全性测试',
+          children: []
         },
         {
           label: '遵从性测试',
-          children: [
-            {
-              label: '应用打包规范检测',
-              children: [
-                { label: 'CSAR包校验' },
-                { label: 'TOSCA校验' }
-              ]
-            }
-          ]
+          children: []
         },
         {
           label: '沙箱测试',
-          children: [
-            { label: '部署测试' },
-            { label: '健康检查' },
-            { label: '卸载测试' }
-          ]
+          children: []
         }
       ],
       defaultProps: {
         children: 'children',
         label: 'label'
       },
-      tableData: [],
-      caseData: [
+      caseDataDetail: [],
+      caseDataTable: [],
+      dependencyData: [],
+      TestNumber: [
         {
-          casename: '遵从性测试',
-          Prerequisites: '遵从性测试',
-          testprocedure: '遵从性测试',
-          expectedresult: 'PASS'
+          // name: '病毒扫描',
+          name: '安全性测试',
+          number: ''
         },
         {
-          casename: '遵从性测试',
-          Prerequisites: '遵从性测试',
-          testprocedure: '遵从性测试',
-          expectedresult: 'PASS'
+          name: '遵从性测试',
+          number: ''
         },
         {
-          casename: '遵从性测试',
-          Prerequisites: '遵从性测试',
-          testprocedure: '遵从性测试',
-          expectedresult: 'PASS'
-        },
-        {
-          casename: '遵从性测试',
-          Prerequisites: '遵从性测试',
-          testprocedure: '遵从性测试',
-          expectedresult: 'PASS'
+          name: '沙箱测试',
+          number: ''
         }
       ],
-      taskNo: ''
+      countvirus: 0,
+      countcomp: 0,
+      countsand: 0,
+      rules: {
+        fileList: [
+          { required: true }
+        ]
+      }
     }
   },
   mounted () {
-    // this.tableData.push(JSON.parse(sessionStorage.getItem('taskData')))
-    // this.taskNo = this.tableData[0].task.taskNo
+    this.getTestCase()
   },
   methods: {
-    tableRowStyle ({ row, rowIndex }) {
-      if (rowIndex % 2 === 0) {
-        return 'background-color:#ffffff;'
-      } else if (rowIndex % 2 === 1) {
-        return 'background-color:#a4c6ca;'
-      }
-      return ''
+    // 获取测试用例
+    getTestCase () {
+      Atp.getTestCaseApi().then(res => {
+        // this.caseDataDetail = res.data.data mock
+        this.caseDataDetail = res.data
+        this.caseDataDetail.forEach(item => {
+          let obj = {
+            label: ''
+          }
+          obj.label = item.name
+          if (item.type === 'virusScanningTest') {
+            this.testCaseList[0].children.push(obj)
+            this.countvirus++
+          } else if (item.type === 'complianceTest') {
+            this.testCaseList[1].children.push(obj)
+            this.countcomp++
+          } else {
+            this.testCaseList[2].children.push(obj)
+            this.countsand++
+          }
+        })
+        this.$nextTick().then(() => {
+          let arr = document.getElementsByClassName('el-tree-node')
+          arr[1].click()
+        })
+        this.TestNumber[0].number = this.countvirus
+        this.TestNumber[1].number = this.countcomp
+        this.TestNumber[2].number = this.countsand
+        this.caseDataTable.push(this.caseDataDetail[0])
+      })
     },
-    jumpTo () {
-      this.$router.push('atpprocess')
+    handleNodeClick (val) {
+      this.caseDataTable = []
+      this.caseDataDetail.forEach(item => {
+        if (val.label === item.name) {
+          this.caseDataTable.push(item)
+        }
+      })
+    },
+    startTest () {
+      let fd = new FormData()
+      let packageForm = this.packageForm
+      fd.append('file', packageForm.fileList[0])
+      this.dialogVisible = true
+      Atp.getDependencyApi(fd).then(res => {
+        // let data = res.data.dependencydata.dependency   mock
+        let data = res.data.dependency
+        this.dependencyData = []
+        for (const key in data) {
+          let obj = {
+            name: '',
+            version: ''
+          }
+          obj.name = key
+          obj.version = data[key]
+          this.dependencyData.push(obj)
+        }
+      })
+    },
+    changeName () {
+      if (this.language === 'en') {
+        this.testCaseList[0].label = this.TestNumber[0].name = TESTNAME[0].label[1]
+        this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[1]
+        this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[1]
+      } else if (this.language === 'cn') {
+        this.testCaseList[0].label = this.TestNumber[0].name = TESTNAME[0].label[0]
+        this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[0]
+        this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[0]
+      }
+    },
+    // 弹框页面
+    ConfirmTest () {
+      let fd = new FormData()
+      let packageForm = this.packageForm
+      fd.append('file', packageForm.fileList[0])
+      Atp.creatTaskApi(fd).then(res => {
+        let taskId = res.data[0].id
+        sessionStorage.setItem('taskId', taskId)
+        this.$router.push('/atpprocess')
+      })
+    },
+    cancel () {
+      this.dialogVisible = false
+    },
+    handleExceed (file, fileList) {
+      if (fileList.length === 1) {
+        this.$message.warning(this.$t('promptMessage.onlyOneFile'))
+      }
+    },
+    handleChange (file, fileList) {
+      this.checkFileType(file, 'fileList', 'csar')
+    },
+    handleDelte (file, fileList) {
+      this.packageForm.file = fileList
+    },
+    checkFileType (file, packageFormKey, fileType) {
+      let type = file.raw.name.split('.')
+      let fileSize = file.size / 1024 / 1024
+      type = type[type.length - 1]
+      if (type === fileType) {
+        this.packageForm[packageFormKey].push(file.raw)
+      } else {
+        this.packageForm[packageFormKey] = []
+        this.$message({
+          duration: 2000,
+          type: 'warning',
+          message: this.$t('promptMessage.canOnlyUpload') + fileType + this.$t('promptMessage.files')
+        })
+      }
+      if (fileSize > 10) {
+        this.packageForm[packageFormKey] = []
+        this.$message({
+          duration: 2000,
+          type: 'warning',
+          message: this.$t('store.packageSizeLimit')
+        })
+      }
     }
-
+  },
+  watch: {
+    '$i18n.locale': function () {
+      let language = localStorage.getItem('language')
+      this.language = language
+      this.changeName()
+    }
   }
 }
 </script>
 
-<style lang='less' scoped>
+<style lang='less'>
 .testcase {
   .testcase-content {
     background: white;
-    .testcase-tap {
-      padding: 20px 0;
-      h3 {
-        text-align: center;
-        margin: 25px 0;
-      }
-      p {
-        color: #3399ff;
-        text-align: center;
-      }
-    }
     .testCasetitle{
-      padding-top: 20px;
+      // padding-top: 20px;
       .case-main{
         display: flex;
-        justify-content: space-around;
         .test-tree{
           width: 300px;
           padding-top: 16px;
-          // margin-left: 25px;
-          background-color: #fafafa;
+          margin-left: 30px;
+          background-color: #e4efef;
           .el-tree{
-            background-color: #fafafa;
-            // .el-tree-node__content{
-            //   background-color: #47b4bf;
-            // }
-
+            background-color: #e4efef;
+            .el-tree-node__content{
+              height: 30px;
+              line-height: 30px;
+              padding-left: 10px !important;
+            }
+            .el-tree-node.is-current>.el-tree-node__content{
+              background-color: #a4c6ca;
+              border-left: 2px solid #4b8c8c;
+            }
+            .el-tree-node__children{
+              margin: 0 25px;
+            }
           }
         }
         .case-detail{
-          // margin-left: 50px;
-          // .el-table-row{
-          //   background-color: #688ef3;
-          // }
-          .el-table__body tr:hover>td{
-            background-color: #e1e7f0!important;
+          margin-left: 50px;
+          width: 100%;
+          p{
+            font-size: 18px;
+            padding: 15px 0;
+            margin-bottom: 5px;
+            border-bottom: solid 1px #eaecef;
           }
         }
       }
-      .start-button{
+    }
+    .test-image{
+      text-align: center;
+      // img{
+      //   width: 800px;
+      //   height: 500px;
+      // }
+    }
+    .start-button{
         text-align: center;
-        margin-top: 30px;
+        margin: 30px 0;
         #start_test_button{
-          color: #fff;
-          background-color: #5abdc7;
-          border-color: #5abdc7;
+          transform:translateX(-49px);
+          // color: #fff;
+          // background-color: #5abdc7;
+          // border-color: #5abdc7;
+          // margin: auto;
         }
       }
-    }
-    .app-table {
-      padding-left: 0 !important;
-      margin-left: 25px;
-    }
     .title {
       margin: 15px 0;
+      font-size: 18px;
     }
     .title::before {
       content: "";
@@ -282,6 +428,15 @@ export default {
       height: 20px;
       position: relative;
       top: 5px;
+    }
+  }
+  .dependency-detail{
+    .button-center{
+      text-align:center;
+      margin-top: 10px;
+    }
+    h3{
+      margin-bottom: 15px;
     }
   }
 }

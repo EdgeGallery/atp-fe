@@ -24,11 +24,11 @@
       >
         <el-row>
           <el-col :span="6">
-            <el-form-item :label="$t('common.applicationName')">
+            <el-form-item :label="$t('atp.applicationName')">
               <el-input
                 id="appName"
                 v-model="form.appName"
-                :placeholder="$t('common.applicationName')"
+                :placeholder="$t('atp.applicationName')"
               />
             </el-form-item>
           </el-col>
@@ -53,11 +53,11 @@
           </el-col>
           <el-col :span="6">
             <el-form-item
-              id="beginTime"
+              id="createTime"
               :label="$t('myApp.startTime')"
             >
               <el-date-picker
-                v-model="form.beginTime"
+                v-model="form.createTime"
                 value-format="yyyy-MM-dd"
                 type="date"
                 :placeholder="$t('myApp.startTime')"
@@ -108,7 +108,7 @@
           border
         >
           <el-table-column
-            prop="task.taskNo"
+            prop="id"
             :label="$t('myApp.taskNumber')"
           >
             <template slot-scope="scope">
@@ -118,23 +118,23 @@
                 type="text"
                 size="small"
               >
-                {{ scope.row.task.taskNo }}
+                {{ scope.row.id }}
               </el-button>
             </template>
           </el-table-column>
           <el-table-column
-            prop="task.appName"
-            :label="$t('common.appName')"
+            prop="appName"
+            :label="$t('atp.applicationName')"
           />
           <el-table-column :label="$t('myApp.testStatus')">
             <template slot-scope="scope">
               <span
                 class="el-icon-loading primary"
-                v-if="scope.row.task.status!=='Success' && scope.row.task.status!=='Fail'"
+                v-if="scope.row.status!=='success' && scope.row.status!=='failed'"
                 title="In Progress"
               />
               <span
-                v-else-if="scope.row.task.status=='Fail'"
+                v-else-if="scope.row.status=='failed'"
                 class="el-icon-error error"
                 title="Failed"
               />
@@ -150,16 +150,16 @@
                 size="small"
                 @click="handleClickTaskNo(scope.row)"
               >
-                {{ scope.row.task.status }}
+                {{ scope.row.status }}
               </el-button>
             </template>
           </el-table-column>
           <el-table-column
-            prop="task.beginTime"
+            prop="createTime"
             :label="$t('myApp.startTime')"
           />
           <el-table-column
-            prop="task.endTime"
+            prop="endTime"
             :label="$t('myApp.endTime')"
           />
           <el-table-column
@@ -172,7 +172,7 @@
                 id="checkReportBtn"
                 @click="handleClickReport(scope.row)"
                 type="text"
-                :disabled="(scope.row.task.status==='Success' || scope.row.task.status==='Fail')?false:true"
+                :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
                 size="small"
               >
                 {{ $t('myApp.checkReport') }}
@@ -182,7 +182,7 @@
                 type="text"
                 size="small"
                 style="margin-left:30px;"
-                :disabled="scope.row.task.status==='Success'?false:true"
+                disabled
                 @click="uploadTask(scope.row)"
               >
                 {{ $t('myApp.upload') }}
@@ -206,10 +206,10 @@
 
 <script>
 import {
-  getTaskListApi,
-  // taskListApp,
-  uploadAppTaskApi
-} from '../../tools/api.js'
+  // getTaskListApi,
+  // taskListApp
+  // uploadAppTaskApi
+  Atp } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 export default {
   name: 'Task',
@@ -224,7 +224,7 @@ export default {
       form: {
         appName: '',
         status: '',
-        beginTime: '',
+        createTime: '',
         endTime: ''
       },
       pageData: [],
@@ -232,33 +232,25 @@ export default {
       options: [
         {
           value: 1,
-          label: 'Virus Scan'
+          label: 'executing'
         },
         {
           value: 2,
-          label: 'Compliance Test'
+          label: 'waitting'
         },
         {
           value: 3,
-          label: 'Sandbox Test'
+          label: 'success'
         },
         {
           value: 4,
-          label: 'Review'
-        },
-        {
-          value: 5,
-          label: 'Success'
-        },
-        {
-          value: 6,
-          label: 'Fail'
+          label: 'failed'
         }
       ],
       value: '',
       interval: '',
       dialogTitle: '',
-      step: 1,
+      // step: 1,
       telnetid: '',
       dataLoading: true,
       currentData: [],
@@ -270,7 +262,7 @@ export default {
     this.getTaskList()
     this.interval = setInterval(() => {
       this.getTaskList()
-      this.step++
+      // this.step++
     }, 10000)
   },
   beforeDestroy () {
@@ -295,39 +287,42 @@ export default {
       this.$router.push('/atpreport')
     },
     handleClickTaskNo (val) {
+      let taskId = val.id
+      sessionStorage.setItem('taskId', taskId)
       this.$router.push('/atpprocess')
     },
     contrastTime () {
-      if (this.form.endTime && this.form.beginTime > this.form.endTime) {
+      if (this.form.endTime && this.form.createTime > this.form.endTime) {
         this.$message({
           message: this.$t('promptMessage.contrastTime'),
           type: 'warning'
         })
-        this.form.beginTime = ''
+        this.form.createTime = ''
         this.form.endTime = ''
       }
     },
     getTaskList () {
-      if (this.form.beginTime == null || this.form.endTime == null) {
-        this.form.beginTime = ''
+      if (this.form.createTime == null || this.form.endTime == null) {
+        this.form.createTime = ''
         this.form.endTime = ''
       }
-      let userId = sessionStorage.getItem('userId')
-      getTaskListApi(this.form, userId).then(
-      // taskListApp(this.form, userId).then(
+      // let userId = sessionStorage.getItem('userId')
+      // getTaskListApi(this.form, userId).then(
+      Atp.taskListApp(this.form).then(
         res => {
-          let data = res.data.tasks
+          // let data = res.data.tasks
+          let data = res.data
           data.forEach((item, index) => {
-            let newDateBegin = this.dateChange(item.task.beginTime)
-            item.task.beginTime = newDateBegin
-            let newDateEnd = this.dateChange(item.task.endTime)
-            item.task.endTime = newDateEnd
-            if (item.task.status === 'Success' || item.task.status === 'Fail') {
+            let newDateBegin = this.dateChange(item.createTime)
+            item.createTime = newDateBegin
+            let newDateEnd = this.dateChange(item.endTime)
+            item.endTime = newDateEnd
+            if (item.status === 'success' || item.status === 'failed') {
               item.step = 4
-            } else if (item.task.status === 'Virus Scan') {
+            } else if (item.status === 'Virus Scan') {
               item.endTime = ''
               item.step = 1
-            } else if (item.task.status === 'Compliance Test') {
+            } else if (item.status === 'Compliance Test') {
               item.endTime = ''
               item.step = 2
             } else {
@@ -354,28 +349,28 @@ export default {
       this.form = {
         appName: '',
         status: '',
-        beginTime: '',
+        createTime: '',
         endTime: ''
       }
       this.getTaskList()
     },
     expandChange (row, expandedRows) {},
-    uploadTask (val) {
-      let userId = sessionStorage.getItem('userId')
-      let userName = sessionStorage.getItem('userName')
-      uploadAppTaskApi(val.appId, userId, userName)
-        .then(res => {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.uploadSuccess'),
-            type: 'success'
-          })
-        })
-        .catch(err => {
-          this.$message.error(this.$t('promptMessage.operationFailed'))
-          console.log(err)
-        })
-    },
+    // uploadTask (val) {
+    //   let userId = sessionStorage.getItem('userId')
+    //   let userName = sessionStorage.getItem('userName')
+    //   uploadAppTaskApi(val.appId, userId, userName)
+    //     .then(res => {
+    //       this.$message({
+    //         duration: 2000,
+    //         message: this.$t('promptMessage.uploadSuccess'),
+    //         type: 'success'
+    //       })
+    //     })
+    //     .catch(err => {
+    //       this.$message.error(this.$t('promptMessage.operationFailed'))
+    //       console.log(err)
+    //     })
+    // },
     dateChange (dateStr) {
       if (dateStr) {
         let date = new Date(Date.parse(dateStr))

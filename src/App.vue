@@ -16,18 +16,18 @@
 
 <template>
   <div id="app">
-    <Navcomp />
+    <!-- <Navcomp /> -->
     <router-view />
   </div>
 </template>
 
 <script>
-import Navcomp from './components/layout/Nav.vue'
+// import Navcomp from './components/layout/Nav.vue'
 export default {
   name: 'App',
-  components: {
-    Navcomp
-  },
+  // components: {
+  //   Navcomp
+  // },
   data () {
     return {
     }

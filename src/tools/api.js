@@ -15,140 +15,34 @@
  */
 
 import {
-  GET,
-  POST,
-  DELETE,
   getCookie
 } from './request.js'
 
+// import './mock.js'
 import axios from 'axios'
 
-const URL_PREFIX = '/mec-appstore/mec/appstore/v1/'
+// const URL_PREFIX = '/mec-appstore/mec/appstore/v1/'
 
-const TEST_URL_PREFIX = '/mec-developer/'
+// const TEST_URL_PREFIX = '/mec-developer/'
 
-function getCommentsApi (appId) {
-  let url = 'apps/' + appId + '/comments'
-  return GET(url)
-}
-
-function getAppDetailTableApi (appId) {
-  let url = 'apps/' + appId + '/packages/'
-  return GET(url)
-}
-
-function getAppDetailFileApi (path, id) {
-  let url = 'csars/' + id + '/' + path
-  return GET(url)
-}
-
-function getAppTableApi (params) {
-  let url = 'apps'
-  return GET(url, params)
-}
-
-function startTestApi (appId, userId) {
-  let url = 'mec/developer/v1/apps/' + appId + '/action/start-test?userId=' + userId
-  return GET(url, '', 'developer')
-}
-
-function getTaskListApi (params, userId) {
-  let url = 'mec/developer/v1/apps/?userId=' + userId
-  return GET(url, params, 'developer')
-}
-
-function getSubTasksApi (appId, taskId) {
-  let url = 'mec/developer/v1/apps/' + appId + '/task/' + taskId + '/subtasks'
-  return GET(url, '', 'developer')
-}
-
-function getMyAppApi (userId) {
-  let url = 'apps?userId=' + userId
-  return GET(url)
-}
-
-function modifyAppPackageDetailApi (csarId, params) {
-  let url = 'csars/' + csarId + '/modifymd'
-  return POST(url, params)
-}
-
-function submitAppCommentApi (appId, params, userId, userName) {
-  let url = 'apps/' + appId + '/comments?userId=' + userId + '&userName=' + userName
-  return POST(url, params)
-}
-
-function incAppDownloadTimesApi (appId, csarId) {
-  let url = 'apps/' + appId + '/packages/' + csarId + '/action/download'
-  return GET(url)
-}
-
-function uploadAppPackageApi (params) {
-  let url = 'mec/developer/v1/apps/'
-  return POST(url, params, 'developer')
-}
-function uploadAppApi (params) {
-  let userId = sessionStorage.getItem('userId')
-  let userName = sessionStorage.getItem('userName')
-  let url = 'apps/' + '?userId=' + userId + '&userName=' + userName
-  return POST(url, params)
-}
-
-function uploadAppTaskApi (appId, userId, userName) {
-  let url = 'mec/developer/v1/apps/' + appId + '/action/upload?userId=' + userId + '&' + 'userName=' + userName
-  return POST(url, '', 'developer')
-}
-
-function deleteAppApi (appId, userId, userName) {
-  let url = 'apps/' + appId + '?userId=' + userId + '&userName=' + userName
-  return DELETE(url)
-}
-
-function getDocsApi (language) {
-  let url = './APPSTOREDOCSEN.md'
-  if (language === 'cn') {
-    url = './APPSTOREDOCSCN.md'
-  }
-  return axios.get(url)
-}
-
-function getAppFileContentApi (appId, packageId, params) {
-  let url = 'apps/' + appId + '/packages/' + packageId + '/files/'
-  return POST(url, params)
-}
-
-function downloadAppPakageApi (appId, row) {
-  let url = 'apps/' + appId + '/packages/' + row.csarId + '/action/download'
-  let URL = URL_PREFIX + url
-  window.open(URL)
-/*   let url = 'apps/' + appId + '/packages/' + row.csarId + '/action/download'
-  incAppDownloadTimesApi(appId, row.csarId).then(res => {})
-  let form = document.createElement('form')
-  document.getElementsByTagName('body')[0].appendChild(form)
-  form.setAttribute('style', 'display:none')
-  form.setAttribute('target', '')
-  form.setAttribute('method', 'post')
-  form.setAttribute('action', URL_PREFIX + url)
-  form.submit() */
-}
-
-function getUserInfo () {
-  let url = '/auth/login-info'
-  return new Promise((resolve, reject) => {
-    axios({
-      method: 'GET',
-      url: url,
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-      }
-    }).then(res => {
-      resolve(res)
-    }, (error) => {
-      reject(error)
-    })
-  })
-}
+// function getUserInfo () {
+//   let url = '/auth/login-info'
+//   return new Promise((resolve, reject) => {
+//     axios({
+//       method: 'GET',
+//       url: url,
+//       withCredentials: true,
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+//       }
+//     }).then(res => {
+//       resolve(res)
+//     }, (error) => {
+//       reject(error)
+//     })
+//   })
+// }
 
 function logoutApi () {
   return axios({
@@ -162,27 +56,65 @@ function logoutApi () {
   })
 }
 
+// mockAPI任务列表
+// function testAppList () {
+//   let url = '/mock/testapp/app'
+//   return axios.get(url)
+// }
+
+let Atp = {
+  // 获取测试用例列表
+  getTestCaseApi: function () {
+    let url = 'edgegallery/atp/v1/testcases'
+    return axios.get(url)
+  },
+  // 解析依赖信息
+  getDependencyApi: function (params) {
+    let url = 'edgegallery/atp/v1/common-action/analysis-app'
+    return axios.post(url, params)
+  },
+  // 创建任务
+  creatTaskApi: function (params) {
+    let url = 'edgegallery/atp/v1/tasks'
+    return axios.post(url, params)
+  },
+  // 获取任务，获取进展
+  processApi: function (taskId) {
+    let url = 'edgegallery/atp/v1/tasks/' + taskId
+    return axios.get(url)
+  },
+  // 获取任务列表
+  taskListApp: function (params) {
+    let url = 'edgegallery/atp/v1/tasks'
+    return axios.get(url, params)
+  },
+  // 下载报告
+  downLoadReportApi: function (taskId) {
+    let url = 'edgegallery/atp/v1/tasks/' + taskId + '/action/download'
+    return axios({
+      method: 'get',
+      url: url,
+      responseType: 'blob'
+    }).then((res) => {
+      if (!res) {
+        return
+      }
+      let objectUrl = window.URL.createObjectURL(res.data)
+      let link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = objectUrl
+      link.setAttribute('download', taskId + '.yaml')
+      document.body.appendChild(link)
+      link.click()
+    })
+  }
+}
+
 export {
-  getCommentsApi,
-  getAppDetailTableApi,
-  getAppDetailFileApi,
-  getAppTableApi,
-  startTestApi,
-  getTaskListApi,
-  getSubTasksApi,
-  getMyAppApi,
-  modifyAppPackageDetailApi,
-  submitAppCommentApi,
-  incAppDownloadTimesApi,
-  uploadAppPackageApi,
-  uploadAppTaskApi,
-  deleteAppApi,
-  getDocsApi,
-  getAppFileContentApi,
-  downloadAppPakageApi,
-  URL_PREFIX,
-  TEST_URL_PREFIX,
-  getUserInfo,
+  // URL_PREFIX,
+  // TEST_URL_PREFIX,
+  // getUserInfo,
   logoutApi,
-  uploadAppApi
+  // testAppList,
+  Atp
 }

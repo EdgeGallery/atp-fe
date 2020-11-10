@@ -17,9 +17,17 @@
 <template>
   <div class="report padding56">
     <div class="report-content padding20">
+      <div class="download">
+        <el-button
+          size="large"
+          type="primary"
+          @click="downLoadReport()"
+        >
+          {{ $t('report.downloadReport') }}
+        </el-button>
+      </div>
       <div class="report-tap">
-        <h3>ATP report</h3>
-        <p>{{ $t('atp.ticketNumber') }}: {{ taskNo }}</p>
+        <h3> {{ $t('report.testReport') }}</h3>
       </div>
       <div class="title">
         {{ $t('atp.baseInfo') }}
@@ -38,22 +46,22 @@
               <el-table-column
                 fixed
                 prop="appName"
-                :label="$t('common.applicationName')"
+                :label="$t('atp.applicationName')"
               />
               <el-table-column
                 prop="appVersion"
-                :label="$t('common.version')"
+                :label="$t('atp.version')"
               />
               <el-table-column
-                prop="appName"
-                :label="$t('common.userName')"
+                prop="user.userName"
+                :label="$t('report.uploadUser')"
               />
               <el-table-column
-                prop="task.beginTime"
+                prop="createTime"
                 :label="$t('atp.startTime')"
               />
               <el-table-column
-                prop="task.endTime"
+                prop="endTime"
                 :label="$t('atp.endTime')"
               />
               <el-table-column
@@ -62,123 +70,227 @@
               >
                 <template slot-scope="scope">
                   <span
-                    :class="scope.row.task.status==='Success'?'success':'failed'"
-                  >{{ scope.row.task.status }}</span>
+                    :class="scope.row.status==='success'?'success':'failed'"
+                  >{{ scope.row.status }}</span>
                 </template>
               </el-table-column>
             </el-table>
           </el-col>
         </el-row>
       </div>
-      <div class="title">
-        {{ $t('atp.detail') }}
-      </div>
       <div class="report-chart">
-        <el-row :gutter="20">
-          <el-col
-            :span="23"
-            class="app-table"
+        <div class="title">
+          {{ $t('report.reportanalysis') }}
+        </div>
+        <div>
+          <el-row :gutter="20">
+            <el-col
+              :span="12"
+              class="chartPie"
+            >
+              <ve-pie :data="chartData" />
+            </el-col>
+            <el-col
+              :span="10"
+              class="chartLine"
+              style="margin-top:40px;"
+            >
+              <el-table
+                :data="TestDataSum"
+              >
+                <el-table-column
+                  prop="name"
+                  :label="$t('atp.testItems')"
+                />
+                <el-table-column
+                  prop="success"
+                  :label="$t('atp.success')"
+                />
+                <el-table-column
+                  prop="failed"
+                  :label="$t('atp.failed')"
+                />
+              </el-table>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="title">
+          {{ $t('atp.virusScan') }}
+        </div>
+        <div class="casereport">
+          <el-table
+            :data="virusScanningTest"
           >
-            <el-tabs type="card">
-              <el-tab-pane :label="$t('atp.testReport')">
-                <template>
-                  <ve-pie
-                    :data="chartData1"
-                  />
-                </template>
-              </el-tab-pane>
-              <el-tab-pane :label="$t('atp.step1')">
-                <template>
-                  <el-table
-                    :data="VirusScanDate"
-                    border
-                  >
-                    <el-table-column
-                      prop="caseName"
-                      :label="$t('atp.caseName')"
-                    />
-                    <el-table-column
-                      prop="caseDetail"
-                      :label="$t('atp.caseDetail')"
-                    />
-                    <el-table-column
-                      prop="testResult"
-                      :label="$t('atp.result')"
-                    />
-                  </el-table>
-                </template>
-              </el-tab-pane>
-              <el-tab-pane :label="$t('atp.step2')">
-                <template>
-                  <el-table
-                    :data="ComplianceTestDate"
-                    border
-                  >
-                    <el-table-column
-                      prop="caseName"
-                      :label="$t('atp.caseName')"
-                    />
-                    <el-table-column
-                      prop="caseDetail"
-                      :label="$t('atp.caseDetail')"
-                    />
-                    <el-table-column
-                      prop="testResult"
-                      :label="$t('atp.result')"
-                    />
-                  </el-table>
-                </template>
-              </el-tab-pane>
-              <el-tab-pane :label="$t('atp.step3')">
-                <template>
-                  <el-table
-                    :data="SandboxTestDate"
-                    border
-                  >
-                    <el-table-column
-                      prop="caseName"
-                      :label="$t('atp.caseName')"
-                    />
-                    <el-table-column
-                      prop="caseDetail"
-                      :label="$t('atp.caseDetail')"
-                    />
-                    <el-table-column
-                      prop="testResult"
-                      :label="$t('atp.result')"
-                    />
-                  </el-table>
-                </template>
-              </el-tab-pane>
-            </el-tabs>
-          </el-col>
-        </el-row>
+            <el-table-column
+              prop="name"
+              :label="$t('atp.caseName')"
+            />
+            <el-table-column
+              prop="result"
+              :label="$t('atp.result')"
+            />
+            <el-table-column
+              prop="reason"
+              :label="$t('report.failReason')"
+            />
+          </el-table>
+        </div>
+        <div class="title">
+          {{ $t('atp.complianceTest') }}
+        </div>
+        <div class="casereport">
+          <el-table
+            :data="complianceTest"
+          >
+            <el-table-column
+              prop="name"
+              :label="$t('atp.caseName')"
+            />
+            <el-table-column
+              prop="result"
+              :label="$t('atp.result')"
+            />
+            <el-table-column
+              prop="reason"
+              :label="$t('report.failReason')"
+            />
+          </el-table>
+        </div>
+        <div class="title">
+          {{ $t('atp.sandboxTest') }}
+        </div>
+        <div class="casereport">
+          <el-table
+            :data="sandboxTest"
+          >
+            <el-table-column
+              prop="name"
+              :label="$t('atp.caseName')"
+            />
+            <el-table-column
+              prop="result"
+              :label="$t('atp.result')"
+            />
+            <el-table-column
+              prop="reason"
+              :label="$t('report.failReason')"
+            />
+          </el-table>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { Atp } from '../../tools/api.js'
+import { TESTNAME } from '../../tools/testdataname.js'
 export default {
   name: 'Report',
   data () {
     return {
+      taskId: '',
       tableData: [],
-      SandboxTestDate: [],
-      ComplianceTestDate: [],
-      VirusScanDate: [],
-      taskNo: '',
-      chartData1: {
+      TestDataSum: [
+        {
+          name: '病毒测试',
+          success: 0,
+          failed: 0
+        },
+        {
+          name: '遵从性测试',
+          success: 0,
+          failed: 0
+        },
+        {
+          name: '沙箱测试',
+          success: 0,
+          failed: 0
+        }
+      ],
+      virusScanningTest: [],
+      complianceTest: [],
+      sandboxTest: [],
+      chartData: {
         columns: ['status', 'case'],
-        rows: [{ status: 'Virus Scan', case: 4 }, { status: 'Compliance Test', case: 1 }, { status: 'Sandbox Test', case: 1 }]
+        rows: [{ status: 'Virus Scan', case: 0 }, { status: 'Compliance Test', case: 0 }, { status: 'Sandbox Test', case: 0 }]
       }
     }
   },
   mounted () {
+    this.getReport()
     this.tableData.push(JSON.parse(sessionStorage.getItem('taskData')))
-    this.taskNo = this.tableData[0].task.taskNo
+    this.taskId = this.tableData[0].id
   },
-  methods: {}
+  methods: {
+    getReport () {
+      Atp.processApi(this.taskId).then(res => {
+        // let testCaseDetail = res.data.testCaseDetail
+        let testCaseDetail = this.tableData[0].testCaseDetail
+        for (const key in testCaseDetail) {
+          let casedata = testCaseDetail[key][0]
+          for (const keyin in casedata) {
+            let obj = {
+              name: '',
+              result: '',
+              reason: ''
+            }
+            obj.name = keyin
+            obj.result = casedata[keyin].result
+            obj.reason = casedata[keyin].reason
+            if (key === 'virusScanningTest') {
+              this.virusScanningTest.push(obj)
+              if (casedata[keyin].result === 'success') {
+                this.TestDataSum[0].success++
+              } else if (casedata[keyin].result === 'failed') {
+                this.TestDataSum[0].failed++
+              }
+            } else if (key === 'complianceTest') {
+              this.complianceTest.push(obj)
+              if (casedata[keyin].result === 'success') {
+                this.TestDataSum[1].success++
+              } else if (casedata[keyin].result === 'failed') {
+                this.TestDataSum[1].failed++
+              }
+            } else {
+              this.sandboxTest.push(obj)
+              if (casedata[keyin].result === 'success') {
+                this.TestDataSum[2].success++
+              } else if (casedata[keyin].result === 'failed') {
+                this.TestDataSum[2].failed++
+              }
+            }
+          }
+        }
+        this.chartData.rows[0].case = this.virusScanningTest.length
+        this.chartData.rows[1].case = this.complianceTest.length
+        this.chartData.rows[2].case = this.sandboxTest.length
+      })
+    },
+    changeName () {
+      if (this.language === 'en') {
+        this.TestDataSum[0].name = TESTNAME[0].label[1]
+        this.TestDataSum[1].name = TESTNAME[1].label[1]
+        this.TestDataSum[2].name = TESTNAME[2].label[1]
+      } else if (this.language === 'cn') {
+        this.TestDataSum[0].name = TESTNAME[0].label[0]
+        this.TestDataSum[1].name = TESTNAME[1].label[0]
+        this.TestDataSum[2].name = TESTNAME[2].label[0]
+      }
+    },
+    downLoadReport () {
+      Atp.downLoadReportApi(this.taskId).then(res => {
+        console.log(res.data)
+      })
+    }
+  },
+  watch: {
+    '$i18n.locale': function () {
+      let language = localStorage.getItem('language')
+      this.language = language
+      this.changeName()
+    }
+  }
 }
 </script>
 
@@ -186,8 +298,11 @@ export default {
 .report {
   .report-content {
     background: white;
+    .download{
+      text-align: right;
+    }
     .report-tap {
-      padding: 20px 0;
+      // padding: 20px 0;
       h3 {
         text-align: center;
         margin: 25px 0;
@@ -223,7 +338,10 @@ export default {
       top: 5px;
     }
     .report-chart {
-      margin-top: 25px;
+      margin: 25px 0;
+      .casereport{
+        margin-left: 40px;
+      }
     }
   }
 }

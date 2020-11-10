@@ -20,116 +20,34 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
-  },
   routes: [
     {
       path: '/',
-      redirect: '/index'
+      redirect: '/atptestcase'
     },
     {
       path: '',
       component: () => import('./components/layout/Index.vue'),
       children: [
         {
-          path: 'index',
-          name: 'appstorename',
-          component: () => import('./pages/home/Index.vue'),
-          meta: {
-            id: '2.0'
-          }
-        },
-        {
-          path: 'detail',
-          name: 'appstordetail',
-          component: () => import('./pages/home/AppDetail.vue'),
-          meta: {
-            id: '2.0.1',
-            breadcrumb: [{ nameEn: 'Detail', nameCn: '详情' }]
-          }
-        },
-        {
-          path: 'docs',
-          name: 'appstordocs',
-          component: () => import('./pages/docs/Index.vue'),
-          meta: {
-            id: '2.2',
-            breadcrumb: [{ nameEn: 'Docs', nameCn: '文档' }]
-          }
-        },
-        {
-          path: 'discourse',
-          name: 'appstordiscourse',
-          component: () => import('./components/common/Developing.vue'),
-          meta: {
-            id: '2.3',
-            breadcrumb: [{ nameEn: 'Discourse', nameCn: '社区' }]
-          }
-        },
-        {
-          path: 'myapp',
-          name: 'appstoremyapp',
-          component: () => import('./pages/myApp/Index.vue'),
-          meta: {
-            id: '2.4',
-            breadcrumb: [{ nameEn: 'Myapp', nameCn: '我的应用' }]
-          }
-        },
-        {
           path: 'app/test/task',
           name: 'apttask',
-          component: () => import('./pages/myApp/ATPTask.vue'),
-          meta: {
-            id: '2.4.1',
-            breadcrumb: [
-              { nameEn: 'Myapp', path: '/myapp', nameCn: '我的应用' },
-              { nameEn: 'Test Task', nameCn: '测试任务' }
-            ]
-          }
+          component: () => import('./pages/myApp/ATPTask.vue')
         },
         {
           path: 'atpreport',
           name: 'atpreport',
-          component: () => import('./pages/myApp/ATPReport.vue'),
-          meta: {
-            id: '2.4.1',
-            breadcrumb: [
-              { nameEn: 'Myapp', path: '/myapp', nameCn: '我的应用' },
-              { nameEn: 'Test Task', path: 'app/test/task', nameCn: '测试任务' },
-              { nameEn: 'ATPReport', nameCn: '测试报告' }
-            ]
-          }
+          component: () => import('./pages/myApp/ATPReport.vue')
         },
         {
           path: 'atpprocess',
           name: 'atpprocess',
-          component: () => import('./pages/myApp/ATPProcess.vue'),
-          meta: {
-            id: '2.4.1',
-            breadcrumb: [
-              { nameEn: 'Myapp', path: '/myapp', nameCn: '我的应用' },
-              { nameEn: 'Test Task', path: 'app/test/task', nameCn: '测试任务' },
-              { nameEn: 'ATPProcess', nameCn: '测试进展' }
-            ]
-          }
+          component: () => import('./pages/myApp/ATPProcess.vue')
         },
         {
           path: 'atptestcase',
           name: 'atptestcase',
-          component: () => import('./pages/myApp/ATPTestCase.vue'),
-          meta: {
-            id: '2.4.1',
-            breadcrumb: [
-              { nameEn: 'Myapp', path: '/myapp', nameCn: '我的应用' },
-              { nameEn: 'Test Task', path: 'app/test/task', nameCn: '测试任务' },
-              { nameEn: 'ATPTestCase', nameCn: '测试用例' }
-            ]
-          }
+          component: () => import('./pages/myApp/ATPTestCase.vue')
         }
       ]
     }

@@ -50,24 +50,6 @@ function GET (url, params, type = 'store') {
   })
 }
 
-function DELETE (url, params) {
-  let baseUrl = URL_PREFIX + url
-  return new Promise((resolve, reject) => {
-    axios.delete(baseUrl, {
-      params: params,
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-      }
-    }).then(res => {
-      resolve(res)
-    }, (error) => {
-      reject(error)
-    })
-  })
-}
-
 function POST (url, params, type = 'store') {
   let baseUrl = URL_PREFIX + url
   if (type !== 'store') {
@@ -91,6 +73,5 @@ function POST (url, params, type = 'store') {
 export {
   GET,
   POST,
-  DELETE,
   getCookie
 }

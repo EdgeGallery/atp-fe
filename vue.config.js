@@ -19,6 +19,14 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     proxy: {
+      // '/edgegallery': {
+      //   target: 'http://119.3.33.157:8073',
+      //   // ws: true,
+      //   changeOrigin: true
+      //   // pathRewrite: {
+      //   //   '^/edgegallery': '/'
+      //   // }
+      // },
       '/api': {
         target: 'http://159.138.5.142:8099/mec/appstore/v1/',
         ws: true,

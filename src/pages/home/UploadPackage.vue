@@ -22,10 +22,11 @@
       width="45%"
       :before-close="handleClose"
       :close-on-click-modal="false"
+      @close="clearForm"
     >
       <el-form
         :model="packageForm"
-        label-width="100px"
+        label-width="110px"
         :rules="rules"
       >
         <el-form-item
@@ -84,7 +85,10 @@
             >
               {{ $t('store.uploadLogo') }}
             </el-button>
-            <div slot="tip">
+            <div
+              class="el-upload__tip"
+              slot="tip"
+            >
               <em class="el-icon-warning" />
               {{ $t('store.onlyImg') }}
               {{ $t('store.iconSizeLimit') }}
@@ -237,7 +241,7 @@ export default {
         // mepType: '',
         industry: 'Smart Park',
         types: 'Video Application',
-        affinity: 'GPU'
+        affinity: 'x86'
       },
       types: TYPES,
       affinity: AFFINITY,
@@ -269,6 +273,14 @@ export default {
   methods: {
     handleClose () {
       this.$emit('input', false)
+    },
+    clearForm () {
+      this.packageForm.fileList = []
+      this.packageForm.appIcon = []
+      this.packageForm.shortDesc = ''
+      this.packageForm.industry = 'Smart Park'
+      this.packageForm.types = 'Video Application'
+      this.packageForm.affinity = 'x86'
     },
     checkFileType (file, packageFormKey, fileType) {
       let type = file.raw.name.split('.')
@@ -495,6 +507,7 @@ export default {
         this.uploadBtnLoading = false
       } else {
         this.upload()
+        // this.$router.push('/atptestcase')
       }
     },
     changeDataLanguage () {
