@@ -55,7 +55,9 @@
 </template>
 
 <script>
-import { getUserInfo, logoutApi } from '../../tools/api.js'
+import {
+  // getUserInfo,
+  logoutApi } from '../../tools/api.js'
 // import axios from 'axios'
 export default {
   name: 'HeaderComp',
