@@ -51,7 +51,7 @@ const cn = {
   atp: {
     success: '成功',
     failed: '失败',
-    dependencyDetails: '依赖详情',
+    dependencyDetail: '依赖详情',
     versionDependency: '版本依赖',
     testTask: '测试任务描述',
     testItems: '测试项',

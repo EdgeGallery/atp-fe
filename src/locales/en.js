@@ -57,7 +57,7 @@ const en = {
   atp: {
     success: 'success',
     failed: 'failed',
-    dependencyDetails: 'Dependency Details',
+    dependencyDetail: 'Dependency Details',
     versionDependency: 'Version Dependency',
     testTask: 'Test task description',
     testItems: 'Test Items',
