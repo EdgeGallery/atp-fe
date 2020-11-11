@@ -16,7 +16,6 @@
 
 <template>
   <div id="app">
-    <!-- <Navcomp /> -->
     <router-view />
   </div>
 </template>
