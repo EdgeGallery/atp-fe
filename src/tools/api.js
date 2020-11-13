@@ -74,8 +74,7 @@ let Atp = {
   getDependencyApi: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/common-action/analysis-app'
     // return axios.post(url, params)
-    return axios.post(url, {
-      params: params,
+    return axios.post(url, params, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
@@ -87,8 +86,7 @@ let Atp = {
   creatTaskApi: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
     // return axios.post(url, params)
-    return axios.post(url, {
-      params: params,
+    return axios.post(url, params, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
@@ -112,9 +110,8 @@ let Atp = {
   taskListApp: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
     // return axios.get(url, params)
-    return axios.get(url, {
+    return axios.get(url, params, {
       withCredentials: true,
-      params: params,
       headers: {
         'Content-Type': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')

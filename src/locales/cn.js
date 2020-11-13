@@ -49,6 +49,19 @@ const cn = {
     uploadUser: '上传人',
     failReason: '失败原因'
   },
+  promptMessage: {
+    onlyCsar: '只能上传 .csar 文件.',
+    packageSizeLimit: '文件大小不超过10M',
+    getTaskListFail: '获取测试任务失败。',
+    contrastTime: '提交时间不能早于测试结束时间！',
+    confirmLogout: '您确定要退出吗?',
+    prompt: '提示',
+    browserAdvise: '为了部分功能正常使用，我们建议使用Chrom浏览器！'
+  },
+  common: {
+    cancel: '取消',
+    confirm: '确定'
+  },
   atp: {
     success: '成功',
     failed: '失败',
