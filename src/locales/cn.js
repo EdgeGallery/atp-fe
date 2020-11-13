@@ -18,7 +18,8 @@ import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 const cn = {
   nav: {
     logout: '注销',
-    appstore: '应用商店'
+    login: '登录',
+    atp: 'ATP 测试'
   },
   myApp: {
     checkTest: '检查测试',

@@ -17,12 +17,9 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 const en = {
   nav: {
-    store: 'Store',
-    docs: 'Docs',
-    myApp: 'My App',
-    about: 'About',
     logout: 'Logout',
-    appstore: 'Appstore'
+    login: 'Login',
+    atp: 'ATP'
   },
   myApp: {
     checkTest: 'Check Test',
