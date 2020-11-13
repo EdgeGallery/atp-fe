@@ -30,7 +30,7 @@
         <span
           @click="jumpTo('/index')"
           class="curp"
-        > ATP测试 </span>
+        >{{ $t('nav.atp') }} </span>
       </div>
     </el-col>
     <el-col
@@ -40,9 +40,14 @@
       <div class="nav-tabs">
         <span
           class="curp"
+          @click="logout()"
+          v-if="ifGuest"
+        >{{ $t('nav.login') }}</span>
+        <span
+          class="curp"
           @click="beforeLogout"
+          v-else
         >{{ $t('nav.logout') }}</span>
-
         <span
           @click="changeLanguage"
           class="curp"
@@ -56,7 +61,7 @@
 
 <script>
 import {
-  // getUserInfo,
+  getUserInfo,
   logoutApi } from '../../tools/api.js'
 // import axios from 'axios'
 export default {
@@ -65,7 +70,8 @@ export default {
     return {
       language: 'cn',
       userName: '',
-      loginPage: ''
+      loginPage: '',
+      ifGuest: true
     }
   },
   watch: {
@@ -109,11 +115,16 @@ export default {
 
   mounted () {
     localStorage.setItem('language', 'cn')
-    // getUserInfo().then(res => {
-    //   sessionStorage.setItem('userId', res.data.userId)
-    //   sessionStorage.setItem('userName', res.data.userName)
-    //   this.loginPage = res.data.loginPage
-    // })
+    getUserInfo().then(res => {
+      sessionStorage.setItem('userId', res.data.userId)
+      sessionStorage.setItem('userName', res.data.userName)
+      this.loginPage = res.data.loginPage
+      if (res.data.userName === 'guest') {
+        this.ifGuest = true
+      } else {
+        this.ifGuest = false
+      }
+    })
     sessionStorage.setItem('userId', '58bbeb8d-c020-46e5-bab9-7d4bc9e875b8')
     sessionStorage.setItem('userName', 'baizhenzhen')
     let historyRoute = sessionStorage.getItem('historyRoute')

@@ -25,24 +25,24 @@ import axios from 'axios'
 
 // const TEST_URL_PREFIX = '/mec-developer/'
 
-// function getUserInfo () {
-//   let url = '/auth/login-info'
-//   return new Promise((resolve, reject) => {
-//     axios({
-//       method: 'GET',
-//       url: url,
-//       withCredentials: true,
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-//       }
-//     }).then(res => {
-//       resolve(res)
-//     }, (error) => {
-//       reject(error)
-//     })
-//   })
-// }
+function getUserInfo () {
+  let url = '/auth/login-info'
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'GET',
+      url: url,
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
+    }).then(res => {
+      resolve(res)
+    }, (error) => {
+      reject(error)
+    })
+  })
+}
 
 function logoutApi () {
   return axios({
@@ -56,41 +56,74 @@ function logoutApi () {
   })
 }
 
-// mockAPI任务列表
-// function testAppList () {
-//   let url = '/mock/testapp/app'
-//   return axios.get(url)
-// }
-
 let Atp = {
   // 获取测试用例列表
   getTestCaseApi: function () {
-    let url = 'edgegallery/atp/v1/testcases'
-    return axios.get(url)
+    let url = 'mec-atp/edgegallery/atp/v1/testcases'
+    // return axios.get(url)
+    return axios.get(url, {
+      withCredentials: true,
+      headers: {
+        // 'Authorization': token,
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
+    })
   },
   // 解析依赖信息
   getDependencyApi: function (params) {
-    let url = 'edgegallery/atp/v1/common-action/analysis-app'
-    return axios.post(url, params)
+    let url = 'mec-atp/edgegallery/atp/v1/common-action/analysis-app'
+    // return axios.post(url, params)
+    return axios.post(url, {
+      params: params,
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
+    })
   },
   // 创建任务
   creatTaskApi: function (params) {
-    let url = 'edgegallery/atp/v1/tasks'
-    return axios.post(url, params)
+    let url = 'mec-atp/edgegallery/atp/v1/tasks'
+    // return axios.post(url, params)
+    return axios.post(url, {
+      params: params,
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
+    })
   },
   // 获取任务，获取进展
   processApi: function (taskId) {
-    let url = 'edgegallery/atp/v1/tasks/' + taskId
-    return axios.get(url)
+    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId
+    // return axios.get(url)
+    return axios.get(url, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
+    })
   },
   // 获取任务列表
   taskListApp: function (params) {
-    let url = 'edgegallery/atp/v1/tasks'
-    return axios.get(url, params)
+    let url = 'mec-atp/edgegallery/atp/v1/tasks'
+    // return axios.get(url, params)
+    return axios.get(url, {
+      withCredentials: true,
+      params: params,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
+    })
   },
   // 下载报告
   downLoadReportApi: function (taskId) {
-    let url = 'edgegallery/atp/v1/tasks/' + taskId + '/action/download'
+    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId + '/action/download'
     return axios({
       method: 'get',
       url: url,
@@ -113,7 +146,7 @@ let Atp = {
 export {
   // URL_PREFIX,
   // TEST_URL_PREFIX,
-  // getUserInfo,
+  getUserInfo,
   logoutApi,
   // testAppList,
   Atp
