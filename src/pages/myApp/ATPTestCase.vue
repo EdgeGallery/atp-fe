@@ -302,7 +302,7 @@ export default {
     ConfirmTest () {
       let fd = new FormData()
       let packageForm = this.packageForm
-      fd.append('file', packageForm.fileList[0])
+      fd.append('file', packageForm.fileList)
       Atp.creatTaskApi(fd).then(res => {
         let taskId = res.data[0].id
         sessionStorage.setItem('taskId', taskId)
