@@ -23,7 +23,10 @@
         label-width="150px"
       >
         <el-row>
-          <el-col :span="6">
+          <el-col
+            :span="6"
+            :offset="6"
+          >
             <el-form-item :label="$t('atp.applicationName')">
               <el-input
                 id="appName"
@@ -49,36 +52,6 @@
                   :value="item.label"
                 />
               </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item
-              id="createTime"
-              :label="$t('myApp.startTime')"
-            >
-              <el-date-picker
-                v-model="form.createTime"
-                value-format="yyyy-MM-dd"
-                type="date"
-                :placeholder="$t('myApp.startTime')"
-                @change="contrastTime"
-                :picker-options="expireTimeOption"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item
-              id="endTime"
-              :label="$t('myApp.endTime')"
-            >
-              <el-date-picker
-                v-model="form.endTime"
-                value-format="yyyy-MM-dd"
-                type="date"
-                :placeholder="$t('myApp.endTime')"
-                @change="contrastTime"
-                :picker-options="expireTimeOption"
-              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -206,8 +179,6 @@
 
 <script>
 import {
-  // getTaskListApi,
-  // taskListApp
   // uploadAppTaskApi
   Atp } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
@@ -223,9 +194,9 @@ export default {
       },
       form: {
         appName: '',
-        status: '',
-        createTime: '',
-        endTime: ''
+        status: ''
+        // createTime: '',
+        // endTime: ''
       },
       pageData: [],
       caseList: [],
@@ -262,7 +233,6 @@ export default {
     this.getTaskList()
     this.interval = setInterval(() => {
       this.getTaskList()
-      // this.step++
     }, 10000)
   },
   beforeDestroy () {
@@ -302,15 +272,12 @@ export default {
       }
     },
     getTaskList () {
-      if (this.form.createTime == null || this.form.endTime == null) {
-        this.form.createTime = ''
-        this.form.endTime = ''
-      }
-      // let userId = sessionStorage.getItem('userId')
-      // getTaskListApi(this.form, userId).then(
+      // if (this.form.createTime == null || this.form.endTime == null) {
+      //   this.form.createTime = ''
+      //   this.form.endTime = ''
+      // }
       Atp.taskListApp(this.form).then(
         res => {
-          // let data = res.data.tasks
           let data = res.data
           data.forEach((item, index) => {
             let newDateBegin = this.dateChange(item.createTime)
@@ -336,6 +303,7 @@ export default {
         },
         () => {
           this.dataLoading = false
+          console.log(this.form)
           this.$message({
             duration: 2000,
             type: 'warning',
@@ -348,9 +316,9 @@ export default {
     resetForm () {
       this.form = {
         appName: '',
-        status: '',
-        createTime: '',
-        endTime: ''
+        status: ''
+        // createTime: '',
+        // endTime: ''
       }
       this.getTaskList()
     },
@@ -446,12 +414,6 @@ export default {
   }
   .statusSelect {
     width: 100%;
-  }
-  .step1 {
-    height: 200px;
-    p {
-      text-align: center;
-    }
   }
 }
 </style>

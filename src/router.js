@@ -26,6 +26,10 @@ export default new Router({
       redirect: '/atptestcase'
     },
     {
+      path: '/index',
+      redirect: '/atptestcase'
+    },
+    {
       path: '',
       component: () => import('./components/layout/Index.vue'),
       children: [
