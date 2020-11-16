@@ -72,7 +72,7 @@
               <el-upload
                 ref="upload"
                 action=""
-                :limit="1"
+                :limit="3"
                 :on-exceed="handleExceed"
                 :on-change="handleChange"
                 :on-remove="handleDelte"
@@ -303,8 +303,8 @@ export default {
     ConfirmTest () {
       let fd = new FormData()
       let packageForm = this.packageForm
-      packageForm.fileList.forEach(item => {
-        fd.append('file', item)
+      packageForm.fileList.forEach((item, index) => {
+        fd.append(`file[${index}]`, item)
       })
       // fd.append('file', packageForm.fileList)
       console.log(fd)

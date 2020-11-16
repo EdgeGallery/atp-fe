@@ -21,9 +21,9 @@ import {
 // import './mock.js'
 import axios from 'axios'
 
-// const URL_PREFIX = '/mec-appstore/mec/appstore/v1/'
+const URL_PREFIX = '/mec-appstore/mec/appstore/v1/'
 
-// const TEST_URL_PREFIX = '/mec-developer/'
+const TEST_URL_PREFIX = '/mec-developer/'
 
 function getUserInfo () {
   let url = '/auth/login-info'
@@ -110,7 +110,8 @@ let Atp = {
   taskListApp: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
     // return axios.get(url, params)
-    return axios.get(url, params, {
+    return axios.get(url, {
+      params: params,
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
@@ -141,10 +142,9 @@ let Atp = {
 }
 
 export {
-  // URL_PREFIX,
-  // TEST_URL_PREFIX,
+  URL_PREFIX,
+  TEST_URL_PREFIX,
   getUserInfo,
   logoutApi,
-  // testAppList,
   Atp
 }
