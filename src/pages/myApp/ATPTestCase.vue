@@ -72,7 +72,7 @@
               <el-upload
                 ref="upload"
                 action=""
-                :limit="1"
+                :limit="3"
                 :on-exceed="handleExceed"
                 :on-change="handleChange"
                 :on-remove="handleDelte"
@@ -302,7 +302,10 @@ export default {
     ConfirmTest () {
       let fd = new FormData()
       let packageForm = this.packageForm
-      fd.append('file', packageForm.fileList[0])
+      // fd.append('file', packageForm.fileList[0])
+      packageForm.fileList.forEach(function (item) {
+        fd.append('file', item)
+      })
       Atp.creatTaskApi(fd).then(res => {
         let taskId = res.data[0].id
         sessionStorage.setItem('taskId', taskId)
