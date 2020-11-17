@@ -271,7 +271,6 @@ export default {
       let fd = new FormData()
       let packageForm = this.packageForm
       fd.append('file', packageForm.fileList[0])
-      console.log(fd)
       this.dialogVisible = true
       Atp.getDependencyApi(fd).then(res => {
         // let data = res.data.dependencydata.dependency   mock
@@ -303,11 +302,13 @@ export default {
     ConfirmTest () {
       let fd = new FormData()
       let packageForm = this.packageForm
-      packageForm.fileList.forEach((item, index) => {
-        fd.append(`file[${index}]`, item)
+      packageForm.fileList.forEach((item) => {
+        fd.append('file', item)
       })
+      // packageForm.fileList.forEach((item, index) => {
+      //   fd.append(`file[${index}]`, item)
+      // })
       // fd.append('file', packageForm.fileList)
-      console.log(fd)
       Atp.creatTaskApi(fd).then(res => {
         let taskId = res.data[0].id
         sessionStorage.setItem('taskId', taskId)
@@ -326,7 +327,7 @@ export default {
       this.checkFileType(file, 'fileList', 'csar')
     },
     handleDelte (file, fileList) {
-      this.packageForm.file = fileList
+      this.packageForm.fileList = fileList
     },
     checkFileType (file, packageFormKey, fileType) {
       let type = file.raw.name.split('.')
