@@ -132,6 +132,9 @@ export default {
             } else if (caseDetail[keyin].result === 'failed') {
               obj.icon = 'el-icon-close'
               obj.type = 'danger'
+            } else if (caseDetail[keyin].result === 'running') {
+              obj.icon = 'el-icon-loading'
+              obj.type = 'info'
             } else {
               obj.icon = ''
               obj.type = ''
