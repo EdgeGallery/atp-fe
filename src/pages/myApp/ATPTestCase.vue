@@ -305,6 +305,9 @@ export default {
       packageForm.fileList.forEach((item) => {
         fd.append('file', item)
       })
+      // packageForm.fileList.forEach((item, index) => {
+      //   fd.append(`file[${index}]`, item)
+      // })
       // fd.append('file', packageForm.fileList)
       Atp.creatTaskApi(fd).then(res => {
         let taskId = res.data[0].id
@@ -324,7 +327,7 @@ export default {
       this.checkFileType(file, 'fileList', 'csar')
     },
     handleDelte (file, fileList) {
-      this.packageForm.file = fileList
+      this.packageForm.fileList = fileList
     },
     checkFileType (file, packageFormKey, fileType) {
       let type = file.raw.name.split('.')
