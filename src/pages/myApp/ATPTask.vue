@@ -207,7 +207,7 @@ export default {
         },
         {
           value: 2,
-          label: 'waitting'
+          label: 'waiting'
         },
         {
           value: 3,
@@ -284,18 +284,18 @@ export default {
             item.createTime = newDateBegin
             let newDateEnd = this.dateChange(item.endTime)
             item.endTime = newDateEnd
-            if (item.status === 'success' || item.status === 'failed') {
-              item.step = 4
-            } else if (item.status === 'Virus Scan') {
-              item.endTime = ''
-              item.step = 1
-            } else if (item.status === 'Compliance Test') {
-              item.endTime = ''
-              item.step = 2
-            } else {
-              item.endTime = ''
-              item.step = 3
-            }
+            // if (item.status === 'success' || item.status === 'failed') {
+            //   item.step = 4
+            // } else if (item.status === 'Virus Scan') {
+            //   item.endTime = ''
+            //   item.step = 1
+            // } else if (item.status === 'Compliance Test') {
+            //   item.endTime = ''
+            //   item.step = 2
+            // } else {
+            //   item.endTime = ''
+            //   item.step = 3
+            // }
           })
           this.pageData = data
           this.totalNum = this.pageData.length
