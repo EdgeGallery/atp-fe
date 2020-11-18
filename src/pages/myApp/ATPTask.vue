@@ -203,7 +203,7 @@ export default {
       options: [
         {
           value: 1,
-          label: 'executing'
+          label: 'running'
         },
         {
           value: 2,
@@ -303,7 +303,6 @@ export default {
         },
         () => {
           this.dataLoading = false
-          console.log(this.form)
           this.$message({
             duration: 2000,
             type: 'warning',

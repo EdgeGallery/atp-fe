@@ -18,7 +18,6 @@ import {
   getCookie
 } from './request.js'
 
-// import './mock.js'
 import axios from 'axios'
 
 const URL_PREFIX = '/mec-appstore/mec/appstore/v1/'
