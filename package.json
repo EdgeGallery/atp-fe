@@ -23,7 +23,6 @@
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "mavon-editor": "^2.8.2",
-    "mockjs": "^1.1.0",
     "showdown": "^1.9.1",
     "v-charts": "^1.19.0",
     "vue": "^2.6.11",

@@ -231,7 +231,6 @@ export default {
     // 获取测试用例
     getTestCase () {
       Atp.getTestCaseApi().then(res => {
-        // this.caseDataDetail = res.data.data mock
         this.caseDataDetail = res.data
         this.caseDataDetail.forEach(item => {
           let obj = {
@@ -273,7 +272,6 @@ export default {
       fd.append('file', packageForm.fileList[0])
       this.dialogVisible = true
       Atp.getDependencyApi(fd).then(res => {
-        // let data = res.data.dependencydata.dependency   mock
         let data = res.data.dependency
         this.dependencyData = []
         for (const key in data) {
