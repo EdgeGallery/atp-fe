@@ -50,6 +50,11 @@ const cn = {
     failReason: '失败原因'
   },
   promptMessage: {
+    guestUser: 'guest用户无权操作! 请先登录',
+    gettestcaseFail: '测试用例获取失败',
+    resolveFail: '解析依赖失败',
+    creattaskFail: '创建任务失败',
+    getprocessFail: '获取任务进展失败',
     onlyCsar: '只能上传 .csar 文件.',
     packageSizeLimit: '文件大小不超过10M',
     getTaskListFail: '获取测试任务失败。',

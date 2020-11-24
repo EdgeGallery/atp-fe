@@ -52,6 +52,11 @@ const en = {
     failReason: 'Fail Reason'
   },
   promptMessage: {
+    guestUser: 'The guest user has no right to operate. please log in first!',
+    gettestcaseFail: 'Test case acquisition failed',
+    resolveFail: 'Failed to resolve dependencies',
+    creattaskFail: 'Failed to create test task',
+    getprocessFail: 'Failed to get task progress',
     onlyCsar: 'Can only upload .csar files.',
     packageSizeLimit: 'no more than 10M',
     getTaskListFail: 'Failed to get test task.',

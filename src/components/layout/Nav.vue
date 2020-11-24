@@ -150,7 +150,6 @@ export default {
   padding-left: 25px;
   top: 0px;
   width: 100%;
-  position: fixed;
   z-index: 2;
   .logo {
     height: 65px;

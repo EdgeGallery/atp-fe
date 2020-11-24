@@ -147,6 +147,12 @@ export default {
             }
           }
         }
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: this.$t('promptMessage.getprocessFail'),
+          type: 'warning'
+        })
       })
       this.allcase.virusScanningTest.forEach((item) => {
         if (item.type === 'success' || item.type === 'danger') {
