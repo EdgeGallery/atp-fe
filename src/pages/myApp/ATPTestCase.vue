@@ -256,6 +256,12 @@ export default {
         this.TestNumber[1].number = this.countcomp
         this.TestNumber[2].number = this.countsand
         this.caseDataTable.push(this.caseDataDetail[0])
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: this.$t('promptMessage.gettestcaseFail'),
+          type: 'warning'
+        })
       })
     },
     handleNodeClick (val) {
@@ -283,6 +289,20 @@ export default {
           obj.version = data[key]
           this.dependencyData.push(obj)
         }
+      }).catch(error => {
+        if (error.response.data.code === 403) {
+          this.$message({
+            duration: 2000,
+            message: this.$t('promptMessage.guestUser'),
+            type: 'warning'
+          })
+        } else {
+          this.$message({
+            duration: 2000,
+            message: this.$t('promptMessage.resolveFail'),
+            type: 'warning'
+          })
+        }
       })
     },
     changeName () {
@@ -309,6 +329,20 @@ export default {
         sessionStorage.setItem('taskId', taskId)
         this.dialogVisible = false
         this.$router.push('/atpprocess')
+      }).catch(error => {
+        if (error.response.data.code === 403) {
+          this.$message({
+            duration: 2000,
+            message: this.$t('promptMessage.guestUser'),
+            type: 'warning'
+          })
+        } else {
+          this.$message({
+            duration: 2000,
+            message: this.$t('promptMessage.creattaskFail'),
+            type: 'warning'
+          })
+        }
       })
     },
     cancel () {
@@ -402,9 +436,9 @@ export default {
     }
     .test-image{
       text-align: center;
+      margin-top: 10px;
       // img{
-      //   width: 800px;
-      //   height: 500px;
+      //   width: 90%
       // }
     }
     .start-button{
