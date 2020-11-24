@@ -296,12 +296,14 @@ export default {
             message: this.$t('promptMessage.guestUser'),
             type: 'warning'
           })
+          this.dialogVisible = false
         } else {
           this.$message({
             duration: 2000,
             message: this.$t('promptMessage.resolveFail'),
             type: 'warning'
           })
+          this.dialogVisible = false
         }
       })
     },
@@ -336,12 +338,14 @@ export default {
             message: this.$t('promptMessage.guestUser'),
             type: 'warning'
           })
+          this.dialogVisible = false
         } else {
           this.$message({
             duration: 2000,
             message: this.$t('promptMessage.creattaskFail'),
             type: 'warning'
           })
+          this.dialogVisible = false
         }
       })
     },
