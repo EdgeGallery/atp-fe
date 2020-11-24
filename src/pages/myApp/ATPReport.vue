@@ -218,54 +218,54 @@ export default {
     }
   },
   mounted () {
-    this.getReport()
     this.tableData.push(JSON.parse(sessionStorage.getItem('taskData')))
     this.taskId = this.tableData[0].id
+    this.getReport()
   },
   methods: {
     getReport () {
-      Atp.processApi(this.taskId).then(res => {
-        // let testCaseDetail = res.data.testCaseDetail
-        let testCaseDetail = this.tableData[0].testCaseDetail
-        for (const key in testCaseDetail) {
-          let casedata = testCaseDetail[key][0]
-          for (const keyin in casedata) {
-            let obj = {
-              name: '',
-              result: '',
-              reason: ''
+      // Atp.processApi(this.taskId).then(res => {
+      // let testCaseDetail = res.data.testCaseDetail
+      let testCaseDetail = this.tableData[0].testCaseDetail
+      for (const key in testCaseDetail) {
+        let casedata = testCaseDetail[key][0]
+        for (const keyin in casedata) {
+          let obj = {
+            name: '',
+            result: '',
+            reason: ''
+          }
+          obj.name = keyin
+          obj.result = casedata[keyin].result
+          obj.reason = casedata[keyin].reason
+          if (key === 'virusScanningTest') {
+            this.virusScanningTest.push(obj)
+            if (casedata[keyin].result === 'success') {
+              this.TestDataSum[0].success++
+            } else if (casedata[keyin].result === 'failed') {
+              this.TestDataSum[0].failed++
             }
-            obj.name = keyin
-            obj.result = casedata[keyin].result
-            obj.reason = casedata[keyin].reason
-            if (key === 'virusScanningTest') {
-              this.virusScanningTest.push(obj)
-              if (casedata[keyin].result === 'success') {
-                this.TestDataSum[0].success++
-              } else if (casedata[keyin].result === 'failed') {
-                this.TestDataSum[0].failed++
-              }
-            } else if (key === 'complianceTest') {
-              this.complianceTest.push(obj)
-              if (casedata[keyin].result === 'success') {
-                this.TestDataSum[1].success++
-              } else if (casedata[keyin].result === 'failed') {
-                this.TestDataSum[1].failed++
-              }
-            } else {
-              this.sandboxTest.push(obj)
-              if (casedata[keyin].result === 'success') {
-                this.TestDataSum[2].success++
-              } else if (casedata[keyin].result === 'failed') {
-                this.TestDataSum[2].failed++
-              }
+          } else if (key === 'complianceTest') {
+            this.complianceTest.push(obj)
+            if (casedata[keyin].result === 'success') {
+              this.TestDataSum[1].success++
+            } else if (casedata[keyin].result === 'failed') {
+              this.TestDataSum[1].failed++
+            }
+          } else {
+            this.sandboxTest.push(obj)
+            if (casedata[keyin].result === 'success') {
+              this.TestDataSum[2].success++
+            } else if (casedata[keyin].result === 'failed') {
+              this.TestDataSum[2].failed++
             }
           }
         }
-        this.chartData.rows[0].case = this.virusScanningTest.length
-        this.chartData.rows[1].case = this.complianceTest.length
-        this.chartData.rows[2].case = this.sandboxTest.length
-      })
+      }
+      this.chartData.rows[0].case = this.virusScanningTest.length
+      this.chartData.rows[1].case = this.complianceTest.length
+      this.chartData.rows[2].case = this.sandboxTest.length
+      // })
     },
     changeName () {
       if (this.language === 'en') {
@@ -280,7 +280,17 @@ export default {
     },
     downLoadReport () {
       Atp.downLoadReportApi(this.taskId).then(res => {
-        console.log(res.data)
+        this.$message({
+          duration: 2000,
+          message: this.$t('promptMessage.downloadSuccess'),
+          type: 'success'
+        })
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: this.$t('promptMessage.downloadFail'),
+          type: 'warning'
+        })
       })
     }
   },

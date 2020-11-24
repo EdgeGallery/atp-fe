@@ -16,7 +16,7 @@
 
 const TESTNAME = [
   {
-    label: ['安全性测试', 'virusScanningTest'],
+    label: ['病毒扫描', 'virusScanningTest'],
     value: 'virusScanningTest'
   },
   {

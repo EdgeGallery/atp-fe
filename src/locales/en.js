@@ -58,7 +58,9 @@ const en = {
     contrastTime: 'The submission time cannot be earlier than the test end time!',
     confirmLogout: 'Are you sure to log out?',
     prompt: 'Prompt',
-    browserAdvise: 'For sure some functions work well, please use Chrome'
+    browserAdvise: 'For sure some functions work well, please use Chrome',
+    downloadSuccess: 'Download Success',
+    downloadFail: 'Download Fail'
   },
   common: {
     cancel: 'Cancel',

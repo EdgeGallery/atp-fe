@@ -179,8 +179,8 @@ export default {
       dialogVisible: false,
       testCaseList: [
         {
-          // label: '病毒扫描',
-          label: '安全性测试',
+          label: '病毒扫描',
+          // label: '安全性测试',
           children: []
         },
         {
@@ -201,8 +201,8 @@ export default {
       dependencyData: [],
       TestNumber: [
         {
-          // name: '病毒扫描',
-          name: '安全性测试',
+          name: '病毒扫描',
+          // name: '安全性测试',
           number: ''
         },
         {
@@ -307,6 +307,7 @@ export default {
       Atp.creatTaskApi(fd).then(res => {
         let taskId = res.data[0].id
         sessionStorage.setItem('taskId', taskId)
+        this.dialogVisible = false
         this.$router.push('/atpprocess')
       })
     },
