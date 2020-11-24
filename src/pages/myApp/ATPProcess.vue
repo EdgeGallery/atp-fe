@@ -78,7 +78,6 @@ import { Atp } from '../../tools/api.js'
 export default {
   data () {
     return {
-      // tabPosition: 'left',
       active: 0,
       taskId: '',
       allcase: {

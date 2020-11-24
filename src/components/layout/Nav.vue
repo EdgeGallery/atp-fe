@@ -15,48 +15,48 @@
   -->
 
 <template>
-  <el-row id="headerComp">
-    <el-col
-      class="logo"
-      :span="6"
-    >
-      <div>
-        <img
-          src="../../assets/images/logo.png"
-          class="curp"
-          @click="jumpTo('/index')"
-          alt
-        >
-        <span
-          @click="jumpTo('/index')"
-          class="curp"
-        >{{ $t('nav.atp') }} </span>
-      </div>
-    </el-col>
-    <el-col
-      :span="6"
-      :offset="12"
-    >
-      <div class="nav-tabs">
-        <span
-          class="curp"
-          @click="logout()"
-          v-if="ifGuest"
-        >{{ $t('nav.login') }}</span>
-        <span
-          class="curp"
-          @click="beforeLogout"
-          v-else
-        >{{ $t('nav.logout') }}</span>
-        <span
-          @click="changeLanguage"
-          class="curp"
-        >
-          {{ getLanguage }}
-        </span>
-      </div>
-    </el-col>
-  </el-row>
+  <div id="headerComp">
+    <el-row>
+      <el-col
+        :span="12"
+      >
+        <div class="logo">
+          <img
+            src="../../assets/images/logo.png"
+            class="curp"
+            @click="jumpTo('/index')"
+            alt
+          >
+          <span
+            class="curp"
+            @click="jumpTo('/index')"
+          >{{ $t('nav.atp') }} </span>
+        </div>
+      </el-col>
+      <el-col
+        :span="12"
+      >
+        <div class="nav-tabs rt">
+          <span
+            class="curp"
+            @click="logout()"
+            v-if="ifGuest"
+          >{{ $t('nav.login') }}</span>
+          <span
+            class="curp"
+            @click="beforeLogout"
+            v-else
+          >{{ $t('nav.logout') }}</span>
+          <span
+            @click="changeLanguage"
+            class="curp"
+          >
+            {{ getLanguage }}
+          </span>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -84,6 +84,9 @@ export default {
     }
   },
   methods: {
+    jumpTo (newPath) {
+      this.$router.push(newPath)
+    },
     changeLanguage () {
       if (this.language === 'cn') {
         this.language = 'en'
@@ -145,6 +148,10 @@ export default {
   color: white;
   background: #282b33;
   padding-left: 25px;
+  top: 0px;
+  width: 100%;
+  position: fixed;
+  z-index: 2;
   .logo {
     height: 65px;
     line-height: 65px;
@@ -164,6 +171,18 @@ export default {
     box-sizing: border-box;
     span{
       padding: 0 10px;
+    }
+  }
+  @media only screen and (max-width: 991px){
+    .logo{
+      img{
+      height: 50px;
+      margin: 5px 0 0 0;
+    }
+      span{
+        font-size: 14px;
+        margin: 5px 0 0 0;
+      }
     }
   }
 }

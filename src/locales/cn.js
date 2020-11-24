@@ -56,7 +56,9 @@ const cn = {
     contrastTime: '提交时间不能早于测试结束时间！',
     confirmLogout: '您确定要退出吗?',
     prompt: '提示',
-    browserAdvise: '为了部分功能正常使用，我们建议使用Chrom浏览器！'
+    browserAdvise: '为了部分功能正常使用，我们建议使用Chrom浏览器！',
+    downloadSuccess: '下载成功',
+    downloadFail: '下载失败'
   },
   common: {
     cancel: '取消',
@@ -73,7 +75,7 @@ const cn = {
     cancel: '取消',
     confirm: '确定',
     returnList: '返回任务列表',
-    virusScan: '安全性测试',
+    virusScan: '病毒扫描',
     complianceTest: '遵从性测试',
     sandboxTest: '沙箱测试',
     review: '审核',
