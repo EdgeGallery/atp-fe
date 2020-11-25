@@ -276,8 +276,8 @@ export default {
       let fd = new FormData()
       let packageForm = this.packageForm
       fd.append('file', packageForm.fileList[0])
-      this.dialogVisible = true
       Atp.getDependencyApi(fd).then(res => {
+        this.dialogVisible = true
         let data = res.data.dependency
         this.dependencyData = []
         for (const key in data) {
@@ -289,23 +289,24 @@ export default {
           obj.version = data[key]
           this.dependencyData.push(obj)
         }
-      }).catch(error => {
-        if (error.response.data.code === 403) {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.guestUser'),
-            type: 'warning'
-          })
-          this.dialogVisible = false
-        } else {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.resolveFail'),
-            type: 'warning'
-          })
-          this.dialogVisible = false
-        }
       })
+      // .catch(error => {
+      //   if (error.response.data.code === 403) {
+      //     this.$message({
+      //       duration: 2000,
+      //       message: this.$t('promptMessage.guestUser'),
+      //       type: 'warning'
+      //     })
+      //     this.dialogVisible = false
+      //   } else {
+      //     this.$message({
+      //       duration: 2000,
+      //       message: this.$t('promptMessage.resolveFail'),
+      //       type: 'warning'
+      //     })
+      //     this.dialogVisible = false
+      //   }
+      // })
     },
     changeName () {
       if (this.language === 'en') {
