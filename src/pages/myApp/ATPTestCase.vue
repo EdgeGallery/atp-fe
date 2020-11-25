@@ -276,6 +276,7 @@ export default {
       let fd = new FormData()
       let packageForm = this.packageForm
       fd.append('file', packageForm.fileList[0])
+      this.dialogVisible = true
       Atp.getDependencyApi(fd).then(res => {
         this.dialogVisible = true
         let data = res.data.dependency
