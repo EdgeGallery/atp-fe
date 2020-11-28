@@ -193,7 +193,7 @@ export default {
       tableData: [],
       TestDataSum: [
         {
-          name: '病毒测试',
+          name: '病毒扫描',
           success: 0,
           failed: 0
         },

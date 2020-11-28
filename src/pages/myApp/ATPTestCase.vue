@@ -50,10 +50,14 @@
         </div>
       </div>
       <div class="test-image">
-        <img
-          src="../../assets/images/test.png"
-          alt
-        >
+        <el-row>
+          <el-col :span="24">
+            <img
+              src="../../assets/images/test.png"
+              alt
+            >
+          </el-col>
+        </el-row>
       </div>
       <div>
         <div class="title">
@@ -278,7 +282,6 @@ export default {
       fd.append('file', packageForm.fileList[0])
       this.dialogVisible = true
       Atp.getDependencyApi(fd).then(res => {
-        this.dialogVisible = true
         let data = res.data.dependency
         this.dependencyData = []
         for (const key in data) {
@@ -290,24 +293,23 @@ export default {
           obj.version = data[key]
           this.dependencyData.push(obj)
         }
+      }).catch(error => {
+        if (error.response.data.code === 403) {
+          this.$message({
+            duration: 2000,
+            message: this.$t('promptMessage.guestUser'),
+            type: 'warning'
+          })
+          this.dialogVisible = false
+        } else {
+          this.$message({
+            duration: 2000,
+            message: this.$t('promptMessage.resolveFail'),
+            type: 'warning'
+          })
+          this.dialogVisible = false
+        }
       })
-      // .catch(error => {
-      //   if (error.response.data.code === 403) {
-      //     this.$message({
-      //       duration: 2000,
-      //       message: this.$t('promptMessage.guestUser'),
-      //       type: 'warning'
-      //     })
-      //     this.dialogVisible = false
-      //   } else {
-      //     this.$message({
-      //       duration: 2000,
-      //       message: this.$t('promptMessage.resolveFail'),
-      //       type: 'warning'
-      //     })
-      //     this.dialogVisible = false
-      //   }
-      // })
     },
     changeName () {
       if (this.language === 'en') {
@@ -443,6 +445,7 @@ export default {
     .test-image{
       text-align: center;
       margin-top: 10px;
+      overflow: auto;
       // img{
       //   width: 90%
       // }
@@ -452,10 +455,6 @@ export default {
         margin: 30px 0;
         #start_test_button{
           transform:translateX(-49px);
-          // color: #fff;
-          // background-color: #5abdc7;
-          // border-color: #5abdc7;
-          // margin: auto;
         }
       }
     .title {
