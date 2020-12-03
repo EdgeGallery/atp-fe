@@ -32,7 +32,8 @@ const cn = {
     operation: '操作',
     taskNumber: '任务序号',
     checkReport: '查看报告',
-    upload: '上传'
+    upload: '上传',
+    provider: '供应商'
   },
   report: {
     testReport: '测试报告',

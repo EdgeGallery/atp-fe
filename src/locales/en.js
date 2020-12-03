@@ -34,7 +34,8 @@ const en = {
     checkReport: 'Check Report',
     upload: 'Upload',
     appName: 'Application Name',
-    status: 'Status'
+    status: 'Status',
+    provider: 'Provider'
   },
   report: {
     testReport: 'Test Report',

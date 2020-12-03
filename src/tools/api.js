@@ -59,20 +59,40 @@ let Atp = {
   // 获取测试用例列表
   getTestCaseApi: function () {
     let url = 'mec-atp/edgegallery/atp/v1/testcases'
-    // return axios.get(url)
     return axios.get(url, {
       withCredentials: true,
       headers: {
-        // 'Authorization': token,
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
+    })
+  },
+  // 预检查接口（返回依赖）
+  getDependencyApi: function (taskId) {
+    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId + '/action/pre-check'
+    return axios.get(url, {
+      withCredentials: true,
+      headers: {
         'Content-Type': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
       }
     })
   },
   // 解析依赖信息
-  getDependencyApi: function (params) {
-    let url = 'mec-atp/edgegallery/atp/v1/common-action/analysis-app'
-    // return axios.post(url, params)
+  // getDependencyApi: function (params) {
+  //   let url = 'mec-atp/edgegallery/atp/v1/common-action/analysis-app'
+  //   // return axios.post(url, params)
+  //   return axios.post(url, params, {
+  //     withCredentials: true,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+  //     }
+  //   })
+  // },
+  // 创建测试任务
+  creatTaskApi: function (params) {
+    let url = 'mec-atp/edgegallery/atp/v1/tasks'
     return axios.post(url, params, {
       withCredentials: true,
       headers: {
@@ -81,11 +101,10 @@ let Atp = {
       }
     })
   },
-  // 创建任务
-  creatTaskApi: function (params) {
-    let url = 'mec-atp/edgegallery/atp/v1/tasks'
-    // return axios.post(url, params)
-    return axios.post(url, params, {
+  // 运行任务
+  runTaskApi: function (taskId) {
+    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId + '/action/run'
+    return axios.post(url, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +115,6 @@ let Atp = {
   // 获取任务，获取进展
   processApi: function (taskId) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId
-    // return axios.get(url)
     return axios.get(url, {
       withCredentials: true,
       headers: {
@@ -108,7 +126,6 @@ let Atp = {
   // 获取任务列表
   taskListApp: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
-    // return axios.get(url, params)
     return axios.get(url, {
       params: params,
       withCredentials: true,

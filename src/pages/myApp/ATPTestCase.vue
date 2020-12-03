@@ -177,6 +177,7 @@ export default {
   name: 'TestCase',
   data () {
     return {
+      taskId: '',
       packageForm: {
         fileList: []
       },
@@ -230,6 +231,7 @@ export default {
   },
   mounted () {
     this.getTestCase()
+    // this.getDependency()
   },
   methods: {
     // 获取测试用例
@@ -276,12 +278,9 @@ export default {
         }
       })
     },
-    startTest () {
-      let fd = new FormData()
-      let packageForm = this.packageForm
-      fd.append('file', packageForm.fileList[0])
+    getDependency () {
       this.dialogVisible = true
-      Atp.getDependencyApi(fd).then(res => {
+      Atp.getDependencyApi(this.taskId).then(res => {
         let data = res.data.dependency
         this.dependencyData = []
         for (const key in data) {
@@ -293,45 +292,103 @@ export default {
           obj.version = data[key]
           this.dependencyData.push(obj)
         }
-      }).catch(error => {
-        if (error.response.data.code === 403) {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.guestUser'),
-            type: 'warning'
-          })
-          this.dialogVisible = false
-        } else {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.resolveFail'),
-            type: 'warning'
-          })
-          this.dialogVisible = false
-        }
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: this.$t('promptMessage.resolveFail'),
+          type: 'warning'
+        })
+        this.dialogVisible = false
       })
     },
-    changeName () {
-      if (this.language === 'en') {
-        this.testCaseList[0].label = this.TestNumber[0].name = TESTNAME[0].label[1]
-        this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[1]
-        this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[1]
-      } else if (this.language === 'cn') {
-        this.testCaseList[0].label = this.TestNumber[0].name = TESTNAME[0].label[0]
-        this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[0]
-        this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[0]
-      }
-    },
-    // 弹框页面
-    ConfirmTest () {
+    // 创建测试任务，后续删除;
+    startTest () {
       let fd = new FormData()
       let packageForm = this.packageForm
-      // fd.append('file', packageForm.fileList[0])
-      packageForm.fileList.forEach(function (item) {
-        fd.append('file', item)
-      })
+      fd.append('file', packageForm.fileList[0])
+      fd.append('isRun', false)
+      this.dialogVisible = true
       Atp.creatTaskApi(fd).then(res => {
-        let taskId = res.data[0].id
+        this.dialogVisible = true
+        this.taskId = res.data.id
+        this.getDependency()
+        // let data = res.data.dependency
+        // this.dependencyData = []
+        // for (const key in data) {
+        //   let obj = {
+        //     name: '',
+        //     version: ''
+        //   }
+        //   obj.name = key
+        //   obj.version = data[key]
+        //   this.dependencyData.push(obj)
+        // }
+      })
+      // .catch(error => {
+      //   if (error.response.data.code === 403) {
+      //     this.$message({
+      //       duration: 2000,
+      //       message: this.$t('promptMessage.guestUser'),
+      //       type: 'warning'
+      //     })
+      //     this.dialogVisible = false
+      //   } else {
+      //     this.$message({
+      //       duration: 2000,
+      //       message: this.$t('promptMessage.resolveFail'),
+      //       type: 'warning'
+      //     })
+      //     this.dialogVisible = false
+      //   }
+      // })
+    },
+    // startTest () {
+    //   let fd = new FormData()
+    //   let packageForm = this.packageForm
+    //   fd.append('file', packageForm.fileList[0])
+    //   // this.dialogVisible = true
+    //   Atp.getDependencyApi(fd).then(res => {
+    //     this.dialogVisible = true
+    //     let data = res.data.dependency
+    //     this.dependencyData = []
+    //     for (const key in data) {
+    //       let obj = {
+    //         name: '',
+    //         version: ''
+    //       }
+    //       obj.name = key
+    //       obj.version = data[key]
+    //       this.dependencyData.push(obj)
+    //     }
+    //   }).catch(error => {
+    //     if (error.response.data.code === 403) {
+    //       this.$message({
+    //         duration: 2000,
+    //         message: this.$t('promptMessage.guestUser'),
+    //         type: 'warning'
+    //       })
+    //       this.dialogVisible = false
+    //     } else {
+    //       this.$message({
+    //         duration: 2000,
+    //         message: this.$t('promptMessage.resolveFail'),
+    //         type: 'warning'
+    //       })
+    //       this.dialogVisible = false
+    //     }
+    //   })
+    // },
+
+    // 弹框页面
+    ConfirmTest () {
+      // let fd = new FormData()
+      // let packageForm = this.packageForm
+      // packageForm.fileList.forEach(function (item) {
+      //   fd.append('file', item)
+      // })
+      Atp.runTaskApi(this.taskId).then(res => {
+        // let taskId = res.data[0].id
+        let taskId = res.data.id
         sessionStorage.setItem('taskId', taskId)
         this.dialogVisible = false
         this.$router.push('/atpprocess')
@@ -355,6 +412,17 @@ export default {
     },
     cancel () {
       this.dialogVisible = false
+    },
+    changeName () {
+      if (this.language === 'en') {
+        this.testCaseList[0].label = this.TestNumber[0].name = TESTNAME[0].label[1]
+        this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[1]
+        this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[1]
+      } else if (this.language === 'cn') {
+        this.testCaseList[0].label = this.TestNumber[0].name = TESTNAME[0].label[0]
+        this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[0]
+        this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[0]
+      }
     },
     handleExceed (file, fileList) {
       if (fileList.length === 1) {

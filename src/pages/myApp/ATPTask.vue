@@ -99,6 +99,10 @@
             prop="appName"
             :label="$t('atp.applicationName')"
           />
+          <el-table-column
+            prop="providerId"
+            :label="$t('myApp.provider')"
+          />
           <el-table-column :label="$t('myApp.testStatus')">
             <template slot-scope="scope">
               <span
@@ -149,16 +153,6 @@
                 size="small"
               >
                 {{ $t('myApp.checkReport') }}
-              </el-button>
-              <el-button
-                id="uploadBtn"
-                type="text"
-                size="small"
-                style="margin-left:30px;"
-                disabled
-                @click="uploadTask(scope.row)"
-              >
-                {{ $t('myApp.upload') }}
               </el-button>
             </template>
           </el-table-column>
@@ -233,7 +227,7 @@ export default {
     this.getTaskList()
     this.interval = setInterval(() => {
       this.getTaskList()
-    }, 10000)
+    }, 20000)
   },
   beforeDestroy () {
     this.clearInterval()
@@ -322,22 +316,6 @@ export default {
       this.getTaskList()
     },
     expandChange (row, expandedRows) {},
-    // uploadTask (val) {
-    //   let userId = sessionStorage.getItem('userId')
-    //   let userName = sessionStorage.getItem('userName')
-    //   uploadAppTaskApi(val.appId, userId, userName)
-    //     .then(res => {
-    //       this.$message({
-    //         duration: 2000,
-    //         message: this.$t('promptMessage.uploadSuccess'),
-    //         type: 'success'
-    //       })
-    //     })
-    //     .catch(err => {
-    //       this.$message.error(this.$t('promptMessage.operationFailed'))
-    //       console.log(err)
-    //     })
-    // },
     dateChange (dateStr) {
       if (dateStr) {
         let date = new Date(Date.parse(dateStr))
