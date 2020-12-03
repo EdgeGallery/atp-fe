@@ -19,8 +19,17 @@
     <div class="report-content padding20">
       <div class="download">
         <el-button
+          id="back_button"
+          type="primary"
+          icon="el-icon-arrow-left"
+          @click="jumpTo()"
+        >
+          {{ $t('atp.returnList') }}
+        </el-button>
+        <el-button
           size="large"
           type="primary"
+          icon="el-icon-download"
           @click="downLoadReport()"
         >
           {{ $t('report.downloadReport') }}
@@ -51,6 +60,10 @@
               <el-table-column
                 prop="appVersion"
                 :label="$t('atp.version')"
+              />
+              <el-table-column
+                prop="providerId"
+                :label="$t('myApp.provider')"
               />
               <el-table-column
                 prop="user.userName"
@@ -223,6 +236,9 @@ export default {
     this.getReport()
   },
   methods: {
+    jumpTo () {
+      this.$router.push('/app/test/task')
+    },
     getReport () {
       // Atp.processApi(this.taskId).then(res => {
       // let testCaseDetail = res.data.testCaseDetail
@@ -309,7 +325,9 @@ export default {
   .report-content {
     background: white;
     .download{
-      text-align: right;
+      // text-align: right;
+      display: flex;
+      justify-content: space-between;
     }
     .report-tap {
       // padding: 20px 0;
