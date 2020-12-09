@@ -78,6 +78,7 @@ import { Atp } from '../../tools/api.js'
 export default {
   data () {
     return {
+      currUrl: window.location.href,
       active: 0,
       atptaskId: '',
       taskId: '',
@@ -91,13 +92,13 @@ export default {
   },
   mounted () {
     this.getTaskId()
-    // dev 传taskid
-    if (this.atptaskId) {
-      this.taskId = this.atptaskId
-    } else {
-      let params = sessionStorage.getItem('taskId')
-      this.taskId = params
-    }
+    // 传taskid
+    // if (this.atptaskId) {
+    //   this.taskId = this.atptaskId
+    // } else {
+    //   let params = sessionStorage.getItem('taskId')
+    //   this.taskId = params
+    // }
     this.getCaseData()
     this.interval = setInterval(() => {
       this.getCaseData()
@@ -108,8 +109,12 @@ export default {
   },
   methods: {
     getTaskId () {
-      let currUrl = window.location.href
-      this.atptaskId = currUrl.split('?')[1].split('=')[1]
+      if (this.currUrl.indexOf('?') !== -1) {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1]
+      } else {
+        let params = sessionStorage.getItem('taskId')
+        this.taskId = params
+      }
     },
     jumpTo () {
       this.$router.push('/app/test/task')
