@@ -59,60 +59,6 @@
           </el-col>
         </el-row>
       </div>
-      <div>
-        <div class="title">
-          上传应用
-        </div>
-        <div style="width:500px,margin-left:30px">
-          <el-form
-            :model="packageForm"
-            label-width="150px"
-            :rules="rules"
-          >
-            <el-form-item
-              :label="$t('atp.appPackage')"
-              prop="fileList"
-            >
-              <el-upload
-                ref="upload"
-                action=""
-                :limit="3"
-                :on-exceed="handleExceed"
-                :on-change="handleChange"
-                :on-remove="handleDelte"
-                :file-list="packageForm.fileList"
-                :auto-upload="false"
-                accept=".csar"
-              >
-                <el-button
-                  slot="trigger"
-                  size="small"
-                  type="primary"
-                  plain
-                >
-                  {{ $t('atp.uploadApp') }}
-                </el-button>
-                <em
-                  class="el-icon-warning"
-                  style="margin-left:20px"
-                />
-                {{ $t('atp.onlyCsar') }}
-                {{ $t('atp.packageSizeLimit') }}
-              </el-upload>
-            </el-form-item>
-          </el-form>
-        </div>
-      </div>
-      <div class="start-button">
-        <el-button
-          id="start_test_button"
-          type="primary"
-          size="large"
-          @click="startTest"
-        >
-          {{ $t('atp.startTest') }}
-        </el-button>
-      </div>
     </div>
     <!-- 依赖弹框 -->
     <el-dialog
@@ -178,10 +124,11 @@ export default {
   data () {
     return {
       taskId: '',
+      // 删除
       packageForm: {
         fileList: []
       },
-      dialogVisible: false,
+      dialogVisible: true,
       testCaseList: [
         {
           label: '病毒扫描',
@@ -222,6 +169,7 @@ export default {
       countvirus: 0,
       countcomp: 0,
       countsand: 0,
+      // del
       rules: {
         fileList: [
           { required: true }
@@ -230,10 +178,16 @@ export default {
     }
   },
   mounted () {
+    this.getTaskId()
     this.getTestCase()
-    // this.getDependency()
+    this.getDependency()
   },
   methods: {
+    // 获取iframe的taskid
+    getTaskId () {
+      let currUrl = window.location.href
+      this.taskId = currUrl.split('?')[1].split('=')[1]
+    },
     // 获取测试用例
     getTestCase () {
       Atp.getTestCaseApi().then(res => {
@@ -298,7 +252,7 @@ export default {
           message: this.$t('promptMessage.resolveFail'),
           type: 'warning'
         })
-        this.dialogVisible = false
+        // this.dialogVisible = false
       })
     },
     // 创建测试任务，后续删除;
@@ -375,19 +329,13 @@ export default {
     //         type: 'warning'
     //       })
     //       this.dialogVisible = false
-    //     }
+    //     }confirm
     //   })
     // },
 
     // 弹框页面
     ConfirmTest () {
-      // let fd = new FormData()
-      // let packageForm = this.packageForm
-      // packageForm.fileList.forEach(function (item) {
-      //   fd.append('file', item)
-      // })
       Atp.runTaskApi(this.taskId).then(res => {
-        // let taskId = res.data[0].id
         let taskId = res.data.id
         sessionStorage.setItem('taskId', taskId)
         this.dialogVisible = false
@@ -424,17 +372,21 @@ export default {
         this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[0]
       }
     },
+    // del
     handleExceed (file, fileList) {
       if (fileList.length === 1) {
         this.$message.warning(this.$t('promptMessage.onlyOneFile'))
       }
     },
+    // del
     handleChange (file, fileList) {
       this.checkFileType(file, 'fileList', 'csar')
     },
+    // del
     handleDelte (file, fileList) {
       this.packageForm.fileList = fileList
     },
+    // del
     checkFileType (file, packageFormKey, fileType) {
       let type = file.raw.name.split('.')
       let fileSize = file.size / 1024 / 1024

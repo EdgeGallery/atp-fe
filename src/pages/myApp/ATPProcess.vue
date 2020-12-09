@@ -79,6 +79,7 @@ export default {
   data () {
     return {
       active: 0,
+      atptaskId: '',
       taskId: '',
       allcase: {
         virusScanningTest: [],
@@ -89,8 +90,14 @@ export default {
     }
   },
   mounted () {
-    let params = sessionStorage.getItem('taskId')
-    this.taskId = params
+    this.getTaskId()
+    // dev 传taskid
+    if (this.atptaskId) {
+      this.taskId = this.atptaskId
+    } else {
+      let params = sessionStorage.getItem('taskId')
+      this.taskId = params
+    }
     this.getCaseData()
     this.interval = setInterval(() => {
       this.getCaseData()
@@ -100,6 +107,10 @@ export default {
     this.clearInterval()
   },
   methods: {
+    getTaskId () {
+      let currUrl = window.location.href
+      this.atptaskId = currUrl.split('?')[1].split('=')[1]
+    },
     jumpTo () {
       this.$router.push('/app/test/task')
     },
