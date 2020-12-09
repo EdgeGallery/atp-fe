@@ -106,19 +106,24 @@
           <el-table-column :label="$t('myApp.testStatus')">
             <template slot-scope="scope">
               <span
-                class="el-icon-loading primary"
-                v-if="scope.row.status!=='success' && scope.row.status!=='failed'"
-                title="In Progress"
+                v-if="scope.row.status=='success'"
+                class="el-icon-success success"
+                title="success"
               />
               <span
                 v-else-if="scope.row.status=='failed'"
                 class="el-icon-error error"
-                title="Failed"
+                title="failed"
+              />
+              <span
+                v-else-if="scope.row.status=='running'"
+                class="el-icon-loading primary"
+                title="running"
               />
               <span
                 v-else
-                class="el-icon-success success"
-                title="Success"
+                class="el-icon-finished primary"
+                title="success"
               />
               <el-button
                 id="statusBtn"
@@ -142,7 +147,6 @@
           <el-table-column
             fixed="right"
             :label="$t('myApp.operation')"
-            width="200"
           >
             <template slot-scope="scope">
               <el-button
@@ -172,9 +176,7 @@
 </template>
 
 <script>
-import {
-  // uploadAppTaskApi
-  Atp } from '../../tools/api.js'
+import { Atp } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 export default {
   name: 'Task',
@@ -210,12 +212,19 @@ export default {
         {
           value: 4,
           label: 'failed'
+        },
+        {
+          value: 5,
+          label: 'created'
+        },
+        {
+          value: 6,
+          label: 'create failed'
         }
       ],
       value: '',
       interval: '',
       dialogTitle: '',
-      // step: 1,
       telnetid: '',
       dataLoading: true,
       currentData: [],
@@ -266,11 +275,7 @@ export default {
       }
     },
     getTaskList () {
-      // if (this.form.createTime == null || this.form.endTime == null) {
-      //   this.form.createTime = ''
-      //   this.form.endTime = ''
-      // }
-      Atp.taskListApp(this.form).then(
+      Atp.taskListApi(this.form).then(
         res => {
           let data = res.data
           data.forEach((item, index) => {
@@ -278,18 +283,6 @@ export default {
             item.createTime = newDateBegin
             let newDateEnd = this.dateChange(item.endTime)
             item.endTime = newDateEnd
-            // if (item.status === 'success' || item.status === 'failed') {
-            //   item.step = 4
-            // } else if (item.status === 'Virus Scan') {
-            //   item.endTime = ''
-            //   item.step = 1
-            // } else if (item.status === 'Compliance Test') {
-            //   item.endTime = ''
-            //   item.step = 2
-            // } else {
-            //   item.endTime = ''
-            //   item.step = 3
-            // }
           })
           this.pageData = data
           this.totalNum = this.pageData.length
@@ -383,6 +376,15 @@ export default {
   }
   .task-content {
     margin-top: 25px;
+    .success{
+      color: #67c23a;
+    }
+    .error{
+      color: #f56c6c;
+    }
+    .primary{
+      color: #2c3fe9 ;
+    }
   }
   .task-content:after {
     content: "";

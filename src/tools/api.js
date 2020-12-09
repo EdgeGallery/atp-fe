@@ -124,7 +124,7 @@ let Atp = {
     })
   },
   // 获取任务列表
-  taskListApp: function (params) {
+  taskListApi: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
     return axios.get(url, {
       params: params,
