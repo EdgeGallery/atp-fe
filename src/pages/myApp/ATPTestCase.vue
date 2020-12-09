@@ -123,6 +123,7 @@ export default {
   name: 'TestCase',
   data () {
     return {
+      currUrl: window.location.href,
       taskId: '',
       // 删除
       packageForm: {
@@ -185,8 +186,12 @@ export default {
   methods: {
     // 获取iframe的taskid
     getTaskId () {
-      let currUrl = window.location.href
-      this.taskId = currUrl.split('?')[1].split('=')[1]
+      if (this.currUrl.indexOf('?') !== -1) {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1]
+      } else {
+        let params = sessionStorage.getItem('taskId')
+        this.taskId = params
+      }
     },
     // 获取测试用例
     getTestCase () {
