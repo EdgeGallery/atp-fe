@@ -91,14 +91,8 @@ export default {
     }
   },
   mounted () {
-    this.getTaskId()
     // 传taskid
-    // if (this.atptaskId) {
-    //   this.taskId = this.atptaskId
-    // } else {
-    //   let params = sessionStorage.getItem('taskId')
-    //   this.taskId = params
-    // }
+    this.getTaskId()
     this.getCaseData()
     this.interval = setInterval(() => {
       this.getCaseData()
