@@ -202,6 +202,7 @@ export default {
   name: 'Report',
   data () {
     return {
+      currUrl: window.location.href,
       taskId: '',
       tableData: [],
       TestDataSum: [
