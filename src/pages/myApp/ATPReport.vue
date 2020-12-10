@@ -246,8 +246,7 @@ export default {
       } else {
         // this.tableData.push(JSON.parse(sessionStorage.getItem('taskData')))
         // this.taskId = this.tableData[0].id
-        // let params = JSON.parse(sessionStorage.getItem('taskData'))
-        let params = sessionStorage.getItem('taskData')
+        let params = JSON.parse(sessionStorage.getItem('taskData'))
         this.taskId = params.id
       }
     },
