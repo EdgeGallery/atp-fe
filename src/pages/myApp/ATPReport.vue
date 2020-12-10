@@ -231,57 +231,67 @@ export default {
     }
   },
   mounted () {
-    this.tableData.push(JSON.parse(sessionStorage.getItem('taskData')))
-    this.taskId = this.tableData[0].id
+    this.getTaskId()
     this.getReport()
   },
   methods: {
     jumpTo () {
       this.$router.push('/app/test/task')
     },
+    getTaskId () {
+      if (this.currUrl.indexOf('?') !== -1) {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1]
+      } else {
+        // this.tableData.push(JSON.parse(sessionStorage.getItem('taskData')))
+        // this.taskId = this.tableData[0].id
+        let params = JSON.parse(sessionStorage.getItem('taskData'))
+        this.taskId = params.id
+      }
+    },
     getReport () {
-      // Atp.processApi(this.taskId).then(res => {
-      // let testCaseDetail = res.data.testCaseDetail
-      let testCaseDetail = this.tableData[0].testCaseDetail
-      for (const key in testCaseDetail) {
-        let casedata = testCaseDetail[key][0]
-        for (const keyin in casedata) {
-          let obj = {
-            name: '',
-            result: '',
-            reason: ''
-          }
-          obj.name = keyin
-          obj.result = casedata[keyin].result
-          obj.reason = casedata[keyin].reason
-          if (key === 'virusScanningTest') {
-            this.virusScanningTest.push(obj)
-            if (casedata[keyin].result === 'success') {
-              this.TestDataSum[0].success++
-            } else if (casedata[keyin].result === 'failed') {
-              this.TestDataSum[0].failed++
+      Atp.processApi(this.taskId).then(res => {
+        this.tableData.push(res.data)
+        let testCaseDetail = res.data.testCaseDetail
+        // let testCaseDetail = this.tableData[0].testCaseDetail
+        for (const key in testCaseDetail) {
+          let casedata = testCaseDetail[key][0]
+          for (const keyin in casedata) {
+            let obj = {
+              name: '',
+              result: '',
+              reason: ''
             }
-          } else if (key === 'complianceTest') {
-            this.complianceTest.push(obj)
-            if (casedata[keyin].result === 'success') {
-              this.TestDataSum[1].success++
-            } else if (casedata[keyin].result === 'failed') {
-              this.TestDataSum[1].failed++
-            }
-          } else {
-            this.sandboxTest.push(obj)
-            if (casedata[keyin].result === 'success') {
-              this.TestDataSum[2].success++
-            } else if (casedata[keyin].result === 'failed') {
-              this.TestDataSum[2].failed++
+            obj.name = keyin
+            obj.result = casedata[keyin].result
+            obj.reason = casedata[keyin].reason
+            if (key === 'virusScanningTest') {
+              this.virusScanningTest.push(obj)
+              if (casedata[keyin].result === 'success') {
+                this.TestDataSum[0].success++
+              } else if (casedata[keyin].result === 'failed') {
+                this.TestDataSum[0].failed++
+              }
+            } else if (key === 'complianceTest') {
+              this.complianceTest.push(obj)
+              if (casedata[keyin].result === 'success') {
+                this.TestDataSum[1].success++
+              } else if (casedata[keyin].result === 'failed') {
+                this.TestDataSum[1].failed++
+              }
+            } else {
+              this.sandboxTest.push(obj)
+              if (casedata[keyin].result === 'success') {
+                this.TestDataSum[2].success++
+              } else if (casedata[keyin].result === 'failed') {
+                this.TestDataSum[2].failed++
+              }
             }
           }
         }
-      }
-      this.chartData.rows[0].case = this.virusScanningTest.length
-      this.chartData.rows[1].case = this.complianceTest.length
-      this.chartData.rows[2].case = this.sandboxTest.length
-      // })
+        this.chartData.rows[0].case = this.virusScanningTest.length
+        this.chartData.rows[1].case = this.complianceTest.length
+        this.chartData.rows[2].case = this.sandboxTest.length
+      })
     },
     changeName () {
       if (this.language === 'en') {

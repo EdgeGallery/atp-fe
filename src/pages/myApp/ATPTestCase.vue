@@ -238,8 +238,8 @@ export default {
       })
     },
     getDependency () {
-      this.dialogVisible = true
       Atp.getDependencyApi(this.taskId).then(res => {
+        this.dialogVisible = true
         let data = res.data.dependency
         this.dependencyData = []
         for (const key in data) {
@@ -257,7 +257,7 @@ export default {
           message: this.$t('promptMessage.resolveFail'),
           type: 'warning'
         })
-        // this.dialogVisible = false
+        this.dialogVisible = false
       })
     },
     // 创建测试任务，后续删除;
