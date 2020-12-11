@@ -234,7 +234,6 @@ export default {
   mounted () {
     this.getTaskId()
     this.getReport()
-    console.log(this.taskId)
   },
   methods: {
     jumpTo () {
