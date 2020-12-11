@@ -287,6 +287,9 @@ export default {
           this.pageData = data
           this.totalNum = this.pageData.length
           this.dataLoading = false
+          if (this.pageData.length === 0) {
+            this.clearInterval()
+          }
         },
         () => {
           this.dataLoading = false
