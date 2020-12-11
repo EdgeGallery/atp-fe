@@ -64,6 +64,7 @@
     <el-dialog
       :visible.sync="dialogVisible"
       :title="$t('atp.dependencyDetail')"
+      :close-on-click-modal="false"
       class="dependency-detail"
     >
       <div>
