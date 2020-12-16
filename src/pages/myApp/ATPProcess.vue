@@ -23,6 +23,7 @@
         id="back_button"
         type="primary"
         icon="el-icon-arrow-left"
+        plain
         @click="jumpTo()"
       >
         {{ $t('atp.returnList') }}
@@ -35,13 +36,14 @@
         finish-status="success"
       >
         <el-step
-          :title="$t('atp.virusScan')"
+          :title="$t('atp.security')"
         />
         <el-step
           :title="$t('atp.complianceTest')"
         />
         <el-step
           :title="$t('atp.sandboxTest')"
+          icon="el-icon-upload"
         />
       </el-steps>
     </div>
@@ -79,11 +81,11 @@ export default {
   data () {
     return {
       currUrl: window.location.href,
-      active: 0,
+      active: 3,
       atptaskId: '',
       taskId: '',
       allcase: {
-        virusScanningTest: [],
+        securityTest: [],
         complianceTest: [],
         sandboxTest: []
       },
@@ -96,7 +98,7 @@ export default {
     this.getCaseData()
     this.interval = setInterval(() => {
       this.getCaseData()
-    }, 5000)
+    }, 500)
   },
   beforeDestroy () {
     this.clearInterval()
@@ -121,7 +123,7 @@ export default {
       Atp.processApi(this.taskId).then(res => {
         let testCaseDetail = res.data.testCaseDetail
         this.allcase = {
-          virusScanningTest: [],
+          securityTest: [],
           complianceTest: [],
           sandboxTest: []
         }
@@ -148,8 +150,8 @@ export default {
               obj.icon = ''
               obj.type = ''
             }
-            if (key === 'virusScanningTest') {
-              this.allcase.virusScanningTest.push(obj)
+            if (key === 'securityTest') {
+              this.allcase.securityTest.push(obj)
             } else if (key === 'complianceTest') {
               this.allcase.complianceTest.push(obj)
             } else {
@@ -163,8 +165,9 @@ export default {
           message: this.$t('promptMessage.getprocessFail'),
           type: 'warning'
         })
+        this.clearInterval()
       })
-      this.allcase.virusScanningTest.forEach((item) => {
+      this.allcase.securityTest.forEach((item) => {
         if (item.type === 'success' || item.type === 'danger') {
           this.active = 1
         }

@@ -22,6 +22,7 @@
           id="back_button"
           type="primary"
           icon="el-icon-arrow-left"
+          plain
           @click="jumpTo()"
         >
           {{ $t('atp.returnList') }}
@@ -30,6 +31,7 @@
           size="large"
           type="primary"
           icon="el-icon-download"
+          plain
           @click="downLoadReport()"
         >
           {{ $t('report.downloadReport') }}
@@ -109,86 +111,109 @@
               style="margin-top:40px;"
             >
               <el-table
-                :data="TestDataSum"
+                :data="modelData"
+                border
+                stripe
               >
                 <el-table-column
-                  prop="name"
-                  :label="$t('atp.testItems')"
+                  prop="model"
+                  :label="$t('report.model')"
                 />
                 <el-table-column
                   prop="success"
                   :label="$t('atp.success')"
                 />
                 <el-table-column
-                  prop="failed"
+                  prop="fail"
                   :label="$t('atp.failed')"
+                />
+                <el-table-column
+                  prop="passRate"
+                  :label="$t('report.rate')"
                 />
               </el-table>
             </el-col>
           </el-row>
         </div>
-        <div class="title">
-          {{ $t('atp.virusScan') }}
-        </div>
-        <div class="casereport">
-          <el-table
-            :data="virusScanningTest"
-          >
-            <el-table-column
-              prop="name"
-              :label="$t('atp.caseName')"
-            />
-            <el-table-column
-              prop="result"
-              :label="$t('atp.result')"
-            />
-            <el-table-column
-              prop="reason"
-              :label="$t('report.failReason')"
-            />
-          </el-table>
-        </div>
-        <div class="title">
-          {{ $t('atp.complianceTest') }}
-        </div>
-        <div class="casereport">
-          <el-table
-            :data="complianceTest"
-          >
-            <el-table-column
-              prop="name"
-              :label="$t('atp.caseName')"
-            />
-            <el-table-column
-              prop="result"
-              :label="$t('atp.result')"
-            />
-            <el-table-column
-              prop="reason"
-              :label="$t('report.failReason')"
-            />
-          </el-table>
-        </div>
-        <div class="title">
-          {{ $t('atp.sandboxTest') }}
-        </div>
-        <div class="casereport">
-          <el-table
-            :data="sandboxTest"
-          >
-            <el-table-column
-              prop="name"
-              :label="$t('atp.caseName')"
-            />
-            <el-table-column
-              prop="result"
-              :label="$t('atp.result')"
-            />
-            <el-table-column
-              prop="reason"
-              :label="$t('report.failReason')"
-            />
-          </el-table>
+        <div>
+          <div class="title">
+            {{ $t('report.reportDetail') }}
+          </div>
+          <div class="casereport">
+            <div class="title">
+              {{ $t('atp.security') }}
+            </div>
+            <el-table
+              :data="securityTest"
+            >
+              <el-table-column
+                prop="name"
+                :label="$t('atp.caseName')"
+              />
+              <el-table-column
+                prop="result"
+                :label="$t('atp.result')"
+              />
+              <el-table-column
+                prop="reason"
+                :label="$t('report.failReason')"
+              />
+              <el-table-column
+                prop="verificationModel"
+                :label="$t('report.model')"
+              />
+            </el-table>
+          </div>
+          <div class="casereport">
+            <div class="title">
+              {{ $t('atp.complianceTest') }}
+            </div>
+            <el-table
+              :data="complianceTest"
+            >
+              <el-table-column
+                prop="name"
+                :label="$t('atp.caseName')"
+              />
+              <el-table-column
+                prop="result"
+                :label="$t('atp.result')"
+              />
+              <el-table-column
+                prop="reason"
+                :label="$t('report.failReason')"
+              />
+              <el-table-column
+                prop="verificationModel"
+                :label="$t('report.model')"
+              />
+            </el-table>
+          </div>
+          <div class="casereport">
+            <div class="title">
+              {{ $t('atp.sandboxTest') }}
+            </div>
+            <el-table
+              :data="sandboxTest"
+            >
+              <el-table-column
+                prop="name"
+                :label="$t('atp.caseName')"
+              />
+              <el-table-column
+                prop="result"
+                :label="$t('atp.result')"
+              />
+              <el-table-column
+                prop="reason"
+                :label="$t('report.failReason')"
+              />
+              <el-table-column
+                prop="verificationModel"
+                :label="$t('report.model')"
+              />
+            </el-table>
+          </div>
         </div>
       </div>
     </div>
@@ -205,35 +230,118 @@ export default {
       currUrl: window.location.href,
       taskId: '',
       tableData: [],
-      TestDataSum: [
+      // TestDataSum: [
+      //   {
+      //     name: '安全测试',
+      //     success: 0,
+      //     failed: 0
+      //   },
+      //   {
+      //     name: '遵从性测试',
+      //     success: 0,
+      //     failed: 0
+      //   },
+      //   {
+      //     name: '沙箱测试',
+      //     success: 0,
+      //     failed: 0
+      //   }
+      // ],
+      modelData: [
         {
-          name: '病毒扫描',
+          model: '社区标准',
           success: 0,
-          failed: 0
-        },
-        {
-          name: '遵从性测试',
+          fail: 0,
+          passRate: 0
+        }, {
+          model: '移动企标',
           success: 0,
-          failed: 0
-        },
-        {
-          name: '沙箱测试',
+          fail: 0,
+          passRate: 0
+        }, {
+          model: '联通企标',
           success: 0,
-          failed: 0
+          fail: 0,
+          passRate: 0
+        }, {
+          model: '电信企标',
+          success: 0,
+          fail: 0,
+          passRate: 0
+        }, {
+          model: '自定义标准',
+          success: 0,
+          fail: 0,
+          passRate: 0
         }
       ],
-      virusScanningTest: [],
+      securityTest: [],
       complianceTest: [],
       sandboxTest: [],
       chartData: {
         columns: ['status', 'case'],
-        rows: [{ status: 'Virus Scan', case: 0 }, { status: 'Compliance Test', case: 0 }, { status: 'Sandbox Test', case: 0 }]
+        rows: [
+          { status: '社区标准用例数', case: 0 },
+          { status: '移动企标用例数', case: 0 },
+          { status: '联通企标用例数', case: 0 },
+          { status: '电信企标用例数', case: 0 },
+          { status: '自定义标准用例数', case: 0 }
+        ]
       }
+      // testCaseDetail: {
+      //   'securityTest': [{
+      //     'securityTest': {
+      //       'result': 'success',
+      //       'reason': '',
+      //       'verificationModel': 'Edgegallery,Mobile'
+      //     }
+      //   }],
+      //   'complianceTest': [{
+      //     'fgf': {
+      //       'result': 'failed',
+      //       'reason': 'ggfggdggdg',
+      //       'verificationModel': 'Mobile,Telecom'
+      //     },
+      //     'df': {
+      //       'result': 'failed',
+      //       'reason': 'sddf',
+      //       'verificationModel': 'Telecom'
+      //     },
+      //     'dfs': {
+      //       'result': 'success',
+      //       'reason': 'dfddg',
+      //       'verificationModel': 'Edgegallery,Definition'
+      //     },
+      //     'g': {
+      //       'result': 'success',
+      //       'reason': '',
+      //       'verificationModel': 'Unicom,Definition'
+      //     }
+      //   }],
+      //   'sandboxTest': [{
+      //     'fgf': {
+      //       'result': 'success',
+      //       'reason': '',
+      //       'verificationModel': 'Definition'
+      //     },
+      //     'df': {
+      //       'result': 'failed',
+      //       'reason': 'dee',
+      //       'verificationModel': 'Definition'
+      //     },
+      //     'g': {
+      //       'result': 'failed',
+      //       'reason': '',
+      //       'verificationModel': 'Edgegallery'
+      //     }
+      //   }]
+      // }
     }
   },
   mounted () {
-    this.getTaskId()
+    // this.getTaskId()
     this.getReport()
+    this.getModelData()
   },
   methods: {
     jumpTo () {
@@ -243,8 +351,6 @@ export default {
       if (this.currUrl.indexOf('?') !== -1) {
         this.taskId = this.currUrl.split('?')[1].split('=')[1]
       } else {
-        // this.tableData.push(JSON.parse(sessionStorage.getItem('taskData')))
-        // this.taskId = this.tableData[0].id
         let params = JSON.parse(sessionStorage.getItem('taskData'))
         this.taskId = params.id
       }
@@ -253,46 +359,151 @@ export default {
       Atp.processApi(this.taskId).then(res => {
         this.tableData.push(res.data)
         let testCaseDetail = res.data.testCaseDetail
-        // let testCaseDetail = this.tableData[0].testCaseDetail
+        // let testCaseDetail = this.testCaseDetail
         for (const key in testCaseDetail) {
           let casedata = testCaseDetail[key][0]
           for (const keyin in casedata) {
             let obj = {
               name: '',
               result: '',
-              reason: ''
+              reason: '',
+              verificationModel: ''
             }
             obj.name = keyin
             obj.result = casedata[keyin].result
             obj.reason = casedata[keyin].reason
-            if (key === 'virusScanningTest') {
-              this.virusScanningTest.push(obj)
-              if (casedata[keyin].result === 'success') {
-                this.TestDataSum[0].success++
-              } else if (casedata[keyin].result === 'failed') {
-                this.TestDataSum[0].failed++
-              }
+            obj.verificationModel = casedata[keyin].verificationModel
+            if (key === 'securityTest') {
+              this.securityTest.push(obj)
             } else if (key === 'complianceTest') {
               this.complianceTest.push(obj)
-              if (casedata[keyin].result === 'success') {
-                this.TestDataSum[1].success++
-              } else if (casedata[keyin].result === 'failed') {
-                this.TestDataSum[1].failed++
-              }
             } else {
               this.sandboxTest.push(obj)
-              if (casedata[keyin].result === 'success') {
-                this.TestDataSum[2].success++
-              } else if (casedata[keyin].result === 'failed') {
-                this.TestDataSum[2].failed++
-              }
             }
           }
         }
-        this.chartData.rows[0].case = this.virusScanningTest.length
-        this.chartData.rows[1].case = this.complianceTest.length
-        this.chartData.rows[2].case = this.sandboxTest.length
       })
+    },
+    getModelData () {
+      // 模板data
+      this.securityTest.forEach(item => {
+        if (item.verificationModel.indexOf('Edgegallery') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[0].success++
+          } else {
+            this.modelData[0].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Mobile') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[1].success++
+          } else {
+            this.modelData[1].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Unicom') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[2].success++
+          } else {
+            this.modelData[2].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Telecom') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[3].success++
+          } else {
+            this.modelData[3].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Definition') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[4].success++
+          } else {
+            this.modelData[4].fail++
+          }
+        }
+      })
+      this.complianceTest.forEach(item => {
+        if (item.verificationModel.indexOf('Edgegallery') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[0].success++
+          } else {
+            this.modelData[0].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Mobile') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[1].success++
+          } else {
+            this.modelData[1].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Unicom') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[2].success++
+          } else {
+            this.modelData[2].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Telecom') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[3].success++
+          } else {
+            this.modelData[3].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Definition') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[4].success++
+          } else {
+            this.modelData[4].fail++
+          }
+        }
+      })
+      this.sandboxTest.forEach(item => {
+        if (item.verificationModel.indexOf('Edgegallery') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[0].success++
+          } else {
+            this.modelData[0].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Mobile') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[1].success++
+          } else {
+            this.modelData[1].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Unicom') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[2].success++
+          } else {
+            this.modelData[2].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Telecom') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[3].success++
+          } else {
+            this.modelData[3].fail++
+          }
+        }
+        if (item.verificationModel.indexOf('Definition') !== -1) {
+          if (item.result === 'success') {
+            this.modelData[4].success++
+          } else {
+            this.modelData[4].fail++
+          }
+        }
+      })
+      // 通过率
+      for (let index = 0; index < this.modelData.length; index++) {
+        let chartitem = this.chartData.rows[index]
+        const item = this.modelData[index]
+        chartitem.case = item.success + item.fail
+        item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2) + '%'
+      }
     },
     changeName () {
       if (this.language === 'en') {
@@ -378,6 +589,13 @@ export default {
     }
     .report-chart {
       margin: 25px 0;
+      .el-table thead {
+          color: #909399;
+          font-weight: 800;
+          th{
+            background: #f5f5f6;
+          }
+        }
       .casereport{
         margin-left: 40px;
       }
