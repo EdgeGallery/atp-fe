@@ -43,7 +43,6 @@
         />
         <el-step
           :title="$t('atp.sandboxTest')"
-          icon="el-icon-upload"
         />
       </el-steps>
     </div>
@@ -81,7 +80,7 @@ export default {
   data () {
     return {
       currUrl: window.location.href,
-      active: 3,
+      active: 0,
       atptaskId: '',
       taskId: '',
       allcase: {
