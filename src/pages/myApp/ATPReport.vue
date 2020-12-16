@@ -341,7 +341,7 @@ export default {
   mounted () {
     this.getTaskId()
     this.getReport()
-    this.getModelData()
+    // this.getModelData()
   },
   methods: {
     jumpTo () {
@@ -383,6 +383,7 @@ export default {
           }
         }
       })
+      this.getModelData()
     },
     getModelData () {
       // 模板data
@@ -536,7 +537,7 @@ export default {
     '$i18n.locale': function () {
       let language = localStorage.getItem('language')
       this.language = language
-      this.changeName()
+      // this.changeName()
     }
   }
 }
