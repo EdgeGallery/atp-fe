@@ -50,7 +50,10 @@ const en = {
     ticketNumber: 'Mission ticket number',
     baseInfo: 'Basic Information',
     uploadUser: 'Upload User',
-    failReason: 'Fail Reason'
+    failReason: 'Fail Reason',
+    rate: 'Pass rate',
+    model: 'Certification template',
+    reportDetail: 'Test case details'
   },
   promptMessage: {
     guestUser: 'The guest user has no right to operate. please log in first!',
@@ -66,7 +69,9 @@ const en = {
     prompt: 'Prompt',
     browserAdvise: 'For sure some functions work well, please use Chrome',
     downloadSuccess: 'Download Success',
-    downloadFail: 'Download Fail'
+    downloadFail: 'Download Fail',
+    deletePrompt: 'Do you want to continue deleting this use case?',
+    onlyOneFile: 'Only one file is allowed, please remove the file first!'
   },
   common: {
     cancel: 'Cancel',
@@ -83,7 +88,7 @@ const en = {
     cancel: 'Cancel',
     confirm: 'Confirm',
     returnList: 'Return to task list',
-    virusScan: 'Virus Scan',
+    security: 'security',
     complianceTest: 'Compliance Test',
     sandboxTest: 'Sandbox Test',
     review: 'Review',
@@ -109,6 +114,25 @@ const en = {
     uploadApp: 'uploadApp',
     onlyCsar: 'Can only upload .csar files.',
     packageSizeLimit: 'no more than 10M'
+  },
+  testCase: {
+    management: '测试用例管理',
+    caseName: '测试用例名称',
+    caseType: '测试用例类型',
+    casePurpose: '测试用例目的',
+    expectedResult: '测试预期结果',
+    language: '测试用例语言',
+    verificationModel: '所属认证模板',
+    operation: '操作',
+    delete: '删除',
+    edit: '编辑',
+    add: '新增',
+    model: '认证模板',
+    standard: '社区标准',
+    addCase: '新增测试用例',
+    editCase: '新增测试用例',
+    import: '测试用例导入',
+    sample: '样例下载'
   },
   about: {
   },

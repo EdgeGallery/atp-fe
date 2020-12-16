@@ -17,49 +17,349 @@
 <template>
   <div class="testcase padding56">
     <div class="testcase-content padding20">
-      <div class="testCasetitle">
-        <div class="title">
-          {{ $t('atp.testCase') }}
-        </div>
-        <div class="case-main">
-          <div class="test-tree">
-            <el-tree
-              :data="testCaseList"
-              :props="defaultProps"
-              node-key="id"
-              ref="treeList"
-              @node-click="handleNodeClick"
-              default-expand-all
-              highlight-current
-            />
-          </div>
-          <div
-            class="case-detail"
-            v-for="(item, index) in caseDataTable"
-            :key="index"
-          >
-            <el-row :gutter="20">
-              <el-col :span="22">
-                <h3>{{ $t('atp.caseName') }}</h3>
-                <p>{{ item.name }}</p>
-                <h3>{{ $t('atp.caseDetail') }}</h3>
-                <p>{{ item.description }}</p>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
+      <div class="title">
+        {{ $t('testCase.management') }}
       </div>
-      <div class="test-image">
-        <el-row>
-          <el-col :span="24">
-            <img
-              src="../../assets/images/test.png"
-              alt
+      <div style="text-align:center">
+        <el-form
+          ref="form"
+          :model="form"
+          label-width="150px"
+        >
+          <el-row>
+            <el-col
+              :span="6"
             >
-          </el-col>
-        </el-row>
+              <el-form-item :label="$t('testCase.caseName')">
+                <el-input
+                  size="small"
+                  id="name"
+                  v-model="form.name"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col
+              :span="6"
+              :offset="2"
+            >
+              <el-form-item
+                :label="$t('testCase.caseType')"
+              >
+                <el-input
+                  size="small"
+                  id="type"
+                  v-model="form.type"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col
+              :span="6"
+              :offset="2"
+            >
+              <el-form-item
+                id="verificationModel"
+                :label="$t('testCase.model')"
+              >
+                <el-select
+                  size="small"
+                  v-model="form.verificationModel"
+                  class="statusSelect"
+                >
+                  <el-option
+                    v-for="item in models"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div class="search-btn">
+            <el-button
+              id="resetBtn"
+              size="small"
+              @click="resetForm"
+            >
+              {{ $t('myApp.reset') }}
+            </el-button>
+            <el-button
+              id="inquireBtn"
+              type="primary"
+              size="small"
+              @click="getAllcase"
+            >
+              {{ $t('myApp.inquire') }}
+            </el-button>
+          </div>
+        </el-form>
+      </div>
+      <div
+        class="addbtn"
+        style="text-align:right;margin-right:20px,margin-bottom:5px"
+      >
+        <el-button
+          type="primary"
+          size="small"
+          @click="addTestBtn"
+        >
+          {{ $t('testCase.add') }}
+        </el-button>
+      </div>
+      <div>
+        <el-table
+          :data="allcaseData"
+          style="width: 100%"
+        >
+          <el-table-column
+            prop="name"
+            :label="$t('testCase.caseName')"
+          />
+          <el-table-column
+            prop="type"
+            :label="$t('testCase.caseType')"
+          />
+          <el-table-column
+            prop="description"
+            :label="$t('testCase.casePurpose')"
+          />
+          <el-table-column
+            prop="expectResult"
+            :label="$t('testCase.expectedResult')"
+          />
+          <el-table-column
+            prop="codeLanguage"
+            :label="$t('testCase.language')"
+          />
+          <el-table-column
+            prop="verificationModel"
+            :label="$t('testCase.verificationModel')"
+          />
+          <el-table-column
+            :label="$t('testCase.operation')"
+          >
+            <template slot-scope="scope">
+              <el-button
+                size="medium"
+                type="text"
+                class="deleteBtn"
+                @click="deleteCase(scope.row)"
+              >
+                {{ $t('testCase.delete') }}
+              </el-button>
+              <el-button
+                size="medium"
+                type="text"
+                class="editBtn"
+                @click="editCase(scope.row)"
+              >
+                {{ $t('testCase.edit') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="start-button">
+        <el-button
+          id="start_test_button"
+          type="primary"
+          size="large"
+          @click="startTest"
+        >
+          {{ $t('atp.startTest') }}
+        </el-button>
+      </div>
+      <div>
+        <div class="title">
+          上传应用
+        </div>
+        <div style="width:500px,margin-left:30px">
+          <el-form
+            :model="packageForm"
+            label-width="150px"
+            :rules="rules"
+          >
+            <el-form-item
+              :label="$t('atp.appPackage')"
+              prop="fileList"
+            >
+              <el-upload
+                ref="upload"
+                action=""
+                :limit="1"
+                :on-remove="handleDelte"
+                :file-list="packageForm.fileList"
+                :auto-upload="false"
+                accept=".csar"
+              >
+                <el-button
+                  slot="trigger"
+                  size="small"
+                  type="primary"
+                  plain
+                >
+                  {{ $t('atp.uploadApp') }}
+                </el-button>
+                <em
+                  class="el-icon-warning"
+                  style="margin-left:20px"
+                />
+                {{ $t('atp.onlyCsar') }}
+                {{ $t('atp.packageSizeLimit') }}
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
     </div>
+    <!-- 新增用例弹框 -->
+    <el-dialog
+      :visible.sync="addCaseVisible"
+      :title="$t('testCase.addCase')"
+      :close-on-click-modal="false"
+      width="30%"
+      class="addtestdialog"
+    >
+      <el-form
+        :model="addcaseForm"
+        label-width="110px"
+      >
+        <el-form-item
+          :label="$t('testCase.caseName')"
+          prop="name"
+        >
+          <el-input
+            width="100px"
+            size="small"
+            v-model="addcaseForm.name"
+          />
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.caseType')"
+          prop="type"
+        >
+          <el-select
+            size="small"
+            v-model="addcaseForm.type"
+          >
+            <el-option
+              v-for="item in testType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.casePurpose')"
+          prop="description"
+        >
+          <el-input
+            v-model="addcaseForm.description"
+            type="textarea"
+            autosize
+          />
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.expectedResult')"
+          prop="expectResult"
+        >
+          <el-input
+            size="small"
+            v-model="addcaseForm.expectResult"
+          />
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.language')"
+          prop="codeLanguage"
+        >
+          <el-select
+            size="small"
+            v-model="addcaseForm.codeLanguage"
+          >
+            <el-option
+              v-for="item in codeLanguages"
+              :key="item.value"
+              :label="item.label"
+              :value="item.label"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.verificationModel')"
+          prop="verificationModel"
+        >
+          <el-select
+            size="small"
+            v-model="addcaseForm.verificationModel"
+            multiple
+          >
+            <el-option
+              v-for="item in models"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.import')"
+          prop="file"
+        >
+          <el-upload
+            action=""
+            accept=".java,.py"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :on-remove="handleDelte"
+            :file-list="addcaseForm.file"
+            :auto-upload="false"
+          >
+            <el-button
+              slot="trigger"
+              size="small"
+              plain
+            >
+              {{ $t('testCase.import') }}
+            </el-button>
+            <a
+              :href="addcaseForm.codeLanguage==='java' ? './javaExample.java' : './pythonExample.py'"
+              download
+              style="padding-left:50px;"
+            >
+              <el-button
+                slot="trigger"
+                size="small"
+                type="primary"
+                plain
+              >
+                {{ $t('testCase.sample') }}
+              </el-button>
+            </a>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          id="upload_package_close"
+          @click="handleClose"
+          size="small"
+        >
+          {{ $t('common.cancel') }}
+        </el-button>
+        <el-button
+          id="upload_package_ipload"
+          type="primary"
+          size="small"
+          @click="confirmAddCase"
+        >
+          {{ $t('common.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
     <!-- 依赖弹框 -->
     <el-dialog
       :visible.sync="dialogVisible"
@@ -103,6 +403,7 @@
         <el-button
           type="primary"
           @click="cancel()"
+          plain
         >
           {{ $t('atp.cancel') }}
         </el-button>
@@ -124,38 +425,44 @@ export default {
   name: 'TestCase',
   data () {
     return {
-      currUrl: window.location.href,
-      taskId: '',
-      // 删除
+      // del
       packageForm: {
         fileList: []
       },
-      dialogVisible: true,
-      testCaseList: [
-        {
-          label: '病毒扫描',
-          // label: '安全性测试',
-          children: []
-        },
-        {
-          label: '遵从性测试',
-          children: []
-        },
-        {
-          label: '沙箱测试',
-          children: []
-        }
-      ],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
+      rules: {
+        fileList: [
+          { required: true }
+        ]
       },
-      caseDataDetail: [],
+
+      currUrl: window.location.href,
+      taskId: '',
+      dialogVisible: false,
+      // testCaseList: [
+      //   {
+      //     label: '安全测试',
+      //     // label: '安全性测试',
+      //     children: []
+      //   },
+      //   {
+      //     label: '遵从性测试',
+      //     children: []
+      //   },
+      //   {
+      //     label: '沙箱测试',
+      //     children: []
+      //   }
+      // ],
+      // defaultProps: {
+      //   children: 'children',
+      //   label: 'label'
+      // },
+      // caseDataDetail: [],
       caseDataTable: [],
       dependencyData: [],
       TestNumber: [
         {
-          name: '病毒扫描',
+          name: '安全测试',
           // name: '安全性测试',
           number: ''
         },
@@ -171,20 +478,191 @@ export default {
       countvirus: 0,
       countcomp: 0,
       countsand: 0,
-      // del
-      rules: {
-        fileList: [
-          { required: true }
-        ]
+      form: {
+        name: '',
+        type: '',
+        verificationModel: ''
+      },
+      models: [
+        {
+          value: 'Edgegallery',
+          label: '社区标准'
+        },
+        {
+          value: 'Mobile',
+          label: '移动企标'
+        },
+        {
+          value: 'Unicom',
+          label: '联通企标'
+        },
+        {
+          value: 'Telecom',
+          label: '电信企标'
+        },
+        {
+          value: 'Definition',
+          label: '自定义标准'
+        }
+      ],
+      codeLanguages: [
+        {
+          value: 1,
+          label: 'java'
+        }, {
+          value: 2,
+          label: 'python'
+        }
+      ],
+      testType: [
+        {
+          value: 'securityTest',
+          label: '安全测试'
+        }, {
+          value: 'complianceTest',
+          label: '遵从性测试'
+        }, {
+          value: 'sandboxTest',
+          label: '沙箱测试'
+        }
+      ],
+      allcaseData: [],
+      addCaseVisible: false,
+      confirmBtnApi: '',
+      editid: '',
+      addcaseForm: {
+        name: '',
+        type: '',
+        description: '',
+        expectResult: '',
+        codeLanguage: '',
+        verificationModel: [],
+        file: []
       }
     }
   },
   mounted () {
-    this.getTaskId()
-    this.getTestCase()
-    this.getDependency()
+    // this.getTaskId()
+    // this.getTestCase()
+    this.getAllcase()
+    // this.getDependency()
+    // this.linshiceshi()
   },
   methods: {
+    resetForm () {
+      this.form = {
+        name: '',
+        type: '',
+        verificationModel: ''
+      }
+      this.getAllcase()
+    },
+    // 获取所有测试用例
+    // 临时测试
+    // linshiceshi () {
+    //   let data = this.allcaseData
+    //   data.forEach(item => {
+    //     console.log(item.type)
+    //   })
+    // },
+    getAllcase () {
+      this.allcaseData = []
+      Atp.getAllCaseApi().then(res => {
+        this.allcaseData = res.data
+        this.allcaseData.forEach(item => {
+          if (item.type === 'securityTest') {
+            this.TestNumber[0].number++
+          } else if (item.type === 'complianceTest') {
+            this.TestNumber[1].number++
+          } else {
+            this.TestNumber[2].number++
+          }
+        })
+      }).catch(() => {
+      })
+    },
+    // 新增用例弹框
+    handleClose () {
+      this.addCaseVisible = false
+    },
+    addTestBtn () {
+      this.confirmBtnApi = 'add'
+      this.addCaseVisible = true
+      this.addcaseForm = {
+        name: '',
+        type: '',
+        description: '',
+        expectResult: '',
+        codeLanguage: '',
+        verificationModel: [],
+        file: []
+      }
+    },
+    confirmAddCase () {
+      let fd = new FormData()
+      let addcaseForm = this.addcaseForm
+      fd.append('name', addcaseForm.name)
+      fd.append('type', addcaseForm.type)
+      fd.append('description', addcaseForm.description)
+      fd.append('codeLanguage', addcaseForm.codeLanguage)
+      fd.append('expectResult', addcaseForm.expectResult)
+      fd.append('verificationModel', addcaseForm.verificationModel)
+      fd.append('file', addcaseForm.file[0])
+      if (this.confirmBtnApi === 'add') {
+        Atp.createCaseApi(fd).then(res => {
+          this.addCaseVisible = false
+        }).catch(() => {
+          this.$message({
+            duration: 2000,
+            message: '创建失败',
+            type: 'warning'
+          })
+          this.addCaseVisible = false
+        })
+      } else if (this.confirmBtnApi === 'edit') {
+        fd.append('id', this.editid)
+        Atp.editCaseApi(fd).then(res => {
+          this.addCaseVisible = false
+        }).catch(() => {
+          this.$message({
+            duration: 2000,
+            message: '修改失败',
+            type: 'warning'
+          })
+          this.addCaseVisible = false
+        })
+      }
+    },
+    editCase (row) {
+      this.editid = row.id
+      this.confirmBtnApi = 'edit'
+      this.addCaseVisible = true
+      this.addcaseForm = JSON.parse(JSON.stringify(row))
+      this.addcaseForm.verificationModel = row.verificationModel.split(',')
+    },
+    deleteCase (row) {
+      this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning'
+      }).then(() => {
+        Atp.deleteCaseApi(row.id).then(res => {
+          this.$message({
+            duration: 2000,
+            message: '删除成功',
+            type: 'success'
+          })
+          this.getAllcase()
+        }).catch(() => {
+          this.$message({
+            duration: 2000,
+            message: '删除失败',
+            type: 'warning'
+          })
+        })
+      }).catch(() => {
+      })
+    },
     // 获取iframe的taskid
     getTaskId () {
       if (this.currUrl.indexOf('?') !== -1) {
@@ -194,42 +672,43 @@ export default {
         this.taskId = params
       }
     },
-    // 获取测试用例
-    getTestCase () {
-      Atp.getTestCaseApi().then(res => {
-        this.caseDataDetail = res.data
-        this.caseDataDetail.forEach(item => {
-          let obj = {
-            label: ''
-          }
-          obj.label = item.name
-          if (item.type === 'virusScanningTest') {
-            this.testCaseList[0].children.push(obj)
-            this.countvirus++
-          } else if (item.type === 'complianceTest') {
-            this.testCaseList[1].children.push(obj)
-            this.countcomp++
-          } else {
-            this.testCaseList[2].children.push(obj)
-            this.countsand++
-          }
-        })
-        this.$nextTick().then(() => {
-          let arr = document.getElementsByClassName('el-tree-node')
-          arr[1].click()
-        })
-        this.TestNumber[0].number = this.countvirus
-        this.TestNumber[1].number = this.countcomp
-        this.TestNumber[2].number = this.countsand
-        this.caseDataTable.push(this.caseDataDetail[0])
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: this.$t('promptMessage.gettestcaseFail'),
-          type: 'warning'
-        })
-      })
-    },
+    // old 获取测试用例
+    // getTestCase () {
+    //   Atp.getTestCaseApi().then(res => {
+    //     this.caseDataDetail = res.data
+    //     this.caseDataDetail.forEach(item => {
+    //       let obj = {
+    //         label: ''
+    //       }
+    //       obj.label = item.name
+    //       if (item.type === 'securityTest') {
+    //         this.testCaseList[0].children.push(obj)
+    //         this.countvirus++
+    //       } else if (item.type === 'complianceTest') {
+    //         this.testCaseList[1].children.push(obj)
+    //         this.countcomp++
+    //       } else {
+    //         this.testCaseList[2].children.push(obj)
+    //         this.countsand++
+    //       }
+    //     })
+    //     this.$nextTick().then(() => {
+    //       let arr = document.getElementsByClassName('el-tree-node')
+    //       arr[1].click()
+    //     })
+    //     this.TestNumber[0].number = this.countvirus
+    //     this.TestNumber[1].number = this.countcomp
+    //     this.TestNumber[2].number = this.countsand
+    //     this.caseDataTable.push(this.caseDataDetail[0])
+    //   }).catch(() => {
+    //     this.$message({
+    //       duration: 2000,
+    //       message: this.$t('promptMessage.gettestcaseFail'),
+    //       type: 'warning'
+    //     })
+    //   })
+    // },
+    // del tree
     handleNodeClick (val) {
       this.caseDataTable = []
       this.caseDataDetail.forEach(item => {
@@ -238,6 +717,10 @@ export default {
         }
       })
     },
+    // 联调暂时注释del
+    // startTest () {
+    //   this.getDependency()
+    // },
     getDependency () {
       Atp.getDependencyApi(this.taskId).then(res => {
         this.dialogVisible = true
@@ -261,7 +744,7 @@ export default {
         this.dialogVisible = false
       })
     },
-    // 创建测试任务，后续删除;
+    // 创建测试任务，联调使用，后续删除;
     startTest () {
       let fd = new FormData()
       let packageForm = this.packageForm
@@ -284,62 +767,8 @@ export default {
         //   this.dependencyData.push(obj)
         // }
       })
-      // .catch(error => {
-      //   if (error.response.data.code === 403) {
-      //     this.$message({
-      //       duration: 2000,
-      //       message: this.$t('promptMessage.guestUser'),
-      //       type: 'warning'
-      //     })
-      //     this.dialogVisible = false
-      //   } else {
-      //     this.$message({
-      //       duration: 2000,
-      //       message: this.$t('promptMessage.resolveFail'),
-      //       type: 'warning'
-      //     })
-      //     this.dialogVisible = false
-      //   }
-      // })
     },
-    // startTest () {
-    //   let fd = new FormData()
-    //   let packageForm = this.packageForm
-    //   fd.append('file', packageForm.fileList[0])
-    //   // this.dialogVisible = true
-    //   Atp.getDependencyApi(fd).then(res => {
-    //     this.dialogVisible = true
-    //     let data = res.data.dependency
-    //     this.dependencyData = []
-    //     for (const key in data) {
-    //       let obj = {
-    //         name: '',
-    //         version: ''
-    //       }
-    //       obj.name = key
-    //       obj.version = data[key]
-    //       this.dependencyData.push(obj)
-    //     }
-    //   }).catch(error => {
-    //     if (error.response.data.code === 403) {
-    //       this.$message({
-    //         duration: 2000,
-    //         message: this.$t('promptMessage.guestUser'),
-    //         type: 'warning'
-    //       })
-    //       this.dialogVisible = false
-    //     } else {
-    //       this.$message({
-    //         duration: 2000,
-    //         message: this.$t('promptMessage.resolveFail'),
-    //         type: 'warning'
-    //       })
-    //       this.dialogVisible = false
-    //     }confirm
-    //   })
-    // },
-
-    // 弹框页面
+    // 依赖弹框
     ConfirmTest () {
       Atp.runTaskApi(this.taskId).then(res => {
         let taskId = res.data.id
@@ -378,50 +807,50 @@ export default {
         this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[0]
       }
     },
-    // del
     handleExceed (file, fileList) {
       if (fileList.length === 1) {
         this.$message.warning(this.$t('promptMessage.onlyOneFile'))
       }
     },
     // del
-    handleChange (file, fileList) {
-      this.checkFileType(file, 'fileList', 'csar')
-    },
-    // del
+    // handleChange (file, fileList) {
+    //   this.checkFileType(file, 'fileList', 'csar')
+    // },
     handleDelte (file, fileList) {
-      this.packageForm.fileList = fileList
-    },
-    // del
-    checkFileType (file, packageFormKey, fileType) {
-      let type = file.raw.name.split('.')
-      let fileSize = file.size / 1024 / 1024
-      type = type[type.length - 1]
-      if (type === fileType) {
-        this.packageForm[packageFormKey].push(file.raw)
-      } else {
-        this.packageForm[packageFormKey] = []
-        this.$message({
-          duration: 2000,
-          type: 'warning',
-          message: this.$t('promptMessage.canOnlyUpload') + fileType + this.$t('promptMessage.files')
-        })
-      }
-      if (fileSize > 10) {
-        this.packageForm[packageFormKey] = []
-        this.$message({
-          duration: 2000,
-          type: 'warning',
-          message: this.$t('store.packageSizeLimit')
-        })
-      }
+      this.addcaseForm.file = fileList
+      // 联调后  del
+      this.packageForm.file = fileList
     }
+    // del
+    // checkFileType (file, packageFormKey, fileType) {
+    //   let type = file.raw.name.split('.')
+    //   let fileSize = file.size / 1024 / 1024
+    //   type = type[type.length - 1]
+    //   if (type === fileType) {
+    //     this.packageForm[packageFormKey].push(file.raw)
+    //   } else {
+    //     this.packageForm[packageFormKey] = []
+    //     this.$message({
+    //       duration: 2000,
+    //       type: 'warning',
+    //       message: this.$t('promptMessage.canOnlyUpload') + fileType + this.$t('promptMessage.files')
+    //     })
+    //   }
+    //   if (fileSize > 10) {
+    //     this.packageForm[packageFormKey] = []
+    //     this.$message({
+    //       duration: 2000,
+    //       type: 'warning',
+    //       message: this.$t('store.packageSizeLimit')
+    //     })
+    //   }
+    // }
   },
   watch: {
     '$i18n.locale': function () {
       let language = localStorage.getItem('language')
       this.language = language
-      this.changeName()
+      // this.changeName()
     }
   }
 }
@@ -431,50 +860,28 @@ export default {
 .testcase {
   .testcase-content {
     background: white;
-    .testCasetitle{
-      // padding-top: 20px;
-      .case-main{
-        display: flex;
-        .test-tree{
-          width: 300px;
-          padding-top: 16px;
-          margin-left: 30px;
-          background-color: #e4efef;
-          .el-tree{
-            background-color: #e4efef;
-            .el-tree-node__content{
-              height: 30px;
-              line-height: 30px;
-              padding-left: 10px !important;
-            }
-            .el-tree-node.is-current>.el-tree-node__content{
-              background-color: #a4c6ca;
-              border-left: 2px solid #4b8c8c;
-            }
-            .el-tree-node__children{
-              margin: 0 25px;
-            }
-          }
-        }
-        .case-detail{
-          margin-left: 50px;
-          width: 100%;
-          p{
-            font-size: 18px;
-            padding: 15px 0;
-            margin-bottom: 5px;
-            border-bottom: solid 1px #eaecef;
-          }
-        }
+    .el-table thead {
+      color: #909399;
+      font-weight: 800;
+      th{
+        background: #f5f5f6;
       }
     }
-    .test-image{
-      text-align: center;
-      margin-top: 10px;
-      overflow: auto;
-      // img{
-      //   width: 90%
-      // }
+    .addbtn{
+      text-align:right;
+      margin-right:20px;
+      margin-bottom:5px;
+    }
+    .deleteBtn{
+      color: #fff;
+      background-color: #e4905e;
+      padding: 5px 10px;
+    }
+    .editBtn{
+      background-color: #4d9aea;
+      padding: 5px 10px;
+      color: #fff;
+      // color: #7597f4;
     }
     .start-button{
         text-align: center;
@@ -485,7 +892,8 @@ export default {
       }
     .title {
       margin: 15px 0;
-      font-size: 18px;
+      font-size: 16px;
+      color: #616367e3;
     }
     .title::before {
       content: "";
@@ -497,6 +905,24 @@ export default {
       top: 5px;
     }
   }
+  .el-dialog__header{
+    background-color: #688ef3 ;
+    .el-dialog__title {
+      color: #fff;
+    }
+    .el-dialog__close {
+      color: #fff;
+    }
+  }
+  .addtestdialog{
+    .el-form{
+      width: 80%;
+    }
+  .dialog-footer{
+      text-align: center;
+    }
+  }
+
   .dependency-detail{
     .button-center{
       text-align:center;

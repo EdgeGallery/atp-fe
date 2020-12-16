@@ -15,14 +15,12 @@
  */
 
 import {
-  getCookie
+  getCookie, GET, POST, DELETE, PUT
 } from './request.js'
 
 import axios from 'axios'
 
-const URL_PREFIX = '/mec-appstore/mec/appstore/v1/'
-
-const TEST_URL_PREFIX = '/mec-developer/'
+const URL_PREFIX = '/mec-atp/edgegallery/atp/v1/'
 
 function getUserInfo () {
   let url = '/auth/login-info'
@@ -56,6 +54,24 @@ function logoutApi () {
 }
 
 let Atp = {
+  // new 获取所有用例
+  getAllCaseApi: function (params) {
+    let url = 'testcases'
+    return GET(url, params)
+  },
+  // 创建测试用例
+  createCaseApi: function (params) {
+    let url = 'testcases'
+    return POST(url, params)
+  },
+  editCaseApi: function (params) {
+    let url = 'testcases'
+    return PUT(url, params)
+  },
+  deleteCaseApi: function (Id) {
+    let url = 'testcases/' + Id
+    return DELETE(url)
+  },
   // 获取测试用例列表
   getTestCaseApi: function () {
     let url = 'mec-atp/edgegallery/atp/v1/testcases'
@@ -78,18 +94,6 @@ let Atp = {
       }
     })
   },
-  // 解析依赖信息
-  // getDependencyApi: function (params) {
-  //   let url = 'mec-atp/edgegallery/atp/v1/common-action/analysis-app'
-  //   // return axios.post(url, params)
-  //   return axios.post(url, params, {
-  //     withCredentials: true,
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-  //     }
-  //   })
-  // },
   // 创建测试任务
   creatTaskApi: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
@@ -112,7 +116,7 @@ let Atp = {
       }
     })
   },
-  // 获取任务，获取进展
+  // 获取进展
   processApi: function (taskId) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId
     return axios.get(url, {
@@ -159,7 +163,6 @@ let Atp = {
 
 export {
   URL_PREFIX,
-  TEST_URL_PREFIX,
   getUserInfo,
   logoutApi,
   Atp

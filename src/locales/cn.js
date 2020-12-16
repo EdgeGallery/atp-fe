@@ -48,7 +48,10 @@ const cn = {
     ticketNumber: '任务号',
     baseInfo: '基础信息',
     uploadUser: '上传人',
-    failReason: '失败原因'
+    failReason: '失败原因',
+    rate: '通过率',
+    model: '认证模板',
+    reportDetail: '测试用例详情'
   },
   promptMessage: {
     guestUser: 'guest用户无权操作! 请先登录',
@@ -64,15 +67,17 @@ const cn = {
     prompt: '提示',
     browserAdvise: '为了部分功能正常使用，我们建议使用Chrom浏览器！',
     downloadSuccess: '下载成功',
-    downloadFail: '下载失败'
+    downloadFail: '下载失败',
+    deletePrompt: '是否要继续删除此用例？',
+    onlyOneFile: '仅支持一个文件，请先移除已有文件！'
   },
   common: {
     cancel: '取消',
     confirm: '确定'
   },
   atp: {
-    success: '成功',
-    failed: '失败',
+    success: '成功数量',
+    failed: '失败数量',
     dependencyDetail: '依赖详情',
     versionDependency: '版本依赖',
     testTask: '测试任务描述',
@@ -81,7 +86,7 @@ const cn = {
     cancel: '取消',
     confirm: '确定',
     returnList: '返回任务列表',
-    virusScan: '病毒扫描',
+    security: '安全测试',
     complianceTest: '遵从性测试',
     sandboxTest: '沙箱测试',
     review: '审核',
@@ -107,6 +112,26 @@ const cn = {
     uploadApp: '上传应用',
     onlyCsar: '只能上传 .csar 文件.',
     packageSizeLimit: '文件大小不超过10M'
+  },
+
+  testCase: {
+    management: '测试用例管理',
+    caseName: '测试用例名称',
+    caseType: '测试用例类型',
+    casePurpose: '测试用例目的',
+    expectedResult: '测试预期结果',
+    language: '测试用例语言',
+    verificationModel: '所属认证模板',
+    operation: '操作',
+    delete: '删除',
+    edit: '编辑',
+    add: '新增',
+    model: '认证模板',
+    standard: '社区标准',
+    addCase: '新增测试用例',
+    editCase: '新增测试用例',
+    import: '测试用例导入',
+    sample: '样例下载'
   },
   about: {},
   ...zhLocale
