@@ -339,7 +339,7 @@ export default {
     }
   },
   mounted () {
-    // this.getTaskId()
+    this.getTaskId()
     this.getReport()
     this.getModelData()
   },

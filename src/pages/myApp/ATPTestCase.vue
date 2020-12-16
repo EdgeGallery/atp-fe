@@ -169,48 +169,6 @@
           {{ $t('atp.startTest') }}
         </el-button>
       </div>
-      <div>
-        <div class="title">
-          上传应用
-        </div>
-        <div style="width:500px,margin-left:30px">
-          <el-form
-            :model="packageForm"
-            label-width="150px"
-            :rules="rules"
-          >
-            <el-form-item
-              :label="$t('atp.appPackage')"
-              prop="fileList"
-            >
-              <el-upload
-                ref="upload"
-                action=""
-                :limit="1"
-                :on-remove="handleDelte"
-                :file-list="packageForm.fileList"
-                :auto-upload="false"
-                accept=".csar"
-              >
-                <el-button
-                  slot="trigger"
-                  size="small"
-                  type="primary"
-                  plain
-                >
-                  {{ $t('atp.uploadApp') }}
-                </el-button>
-                <em
-                  class="el-icon-warning"
-                  style="margin-left:20px"
-                />
-                {{ $t('atp.onlyCsar') }}
-                {{ $t('atp.packageSizeLimit') }}
-              </el-upload>
-            </el-form-item>
-          </el-form>
-        </div>
-      </div>
     </div>
     <!-- 新增用例弹框 -->
     <el-dialog
@@ -308,12 +266,13 @@
         >
           <el-upload
             action=""
-            accept=".java,.py"
             :limit="1"
             :on-exceed="handleExceed"
+            :on-change="handleChange"
             :on-remove="handleDelte"
             :file-list="addcaseForm.file"
             :auto-upload="false"
+            accept=".java,.py"
           >
             <el-button
               slot="trigger"
@@ -542,7 +501,7 @@ export default {
     }
   },
   mounted () {
-    // this.getTaskId()
+    this.getTaskId()
     // this.getTestCase()
     this.getAllcase()
     // this.getDependency()
@@ -567,7 +526,7 @@ export default {
     // },
     getAllcase () {
       this.allcaseData = []
-      Atp.getAllCaseApi().then(res => {
+      Atp.getAllCaseApi(this.form).then(res => {
         this.allcaseData = res.data
         this.allcaseData.forEach(item => {
           if (item.type === 'securityTest') {
@@ -620,6 +579,7 @@ export default {
           this.addCaseVisible = false
         })
       } else if (this.confirmBtnApi === 'edit') {
+        console.log('edit')
         fd.append('id', this.editid)
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
@@ -709,18 +669,18 @@ export default {
     //   })
     // },
     // del tree
-    handleNodeClick (val) {
-      this.caseDataTable = []
-      this.caseDataDetail.forEach(item => {
-        if (val.label === item.name) {
-          this.caseDataTable.push(item)
-        }
-      })
-    },
-    // 联调暂时注释del
-    // startTest () {
-    //   this.getDependency()
+    // handleNodeClick (val) {
+    //   this.caseDataTable = []
+    //   this.caseDataDetail.forEach(item => {
+    //     if (val.label === item.name) {
+    //       this.caseDataTable.push(item)
+    //     }
+    //   })
     // },
+    // 联调暂时注释del
+    startTest () {
+      this.getDependency()
+    },
     getDependency () {
       Atp.getDependencyApi(this.taskId).then(res => {
         this.dialogVisible = true
@@ -745,29 +705,29 @@ export default {
       })
     },
     // 创建测试任务，联调使用，后续删除;
-    startTest () {
-      let fd = new FormData()
-      let packageForm = this.packageForm
-      fd.append('file', packageForm.fileList[0])
-      fd.append('isRun', false)
-      this.dialogVisible = true
-      Atp.creatTaskApi(fd).then(res => {
-        this.dialogVisible = true
-        this.taskId = res.data.id
-        this.getDependency()
-        // let data = res.data.dependency
-        // this.dependencyData = []
-        // for (const key in data) {
-        //   let obj = {
-        //     name: '',
-        //     version: ''
-        //   }
-        //   obj.name = key
-        //   obj.version = data[key]
-        //   this.dependencyData.push(obj)
-        // }
-      })
-    },
+    // startTest () {
+    //   let fd = new FormData()
+    //   let packageForm = this.packageForm
+    //   fd.append('file', packageForm.fileList[0])
+    //   fd.append('isRun', false)
+    //   this.dialogVisible = true
+    //   Atp.creatTaskApi(fd).then(res => {
+    //     this.dialogVisible = true
+    //     this.taskId = res.data.id
+    //     this.getDependency()
+    //     // let data = res.data.dependency
+    //     // this.dependencyData = []
+    //     // for (const key in data) {
+    //     //   let obj = {
+    //     //     name: '',
+    //     //     version: ''
+    //     //   }
+    //     //   obj.name = key
+    //     //   obj.version = data[key]
+    //     //   this.dependencyData.push(obj)
+    //     // }
+    //   })
+    // },
     // 依赖弹框
     ConfirmTest () {
       Atp.runTaskApi(this.taskId).then(res => {
@@ -812,16 +772,20 @@ export default {
         this.$message.warning(this.$t('promptMessage.onlyOneFile'))
       }
     },
-    // del
-    // handleChange (file, fileList) {
-    //   this.checkFileType(file, 'fileList', 'csar')
-    // },
+    handleChange (file, fileList) {
+      this.addcaseForm.file.push(file.raw)
+    },
     handleDelte (file, fileList) {
       this.addcaseForm.file = fileList
-      // 联调后  del
-      this.packageForm.file = fileList
     }
-    // del
+    // 联调后 del
+    // handleDelteAPP (file, fileList) {
+    //   this.packageForm.file = fileList
+    // },
+    // handleChangeAPP (file, fileList) {
+    //   this.checkFileType(file, 'fileList', 'csar')
+    // },
+    // // del
     // checkFileType (file, packageFormKey, fileType) {
     //   let type = file.raw.name.split('.')
     //   let fileSize = file.size / 1024 / 1024
