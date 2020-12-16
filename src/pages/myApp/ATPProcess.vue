@@ -97,7 +97,7 @@ export default {
     this.getCaseData()
     this.interval = setInterval(() => {
       this.getCaseData()
-    }, 500)
+    }, 1000)
   },
   beforeDestroy () {
     this.clearInterval()

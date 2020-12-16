@@ -250,29 +250,29 @@ export default {
       modelData: [
         {
           model: '社区标准',
-          success: 0,
+          success: 7,
           fail: 0,
-          passRate: 0
+          passRate: '100%'
         }, {
           model: '移动企标',
-          success: 0,
+          success: 4,
           fail: 0,
-          passRate: 0
+          passRate: '100%'
         }, {
           model: '联通企标',
-          success: 0,
+          success: 1,
           fail: 0,
-          passRate: 0
+          passRate: '100%'
         }, {
           model: '电信企标',
-          success: 0,
+          success: 1,
           fail: 0,
-          passRate: 0
+          passRate: '100%'
         }, {
           model: '自定义标准',
-          success: 0,
+          success: 1,
           fail: 0,
-          passRate: 0
+          passRate: '100%'
         }
       ],
       securityTest: [],
@@ -281,11 +281,11 @@ export default {
       chartData: {
         columns: ['status', 'case'],
         rows: [
-          { status: '社区标准用例数', case: 0 },
-          { status: '移动企标用例数', case: 0 },
-          { status: '联通企标用例数', case: 0 },
-          { status: '电信企标用例数', case: 0 },
-          { status: '自定义标准用例数', case: 0 }
+          { status: '社区标准用例数', case: 7 },
+          { status: '移动企标用例数', case: 4 },
+          { status: '联通企标用例数', case: 1 },
+          { status: '电信企标用例数', case: 1 },
+          { status: '自定义标准用例数', case: 1 }
         ]
       }
       // testCaseDetail: {
@@ -341,7 +341,6 @@ export default {
   mounted () {
     this.getTaskId()
     this.getReport()
-    // this.getModelData()
   },
   methods: {
     jumpTo () {
@@ -383,7 +382,7 @@ export default {
           }
         }
       })
-      this.getModelData()
+      // this.getModelData()
     },
     getModelData () {
       // 模板data
