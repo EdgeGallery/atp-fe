@@ -220,7 +220,7 @@ export default {
         width: 300px;
       .case-top{
         display: flex;
-        background-color:#7e9c94;
+        background-color:#6a849c;
         height:50px;
         .case-title-icon{
           position: relative;

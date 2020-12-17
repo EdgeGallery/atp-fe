@@ -498,6 +498,7 @@ export default {
         verificationModel: [],
         file: []
       },
+      editfile: false,
       addrules: {
         name: [
           { required: true, message: '用例名称不能为空', trigger: 'blur' }
@@ -609,8 +610,8 @@ export default {
       fd.append('codeLanguage', addcaseForm.codeLanguage)
       fd.append('expectResult', addcaseForm.expectResult)
       fd.append('verificationModel', addcaseForm.verificationModel)
-      fd.append('file', addcaseForm.file[0])
       if (this.confirmBtnApi === 'add') {
+        fd.append('file', addcaseForm.file[0])
         Atp.createCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()
@@ -624,6 +625,11 @@ export default {
         })
       } else if (this.confirmBtnApi === 'edit') {
         fd.append('id', this.editid)
+        if (this.editfile) {
+          fd.append('file', addcaseForm.file[0])
+        } else {
+          fd.append('file', addcaseForm.file)
+        }
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()
@@ -636,6 +642,7 @@ export default {
           this.addCaseVisible = false
         })
       }
+      this.editfile = false
     },
     editCase (row) {
       this.editid = row.id
@@ -764,7 +771,7 @@ export default {
       this.addcaseForm.file = fileList
     },
     languageChang (value) {
-      console.log(value)
+      this.editfile = true
     },
     // 创建测试任务，联调使用，后续删除;
     // startTest () {
