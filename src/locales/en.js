@@ -130,7 +130,7 @@ const en = {
     model: '认证模板',
     standard: '社区标准',
     addCase: '新增测试用例',
-    editCase: '新增测试用例',
+    editCase: '编辑测试用例',
     import: '测试用例导入',
     sample: '样例下载'
   },
