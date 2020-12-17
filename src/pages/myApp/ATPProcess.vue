@@ -98,7 +98,7 @@ export default {
     this.interval = setInterval(() => {
       this.getCaseData()
     }, 1000)
-    setTimeout(function () {
+    setTimeout(() => {
       this.clearInterval()
       this.$message({
         duration: 2000,
