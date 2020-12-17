@@ -284,7 +284,7 @@
             <a
               :href="addcaseForm.codeLanguage==='java' ? './javaExample.java' : './pythonExample.py'"
               download
-              style="padding-left:50px;"
+              style="padding-left:10px;"
             >
               <el-button
                 slot="trigger"
@@ -570,6 +570,7 @@ export default {
       if (this.confirmBtnApi === 'add') {
         Atp.createCaseApi(fd).then(res => {
           this.addCaseVisible = false
+          this.getAllcase()
         }).catch(() => {
           this.$message({
             duration: 2000,
@@ -583,6 +584,7 @@ export default {
         fd.append('id', this.editid)
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
+          this.getAllcase()
         }).catch(() => {
           this.$message({
             duration: 2000,

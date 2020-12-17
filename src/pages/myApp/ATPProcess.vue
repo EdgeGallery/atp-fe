@@ -98,6 +98,14 @@ export default {
     this.interval = setInterval(() => {
       this.getCaseData()
     }, 1000)
+    setTimeout(function () {
+      this.clearInterval()
+      this.$message({
+        duration: 2000,
+        message: '测试超时，失败！',
+        type: 'warning'
+      })
+    }, 10000)
   },
   beforeDestroy () {
     this.clearInterval()

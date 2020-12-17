@@ -38,7 +38,7 @@ const en = {
     provider: 'Provider'
   },
   report: {
-    testReport: 'Test Report',
+    testReport: 'EdgeGallery test certification report',
     downloadReport: 'Download Report',
     reportanalysis: 'Test report analysis',
     version: 'Version',
