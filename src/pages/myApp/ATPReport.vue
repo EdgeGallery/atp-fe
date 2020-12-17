@@ -288,54 +288,6 @@ export default {
           { status: '自定义标准用例数', case: 0 }
         ]
       }
-      // testCaseDetail: {
-      //   'securityTest': [{
-      //     'securityTest': {
-      //       'result': 'success',
-      //       'reason': '',
-      //       'verificationModel': 'Edgegallery,Mobile'
-      //     }
-      //   }],
-      //   'complianceTest': [{
-      //     'fgf': {
-      //       'result': 'failed',
-      //       'reason': 'ggfggdggdg',
-      //       'verificationModel': 'Mobile,Telecom'
-      //     },
-      //     'df': {
-      //       'result': 'failed',
-      //       'reason': 'sddf',
-      //       'verificationModel': 'Telecom'
-      //     },
-      //     'dfs': {
-      //       'result': 'success',
-      //       'reason': 'dfddg',
-      //       'verificationModel': 'Edgegallery,Definition'
-      //     },
-      //     'g': {
-      //       'result': 'success',
-      //       'reason': '',
-      //       'verificationModel': 'Unicom,Definition'
-      //     }
-      //   }],
-      //   'sandboxTest': [{
-      //     'fgf': {
-      //       'result': 'success',
-      //       'reason': '',
-      //       'verificationModel': 'Definition'
-      //     },
-      //     'df': {
-      //       'result': 'failed',
-      //       'reason': 'dee',
-      //       'verificationModel': 'Definition'
-      //     },
-      //     'g': {
-      //       'result': 'failed',
-      //       'reason': '',
-      //       'verificationModel': 'Edgegallery'
-      //     }
-      //   }]
-      // }
     }
   },
   mounted () {
@@ -360,7 +312,6 @@ export default {
       Atp.processApi(this.taskId).then(res => {
         this.tableData.push(res.data)
         let testCaseDetail = res.data.testCaseDetail
-        // let testCaseDetail = this.testCaseDetail
         for (const key in testCaseDetail) {
           let casedata = testCaseDetail[key][0]
           for (const keyin in casedata) {
@@ -383,9 +334,9 @@ export default {
             }
           }
         }
+        this.getModelData()
+        this.getChartData()
       })
-      this.getModelData()
-      this.getChartData()
     },
     getModelData () {
       // 模板data
@@ -551,16 +502,18 @@ export default {
 .report {
   .report-content {
     background: white;
+    background-image: url('../../assets/images/edgegallery.png');
     .download{
       // text-align: right;
       display: flex;
       justify-content: space-between;
     }
     .report-tap {
-      // padding: 20px 0;
       h3 {
         text-align: center;
         margin: 25px 0;
+        font-size: 25px;
+        color: #55565df2;
       }
       p {
         color: #3399ff;
