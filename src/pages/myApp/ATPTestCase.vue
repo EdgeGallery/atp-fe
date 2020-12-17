@@ -137,6 +137,7 @@
           />
           <el-table-column
             :label="$t('testCase.operation')"
+            width="160px"
           >
             <template slot-scope="scope">
               <el-button
@@ -173,7 +174,7 @@
     <!-- 新增用例弹框 -->
     <el-dialog
       :visible.sync="addCaseVisible"
-      :title="$t('testCase.addCase')"
+      :title="dialogTitle"
       :close-on-click-modal="false"
       width="30%"
       class="addtestdialog"
@@ -190,6 +191,7 @@
             width="100px"
             size="small"
             v-model="addcaseForm.name"
+            :disabled="cannotEdit"
           />
         </el-form-item>
         <el-form-item
@@ -199,6 +201,7 @@
           <el-select
             size="small"
             v-model="addcaseForm.type"
+            :disabled="cannotEdit"
           >
             <el-option
               v-for="item in testType"
@@ -234,6 +237,7 @@
           <el-select
             size="small"
             v-model="addcaseForm.codeLanguage"
+            @change="languageChang"
           >
             <el-option
               v-for="item in codeLanguages"
@@ -384,15 +388,10 @@ export default {
   name: 'TestCase',
   data () {
     return {
-      // del
-      packageForm: {
-        fileList: []
-      },
-      rules: {
-        fileList: [
-          { required: true }
-        ]
-      },
+      // // del
+      // packageForm: {
+      //   fileList: []
+      // },
 
       currUrl: window.location.href,
       taskId: '',
@@ -422,7 +421,6 @@ export default {
       TestNumber: [
         {
           name: '安全测试',
-          // name: '安全性测试',
           number: ''
         },
         {
@@ -434,9 +432,9 @@ export default {
           number: ''
         }
       ],
-      countvirus: 0,
-      countcomp: 0,
-      countsand: 0,
+      // countvirus: 0,
+      // countcomp: 0,
+      // countsand: 0,
       form: {
         name: '',
         type: '',
@@ -488,7 +486,9 @@ export default {
       allcaseData: [],
       addCaseVisible: false,
       confirmBtnApi: '',
+      dialogTitle: '',
       editid: '',
+      cannotEdit: false,
       addcaseForm: {
         name: '',
         type: '',
@@ -497,14 +497,55 @@ export default {
         codeLanguage: '',
         verificationModel: [],
         file: []
+      },
+      addrules: {
+        name: [
+          { required: true, message: '用例名称不能为空', trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '用例类型不能为空', trigger: 'change' }
+        ],
+        description: [
+          { required: true, message: '用例目的不能为空', trigger: 'blur' }
+        ],
+        expectResult: [
+          { required: true, message: '预期结果不能为空', trigger: 'blur' }
+        ],
+        codeLanguage: [
+          { required: true, message: '语言不能为空', trigger: 'change' }
+        ],
+        verificationModel: [
+          { required: true, message: '描述不能为空', trigger: 'change' }
+        ],
+        file: [
+          { required: true }
+        ]
+      },
+      editrules: {
+        name: [
+          { required: true, message: '用例名称不能为空', trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '用例类型不能为空', trigger: 'change' }
+        ],
+        description: [
+          { required: true, message: '用例目的不能为空', trigger: 'blur' }
+        ],
+        expectResult: [
+          { required: true, message: '预期结果不能为空', trigger: 'blur' }
+        ],
+        codeLanguage: [
+          { required: true, message: '语言不能为空', trigger: 'change' }
+        ],
+        verificationModel: [
+          { required: true, message: '描述不能为空', trigger: 'change' }
+        ]
       }
     }
   },
   mounted () {
     this.getTaskId()
-    // this.getTestCase()
     this.getAllcase()
-    // this.getDependency()
     // this.linshiceshi()
   },
   methods: {
@@ -546,6 +587,8 @@ export default {
     },
     addTestBtn () {
       this.confirmBtnApi = 'add'
+      this.dialogTitle = this.$t('testCase.addCase')
+      this.cannotEdit = false
       this.addCaseVisible = true
       this.addcaseForm = {
         name: '',
@@ -580,7 +623,6 @@ export default {
           this.addCaseVisible = false
         })
       } else if (this.confirmBtnApi === 'edit') {
-        console.log('edit')
         fd.append('id', this.editid)
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
@@ -598,8 +640,11 @@ export default {
     editCase (row) {
       this.editid = row.id
       this.confirmBtnApi = 'edit'
+      this.dialogTitle = this.$t('testCase.editCase')
+      this.cannotEdit = true
       this.addCaseVisible = true
       this.addcaseForm = JSON.parse(JSON.stringify(row))
+      this.addcaseForm.file = []
       this.addcaseForm.verificationModel = row.verificationModel.split(',')
     },
     deleteCase (row) {
@@ -629,6 +674,7 @@ export default {
     getTaskId () {
       if (this.currUrl.indexOf('?') !== -1) {
         this.taskId = this.currUrl.split('?')[1].split('=')[1]
+        sessionStorage.setItem('taskId', this.taskId)
       } else {
         let params = sessionStorage.getItem('taskId')
         this.taskId = params
@@ -706,6 +752,20 @@ export default {
         this.dialogVisible = false
       })
     },
+    handleExceed (file, fileList) {
+      if (fileList.length === 1) {
+        this.$message.warning(this.$t('promptMessage.onlyOneFile'))
+      }
+    },
+    handleChange (file, fileList) {
+      this.addcaseForm.file.push(file.raw)
+    },
+    handleDelte (file, fileList) {
+      this.addcaseForm.file = fileList
+    },
+    languageChang (value) {
+      console.log(value)
+    },
     // 创建测试任务，联调使用，后续删除;
     // startTest () {
     //   let fd = new FormData()
@@ -733,8 +793,8 @@ export default {
     // 依赖弹框
     ConfirmTest () {
       Atp.runTaskApi(this.taskId).then(res => {
-        let taskId = res.data.id
-        sessionStorage.setItem('taskId', taskId)
+        // let taskId = res.data.id
+        // sessionStorage.setItem('taskId', taskId)
         this.dialogVisible = false
         this.$router.push('/atpprocess')
       }).catch(error => {
@@ -768,17 +828,6 @@ export default {
         this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[0]
         this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[0]
       }
-    },
-    handleExceed (file, fileList) {
-      if (fileList.length === 1) {
-        this.$message.warning(this.$t('promptMessage.onlyOneFile'))
-      }
-    },
-    handleChange (file, fileList) {
-      this.addcaseForm.file.push(file.raw)
-    },
-    handleDelte (file, fileList) {
-      this.addcaseForm.file = fileList
     }
     // 联调后 del
     // handleDelteAPP (file, fileList) {
@@ -827,10 +876,10 @@ export default {
   .testcase-content {
     background: white;
     .el-table thead {
-      color: #909399;
+      color: #686a6f;
       font-weight: 800;
       th{
-        background: #f5f5f6;
+        background: #d6e3f1;
       }
     }
     .addbtn{
