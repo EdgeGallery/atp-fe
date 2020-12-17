@@ -105,7 +105,7 @@ export default {
         message: '测试超时，失败！',
         type: 'warning'
       })
-    }, 10000)
+    }, 30000)
   },
   beforeDestroy () {
     this.clearInterval()
