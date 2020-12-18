@@ -88,7 +88,8 @@ export default {
         complianceTest: [],
         sandboxTest: []
       },
-      interval: ''
+      interval: '',
+      timeout: ''
     }
   },
   mounted () {
@@ -98,17 +99,13 @@ export default {
     this.interval = setInterval(() => {
       this.getCaseData()
     }, 1000)
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.clearInterval()
-      this.$message({
-        duration: 2000,
-        message: '测试超时，失败！',
-        type: 'warning'
-      })
     }, 30000)
   },
   beforeDestroy () {
     this.clearInterval()
+    clearTimeout(this.timeout)
   },
   methods: {
     getTaskId () {
@@ -174,17 +171,17 @@ export default {
         })
         this.clearInterval()
       })
-      this.allcase.securityTest.forEach((item) => {
+      this.allcase.securityTest.every((item) => {
         if (item.type === 'success' || item.type === 'danger') {
           this.active = 1
         }
       })
-      this.allcase.complianceTest.forEach((element) => {
+      this.allcase.complianceTest.every((element) => {
         if (element.type === 'success' || element.type === 'danger') {
           this.active = 2
         }
       })
-      this.allcase.sandboxTest.forEach((val) => {
+      this.allcase.sandboxTest.every((val) => {
         if (val.type === 'success' || val.type === 'danger') {
           this.active = 3
         }

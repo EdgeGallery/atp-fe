@@ -108,7 +108,7 @@
       </div>
       <div>
         <el-table
-          :data="allcaseData"
+          :data="currentData"
           style="width: 100%"
         >
           <el-table-column
@@ -159,6 +159,14 @@
             </template>
           </el-table-column>
         </el-table>
+        <div
+          style="margin-top: 20px"
+        >
+          <pagination
+            :table-data="allcaseData"
+            @getCurrentPageData="getCurrentPageData"
+          />
+        </div>
       </div>
       <div class="start-button">
         <el-button
@@ -384,38 +392,15 @@
 <script>
 import { Atp } from '../../tools/api.js'
 import { TESTNAME } from '../../tools/testdataname.js'
+import pagination from '../../components/common/Pagination.vue'
 export default {
+  components: { pagination },
   name: 'TestCase',
   data () {
     return {
-      // // del
-      // packageForm: {
-      //   fileList: []
-      // },
-
       currUrl: window.location.href,
       taskId: '',
       dialogVisible: false,
-      // testCaseList: [
-      //   {
-      //     label: '安全测试',
-      //     // label: '安全性测试',
-      //     children: []
-      //   },
-      //   {
-      //     label: '遵从性测试',
-      //     children: []
-      //   },
-      //   {
-      //     label: '沙箱测试',
-      //     children: []
-      //   }
-      // ],
-      // defaultProps: {
-      //   children: 'children',
-      //   label: 'label'
-      // },
-      // caseDataDetail: [],
       caseDataTable: [],
       dependencyData: [],
       TestNumber: [
@@ -432,9 +417,6 @@ export default {
           number: ''
         }
       ],
-      // countvirus: 0,
-      // countcomp: 0,
-      // countsand: 0,
       form: {
         name: '',
         type: '',
@@ -442,7 +424,7 @@ export default {
       },
       models: [
         {
-          value: 'Edgegallery',
+          value: 'EdgeGallery',
           label: '社区标准'
         },
         {
@@ -484,6 +466,7 @@ export default {
         }
       ],
       allcaseData: [],
+      currentData: [],
       addCaseVisible: false,
       confirmBtnApi: '',
       dialogTitle: '',
@@ -550,6 +533,9 @@ export default {
     // this.linshiceshi()
   },
   methods: {
+    getCurrentPageData (val) {
+      this.currentData = val
+    },
     resetForm () {
       this.form = {
         name: '',
