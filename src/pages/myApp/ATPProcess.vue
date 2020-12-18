@@ -186,9 +186,9 @@ export default {
           this.active = 3
         }
       })
-      if (this.active === 3) {
-        this.clearInterval()
-      }
+      // if (this.active === 3) {
+      //   this.clearInterval()
+      // }
     }
   }
 }
