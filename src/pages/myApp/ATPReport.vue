@@ -310,15 +310,14 @@ export default {
     },
     getReport () {
       Atp.processApi(this.taskId).then(res => {
-        let data = res.data
-        data.forEach(item => {
+        this.tableData.push(res.data)
+        this.tableData.forEach(item => {
           let newDateBegin = this.dateChange(item.createTime)
           item.createTime = newDateBegin
           let newDateEnd = this.dateChange(item.endTime)
           item.endTime = newDateEnd
         })
-        this.tableData.push(data)
-        let testCaseDetail = data.testCaseDetail
+        let testCaseDetail = res.data.testCaseDetail
         for (const key in testCaseDetail) {
           let casedata = testCaseDetail[key][0]
           for (const keyin in casedata) {
