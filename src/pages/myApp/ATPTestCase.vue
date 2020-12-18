@@ -596,8 +596,8 @@ export default {
       fd.append('codeLanguage', addcaseForm.codeLanguage)
       fd.append('expectResult', addcaseForm.expectResult)
       fd.append('verificationModel', addcaseForm.verificationModel)
+      fd.append('file', addcaseForm.file[0])
       if (this.confirmBtnApi === 'add') {
-        fd.append('file', addcaseForm.file[0])
         Atp.createCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()
@@ -611,11 +611,11 @@ export default {
         })
       } else if (this.confirmBtnApi === 'edit') {
         fd.append('id', this.editid)
-        if (this.editfile) {
-          fd.append('file', addcaseForm.file[0])
-        } else {
-          fd.append('file', addcaseForm.file)
-        }
+        // if (this.editfile) {
+        //   fd.append('file', addcaseForm.file[0])
+        // } else {
+        //   fd.append('file', addcaseForm.file)
+        // }
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()
@@ -893,7 +893,7 @@ export default {
     }
     .start-button{
         text-align: center;
-        margin: 30px 0;
+        margin: 55px 0;
         #start_test_button{
           transform:translateX(-49px);
         }
