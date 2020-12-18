@@ -310,8 +310,15 @@ export default {
     },
     getReport () {
       Atp.processApi(this.taskId).then(res => {
-        this.tableData.push(res.data)
-        let testCaseDetail = res.data.testCaseDetail
+        let data = res.data
+        data.forEach(item => {
+          let newDateBegin = this.dateChange(item.createTime)
+          item.createTime = newDateBegin
+          let newDateEnd = this.dateChange(item.endTime)
+          item.endTime = newDateEnd
+        })
+        this.tableData.push(data)
+        let testCaseDetail = data.testCaseDetail
         for (const key in testCaseDetail) {
           let casedata = testCaseDetail[key][0]
           for (const keyin in casedata) {
@@ -459,6 +466,30 @@ export default {
         const item = this.modelData[index]
         chartitem.case = item.success + item.fail
         item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2) + '%'
+      }
+    },
+    dateChange (dateStr) {
+      if (dateStr) {
+        let date = new Date(Date.parse(dateStr))
+        let Y = date.getFullYear()
+        let M = date.getMonth() + 1
+        let D = date.getDate()
+        let H = date.getHours()
+        let m = date.getMinutes()
+        let s = date.getSeconds()
+        let changeDate =
+          Y +
+          '-' +
+          (M > 9 ? M : '0' + M) +
+          '-' +
+          (D > 9 ? D : '0' + D) +
+          ' ' +
+          (H > 9 ? H : '0' + H) +
+          ':' +
+          (m > 9 ? m : '0' + m) +
+          ':' +
+          (s > 9 ? s : '0' + s)
+        return changeDate
       }
     },
     changeName () {

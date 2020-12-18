@@ -481,56 +481,12 @@ export default {
         verificationModel: [],
         file: []
       },
-      editfile: false,
-      addrules: {
-        name: [
-          { required: true, message: '用例名称不能为空', trigger: 'blur' }
-        ],
-        type: [
-          { required: true, message: '用例类型不能为空', trigger: 'change' }
-        ],
-        description: [
-          { required: true, message: '用例目的不能为空', trigger: 'blur' }
-        ],
-        expectResult: [
-          { required: true, message: '预期结果不能为空', trigger: 'blur' }
-        ],
-        codeLanguage: [
-          { required: true, message: '语言不能为空', trigger: 'change' }
-        ],
-        verificationModel: [
-          { required: true, message: '描述不能为空', trigger: 'change' }
-        ],
-        file: [
-          { required: true }
-        ]
-      },
-      editrules: {
-        name: [
-          { required: true, message: '用例名称不能为空', trigger: 'blur' }
-        ],
-        type: [
-          { required: true, message: '用例类型不能为空', trigger: 'change' }
-        ],
-        description: [
-          { required: true, message: '用例目的不能为空', trigger: 'blur' }
-        ],
-        expectResult: [
-          { required: true, message: '预期结果不能为空', trigger: 'blur' }
-        ],
-        codeLanguage: [
-          { required: true, message: '语言不能为空', trigger: 'change' }
-        ],
-        verificationModel: [
-          { required: true, message: '描述不能为空', trigger: 'change' }
-        ]
-      }
+      editfile: false
     }
   },
   mounted () {
     this.getTaskId()
     this.getAllcase()
-    // this.linshiceshi()
   },
   methods: {
     getCurrentPageData (val) {
@@ -545,13 +501,6 @@ export default {
       this.getAllcase()
     },
     // 获取所有测试用例
-    // 临时测试
-    // linshiceshi () {
-    //   let data = this.allcaseData
-    //   data.forEach(item => {
-    //     console.log(item.type)
-    //   })
-    // },
     getAllcase () {
       this.allcaseData = []
       Atp.getAllCaseApi(this.form).then(res => {
@@ -563,6 +512,40 @@ export default {
             this.TestNumber[1].number++
           } else {
             this.TestNumber[2].number++
+          }
+          // 中英文切换
+          let model = item.verificationModel.split(',')
+          model.forEach(val => {
+            if (val.indexOf('EdgeGallery') !== -1) {
+              let index = val.indexOf('EdgeGallery')
+              model.splice(index, 1, this.models[0].label)
+            }
+            if (val.indexOf('Mobile') !== -1) {
+              let index = val.indexOf('Mobile')
+              model.splice(index, 1, this.models[1].label)
+            }
+            if (val.indexOf('Unicom') !== -1) {
+              let index = val.indexOf('Unicom')
+              model.splice(index, 1, this.models[2].label)
+            }
+            if (val.indexOf('Telecom') !== -1) {
+              let index = val.indexOf('Telecom')
+              model.splice(index, 1, this.models[3].label)
+            }
+            if (val.indexOf('Definition') !== -1) {
+              let index = val.indexOf('Definition')
+              model.splice(index, 1, this.models[4].label)
+            }
+          })
+          item.verificationModel = model.join(',')
+          if (item.type === 'securityTest') {
+            item.type = this.testType[0].label
+          }
+          if (item.type === 'complianceTest') {
+            item.type = this.testType[1].label
+          }
+          if (item.type === 'sandboxTest') {
+            item.type = this.testType[2].label
           }
         })
       }).catch(() => {
