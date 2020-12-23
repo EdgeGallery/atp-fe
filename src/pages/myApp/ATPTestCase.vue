@@ -17,7 +17,7 @@
 <template>
   <div class="testcase padding56">
     <div class="testcase-content padding20">
-      <div class="title">
+      <div>
         {{ $t('testCase.management') }}
       </div>
       <div style="text-align:center">
@@ -506,6 +506,7 @@ export default {
       Atp.getAllCaseApi(this.form).then(res => {
         this.allcaseData = res.data
         this.allcaseData.forEach(item => {
+        // 依赖页面，用例个数
           if (item.type === 'securityTest') {
             this.TestNumber[0].number++
           } else if (item.type === 'complianceTest') {
@@ -514,30 +515,22 @@ export default {
             this.TestNumber[2].number++
           }
           // 中英文切换
-          let model = item.verificationModel.split(',')
-          model.forEach(val => {
-            if (val.indexOf('EdgeGallery') !== -1) {
-              let index = val.indexOf('EdgeGallery')
-              model.splice(index, 1, this.models[0].label)
-            }
-            if (val.indexOf('Mobile') !== -1) {
-              let index = val.indexOf('Mobile')
-              model.splice(index, 1, this.models[1].label)
-            }
-            if (val.indexOf('Unicom') !== -1) {
-              let index = val.indexOf('Unicom')
-              model.splice(index, 1, this.models[2].label)
-            }
-            if (val.indexOf('Telecom') !== -1) {
-              let index = val.indexOf('Telecom')
-              model.splice(index, 1, this.models[3].label)
-            }
-            if (val.indexOf('Definition') !== -1) {
-              let index = val.indexOf('Definition')
-              model.splice(index, 1, this.models[4].label)
-            }
-          })
-          item.verificationModel = model.join(',')
+          if (item.verificationModel.indexOf('EdgeGallery') !== -1) {
+            item.verificationModel = item.verificationModel.replace('EdgeGallery', '社区标准')
+          }
+          if (item.verificationModel.indexOf('Mobile') !== -1) {
+            item.verificationModel = item.verificationModel.replace('Mobile', '移动企标')
+          }
+          if (item.verificationModel.indexOf('Unicom') !== -1) {
+            item.verificationModel = item.verificationModel.replace('Unicom', '联通企标')
+          }
+          if (item.verificationModel.indexOf('Telecom') !== -1) {
+            item.verificationModel = item.verificationModel.replace('Telecom', '电信企标')
+          }
+          if (item.verificationModel.indexOf('Definition') !== -1) {
+            item.verificationModel = item.verificationModel.replace('Definition', '自定义标准')
+          }
+          // 用例类型
           if (item.type === 'securityTest') {
             item.type = this.testType[0].label
           }
@@ -549,6 +542,11 @@ export default {
           }
         })
       }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: this.$t('promptMessage.gettestcaseFail'),
+          type: 'warning'
+        })
       })
     },
     // 新增用例弹框
@@ -579,8 +577,8 @@ export default {
       fd.append('codeLanguage', addcaseForm.codeLanguage)
       fd.append('expectResult', addcaseForm.expectResult)
       fd.append('verificationModel', addcaseForm.verificationModel)
-      fd.append('file', addcaseForm.file[0])
       if (this.confirmBtnApi === 'add') {
+        fd.append('file', addcaseForm.file[0])
         Atp.createCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()
@@ -594,11 +592,11 @@ export default {
         })
       } else if (this.confirmBtnApi === 'edit') {
         fd.append('id', this.editid)
-        // if (this.editfile) {
-        //   fd.append('file', addcaseForm.file[0])
-        // } else {
-        //   fd.append('file', addcaseForm.file)
-        // }
+        if (this.editfile) {
+          fd.append('file', addcaseForm.file[0])
+        } else {
+          fd.append('file', addcaseForm.file)
+        }
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()

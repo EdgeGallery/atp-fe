@@ -19,15 +19,6 @@
     <div class="report-content padding20">
       <div class="download">
         <el-button
-          id="back_button"
-          type="primary"
-          icon="el-icon-arrow-left"
-          plain
-          @click="jumpTo()"
-        >
-          {{ $t('atp.returnList') }}
-        </el-button>
-        <el-button
           size="large"
           type="primary"
           icon="el-icon-download"
@@ -224,7 +215,7 @@
 import { Atp } from '../../tools/api.js'
 import { TESTNAME } from '../../tools/testdataname.js'
 export default {
-  name: 'Report',
+  name: 'Atpreport',
   data () {
     return {
       currUrl: window.location.href,
@@ -293,20 +284,10 @@ export default {
   mounted () {
     this.getTaskId()
     this.getReport()
-    // this.getModelData()
-    // this.getChartData()
   },
   methods: {
-    jumpTo () {
-      this.$router.push('/app/test/task')
-    },
     getTaskId () {
-      if (this.currUrl.indexOf('?') !== -1) {
-        this.taskId = this.currUrl.split('?')[1].split('=')[1]
-      } else {
-        let params = JSON.parse(sessionStorage.getItem('taskData'))
-        this.taskId = params.id
-      }
+      this.taskId = this.currUrl.split('?')[1].split('=')[1]
     },
     getReport () {
       Atp.processApi(this.taskId).then(res => {
@@ -534,14 +515,13 @@ export default {
     background: white;
     background-image: url('../../assets/images/edgegallery.png');
     .download{
-      // text-align: right;
-      display: flex;
-      justify-content: space-between;
+      text-align: right;
+      margin-right: 30px;
     }
     .report-tap {
       h3 {
         text-align: center;
-        margin: 25px 0;
+        // margin: 25px 0;
         font-size: 25px;
         color: #55565df2;
       }
