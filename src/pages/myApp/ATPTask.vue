@@ -179,7 +179,7 @@
 import { Atp } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 export default {
-  name: 'Task',
+  name: 'Apttask',
   components: { pagination },
   data () {
     return {
@@ -256,8 +256,9 @@ export default {
       this.interval = null
     },
     handleClickReport (val) {
-      sessionStorage.setItem('taskData', JSON.stringify(val))
-      this.$router.push('/atpreport')
+      let taskId = val.id
+      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
+      window.open(routeData.href, '_blank')
     },
     handleClickTaskNo (val) {
       let taskId = val.id
