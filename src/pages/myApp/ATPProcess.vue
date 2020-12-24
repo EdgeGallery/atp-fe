@@ -37,14 +37,17 @@
         <el-step
           :title="$t('atp.security')"
           :icon="oneicon"
+          :class="step1class ? success : failed"
         />
         <el-step
           :title="$t('atp.complianceTest')"
           :icon="twoicon"
+          :class="step2class ? success : failed"
         />
         <el-step
           :title="$t('atp.sandboxTest')"
           :icon="threeicon"
+          :class="step3class ? success : failed"
         />
       </el-steps>
     </div>
@@ -86,6 +89,9 @@ export default {
       oneicon: '',
       twoicon: '',
       threeicon: '',
+      step1class: false,
+      step2class: false,
+      step3class: false,
       atptaskId: '',
       taskId: '',
       allcase: {
@@ -203,22 +209,28 @@ export default {
           return item.type === 'danger'
         })) {
           this.oneicon = 'el-icon-circle-close'
+          this.step1class = false
         } else {
           this.oneicon = 'el-icon-circle-check'
+          this.step1class = true
         }
         if (this.allcase.complianceTest.some((item) => {
           return item.type === 'danger'
         })) {
           this.twoicon = 'el-icon-circle-close'
+          this.step2class = false
         } else {
           this.twoicon = 'el-icon-circle-check'
+          this.step2class = true
         }
         if (this.allcase.sandboxTest.some((item) => {
           return item.type === 'danger'
         })) {
           this.threeicon = 'el-icon-circle-close'
+          this.step3class = false
         } else {
           this.threeicon = 'el-icon-circle-check'
+          this.step3class = true
         }
       }).catch(() => {
         this.$message({
@@ -251,7 +263,29 @@ export default {
       line-height: 45px;
       border-radius: 50%;
     }
+    .failed{
+      .el-step__title{
+        color:  #f56c6c;
+      }
+      .is-finish{
+        border-color:  #f56c6c;
+      }
+    }
+     .success{
+      .el-step__title{
+        color:  #67C23A;
+      }
+      .is-finish{
+        border-color:  #67C23A;
+      }
+    }
   }
+    .el-icon-circle-close:before {
+      color: #f56c6c;
+    }
+    .el-icon-circle-check:before{
+        color: #67C23A;
+    }
   .case-main{
     display: flex;
     justify-content: space-around;
