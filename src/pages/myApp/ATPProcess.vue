@@ -33,16 +33,18 @@
       <el-steps
         :active="active"
         align-center
-        finish-status="success"
       >
         <el-step
           :title="$t('atp.security')"
+          :icon="oneicon"
         />
         <el-step
           :title="$t('atp.complianceTest')"
+          :icon="twoicon"
         />
         <el-step
           :title="$t('atp.sandboxTest')"
+          :icon="threeicon"
         />
       </el-steps>
     </div>
@@ -81,6 +83,9 @@ export default {
     return {
       currUrl: window.location.href,
       active: 0,
+      oneicon: '',
+      twoicon: '',
+      threeicon: '',
       atptaskId: '',
       taskId: '',
       allcase: {
@@ -163,6 +168,58 @@ export default {
             }
           }
         }
+        // this.allcase.securityTest.every((item) => {
+        //   if (item.type === 'success' || item.type === 'danger') {
+        //     this.active = 1
+        //   }
+        // })
+        // this.allcase.complianceTest.every((element) => {
+        //   if (element.type === 'success' || element.type === 'danger') {
+        //     this.active = 2
+        //   }
+        // })
+        // this.allcase.sandboxTest.every((val) => {
+        //   if (val.type === 'success' || val.type === 'danger') {
+        //     this.active = 3
+        //   }
+        // })
+        if (this.allcase.securityTest.every((item) => {
+          return item.type === 'success' || item.type === 'danger'
+        })) {
+          this.active = 1
+        }
+        if (this.allcase.complianceTest.every((item) => {
+          return item.type === 'success' || item.type === 'danger'
+        })) {
+          this.active = 2
+        }
+        if (this.allcase.sandboxTest.every((item) => {
+          return item.type === 'success' || item.type === 'danger'
+        })) {
+          this.active = 3
+        }
+        //
+        if (this.allcase.securityTest.some((item) => {
+          return item.type === 'danger'
+        })) {
+          this.oneicon = 'el-icon-circle-close'
+        } else {
+          this.oneicon = 'el-icon-circle-check'
+        }
+        if (this.allcase.complianceTest.some((item) => {
+          return item.type === 'danger'
+        })) {
+          this.twoicon = 'el-icon-circle-close'
+        } else {
+          this.twoicon = 'el-icon-circle-check'
+        }
+        if (this.allcase.sandboxTest.some((item) => {
+          return item.type === 'danger'
+        })) {
+          this.threeicon = 'el-icon-circle-close'
+        } else {
+          this.threeicon = 'el-icon-circle-check'
+        }
       }).catch(() => {
         this.$message({
           duration: 2000,
@@ -171,21 +228,7 @@ export default {
         })
         this.clearInterval()
       })
-      this.allcase.securityTest.every((item) => {
-        if (item.type === 'success' || item.type === 'danger') {
-          this.active = 1
-        }
-      })
-      this.allcase.complianceTest.every((element) => {
-        if (element.type === 'success' || element.type === 'danger') {
-          this.active = 2
-        }
-      })
-      this.allcase.sandboxTest.every((val) => {
-        if (val.type === 'success' || val.type === 'danger') {
-          this.active = 3
-        }
-      })
+
       // if (this.active === 3) {
       //   this.clearInterval()
       // }
@@ -196,7 +239,7 @@ export default {
 <style lang="less">
   .process{
     background-color: white;
-    margin: 0 56px;
+    // margin: 0 56px;
   .back{
     padding: 10px 10px 0;
   }
