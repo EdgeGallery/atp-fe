@@ -37,17 +37,17 @@
         <el-step
           :title="$t('atp.security')"
           :icon="oneicon"
-          :class="step1class ? success : failed"
+          :class="step1class ? 'success' : 'failed'"
         />
         <el-step
           :title="$t('atp.complianceTest')"
           :icon="twoicon"
-          :class="step2class ? success : failed"
+          :class="step2class ? 'success' : 'failed'"
         />
         <el-step
           :title="$t('atp.sandboxTest')"
           :icon="threeicon"
-          :class="step3class ? success : failed"
+          :class="step3class ? 'success' : 'failed'"
         />
       </el-steps>
     </div>
