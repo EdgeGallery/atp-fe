@@ -130,81 +130,89 @@
           <div class="title">
             {{ $t('report.reportDetail') }}
           </div>
-          <div class="casereport">
-            <div class="title">
-              {{ $t('atp.security') }}
-            </div>
-            <el-table
-              :data="securityTest"
-            >
-              <el-table-column
-                prop="name"
-                :label="$t('atp.caseName')"
-              />
-              <el-table-column
-                prop="result"
-                :label="$t('atp.result')"
-              />
-              <el-table-column
-                prop="reason"
-                :label="$t('report.failReason')"
-              />
-              <el-table-column
-                prop="verificationModel"
-                :label="$t('report.model')"
-              />
-            </el-table>
-          </div>
-          <div class="casereport">
-            <div class="title">
-              {{ $t('atp.complianceTest') }}
-            </div>
-            <el-table
-              :data="complianceTest"
-            >
-              <el-table-column
-                prop="name"
-                :label="$t('atp.caseName')"
-              />
-              <el-table-column
-                prop="result"
-                :label="$t('atp.result')"
-              />
-              <el-table-column
-                prop="reason"
-                :label="$t('report.failReason')"
-              />
-              <el-table-column
-                prop="verificationModel"
-                :label="$t('report.model')"
-              />
-            </el-table>
-          </div>
-          <div class="casereport">
-            <div class="title">
-              {{ $t('atp.sandboxTest') }}
-            </div>
-            <el-table
-              :data="sandboxTest"
-            >
-              <el-table-column
-                prop="name"
-                :label="$t('atp.caseName')"
-              />
-              <el-table-column
-                prop="result"
-                :label="$t('atp.result')"
-              />
-              <el-table-column
-                prop="reason"
-                :label="$t('report.failReason')"
-              />
-              <el-table-column
-                prop="verificationModel"
-                :label="$t('report.model')"
-              />
-            </el-table>
-          </div>
+          <el-row :gutter="20">
+            <el-col :span="23">
+              <el-collapse
+                v-model="activeNames"
+              >
+                <el-collapse-item
+                  :title="$t('atp.security')"
+                  name="securityTest"
+                >
+                  <el-table
+                    :data="securityTest"
+                  >
+                    <el-table-column
+                      prop="name"
+                      :label="$t('atp.caseName')"
+                    />
+                    <el-table-column
+                      prop="result"
+                      :label="$t('atp.result')"
+                    />
+                    <el-table-column
+                      prop="reason"
+                      :label="$t('report.failReason')"
+                    />
+                    <el-table-column
+                      prop="verificationModel"
+                      :label="$t('report.model')"
+                    />
+                  </el-table>
+                </el-collapse-item>
+                <el-collapse-item
+                  :title="$t('atp.complianceTest')"
+                  name="complianceTest"
+                >
+                  <el-table
+                    :data="complianceTest"
+                  >
+                    <el-table-column
+                      prop="name"
+                      :label="$t('atp.caseName')"
+                    />
+                    <el-table-column
+                      prop="result"
+                      :label="$t('atp.result')"
+                    />
+                    <el-table-column
+                      prop="reason"
+                      :label="$t('report.failReason')"
+                    />
+                    <el-table-column
+                      prop="verificationModel"
+                      :label="$t('report.model')"
+                    />
+                  </el-table>
+                </el-collapse-item>
+                <el-collapse-item
+                  :title="$t('atp.sandboxTest')"
+                  name="sandboxTest"
+                >
+                  <el-table
+                    :data="sandboxTest"
+                  >
+                    <el-table-column
+                      prop="name"
+                      :label="$t('atp.caseName')"
+                    />
+                    <el-table-column
+                      prop="result"
+                      :label="$t('atp.result')"
+                    />
+                    <el-table-column
+                      prop="reason"
+                      :label="$t('report.failReason')"
+                    />
+                    <el-table-column
+                      prop="verificationModel"
+                      :label="$t('report.model')"
+                    />
+                  </el-table>
+                </el-collapse-item>
+              </el-collapse>
+            </el-col>
+          </el-row>
         </div>
       </div>
     </div>
@@ -266,6 +274,7 @@ export default {
           passRate: 0
         }
       ],
+      activeNames: ['securityTest'],
       securityTest: [],
       complianceTest: [],
       sandboxTest: [],
@@ -564,9 +573,11 @@ export default {
             background: #f5f5f6;
           }
         }
-      .casereport{
-        margin-left: 40px;
-      }
+          .el-collapse-item__header{
+            font-size: 16px;
+            background-color: #FAFAFA;
+            margin-left: 20px;
+          }
     }
   }
 }
