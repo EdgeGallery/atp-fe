@@ -39,7 +39,7 @@ export default {
     },
     size: {
       type: Number,
-      default: 12
+      default: 5
     }
   },
   data () {
@@ -47,7 +47,7 @@ export default {
       totalNum: 0,
       currentPage: 1,
       data: [],
-      pageSize: 12
+      pageSize: 5
     }
   },
   watch: {

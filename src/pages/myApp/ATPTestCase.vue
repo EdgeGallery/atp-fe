@@ -17,7 +17,7 @@
 <template>
   <div class="testcase padding56">
     <div class="testcase-content padding20">
-      <div>
+      <div style="margin-bottom:15px;">
         {{ $t('testCase.management') }}
       </div>
       <div style="text-align:center">
@@ -45,11 +45,18 @@
               <el-form-item
                 :label="$t('testCase.caseType')"
               >
-                <el-input
+                <el-select
                   size="small"
-                  id="type"
                   v-model="form.type"
-                />
+                  class="statusSelect"
+                >
+                  <el-option
+                    v-for="item in testType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col
@@ -118,6 +125,7 @@
           <el-table-column
             prop="type"
             :label="$t('testCase.caseType')"
+            width="140"
           />
           <el-table-column
             prop="description"
@@ -130,6 +138,7 @@
           <el-table-column
             prop="codeLanguage"
             :label="$t('testCase.language')"
+            width="110"
           />
           <el-table-column
             prop="verificationModel"
@@ -245,7 +254,7 @@
           <el-select
             size="small"
             v-model="addcaseForm.codeLanguage"
-            @change="languageChang"
+            @change="languageChange"
           >
             <el-option
               v-for="item in codeLanguages"
@@ -294,7 +303,7 @@
               {{ $t('testCase.import') }}
             </el-button>
             <a
-              :href="addcaseForm.codeLanguage==='java' ? './javaExample.java' : './pythonExample.py'"
+              :href="DemoDownload"
               download
               style="padding-left:10px;"
             >
@@ -339,7 +348,7 @@
       class="dependency-detail"
     >
       <div>
-        <h3>{{ $t('atp.versionDependency') }}：</h3>
+        <h3>{{ $t('atp.versionDependency') }}:</h3>
         <el-table
           :data="dependencyData"
         >
@@ -353,8 +362,8 @@
           />
         </el-table>
       </div>
-      <div>
-        <h3>{{ $t('atp.testTask') }}</h3>
+      <div style="margin-top:15px;">
+        <h3>{{ $t('atp.testTask') }}:</h3>
         <el-table
           :data="TestNumber"
         >
@@ -451,6 +460,9 @@ export default {
         }, {
           value: 2,
           label: 'python'
+        }, {
+          value: 3,
+          label: 'jar'
         }
       ],
       testType: [
@@ -481,7 +493,8 @@ export default {
         verificationModel: [],
         file: []
       },
-      editfile: false
+      editfile: false,
+      DemoDownload: './javaExample.java'
     }
   },
   mounted () {
@@ -737,8 +750,15 @@ export default {
     handleDelte (file, fileList) {
       this.addcaseForm.file = fileList
     },
-    languageChang (value) {
+    languageChange (value) {
       this.editfile = true
+      if (value === 'java') {
+        this.DemoDownload = './javaExample.java'
+      } else if (value === 'python') {
+        this.DemoDownload = './pythonExample.py'
+      } else if (value === 'jar') {
+        this.DemoDownload = './JarExample.zip'
+      }
     },
     // 创建测试任务，联调使用，后续删除;
     // startTest () {
