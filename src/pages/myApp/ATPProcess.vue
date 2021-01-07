@@ -297,19 +297,10 @@ export default {
             }
             if (key === 'securityTest') {
               this.allcase.securityTest.push(obj)
-              if (caseDetail[keyin].result === 'success') {
-                this.securityNum++
-              }
             } else if (key === 'complianceTest') {
               this.allcase.complianceTest.push(obj)
-              if (caseDetail[keyin].result === 'success') {
-                this.complianceNum++
-              }
             } else {
               this.allcase.sandboxTest.push(obj)
-              if (caseDetail[keyin].result === 'success') {
-                this.sandboxNum++
-              }
             }
           }
         }
@@ -331,6 +322,9 @@ export default {
       // }
     },
     changeIcon () {
+      this.securityNum = 0
+      this.complianceNum = 0
+      this.sandboxNum = 0
       if (this.allcase.securityTest.every((item) => {
         return item.type === 'primary' || item.type === 'danger'
       })) {
@@ -347,6 +341,21 @@ export default {
         this.active = 3
       }
       console.log(this.active)
+      this.allcase.securityTest.forEach((item) => {
+        if (item.result === 'success') {
+          this.securityNum++
+        }
+      })
+      this.allcase.complianceTest.forEach((item) => {
+        if (item.result === 'success') {
+          this.complianceNum++
+        }
+      })
+      this.allcase.sandboxTest.forEach((item) => {
+        if (item.result === 'success') {
+          this.sandboxNum++
+        }
+      })
       // top图标变化
       // if (this.allcase.securityTest.some((item) => {
       //   return item.type === 'danger'
