@@ -23,7 +23,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/atptestcase'
+      redirect: '/testcasemanage'
     },
     {
       path: '/index',
@@ -33,6 +33,11 @@ export default new Router({
       path: '',
       component: () => import('./components/layout/Index.vue'),
       children: [
+        {
+          path: 'testcasemanage',
+          name: 'testcasemanage',
+          component: () => import('./pages/myApp/TestCaseManage.vue')
+        },
         {
           path: 'app/test/task',
           name: 'apttask',
