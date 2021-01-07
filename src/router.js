@@ -23,18 +23,14 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/testcasemanage'
-    },
-    {
-      path: '/index',
-      redirect: '/testcasemanage'
+      redirect: '/index'
     },
     {
       path: '',
       component: () => import('./components/layout/Index.vue'),
       children: [
         {
-          path: 'testcasemanage',
+          path: 'index',
           name: 'testcasemanage',
           component: () => import('./pages/myApp/TestCaseManage.vue')
         },
