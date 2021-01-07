@@ -27,7 +27,7 @@ export default new Router({
     },
     {
       path: '/index',
-      redirect: '/atptestcase'
+      redirect: '/testcasemanage'
     },
     {
       path: '',
