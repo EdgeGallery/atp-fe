@@ -337,6 +337,9 @@ export default {
     getModelData () {
       // 模板data
       this.securityTest.forEach(item => {
+        if (item.result === 'success') {
+          item.reason = '---'
+        }
         if (item.verificationModel.indexOf('EdgeGallery') !== -1) {
           if (item.result === 'success') {
             this.modelData[0].success++
@@ -374,6 +377,9 @@ export default {
         }
       })
       this.complianceTest.forEach(item => {
+        if (item.result === 'success') {
+          item.reason = '---'
+        }
         if (item.verificationModel.indexOf('EdgeGallery') !== -1) {
           if (item.result === 'success') {
             this.modelData[0].success++
@@ -411,6 +417,9 @@ export default {
         }
       })
       this.sandboxTest.forEach(item => {
+        if (item.result === 'success') {
+          item.reason = '---'
+        }
         if (item.verificationModel.indexOf('EdgeGallery') !== -1) {
           if (item.result === 'success') {
             this.modelData[0].success++

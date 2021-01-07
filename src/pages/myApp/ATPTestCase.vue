@@ -121,6 +121,7 @@
           <el-table-column
             prop="name"
             :label="$t('testCase.caseName')"
+            width="200"
           />
           <el-table-column
             prop="type"
@@ -293,7 +294,7 @@
             :on-remove="handleDelte"
             :file-list="addcaseForm.file"
             :auto-upload="false"
-            accept=".java,.py"
+            accept=".java,.py,.jar"
           >
             <el-button
               slot="trigger"
