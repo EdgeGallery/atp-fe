@@ -36,25 +36,31 @@
       >
         <el-step
           :title="$t('atp.security')"
+          :class="steponeIcon"
         >
           <em
             class="stepone"
+            :class="step1class ? 'secFinishSuccess' : 'secFinishFail'"
             slot="icon"
           />
         </el-step>
         <el-step
           :title="$t('atp.complianceTest')"
+          :class="steptwoIcon"
         >
           <em
             class="steptwo"
+            :class="step2class ? 'comFinishSuccess' : 'comFinishFail'"
             slot="icon"
           />
         </el-step>
         <el-step
           :title="$t('atp.sandboxTest')"
+          :class="stepthreeIcon"
         >
           <em
             class="stepthree"
+            :class="step3class ? 'sandFinishSuccess' : 'sandFinishFail'"
             slot="icon"
           />
         </el-step>
@@ -67,8 +73,8 @@
         <div class="case-top">
           <div class="case-title-icon">
             <span>{{ securityNum }}</span>
-            <span>/</span>
-            <span>{{ allcase.securityTest.length }}</span>
+            <span class="sum">/</span>
+            <span class="sum">{{ allcase.securityTest.length }}</span>
           </div>
         </div>
         <div class="case-detail">
@@ -92,8 +98,8 @@
         <div class="case-top">
           <div class="case-title-icon">
             <span>{{ complianceNum }}</span>
-            <span>/</span>
-            <span>{{ allcase.complianceTest.length }}</span>
+            <span class="sum">/</span>
+            <span class="sum">{{ allcase.complianceTest.length }}</span>
           </div>
         </div>
         <div class="case-detail">
@@ -117,8 +123,8 @@
         <div class="case-top">
           <div class="case-title-icon">
             <span>{{ sandboxNum }}</span>
-            <span>/</span>
-            <span>{{ allcase.sandboxTest.length }}</span>
+            <span class="sum">/</span>
+            <span class="sum">{{ allcase.sandboxTest.length }}</span>
           </div>
         </div>
         <div class="case-detail">
@@ -211,12 +217,15 @@ export default {
     return {
       currUrl: window.location.href,
       active: 0,
-      // oneicon: '',
-      // twoicon: '',
-      // threeicon: '',
       step1class: false,
       step2class: false,
       step3class: false,
+      steponeIcon: 'running',
+      steptwoIcon: 'running',
+      stepthreeIcon: 'running',
+      intervalNumone: '',
+      intervalNumtwo: '',
+      intervalNumthree: '',
       atptaskId: '',
       taskId: '',
       allcase: {
@@ -240,6 +249,15 @@ export default {
     this.interval = setInterval(() => {
       this.getCaseData()
     }, 1000)
+    this.intervalNumone = setInterval(() => {
+      this.changeNumOne()
+    }, 1000)
+    this.intervalNumtwo = setInterval(() => {
+      this.changeNumTwo()
+    }, 1000)
+    this.intervalNumthree = setInterval(() => {
+      this.changeNumThree()
+    }, 1000)
     this.timeout = setTimeout(() => {
       this.clearInterval()
     }, 30000)
@@ -247,6 +265,9 @@ export default {
   beforeDestroy () {
     this.clearInterval()
     clearTimeout(this.timeout)
+    clearTimeout(this.intervalNumone)
+    clearTimeout(this.intervalNumtwo)
+    clearTimeout(this.intervalNumthree)
   },
   methods: {
     getTaskId () {
@@ -283,10 +304,8 @@ export default {
             }
             obj.content = keyin
             if (caseDetail[keyin].result === 'success') {
-              // obj.icon = 'el-icon-check'
               obj.type = 'primary'
             } else if (caseDetail[keyin].result === 'failed') {
-              // obj.icon = 'el-icon-close'
               obj.type = 'danger'
             } else if (caseDetail[keyin].result === 'running') {
               obj.icon = 'el-icon-loading'
@@ -304,10 +323,10 @@ export default {
             }
           }
         }
-        console.log(this.allcase.securityTest)
-        console.log(this.allcase.complianceTest)
-        console.log(this.allcase.sandboxTest)
         this.changeIcon()
+        this.changeNumOne()
+        this.changeNumTwo()
+        this.changeNumThree()
       }).catch(() => {
         this.$message({
           duration: 2000,
@@ -322,63 +341,75 @@ export default {
       // }
     },
     changeIcon () {
-      this.securityNum = 0
-      this.complianceNum = 0
-      this.sandboxNum = 0
       if (this.allcase.securityTest.every((item) => {
         return item.type === 'primary' || item.type === 'danger'
       })) {
         this.active = 1
+        clearTimeout(this.intervalNumone)
       }
       if (this.allcase.complianceTest.every((item) => {
         return item.type === 'primary' || item.type === 'danger'
       })) {
         this.active = 2
+        clearTimeout(this.intervalNumtwo)
       }
       if (this.allcase.sandboxTest.every((item) => {
         return item.type === 'primary' || item.type === 'danger'
       })) {
         this.active = 3
+        clearTimeout(this.intervalNumthree)
       }
       console.log(this.active)
+      // top图标变化
+      if (this.allcase.securityTest.some((item) => {
+        return item.type === 'danger'
+      })) {
+        this.steponeIcon = 'fail'
+        this.step1class = false
+      } else {
+        this.step1class = true
+      }
+      if (this.allcase.complianceTest.some((item) => {
+        return item.type === 'danger'
+      })) {
+        this.steptwoIcon = 'fail'
+        this.step2class = false
+      } else {
+        this.step2class = true
+      }
+      if (this.allcase.sandboxTest.some((item) => {
+        return item.type === 'danger'
+      })) {
+        this.stepthreeIcon = 'fail'
+        this.step3class = false
+      } else {
+        this.step3class = true
+      }
+    },
+    changeNumOne () {
+      this.securityNum = 0
+      // 用例执行个数
       this.allcase.securityTest.forEach((item) => {
         if (item.result === 'success') {
           this.securityNum++
         }
       })
+    },
+    changeNumTwo () {
+      this.complianceNum = 0
       this.allcase.complianceTest.forEach((item) => {
         if (item.result === 'success') {
           this.complianceNum++
         }
       })
+    },
+    changeNumThree () {
+      this.sandboxNum = 0
       this.allcase.sandboxTest.forEach((item) => {
         if (item.result === 'success') {
           this.sandboxNum++
         }
       })
-      // top图标变化
-      // if (this.allcase.securityTest.some((item) => {
-      //   return item.type === 'danger'
-      // })) {
-      //   this.step1class = false
-      // } else {
-      //   this.step1class = true
-      // }
-      // if (this.allcase.complianceTest.some((item) => {
-      //   return item.type === 'danger'
-      // })) {
-      //   this.step2class = false
-      // } else {
-      //   this.step2class = true
-      // }
-      // if (this.allcase.sandboxTest.some((item) => {
-      //   return item.type === 'danger'
-      // })) {
-      //   this.step3class = false
-      // } else {
-      //   this.step3class = true
-      // }
-      // 打开弹框
     },
     // 测试完成弹框
     CheckReport () {
@@ -414,20 +445,32 @@ export default {
       background-color: #6c92fa;
     }
     .el-step__icon{
-      width:82px;
-      height:82px;
+      width:90px;
+      height:90px;
       bottom: 20px;
-      border: none;
+      border: 2px solid #6c92fa;
+    }
+    .success{
+      animation-play-state: paused;
+      .el-step__icon{
+        border: 2px solid #6c92fa;
+      }
+    }
+    .fail{
+       animation-play-state: paused;
+      .el-step__icon{
+        border: 2px solid #F56C6C;
+      }
     }
     .stepone, .steptwo, .stepthree{
-      width: 82px;
-      height: 82px;
+      width: 86px;
+      height: 86px;
       border-radius: 50%;
-      border: 2px solid #6c92fa;
+      background-position: center;
+      background-repeat: no-repeat;
     }
     .stepone{
       background: url('../../assets/images/securityTest_icon.png');
-      // opacity: 0.2;
     }
     .steptwo{
       background: url('../../assets/images/complianceTest_icon.png');
@@ -435,37 +478,53 @@ export default {
     .stepthree{
       background: url('../../assets/images/sandboxTest_icon.png');
     }
-    // .stepFinish{
-    //   background: url('../../assets/images/securityTestFinish.png');
-    //   background-position: center;
-    //   background-repeat: no-repeat;
-    //   border-radius: 50%;
-    //   opacity: 90%;
-    //   z-index: 10;
+    .secFinishSuccess{
+      background: url('../../assets/images/secFinishSuccess.png');
+    }
+    .comFinishSuccess{
+      background: url('../../assets/images/comFinishSuccess.png');
+    }
+    .sandFinishSuccess{
+      background: url('../../assets/images/sandFinishSuccess.png');
+    }
+    .secFinishFail{
+      background: url('../../assets/images/secFinishFail.png');
+    }
+    .comFinishFail{
+      background: url('../../assets/images/comFinishFail.png');
+    }
+    .sandFinishFail{
+      background: url('../../assets/images/sandFinishFail.png');
+    }
+    .running{
+      .el-step__icon{
+        border: 2px dashed #6c92fa;
+        animation: rotate 5s infinite linear ;
+      }
+      .stepone, .steptwo, .stepthree{
+        animation: rotateinside 5s infinite linear ;
+      }
+    }
+    // .stop{
+    //   animation-play-state: paused;
     // }
-    // .failed{
-    //   .el-step__title{
-    //     color:  #f56c6c;
-    //   }
-    //   .is-finish{
-    //     border-color:  #f56c6c;
-    //   }
-    // }
-    //  .success{
-    //   .el-step__title{
-    //     color:  #67C23A;
-    //   }
-    //   .is-finish{
-    //     border-color:  #67C23A;
-    //   }
-    // }
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    @keyframes rotateinside {
+        from {
+            transform: rotate(360deg);
+        }
+        to {
+            transform: rotate(0deg);
+        }
+    }
   }
-  // .el-icon-circle-close:before {
-  //   color: #f56c6c;
-  // }
-  // .el-icon-circle-check:before{
-  //   color: #67C23A;
-  // }
   .case-main{
     display: flex;
     justify-content: space-around;
@@ -483,58 +542,20 @@ export default {
           position: relative;
           left:50%;
           transform:translateX(-40px);
-          // background-color: coral;
-          // border: 1px solid #7e9c94;
-          // border-radius: 50%;
           width:80px;
           height:60px;
           text-align: center;
           line-height: 60px;
-          // background: url('../../assets/images/test-step.png');
-          // background-position: center;
           span{
             font-size: 40px;
             color: #fff;
             font-weight: 700;
-            // opacity: 0.5;
+          }
+          .sum{
+            font-size: 25px;
+            color: #6c8ce3;
           }
         }
-        .animation{
-          // transition: transform 2s;
-          animation: casetitle1 1s;
-          // animation: rotating 1s;
-          animation-play-state: running;
-          // animation-iteration-count: 100;
-        }
-        // .case-title-icon:hover{
-        //   transform: rotateY(120deg);
-        //   transform-origin: center;
-        // }
-      }
-      @keyframes casetitle1
-      {
-          0%   {top: 13px;}
-          15%  {top: 22px;}
-          30%  {top: 13px;}
-          45%  {top: 22px;}
-          60%  {top: 13px;}
-          75%  {top: 22px;}
-          90%  {top: 13px;}
-          100% {top: 20px;}
-      }
-      @keyframes rotating {
-        from {
-          transform: rotateY(0deg);
-        }
-        to {
-          transform: rotateY(-360deg);
-        }
-      }
-      @keyframes casetitle2
-      {
-          0%   {left: 8%; background-color:rgb(102, 97, 97)}
-          50%  {left: 92%; background-color:rgb(155, 35, 35) }
-          100% {left: 50%; background-color:rgb(48, 21, 201)}
       }
       .case-detail{
         height: 500px;
@@ -549,15 +570,6 @@ export default {
   }
     .el-dialog{
         width: 30%;
-        // .el-dialog__header{
-        //   background-color: #688ef3 ;
-        //   .el-dialog__title {
-        //     color: #fff;
-        //   }
-        //   .el-dialog__close {
-        //     color: #fff;
-        //   }
-        // }
         .button-center{
           text-align: center;
         }
