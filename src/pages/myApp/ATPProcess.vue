@@ -367,6 +367,7 @@ export default {
         this.steponeIcon = 'fail'
         this.step1class = false
       } else {
+        this.steponeIcon = 'success'
         this.step1class = true
       }
       if (this.allcase.complianceTest.some((item) => {
@@ -375,6 +376,7 @@ export default {
         this.steptwoIcon = 'fail'
         this.step2class = false
       } else {
+        this.steptwoIcon = 'success'
         this.step2class = true
       }
       if (this.allcase.sandboxTest.some((item) => {
@@ -383,6 +385,7 @@ export default {
         this.stepthreeIcon = 'fail'
         this.step3class = false
       } else {
+        this.stepthreeIcon = 'success'
         this.step3class = true
       }
     },
@@ -394,6 +397,8 @@ export default {
           this.securityNum++
         }
       })
+      console.log(this.allcase.securityTest)
+      console.log(this.securityNum)
     },
     changeNumTwo () {
       this.complianceNum = 0
@@ -402,6 +407,8 @@ export default {
           this.complianceNum++
         }
       })
+      console.log(this.allcase.complianceTest)
+      console.log(this.complianceNum)
     },
     changeNumThree () {
       this.sandboxNum = 0
@@ -410,6 +417,8 @@ export default {
           this.sandboxNum++
         }
       })
+      console.log(this.allcase.sandboxTest)
+      console.log(this.sandboxNum)
     },
     // 测试完成弹框
     CheckReport () {
