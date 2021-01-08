@@ -366,6 +366,10 @@ export default {
       })) {
         this.steponeIcon = 'fail'
         this.step1class = false
+      } else if (this.allcase.securityTest.some((item) => {
+        return item.type === 'warning'
+      })) {
+        this.steponeIcon = 'running'
       } else {
         this.steponeIcon = 'success'
         this.step1class = true
@@ -375,6 +379,10 @@ export default {
       })) {
         this.steptwoIcon = 'fail'
         this.step2class = false
+      } else if (this.allcase.securityTest.some((item) => {
+        return item.type === 'warning'
+      })) {
+        this.steptwoIcon = 'running'
       } else {
         this.steptwoIcon = 'success'
         this.step2class = true
@@ -384,6 +392,10 @@ export default {
       })) {
         this.stepthreeIcon = 'fail'
         this.step3class = false
+      } else if (this.allcase.securityTest.some((item) => {
+        return item.type === 'warning'
+      })) {
+        this.stepthreeIcon = 'running'
       } else {
         this.stepthreeIcon = 'success'
         this.step3class = true
