@@ -31,6 +31,11 @@ export default new Router({
       children: [
         {
           path: 'index',
+          name: 'home',
+          component: () => import('./pages/home/Home.vue')
+        },
+        {
+          path: 'testcasemanage',
           name: 'testcasemanage',
           component: () => import('./pages/myApp/TestCaseManage.vue')
         },
