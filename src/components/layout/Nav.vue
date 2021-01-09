@@ -18,7 +18,7 @@
   <div id="headerComp">
     <el-row>
       <el-col
-        :span="12"
+        :span="6"
       >
         <div class="logo">
           <img
@@ -27,14 +27,23 @@
             @click="jumpTo('/index')"
             alt
           >
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div class="navList curp">
           <span
-            class="curp"
             @click="jumpTo('/index')"
-          >{{ $t('nav.atp') }} </span>
+            :class="currentUrl==='/index' ? 'active' : ''"
+          >首页</span>
+          <span
+            @click="jumpTo('/testcasemanage')"
+            :class="currentUrl==='/testcasemanage' ? 'active' : ''"
+          >测试用例管理</span>
+          <span>任务管理</span>
         </div>
       </el-col>
       <el-col
-        :span="12"
+        :span="6"
       >
         <div class="nav-tabs rt">
           <span
@@ -68,13 +77,12 @@ export default {
   name: 'HeaderComp',
   data () {
     return {
+      currentUrl: '/index',
       language: 'cn',
       userName: '',
       loginPage: '',
       ifGuest: true
     }
-  },
-  watch: {
   },
   computed: {
     getLanguage () {
@@ -115,7 +123,18 @@ export default {
       })
     }
   },
-
+  watch: {
+    $route (to, from) {
+      this.currentUrl = to.path
+      this.fromPath = from.path
+      let path = this.$route.path
+      if (path === '/index') {
+        this.currentUrl = '/index'
+      } else if (path === '/testcasemanage') {
+        this.currentUrl = '/testcasemanage'
+      }
+    }
+  },
   mounted () {
     localStorage.setItem('language', 'cn')
     getUserInfo().then(res => {
@@ -160,6 +179,23 @@ export default {
     span {
       font-size: 18px;
       vertical-align: text-bottom;
+    }
+  }
+  .navList{
+    span {
+      font-size: 20px;
+      line-height: 65px;
+      margin: 0 50px;
+      padding-bottom: 17px;
+      vertical-align: bottom;
+    }
+    span:hover {
+      color: #6c92fa;
+      border-bottom: 2px solid #6c92fa;
+    }
+    .active {
+      color: #6c92fa;
+      border-bottom: 2px solid #6c92fa;
     }
   }
   .nav-tabs {
