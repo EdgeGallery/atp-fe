@@ -40,7 +40,7 @@
         >
           <em
             class="stepone"
-            :class="step1class ? 'secFinishSuccess' : 'secFinishFail'"
+            :class="step1class"
             slot="icon"
           />
         </el-step>
@@ -50,7 +50,7 @@
         >
           <em
             class="steptwo"
-            :class="step2class ? 'comFinishSuccess' : 'comFinishFail'"
+            :class="step2class"
             slot="icon"
           />
         </el-step>
@@ -60,7 +60,7 @@
         >
           <em
             class="stepthree"
-            :class="step3class ? 'sandFinishSuccess' : 'sandFinishFail'"
+            :class="step3class"
             slot="icon"
           />
         </el-step>
@@ -217,12 +217,12 @@ export default {
     return {
       currUrl: window.location.href,
       active: 0,
-      step1class: false,
-      step2class: false,
-      step3class: false,
-      steponeIcon: 'running',
-      steptwoIcon: 'running',
-      stepthreeIcon: 'running',
+      step1class: '',
+      step2class: '',
+      step3class: '',
+      steponeIcon: '',
+      steptwoIcon: '',
+      stepthreeIcon: '',
       intervalNumone: '',
       intervalNumtwo: '',
       intervalNumthree: '',
@@ -342,95 +342,95 @@ export default {
     },
     changeIcon () {
       if (this.allcase.securityTest.every((item) => {
-        return item.type === 'primary' || item.type === 'danger'
+        return (item.type === 'primary' || item.type === 'danger')
       })) {
         this.active = 1
         clearTimeout(this.intervalNumone)
+        let sec = this.allcase.securityTest.some((item) => {
+          return item.type === 'danger'
+        })
+        if (sec) {
+          this.steponeIcon = ''
+          this.step1class = 'secFinishFail'
+        } else {
+          this.steponeIcon = ''
+          this.step1class = 'secFinishSuccess'
+        }
       }
       if (this.allcase.complianceTest.every((item) => {
-        return item.type === 'primary' || item.type === 'danger'
+        return (item.type === 'primary' || item.type === 'danger')
       })) {
         this.active = 2
         clearTimeout(this.intervalNumtwo)
+        let com = this.allcase.complianceTest.some((item) => {
+          return item.type === 'danger'
+        })
+        if (com) {
+          this.steptwoIcon = ''
+          this.step2class = 'comFinishFail'
+        } else {
+          this.steptwoIcon = ''
+          this.step2class = 'comFinishSuccess'
+        }
       }
       if (this.allcase.sandboxTest.every((item) => {
-        return item.type === 'primary' || item.type === 'danger'
+        return (item.type === 'primary' || item.type === 'danger')
       })) {
         this.active = 3
         clearTimeout(this.intervalNumthree)
+        let sand = this.allcase.sandboxTest.some((item) => {
+          return item.type === 'danger'
+        })
+        if (sand) {
+          this.stepthreeIcon = ''
+          this.step3class = 'sandFinishFail'
+        } else {
+          this.stepthreeIcon = ''
+          this.step3class = 'sandFinishSuccess'
+        }
       }
       console.log(this.active)
       // top图标变化
       if (this.allcase.securityTest.some((item) => {
-        return item.type === 'danger'
-      })) {
-        this.steponeIcon = 'fail'
-        this.step1class = false
-      } else if (this.allcase.securityTest.some((item) => {
         return item.type === 'warning'
       })) {
         this.steponeIcon = 'running'
-      } else {
-        this.steponeIcon = 'success'
-        this.step1class = true
       }
       if (this.allcase.complianceTest.some((item) => {
-        return item.type === 'danger'
-      })) {
-        this.steptwoIcon = 'fail'
-        this.step2class = false
-      } else if (this.allcase.securityTest.some((item) => {
         return item.type === 'warning'
       })) {
         this.steptwoIcon = 'running'
-      } else {
-        this.steptwoIcon = 'success'
-        this.step2class = true
       }
       if (this.allcase.sandboxTest.some((item) => {
-        return item.type === 'danger'
-      })) {
-        this.stepthreeIcon = 'fail'
-        this.step3class = false
-      } else if (this.allcase.securityTest.some((item) => {
         return item.type === 'warning'
       })) {
         this.stepthreeIcon = 'running'
-      } else {
-        this.stepthreeIcon = 'success'
-        this.step3class = true
       }
     },
     changeNumOne () {
       this.securityNum = 0
       // 用例执行个数
       this.allcase.securityTest.forEach((item) => {
-        if (item.result === 'success') {
+        if (item.type === 'primary') {
           this.securityNum++
         }
       })
-      console.log(this.allcase.securityTest)
-      console.log(this.securityNum)
     },
     changeNumTwo () {
       this.complianceNum = 0
       this.allcase.complianceTest.forEach((item) => {
-        if (item.result === 'success') {
+        if (item.type === 'primary') {
           this.complianceNum++
         }
       })
-      console.log(this.allcase.complianceTest)
-      console.log(this.complianceNum)
     },
     changeNumThree () {
       this.sandboxNum = 0
       this.allcase.sandboxTest.forEach((item) => {
-        if (item.result === 'success') {
+        if (item.type === 'primary') {
           this.sandboxNum++
         }
       })
-      console.log(this.allcase.sandboxTest)
-      console.log(this.sandboxNum)
     },
     // 测试完成弹框
     CheckReport () {
@@ -466,10 +466,10 @@ export default {
       background-color: #6c92fa;
     }
     .el-step__icon{
-      width:90px;
-      height:90px;
+      width:100px;
+      height:100px;
       bottom: 20px;
-      border: 2px solid #6c92fa;
+      border: none;
     }
     .success{
       animation-play-state: paused;
@@ -484,11 +484,12 @@ export default {
       }
     }
     .stepone, .steptwo, .stepthree{
-      width: 86px;
-      height: 86px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       background-position: center;
       background-repeat: no-repeat;
+      border: 2px solid #6c92fa;
     }
     .stepone{
       background: url('../../assets/images/securityTest_icon.png');
@@ -509,12 +510,15 @@ export default {
       background: url('../../assets/images/sandFinishSuccess.png');
     }
     .secFinishFail{
+      border: 2px solid #F56C6C;
       background: url('../../assets/images/secFinishFail.png');
     }
     .comFinishFail{
+      border: 2px solid #F56C6C;
       background: url('../../assets/images/comFinishFail.png');
     }
     .sandFinishFail{
+      border: 2px solid #F56C6C;
       background: url('../../assets/images/sandFinishFail.png');
     }
     .running{
@@ -523,6 +527,7 @@ export default {
         animation: rotate 5s infinite linear ;
       }
       .stepone, .steptwo, .stepthree{
+        border: none;
         animation: rotateinside 5s infinite linear ;
       }
     }
