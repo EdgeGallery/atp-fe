@@ -298,18 +298,20 @@ export default {
           for (const keyin in caseDetail) {
             let obj = {
               content: '',
-              size: 'normal',
+              size: 'large',
               icon: '',
               type: ''
             }
             obj.content = keyin
             if (caseDetail[keyin].result === 'success') {
               obj.type = 'primary'
+              obj.icon = 'el-icon-check'
             } else if (caseDetail[keyin].result === 'failed') {
               obj.type = 'danger'
+              obj.icon = 'el-icon-close'
             } else if (caseDetail[keyin].result === 'running') {
               obj.icon = 'el-icon-loading'
-              obj.type = 'warning'
+              obj.type = 'info'
             } else {
               obj.icon = ''
               obj.type = ''
@@ -389,7 +391,6 @@ export default {
           this.step3class = 'sandFinishSuccess'
         }
       }
-      console.log(this.active)
       // top图标变化
       if (this.allcase.securityTest.some((item) => {
         return item.type === 'warning'
@@ -531,9 +532,6 @@ export default {
         animation: rotateinside 5s infinite linear ;
       }
     }
-    // .stop{
-    //   animation-play-state: paused;
-    // }
     @keyframes rotate {
         from {
             transform: rotate(0deg);
@@ -600,11 +598,5 @@ export default {
           text-align: center;
         }
     }
-    //
-  // .el-step.is-horizontal .el-step__line{
-  //   top: 50%;
-  //   left: 94px;
-  //   right: 48px;
-  // }
   }
 </style>

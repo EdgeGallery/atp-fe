@@ -123,19 +123,13 @@ export default {
       })
     }
   },
-  watch: {
-    $route (to, from) {
-      this.currentUrl = to.path
-      this.fromPath = from.path
-      let path = this.$route.path
-      if (path === '/index') {
-        this.currentUrl = '/index'
-      } else if (path === '/testcasemanage') {
-        this.currentUrl = '/testcasemanage'
-      }
-    }
-  },
   mounted () {
+    let path = this.$route.path
+    if (path === '/index') {
+      this.currentUrl = '/index'
+    } else if (path === '/testcasemanage') {
+      this.currentUrl = '/testcasemanage'
+    }
     localStorage.setItem('language', 'cn')
     getUserInfo().then(res => {
       sessionStorage.setItem('userId', res.data.userId)
@@ -153,6 +147,18 @@ export default {
     if (historyRoute) {
       this.$router.push(historyRoute)
       sessionStorage.setItem('historyRoute', '')
+    }
+  },
+  watch: {
+    $route (to, from) {
+      let path = this.$route.path
+      console.log(path)
+      if (path === '/index') {
+        this.currentUrl = '/index'
+      } else if (path === '/testcasemanage') {
+        this.currentUrl = '/testcasemanage'
+      }
+      console.log(this.currentUrl)
     }
   },
   beforeDestroy () {
