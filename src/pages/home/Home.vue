@@ -144,7 +144,6 @@ export default {
   .statisticdata{
     display: flex;
     justify-content: space-between;
-    width: 100%;
     height: 500px;
     margin:10px 30px;
     border-radius: 10px;
