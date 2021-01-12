@@ -307,8 +307,6 @@ export default {
   mounted () {
     this.getTaskId()
     this.getReport()
-    this.drawLeftLine()
-    this.drawRightLine()
   },
   methods: {
     getTaskId () {
@@ -483,6 +481,7 @@ export default {
         // item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2) + '%'
         item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2)
       }
+      this.drawLeftLine()
     },
     getRightChart () {
       this.modelData.forEach((item) => {
@@ -490,6 +489,7 @@ export default {
         this.failData.push(item.fail)
         this.passRateData.push(item.passRate)
       })
+      this.drawRightLine()
     },
     drawLeftLine () {
       let Chart = this.$echarts.init(document.getElementById('leftchart'))
