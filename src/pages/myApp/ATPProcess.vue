@@ -472,15 +472,17 @@ export default {
       background-color: #6c92fa;
     }
     .el-step__icon{
-      width:100px;
-      height:100px;
-      bottom: 20px;
+      width:90px;
+      height:90px;
+      bottom: 25px;
       border: none;
+      background-position: center;
     }
     .success{
       animation-play-state: paused;
       .el-step__icon{
         border: 2px solid #6c92fa;
+
       }
     }
     .fail{
@@ -490,8 +492,8 @@ export default {
       }
     }
     .stepone, .steptwo, .stepthree{
-      width: 90px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       background-position: center;
       background-repeat: no-repeat;
@@ -529,7 +531,7 @@ export default {
     }
     .running{
       .el-step__icon{
-        border: 2px dashed #6c92fa;
+        border: 3px dashed #6c92fa;
         animation: rotate 5s infinite linear ;
       }
       .stepone, .steptwo, .stepthree{
