@@ -20,13 +20,14 @@
       class="back"
     >
       <el-button
+        :disabled="report"
         id="back_button"
         type="primary"
-        icon="el-icon-arrow-left"
+        icon="el-icon-document"
         plain
         @click="jumpTo()"
       >
-        {{ $t('atp.returnList') }}
+        查看报告
       </el-button>
     </div>
     <div class="step-title">
@@ -154,7 +155,6 @@
       <img
         src="../../assets/images/complianceTest_icon.png"
         class="curp"
-        @click="jumpTo('/index')"
         alt
       >
       <div
@@ -186,7 +186,6 @@
       <img
         src="../../assets/images/complianceTest_icon.png"
         class="curp"
-        @click="jumpTo('/index')"
         alt
       >
       <div
@@ -239,7 +238,8 @@ export default {
       dialogFailed: false,
       securityNum: 0,
       complianceNum: 0,
-      sandboxNum: 0
+      sandboxNum: 0,
+      report: true
     }
   },
   mounted () {
@@ -279,7 +279,10 @@ export default {
       }
     },
     jumpTo () {
-      this.$router.push('/app/test/task')
+      // this.$router.push('/app/test/task')
+      let taskId = this.taskId
+      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
+      window.open(routeData.href, '_blank')
     },
     clearInterval () {
       clearTimeout(this.interval)
@@ -390,20 +393,21 @@ export default {
           this.stepthreeIcon = ''
           this.step3class = 'sandFinishSuccess'
         }
+        this.report = false
       }
       // top图标变化
       if (this.allcase.securityTest.some((item) => {
-        return item.type === 'warning'
+        return item.type === 'info'
       })) {
         this.steponeIcon = 'running'
       }
       if (this.allcase.complianceTest.some((item) => {
-        return item.type === 'warning'
+        return item.type === 'info'
       })) {
         this.steptwoIcon = 'running'
       }
       if (this.allcase.sandboxTest.some((item) => {
-        return item.type === 'warning'
+        return item.type === 'info'
       })) {
         this.stepthreeIcon = 'running'
       }
@@ -451,7 +455,8 @@ export default {
     background-color: white;
     // margin: 0 56px;
     .back{
-      padding: 10px 10px 0;
+      padding: 10px 50px 0;
+      text-align: right;
     }
   .step-title{
     margin-bottom: 50px;
