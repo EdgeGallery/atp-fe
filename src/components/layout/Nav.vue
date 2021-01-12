@@ -39,7 +39,10 @@
             @click="jumpTo('/testcasemanage')"
             :class="currentUrl==='/testcasemanage' ? 'active' : ''"
           >测试用例管理</span>
-          <span>任务管理</span>
+          <span
+            @click="jumpTo('/tasklist')"
+            :class="currentUrl==='/tasklist' ? 'active' : ''"
+          >任务管理</span>
         </div>
       </el-col>
       <el-col
@@ -129,6 +132,8 @@ export default {
       this.currentUrl = '/index'
     } else if (path === '/testcasemanage') {
       this.currentUrl = '/testcasemanage'
+    } else if (path === '/tasklist') {
+      this.currentUrl = '/tasklist'
     }
     localStorage.setItem('language', 'cn')
     getUserInfo().then(res => {
@@ -157,6 +162,8 @@ export default {
         this.currentUrl = '/index'
       } else if (path === '/testcasemanage') {
         this.currentUrl = '/testcasemanage'
+      } else if (path === '/tasklist') {
+        this.currentUrl = '/tasklist'
       }
       console.log(this.currentUrl)
     }
@@ -191,7 +198,7 @@ export default {
     span {
       font-size: 20px;
       line-height: 65px;
-      margin: 0 50px;
+      margin: 0 35px;
       padding-bottom: 17px;
       vertical-align: bottom;
     }
