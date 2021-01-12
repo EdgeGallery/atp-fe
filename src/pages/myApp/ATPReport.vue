@@ -92,37 +92,51 @@
           <el-row :gutter="20">
             <el-col
               :span="12"
-              class="chartPie"
             >
-              <ve-pie :data="chartData" />
+              <div class="left">
+                <div
+                  class="chart"
+                  id="leftchart"
+                />
+                <el-table :data="chartData">
+                  <el-table-column
+                    prop="name"
+                    :label="$t('report.model')"
+                  />
+                  <el-table-column
+                    prop="value"
+                    label="数量"
+                  />
+                </el-table>
+              </div>
             </el-col>
             <el-col
-              :span="10"
-              class="chartLine"
-              style="margin-top:40px;"
+              :span="12"
             >
-              <el-table
-                :data="modelData"
-                border
-                stripe
-              >
-                <el-table-column
-                  prop="model"
-                  :label="$t('report.model')"
-                />
-                <el-table-column
-                  prop="success"
-                  :label="$t('atp.success')"
-                />
-                <el-table-column
-                  prop="fail"
-                  :label="$t('atp.failed')"
-                />
-                <el-table-column
-                  prop="passRate"
-                  :label="$t('report.rate')"
-                />
-              </el-table>
+              <div
+                class="passchart"
+                id="rightchart"
+              />
+              <!-- <el-table
+                  :data="modelData"
+                >
+                  <el-table-column
+                    prop="model"
+                    :label="$t('report.model')"
+                  />
+                  <el-table-column
+                    prop="success"
+                    :label="$t('atp.success')"
+                  />
+                  <el-table-column
+                    prop="fail"
+                    :label="$t('atp.failed')"
+                  />
+                  <el-table-column
+                    prop="passRate"
+                    :label="$t('report.rate')"
+                  />
+                </el-table> -->
             </el-col>
           </el-row>
         </div>
@@ -274,25 +288,27 @@ export default {
           passRate: 0
         }
       ],
+      successData: [],
+      failData: [],
+      passRateData: [],
       activeNames: ['securityTest'],
       securityTest: [],
       complianceTest: [],
       sandboxTest: [],
-      chartData: {
-        columns: ['status', 'case'],
-        rows: [
-          { status: '社区标准用例数', case: 0 },
-          { status: '移动企标用例数', case: 0 },
-          { status: '联通企标用例数', case: 0 },
-          { status: '电信企标用例数', case: 0 },
-          { status: '自定义标准用例数', case: 0 }
-        ]
-      }
+      chartData: [
+        { name: '社区标准', value: 0 },
+        { name: '移动企标', value: 0 },
+        { name: '联通企标', value: 0 },
+        { name: '电信企标', value: 0 },
+        { name: '自定义标准', value: 0 }
+      ]
     }
   },
   mounted () {
-    this.getTaskId()
+    // this.getTaskId()
     this.getReport()
+    this.drawLeftLine()
+    this.drawRightLine()
   },
   methods: {
     getTaskId () {
@@ -332,6 +348,7 @@ export default {
         }
         this.getModelData()
         this.getChartData()
+        this.getRightChart()
       })
     },
     getModelData () {
@@ -460,12 +477,148 @@ export default {
     getChartData () {
       // 通过率
       for (let index = 0; index < this.modelData.length; index++) {
-        let chartitem = this.chartData.rows[index]
+        let chartitem = this.chartData[index]
         const item = this.modelData[index]
-        chartitem.case = item.success + item.fail
-        item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2) + '%'
+        chartitem.value = item.success + item.fail
+        // item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2) + '%'
+        item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2)
       }
     },
+    getRightChart () {
+      this.modelData.forEach((item) => {
+        this.successData.push(item.success)
+        this.failData.push(item.fail)
+        this.passRateData.push(item.passRate)
+      })
+    },
+    drawLeftLine () {
+      let Chart = this.$echarts.init(document.getElementById('leftchart'))
+      let colors = ['#89a6e6', '#a8d89b', '#9ed0c9', '#deba69', '#baa3d4']
+      let option = {
+        color: colors,
+        series: [
+          {
+            name: '认证模板',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: this.chartData
+          }
+        ]
+      }
+      Chart.setOption(option)
+    },
+    drawRightLine () {
+      let passChart = this.$echarts.init(document.getElementById('rightchart'))
+      var colors = ['#89a6e6', '#f59898', '#675bba']
+      let option = {
+        color: colors,
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
+        },
+        grid: {
+          right: '25%'
+        },
+        legend: {
+          data: ['成功数量', '失败数量', '通过率']
+        },
+        xAxis: [
+          {
+            type: 'category',
+            axisTick: {
+              alignWithLabel: true
+            },
+            data: ['社区标准', '移动企标', '联通企标', '电信企标', '自定义标准']
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            name: '成功数量',
+            min: 0,
+            max: 20,
+            position: 'right',
+            axisLine: {
+              lineStyle: {
+                color: colors[0]
+              }
+            },
+            axisLabel: {
+              formatter: '{value}'
+            }
+          },
+          {
+            type: 'value',
+            name: '失败数量',
+            min: 0,
+            max: 20,
+            position: 'right',
+            offset: 80,
+            axisLine: {
+              lineStyle: {
+                color: colors[1]
+              }
+            },
+            axisLabel: {
+              formatter: '{value}'
+            }
+          },
+          {
+            type: 'value',
+            name: '成功率',
+            min: 0,
+            max: 100,
+            position: 'left',
+            axisLine: {
+              lineStyle: {
+                color: colors[2]
+              }
+            },
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          }
+        ],
+        series: [
+          {
+            name: '成功数量',
+            type: 'bar',
+            data: this.successData
+          },
+          {
+            name: '失败数量',
+            type: 'bar',
+            yAxisIndex: 1,
+            data: this.failData
+          },
+          {
+            name: '通过率',
+            type: 'line',
+            yAxisIndex: 2,
+            data: this.passRateData
+          }
+        ]
+      }
+      passChart.setOption(option)
+    },
+
     dateChange (dateStr) {
       if (dateStr) {
         let date = new Date(Date.parse(dateStr))
@@ -575,18 +728,39 @@ export default {
     }
     .report-chart {
       margin: 25px 0;
-      .el-table thead {
-          color: #909399;
-          font-weight: 800;
-          th{
-            background: #f5f5f6;
-          }
+      .left{
+        display: flex;
+        // justify-content: space-between;
+        .el-table{
+          margin-top: 30px;
         }
+      }
+      .passchart{
+        width: 90%;
+        height: 400px;
+      }
+      .chart{
+          width: 50%;
+          height: 400px;
+      }
+      // .el-table thead {
+      //     color: #909399;
+      //     font-weight: 800;
+      //     th{
+      //       background: #f5f5f6;
+      //     }
+      //   }
           .el-collapse-item__header{
             font-size: 16px;
             background-color: #FAFAFA;
             margin-left: 20px;
           }
+    }
+    @media screen and (max-width: 1200px) {
+      .chart{
+          width: 50%;
+          height: 300px;
+      }
     }
   }
 }

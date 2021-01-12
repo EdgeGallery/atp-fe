@@ -149,14 +149,15 @@ export default {
     border-radius: 10px;
     border: 1px solid #cccccc;
     .left{
-      width: 200px;
-      height: 200px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       background-position: center;
       background-repeat: no-repeat;
       background: url('../../assets/images/sumnumber.png');
       position: relative;
       top: 100px;
+      left: 50px;
       .leftnum{
         text-align: center;
         color: #fff;
