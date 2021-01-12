@@ -305,7 +305,7 @@ export default {
     }
   },
   mounted () {
-    // this.getTaskId()
+    this.getTaskId()
     this.getReport()
     this.drawLeftLine()
     this.drawRightLine()
