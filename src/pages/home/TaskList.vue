@@ -15,159 +15,166 @@
   -->
 
 <template>
-  <div class="task">
+  <div>
     <Navcomp />
-    <div class="task-search">
-      <el-form
-        ref="form"
-        :model="form"
-        label-width="150px"
-      >
-        <el-row>
-          <el-col
-            :span="6"
-            :offset="6"
-          >
-            <el-form-item :label="$t('atp.applicationName')">
-              <el-input
-                id="appName"
-                v-model="form.appName"
-                :placeholder="$t('atp.applicationName')"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item
-              id="testStatus"
-              :label="$t('myApp.testStatus')"
+    <div class="task padding56">
+      <div style="margin:20px 0">
+        <span>应用测试平台</span>
+        <span>></span>
+        <span>任务管理</span>
+      </div>
+      <div class="task-search">
+        <el-form
+          ref="form"
+          :model="form"
+          label-width="150px"
+        >
+          <el-row>
+            <el-col
+              :span="6"
+              :offset="6"
             >
-              <el-select
-                v-model="form.status"
-                :placeholder="$t('myApp.testStatus')"
-                class="statusSelect"
-              >
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.label"
+              <el-form-item :label="$t('atp.applicationName')">
+                <el-input
+                  id="appName"
+                  v-model="form.appName"
+                  :placeholder="$t('atp.applicationName')"
                 />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <div class="search-btn">
-          <el-button
-            id="resetBtn"
-            size="small"
-            @click="resetForm"
-          >
-            {{ $t('myApp.reset') }}
-          </el-button>
-          <el-button
-            id="inquireBtn"
-            type="primary"
-            size="small"
-            @click="getTaskList"
-          >
-            {{ $t('myApp.inquire') }}
-          </el-button>
-        </div>
-      </el-form>
-      <div class="task-content">
-        <el-table
-          v-loading="dataLoading"
-          :data="currentData"
-          style="width: 100%;"
-          border
-        >
-          <el-table-column
-            prop="id"
-            :label="$t('myApp.taskNumber')"
-          >
-            <template slot-scope="scope">
-              <el-button
-                id="checkReportProess"
-                type="text"
-                size="small"
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item
+                id="testStatus"
+                :label="$t('myApp.testStatus')"
               >
-                {{ scope.row.id }}
-              </el-button>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="appName"
-            :label="$t('atp.applicationName')"
-          />
-          <el-table-column
-            prop="providerId"
-            :label="$t('myApp.provider')"
-          />
-          <el-table-column :label="$t('myApp.testStatus')">
-            <template slot-scope="scope">
-              <span
-                v-if="scope.row.status=='success'"
-                class="el-icon-success success"
-                title="success"
-              />
-              <span
-                v-else-if="scope.row.status=='failed'"
-                class="el-icon-error error"
-                title="failed"
-              />
-              <span
-                v-else-if="scope.row.status=='running'"
-                class="el-icon-loading primary"
-                title="running"
-              />
-              <span
-                v-else
-                class="el-icon-finished primary"
-                title="success"
-              />
-              <el-button
-                id="statusBtn"
-                style="margin-left:20px;"
-                type="text"
-                size="small"
-              >
-                {{ scope.row.status }}
-              </el-button>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="createTime"
-            :label="$t('myApp.startTime')"
-          />
-          <el-table-column
-            prop="endTime"
-            :label="$t('myApp.endTime')"
-          />
-          <el-table-column
-            fixed="right"
-            :label="$t('myApp.operation')"
+                <el-select
+                  v-model="form.status"
+                  :placeholder="$t('myApp.testStatus')"
+                  class="statusSelect"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div class="search-btn">
+            <el-button
+              id="resetBtn"
+              size="small"
+              @click="resetForm"
+            >
+              {{ $t('myApp.reset') }}
+            </el-button>
+            <el-button
+              id="inquireBtn"
+              type="primary"
+              size="small"
+              @click="getTaskList"
+            >
+              {{ $t('myApp.inquire') }}
+            </el-button>
+          </div>
+        </el-form>
+        <div class="task-content">
+          <el-table
+            v-loading="dataLoading"
+            :data="currentData"
+            style="width: 100%;"
+            border
           >
-            <template slot-scope="scope">
-              <el-button
-                id="checkReportBtn"
-                @click="handleClickReport(scope.row)"
-                type="text"
-                :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
-                size="small"
-              >
-                {{ $t('myApp.checkReport') }}
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div
-          class="pagebar"
-          style="margin-top: 20px"
-        >
-          <pagination
-            :table-data="pageData"
-            @getCurrentPageData="getCurrentPageData"
-          />
+            <el-table-column
+              prop="id"
+              :label="$t('myApp.taskNumber')"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  id="checkReportProess"
+                  type="text"
+                  size="small"
+                >
+                  {{ scope.row.id }}
+                </el-button>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="appName"
+              :label="$t('atp.applicationName')"
+            />
+            <el-table-column
+              prop="providerId"
+              :label="$t('myApp.provider')"
+            />
+            <el-table-column :label="$t('myApp.testStatus')">
+              <template slot-scope="scope">
+                <span
+                  v-if="scope.row.status=='success'"
+                  class="el-icon-success success"
+                  title="success"
+                />
+                <span
+                  v-else-if="scope.row.status=='failed'"
+                  class="el-icon-error error"
+                  title="failed"
+                />
+                <span
+                  v-else-if="scope.row.status=='running'"
+                  class="el-icon-loading primary"
+                  title="running"
+                />
+                <span
+                  v-else
+                  class="el-icon-finished primary"
+                  title="success"
+                />
+                <el-button
+                  id="statusBtn"
+                  style="margin-left:20px;"
+                  type="text"
+                  size="small"
+                >
+                  {{ scope.row.status }}
+                </el-button>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="createTime"
+              :label="$t('myApp.startTime')"
+            />
+            <el-table-column
+              prop="endTime"
+              :label="$t('myApp.endTime')"
+            />
+            <el-table-column
+              fixed="right"
+              :label="$t('myApp.operation')"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  id="checkReportBtn"
+                  @click="handleClickReport(scope.row)"
+                  type="text"
+                  :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
+                  size="small"
+                >
+                  {{ $t('myApp.checkReport') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div
+            class="pagebar"
+            style="margin-top: 20px"
+          >
+            <pagination
+              :table-data="pageData"
+              @getCurrentPageData="getCurrentPageData"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -347,7 +354,7 @@ export default {
     padding-right: 20px;
   }
   .task-search {
-    background-color: #fff;
+    background-color: white;
     padding: 40px;
     .el-form {
       .el-input__inner {
