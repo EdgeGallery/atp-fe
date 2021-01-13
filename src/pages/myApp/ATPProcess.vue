@@ -304,9 +304,14 @@ export default {
         const sandDivheight = sandDiv.clientHeight
         const heightArr = [secDivheight, comDivheight, sandDivheight]
         heightArr.sort().reverse()
-        secDiv.style.height = heightArr[0] + 'px'
-        comDiv.style.height = heightArr[0] + 'px'
-        sandDiv.style.height = heightArr[0] + 'px'
+        console.log(heightArr)
+        // secDiv.style.height = heightArr[0] + 'px'
+        // comDiv.style.height = heightArr[0] + 'px'
+        // sandDiv.style.height = heightArr[0] + 'px'
+        const deviceHeight = document.documentElement.clientHeight
+        secDiv.style.height = deviceHeight - 20 + 'px'
+        comDiv.style.height = deviceHeight - 20 + 'px'
+        sandDiv.style.height = deviceHeight - 20 + 'px'
       })
     },
     clearInterval () {
