@@ -88,24 +88,26 @@
         <div class="title">
           {{ $t('report.reportanalysis') }}
         </div>
-        <div>
+        <div class="report_analysis">
           <el-row :gutter="20">
             <el-col
               :span="12"
             >
               <div class="left">
                 <div
-                  class="chart"
+                  class="sumchart"
                   id="leftchart"
                 />
                 <el-table :data="chartData">
                   <el-table-column
                     prop="name"
                     :label="$t('report.model')"
+                    width="130"
                   />
                   <el-table-column
                     prop="value"
                     label="数量"
+                    width="100"
                   />
                 </el-table>
               </div>
@@ -114,7 +116,7 @@
               :span="12"
             >
               <div
-                class="passchart"
+                class="detailchart"
                 id="rightchart"
               />
               <!-- <el-table
@@ -140,7 +142,7 @@
             </el-col>
           </el-row>
         </div>
-        <div>
+        <div class="report_detail">
           <div class="title">
             {{ $t('report.reportDetail') }}
           </div>
@@ -307,6 +309,9 @@ export default {
   mounted () {
     this.getTaskId()
     this.getReport()
+    // 临时
+    // this.drawLeftLine()
+    // this.drawRightLine()
   },
   methods: {
     getTaskId () {
@@ -496,6 +501,10 @@ export default {
       let colors = ['#89a6e6', '#a8d89b', '#9ed0c9', '#deba69', '#baa3d4']
       let option = {
         color: colors,
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
         series: [
           {
             name: '认证模板',
@@ -509,7 +518,7 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '30',
+                fontSize: '20',
                 fontWeight: 'bold'
               }
             },
@@ -528,15 +537,23 @@ export default {
       let option = {
         color: colors,
         tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross'
-          }
+          trigger: 'axis'
         },
+        // toolbox: {
+        //   show: true,
+        //   feature: {
+        //     mark: { show: true },
+        //     dataView: { show: true, readOnly: false },
+        //     magicType: { show: true, type: ['line', 'bar'] },
+        //     restore: { show: true },
+        //     saveAsImage: { show: true }
+        //   }
+        // },
         grid: {
           right: '25%'
         },
         legend: {
+          left: 10,
           data: ['成功数量', '失败数量', '通过率']
         },
         xAxis: [
@@ -601,18 +618,25 @@ export default {
             name: '成功数量',
             type: 'bar',
             data: this.successData
+            // data: [15, 12, 5, 3, 2]
           },
           {
             name: '失败数量',
             type: 'bar',
             yAxisIndex: 1,
             data: this.failData
+            // data: [2, 0, 0, 1, 0]
           },
           {
             name: '通过率',
             type: 'line',
+            symbolSize: 15,
+            lineStyle: {
+              color: '#6c50f3'
+            },
             yAxisIndex: 2,
             data: this.passRateData
+            // data: [80, 82, 100, 100, 100]
           }
         ]
       }
@@ -680,7 +704,7 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
+<style lang='less'>
 .report {
   .report-content {
     background: white;
@@ -715,6 +739,7 @@ export default {
       margin-left: 25px;
     }
     .title {
+      font-size: 20px;
       margin: 15px 0;
     }
     .title::before {
@@ -727,40 +752,39 @@ export default {
       top: 5px;
     }
     .report-chart {
-      margin: 25px 0;
-      .left{
-        display: flex;
-        // justify-content: space-between;
-        .el-table{
-          margin-top: 30px;
+      // margin: 25px 0;
+      .report_analysis{
+        .left{
+          display: flex;
+          .el-table{
+            margin-top: 45px;
+          }
         }
-      }
-      .passchart{
-        width: 90%;
-        height: 400px;
-      }
-      .chart{
+        .sumchart{
           width: 50%;
           height: 400px;
+        }
+        .detailchart{
+          width: 100%;
+          height: 400px;
+        }
       }
-      // .el-table thead {
-      //     color: #909399;
-      //     font-weight: 800;
-      //     th{
-      //       background: #f5f5f6;
-      //     }
-      //   }
-          .el-collapse-item__header{
-            font-size: 16px;
-            background-color: #FAFAFA;
-            margin-left: 20px;
+      .report_detail{
+            .el-collapse-item__header{
+              font-size: 17px;
+              background-color: #FAFAFA;
+              padding-left: 20px;
           }
+      }
     }
     @media screen and (max-width: 1200px) {
-      .chart{
+      .sumchart{
           width: 50%;
           height: 300px;
       }
+    }
+    .el-table{
+      font-size: 16px;
     }
   }
 }
