@@ -78,7 +78,10 @@
             <span class="sum">{{ allcase.securityTest.length }}</span>
           </div>
         </div>
-        <div class="case-detail">
+        <div
+          class="case-detail"
+          id="secheight"
+        >
           <el-timeline>
             <el-timeline-item
               v-for="(activity, index) in allcase.securityTest"
@@ -103,7 +106,10 @@
             <span class="sum">{{ allcase.complianceTest.length }}</span>
           </div>
         </div>
-        <div class="case-detail">
+        <div
+          class="case-detail"
+          id="comheight"
+        >
           <el-timeline>
             <el-timeline-item
               v-for="(activity, index) in allcase.complianceTest"
@@ -128,7 +134,10 @@
             <span class="sum">{{ allcase.sandboxTest.length }}</span>
           </div>
         </div>
-        <div class="case-detail">
+        <div
+          class="case-detail"
+          id="sandheight"
+        >
           <el-timeline>
             <el-timeline-item
               v-for="(activity, index) in allcase.sandboxTest"
@@ -279,10 +288,23 @@ export default {
       }
     },
     jumpTo () {
-      // this.$router.push('/app/test/task')
       let taskId = this.taskId
       let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
       window.open(routeData.href, '_blank')
+    },
+    // 设置用例高度
+    setDivHeight () {
+      const secDiv = document.getElementById('secheight')
+      const comDiv = document.getElementById('comheight')
+      const sandDiv = document.getElementById('sandheight')
+      const secDivheight = secDiv.clientHeight
+      const comDivheight = comDiv.clientHeight
+      const sandDivheight = sandDiv.clientHeight
+      const heightArr = [secDivheight, comDivheight, sandDivheight]
+      heightArr.sort().reverse()
+      secDiv.style.height = heightArr[0] + 'px'
+      comDiv.style.height = heightArr[0] + 'px'
+      sandDiv.style.height = heightArr[0] + 'px'
     },
     clearInterval () {
       clearTimeout(this.interval)
@@ -328,6 +350,7 @@ export default {
             }
           }
         }
+        this.setDivHeight()
         this.changeIcon()
         this.changeNumOne()
         this.changeNumTwo()
@@ -589,12 +612,15 @@ export default {
         }
       }
       .case-detail{
-        height: 500px;
-        // background-color:#f5f9fb;
         box-shadow: 0 0 10px rgba(0,0,0,0.2);
         padding:25px 10px 10px;
         .el-timeline{
           font-size: 18px;
+          .el-timeline-item__node--large {
+            left: -5px;
+            width: 20px;
+            height: 20px;
+          }
         }
       }
     }
