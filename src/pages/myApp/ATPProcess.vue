@@ -67,7 +67,10 @@
         </el-step>
       </el-steps>
     </div>
-    <div class="case-main">
+    <div
+      class="case-main"
+      id="casediv"
+    >
       <div
         class="testcase-step"
       >
@@ -253,7 +256,6 @@ export default {
   },
   mounted () {
     // 传taskid
-    // this.setDivHeight()
     this.getTaskId()
     this.getCaseData()
     this.interval = setInterval(() => {
@@ -299,19 +301,10 @@ export default {
         const secDiv = document.getElementById('secheight')
         const comDiv = document.getElementById('comheight')
         const sandDiv = document.getElementById('sandheight')
-        const secDivheight = secDiv.clientHeight
-        const comDivheight = comDiv.clientHeight
-        const sandDivheight = sandDiv.clientHeight
-        const heightArr = [secDivheight, comDivheight, sandDivheight]
-        heightArr.sort().reverse()
-        console.log(heightArr)
-        // secDiv.style.height = heightArr[0] + 'px'
-        // comDiv.style.height = heightArr[0] + 'px'
-        // sandDiv.style.height = heightArr[0] + 'px'
-        const deviceHeight = document.documentElement.clientHeight
-        secDiv.style.height = deviceHeight - 20 + 'px'
-        comDiv.style.height = deviceHeight - 20 + 'px'
-        sandDiv.style.height = deviceHeight - 20 + 'px'
+        const caseDivHeight = document.getElementById('casediv').clientHeight
+        secDiv.style.height = caseDivHeight - 80 + 'px'
+        comDiv.style.height = caseDivHeight - 80 + 'px'
+        sandDiv.style.height = caseDivHeight - 80 + 'px'
       })
     },
     clearInterval () {
