@@ -253,6 +253,7 @@ export default {
   },
   mounted () {
     // 传taskid
+    // this.setDivHeight()
     this.getTaskId()
     this.getCaseData()
     this.interval = setInterval(() => {
@@ -294,17 +295,19 @@ export default {
     },
     // 设置用例高度
     setDivHeight () {
-      const secDiv = document.getElementById('secheight')
-      const comDiv = document.getElementById('comheight')
-      const sandDiv = document.getElementById('sandheight')
-      const secDivheight = secDiv.clientHeight
-      const comDivheight = comDiv.clientHeight
-      const sandDivheight = sandDiv.clientHeight
-      const heightArr = [secDivheight, comDivheight, sandDivheight]
-      heightArr.sort().reverse()
-      secDiv.style.height = heightArr[0] + 'px'
-      comDiv.style.height = heightArr[0] + 'px'
-      sandDiv.style.height = heightArr[0] + 'px'
+      this.$nextTick(() => {
+        const secDiv = document.getElementById('secheight')
+        const comDiv = document.getElementById('comheight')
+        const sandDiv = document.getElementById('sandheight')
+        const secDivheight = secDiv.clientHeight
+        const comDivheight = comDiv.clientHeight
+        const sandDivheight = sandDiv.clientHeight
+        const heightArr = [secDivheight, comDivheight, sandDivheight]
+        heightArr.sort().reverse()
+        secDiv.style.height = heightArr[0] + 'px'
+        comDiv.style.height = heightArr[0] + 'px'
+        sandDiv.style.height = heightArr[0] + 'px'
+      })
     },
     clearInterval () {
       clearTimeout(this.interval)
