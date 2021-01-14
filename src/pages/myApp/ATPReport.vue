@@ -342,11 +342,11 @@ export default {
     }
   },
   mounted () {
-    // this.getTaskId()
+    this.getTaskId()
     this.getReport()
     // 临时
-    this.drawLeftLine()
-    this.drawRightLine()
+    // this.drawLeftLine()
+    // this.drawRightLine()
   },
   methods: {
     getTaskId () {
