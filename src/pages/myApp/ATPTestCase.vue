@@ -121,7 +121,7 @@
           <el-table-column
             prop="name"
             :label="$t('testCase.caseName')"
-            width="200"
+            width="250"
           />
           <el-table-column
             prop="type"
@@ -144,6 +144,7 @@
           <el-table-column
             prop="verificationModel"
             :label="$t('testCase.verificationModel')"
+            width="200"
           />
           <el-table-column
             :label="$t('testCase.operation')"

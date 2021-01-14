@@ -113,8 +113,31 @@
                   <el-table-column
                     prop="name"
                     :label="$t('report.model')"
-                    width="130"
-                  />
+                  >
+                    <template slot-scope="scope">
+                      <span
+                        v-if="scope.row.name==='社区标准'"
+                        class="modelone"
+                      />
+                      <span
+                        v-else-if="scope.row.name==='移动企标'"
+                        class="modeltwo"
+                      />
+                      <span
+                        v-else-if="scope.row.name==='联通企标'"
+                        class="modelthree"
+                      />
+                      <span
+                        v-else-if="scope.row.name==='电信企标'"
+                        class="modelfour"
+                      />
+                      <span
+                        v-else-if="scope.row.name==='自定义标准'"
+                        class="modelfive"
+                      />
+                      <span>{{ scope.row.name }}</span>
+                    </template>
+                  </el-table-column>
                   <el-table-column
                     prop="value"
                     label="数量"
@@ -319,11 +342,11 @@ export default {
     }
   },
   mounted () {
-    this.getTaskId()
+    // this.getTaskId()
     this.getReport()
     // 临时
-    // this.drawLeftLine()
-    // this.drawRightLine()
+    this.drawLeftLine()
+    this.drawRightLine()
   },
   methods: {
     getTaskId () {
@@ -526,19 +549,19 @@ export default {
           {
             name: '认证模板',
             type: 'pie',
-            radius: ['40%', '70%'],
+            radius: ['20%', '40%'],
             avoidLabelOverlap: false,
-            label: {
-              show: false,
-              position: 'center'
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: '20',
-                fontWeight: 'bold'
-              }
-            },
+            // label: {
+            //   show: false,
+            //   position: 'center'
+            // },
+            // emphasis: {
+            //   label: {
+            //     show: true,
+            //     fontSize: '20',
+            //     fontWeight: 'bold'
+            //   }
+            // },
             labelLine: {
               show: false
             },
@@ -587,7 +610,7 @@ export default {
             type: 'value',
             name: '成功数量',
             min: 0,
-            max: 60,
+            max: 80,
             position: 'right',
             axisLine: {
               lineStyle: {
@@ -602,7 +625,7 @@ export default {
             type: 'value',
             name: '失败数量',
             min: 0,
-            max: 60,
+            max: 80,
             position: 'right',
             offset: 80,
             axisLine: {
@@ -793,13 +816,39 @@ export default {
       .report_analysis{
         .left{
           display: flex;
+          // justify-content: flex-end;
           .el-table{
             margin-top: 45px;
           }
+          .el-table::before{
+            background-color: #fff;
+          }
         }
         .sumchart{
-          width: 50%;
+          width: 60%;
           height: 400px;
+        }
+        .modelone,.modeltwo,.modelthree,.modelfour,.modelfive{
+          width: 8px;
+            height: 8px;
+            display: inline-block;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+        .modelone{
+          background-color: #89a6e6;
+        }
+        .modeltwo{
+          background-color: #a8d89b;
+        }
+        .modelthree{
+          background-color: #9ed0c9;
+        }
+        .modelfour{
+          background-color: #deba69;
+        }
+        .modelfive{
+          background-color: #baa3d4;
         }
         .detailchart{
           width: 100%;
@@ -807,16 +856,26 @@ export default {
         }
       }
       .report_detail{
-            .el-collapse-item__header{
-              font-size: 17px;
-              background-color: #FAFAFA;
-              padding-left: 20px;
+        .el-collapse-item__header{
+            font-size: 17px;
+            background-color: #FAFAFA;
+            padding-left: 20px;
           }
+        // .el-collapse-item__header:before {
+        //   content: "";
+        //   display: inline-block;
+        //   border: 8px solid #fff;
+        //   border-left-color: rgb(101, 129, 221);
+        //   border-right: 0;
+        //   position: relative;
+        //   right: 10px;
+        //   transform: rotate(90deg);
+        // }
       }
     }
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1380) {
       .sumchart{
-          width: 50%;
+          width: 60%;
           height: 300px;
       }
     }

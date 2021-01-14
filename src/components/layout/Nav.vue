@@ -196,9 +196,10 @@ export default {
   }
   .navList{
     span {
-      font-size: 20px;
+      font-size: 18px;
+      font-weight: 700;
       line-height: 65px;
-      margin: 0 35px;
+      margin: 0 20px;
       padding-bottom: 17px;
       vertical-align: bottom;
     }
