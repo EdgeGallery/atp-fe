@@ -36,7 +36,12 @@
         <span>统计报告</span>
       </div>
       <div class="statisticdata">
-        <div class="left" />
+        <div class="left">
+          <p>扫描总数</p>
+          <p style="margin-top:5px;">
+            426
+          </p>
+        </div>
         <div class="mychart">
           <span>过去六个月扫描统计数据</span>
           <div
@@ -154,10 +159,18 @@ export default {
       border-radius: 50%;
       background-position: center;
       background-repeat: no-repeat;
-      background: url('../../assets/images/sumnumber.png');
+      background-color: #50abe6;
+      // background: url('../../assets/images/sumnumber.png');
       position: relative;
       top: 100px;
       left: 50px;
+      p{
+        position: relative;
+        top: 50px;
+        text-align: center;
+        font-size: 18px;
+        color: #fff;
+      }
       .leftnum{
         text-align: center;
         color: #fff;
