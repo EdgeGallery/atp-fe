@@ -25,14 +25,8 @@
         <div class="report-tap">
           <h3> {{ $t('report.testReport') }}</h3>
           <img
-            src="../../assets/images/chenggong.png"
+            :src="resulticon"
             alt=""
-            v-if="tableData[0].status==='success'"
-          >
-          <img
-            src="../../assets/images/shibai.png"
-            alt=""
-            v-else
           >
         </div>
         <div class="download">
@@ -320,7 +314,8 @@ export default {
         { name: '联通企标', value: 0 },
         { name: '电信企标', value: 0 },
         { name: '自定义标准', value: 0 }
-      ]
+      ],
+      resulticon: ''
     }
   },
   mounted () {
@@ -337,6 +332,11 @@ export default {
     getReport () {
       Atp.processApi(this.taskId).then(res => {
         this.tableData.push(res.data)
+        if (this.tableData[0].status === 'success') {
+          this.resulticon = '../../assets/images/chenggong.png'
+        } else {
+          this.resulticon = '../../assets/images/shibai.png'
+        }
         this.tableData.forEach(item => {
           let newDateBegin = this.dateChange(item.createTime)
           item.createTime = newDateBegin
