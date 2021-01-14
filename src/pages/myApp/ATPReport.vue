@@ -333,9 +333,9 @@ export default {
       Atp.processApi(this.taskId).then(res => {
         this.tableData.push(res.data)
         if (this.tableData[0].status === 'success') {
-          this.resulticon = '../../assets/images/chenggong.png'
+          this.resulticon = require('../../assets/images/chenggong.png')
         } else {
-          this.resulticon = '../../assets/images/shibai.png'
+          this.resulticon = require('../../assets/images/shibai.png')
         }
         this.tableData.forEach(item => {
           let newDateBegin = this.dateChange(item.createTime)
@@ -587,7 +587,7 @@ export default {
             type: 'value',
             name: '成功数量',
             min: 0,
-            max: 20,
+            max: 60,
             position: 'right',
             axisLine: {
               lineStyle: {
@@ -602,7 +602,7 @@ export default {
             type: 'value',
             name: '失败数量',
             min: 0,
-            max: 20,
+            max: 60,
             position: 'right',
             offset: 80,
             axisLine: {
