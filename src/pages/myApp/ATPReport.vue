@@ -27,7 +27,7 @@
           <img
             src="../../assets/images/chenggong.png"
             alt=""
-            v-if="tableData.status==='success'"
+            v-if="tableData[0].status==='success'"
           >
           <img
             src="../../assets/images/shibai.png"
