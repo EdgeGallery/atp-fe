@@ -17,20 +17,37 @@
 <template>
   <div class="report padding56">
     <div class="report-content padding20">
-      <div class="download">
-        <el-button
-          size="large"
-          type="primary"
-          icon="el-icon-download"
-          plain
-          @click="downLoadReport()"
+      <div class="logo">
+        <img
+          src="../../assets/images/logo.png"
+          alt=""
         >
-          {{ $t('report.downloadReport') }}
-        </el-button>
+        <div class="report-tap">
+          <h3> {{ $t('report.testReport') }}</h3>
+          <img
+            src="../../assets/images/chenggong.png"
+            alt=""
+            v-if="tableData.status==='success'"
+          >
+          <img
+            src="../../assets/images/shibai.png"
+            alt=""
+            v-else
+          >
+        </div>
+        <div class="download">
+          <el-button
+            size="large"
+            type="primary"
+            icon="el-icon-download"
+            plain
+            @click="downLoadReport()"
+          >
+            {{ $t('report.downloadReport') }}
+          </el-button>
+        </div>
       </div>
-      <div class="report-tap">
-        <h3> {{ $t('report.testReport') }}</h3>
-      </div>
+
       <div class="title">
         {{ $t('atp.baseInfo') }}
       </div>
@@ -709,22 +726,42 @@ export default {
   .report-content {
     background: white;
     background-image: url('../../assets/images/edgegallery.png');
-    .download{
-      text-align: right;
-      margin-right: 30px;
-    }
-    .report-tap {
-      h3 {
-        text-align: center;
-        // margin: 25px 0;
-        font-size: 25px;
-        color: #55565df2;
+     .logo {
+      display: flex;
+      justify-content: space-between;
+      height: 65px;
+      line-height: 65px;
+      padding-left: 25px;
+      img {
+        height: 65px;
       }
-      p {
-        color: #3399ff;
+      .report-tap {
+        display: flex;
         text-align: center;
+        line-height: 65px;
+        img{
+          margin-top: 5px;
+          width: 50px;
+          height: 50px;
+          line-height: 65px;
+        }
+        h3 {
+          text-align: center;
+          // margin: 25px 0;
+          font-size: 25px;
+          color: #55565df2;
+        }
+        p {
+          color: #3399ff;
+          text-align: center;
+        }
+      }
+      .download{
+        text-align: right;
+        margin-right: 30px;
       }
     }
+
     .app-img {
       text-align: center;
       border: 1px solid #ddd;
