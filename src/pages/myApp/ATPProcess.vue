@@ -270,13 +270,13 @@ export default {
     this.intervalNumthree = setInterval(() => {
       this.changeNumThree()
     }, 1000)
-    this.timeout = setTimeout(() => {
-      this.clearInterval()
-    }, 30000)
+    // this.timeout = setTimeout(() => {
+    //   this.clearInterval()
+    // }, 30000)
   },
   beforeDestroy () {
     this.clearInterval()
-    clearTimeout(this.timeout)
+    // clearTimeout(this.timeout)
     clearTimeout(this.intervalNumone)
     clearTimeout(this.intervalNumtwo)
     clearTimeout(this.intervalNumthree)
@@ -364,10 +364,6 @@ export default {
         })
         this.clearInterval()
       })
-
-      // if (this.active === 3) {
-      //   this.clearInterval()
-      // }
     },
     changeIcon () {
       if (this.allcase.securityTest.every((item) => {
@@ -407,6 +403,7 @@ export default {
       })) {
         this.active = 3
         clearTimeout(this.intervalNumthree)
+        this.clearInterval()
         let sand = this.allcase.sandboxTest.some((item) => {
           return item.type === 'danger'
         })
