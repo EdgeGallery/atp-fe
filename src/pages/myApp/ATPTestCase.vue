@@ -638,7 +638,26 @@ export default {
       this.addCaseVisible = true
       this.addcaseForm = JSON.parse(JSON.stringify(row))
       this.addcaseForm.file = []
-      this.addcaseForm.verificationModel = row.verificationModel.split(',')
+      // 中英文切换
+      let changeModel = row.verificationModel
+      console.log(changeModel)
+      if (changeModel.indexOf('EdgeGallery') !== -1) {
+        changeModel = changeModel.replace('EdgeGallery', '社区标准')
+      }
+      if (changeModel.indexOf('Mobile') !== -1) {
+        changeModel = changeModel.replace('Mobile', '移动企标')
+      }
+      if (changeModel.indexOf('Unicom') !== -1) {
+        changeModel = changeModel.replace('Unicom', '联通企标')
+      }
+      if (changeModel.indexOf('Telecom') !== -1) {
+        changeModel = changeModel.replace('Telecom', '电信企标')
+      }
+      if (changeModel.indexOf('Definition') !== -1) {
+        changeModel = changeModel.replace('Definition', '自定义标准')
+      }
+      this.addcaseForm.verificationModel = changeModel.split(',')
+      console.log(this.addcaseForm)
     },
     deleteCase (row) {
       this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
