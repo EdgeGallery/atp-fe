@@ -15,8 +15,8 @@
   -->
 
 <template>
-  <div class="report padding56">
-    <div class="report-content padding20">
+  <div class="report padding20">
+    <div class="report-content">
       <div class="logo">
         <img
           src="../../assets/images/logo.png"
@@ -153,26 +153,6 @@
                 class="detailchart"
                 id="rightchart"
               />
-              <!-- <el-table
-                  :data="modelData"
-                >
-                  <el-table-column
-                    prop="model"
-                    :label="$t('report.model')"
-                  />
-                  <el-table-column
-                    prop="success"
-                    :label="$t('atp.success')"
-                  />
-                  <el-table-column
-                    prop="fail"
-                    :label="$t('atp.failed')"
-                  />
-                  <el-table-column
-                    prop="passRate"
-                    :label="$t('report.rate')"
-                  />
-                </el-table> -->
             </el-col>
           </el-row>
         </div>
@@ -344,9 +324,6 @@ export default {
   mounted () {
     this.getTaskId()
     this.getReport()
-    // 临时
-    // this.drawLeftLine()
-    // this.drawRightLine()
   },
   methods: {
     getTaskId () {
@@ -551,17 +528,6 @@ export default {
             type: 'pie',
             radius: ['20%', '40%'],
             avoidLabelOverlap: false,
-            // label: {
-            //   show: false,
-            //   position: 'center'
-            // },
-            // emphasis: {
-            //   label: {
-            //     show: true,
-            //     fontSize: '20',
-            //     fontWeight: 'bold'
-            //   }
-            // },
             labelLine: {
               show: false
             },
@@ -579,16 +545,6 @@ export default {
         tooltip: {
           trigger: 'axis'
         },
-        // toolbox: {
-        //   show: true,
-        //   feature: {
-        //     mark: { show: true },
-        //     dataView: { show: true, readOnly: false },
-        //     magicType: { show: true, type: ['line', 'bar'] },
-        //     restore: { show: true },
-        //     saveAsImage: { show: true }
-        //   }
-        // },
         grid: {
           right: '25%'
         },
@@ -658,14 +614,12 @@ export default {
             name: '成功数量',
             type: 'bar',
             data: this.successData
-            // data: [15, 12, 5, 3, 2]
           },
           {
             name: '失败数量',
             type: 'bar',
             yAxisIndex: 1,
             data: this.failData
-            // data: [2, 0, 0, 1, 0]
           },
           {
             name: '通过率',
@@ -676,7 +630,6 @@ export default {
             },
             yAxisIndex: 2,
             data: this.passRateData
-            // data: [80, 82, 100, 100, 100]
           }
         ]
       }
@@ -770,7 +723,6 @@ export default {
         }
         h3 {
           text-align: center;
-          // margin: 25px 0;
           font-size: 25px;
           color: #55565df2;
         }
@@ -812,11 +764,9 @@ export default {
       top: 5px;
     }
     .report-chart {
-      // margin: 25px 0;
       .report_analysis{
         .left{
           display: flex;
-          // justify-content: flex-end;
           .el-table{
             margin-top: 45px;
           }
@@ -869,7 +819,18 @@ export default {
         //   border-right: 0;
         //   position: relative;
         //   right: 10px;
-        //   transform: rotate(90deg);
+        //   animation: rotate 1s infinite;
+        // }
+        // .isActive{
+        //   animation: rotate 1s infinite;
+        // }
+        // @keyframes rotate {
+        //   from {
+        //       transform: rotate(0deg);
+        //   }
+        //   to {
+        //       transform: rotate(90deg);
+        //   }
         // }
       }
     }
