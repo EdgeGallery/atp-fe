@@ -608,13 +608,13 @@ export default {
       } else if (this.confirmBtnApi === 'edit') {
         fd.append('id', this.editid)
         if (this.editfile) {
+          fd.append('file', addcaseForm.file[0])
+        } else {
           if (addcaseForm.file.length > 0) {
             fd.append('file', addcaseForm.file[0])
           } else {
             fd.append('file', addcaseForm.file)
           }
-        } else {
-          fd.append('file', addcaseForm.file)
         }
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
