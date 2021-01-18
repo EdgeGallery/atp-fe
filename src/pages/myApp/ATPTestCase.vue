@@ -640,7 +640,6 @@ export default {
       this.addcaseForm.file = []
       // 中英文切换
       let changeModel = row.verificationModel
-      console.log(changeModel)
       if (changeModel.indexOf('社区标准') !== -1) {
         changeModel = changeModel.replace('社区标准', 'EdgeGallery')
       }
@@ -657,6 +656,17 @@ export default {
         changeModel = changeModel.replace('自定义标准', 'Definition')
       }
       this.addcaseForm.verificationModel = changeModel.split(',')
+      let changeType = row.type
+      if (changeType === '安全测试') {
+        changeType = this.testType[0].value
+      }
+      if (changeType === '遵从性测试') {
+        changeType = this.testType[1].value
+      }
+      if (changeType === '沙箱测试') {
+        changeType = this.testType[2].value
+      }
+      this.addcaseForm.type = changeType
       console.log(this.addcaseForm)
     },
     deleteCase (row) {
