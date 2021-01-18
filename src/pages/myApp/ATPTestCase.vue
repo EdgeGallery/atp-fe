@@ -641,20 +641,20 @@ export default {
       // 中英文切换
       let changeModel = row.verificationModel
       console.log(changeModel)
-      if (changeModel.indexOf('EdgeGallery') !== -1) {
-        changeModel = changeModel.replace('EdgeGallery', '社区标准')
+      if (changeModel.indexOf('社区标准') !== -1) {
+        changeModel = changeModel.replace('社区标准', 'EdgeGallery')
       }
-      if (changeModel.indexOf('Mobile') !== -1) {
-        changeModel = changeModel.replace('Mobile', '移动企标')
+      if (changeModel.indexOf('移动企标') !== -1) {
+        changeModel = changeModel.replace('移动企标', 'Mobile')
       }
-      if (changeModel.indexOf('Unicom') !== -1) {
-        changeModel = changeModel.replace('Unicom', '联通企标')
+      if (changeModel.indexOf('联通企标') !== -1) {
+        changeModel = changeModel.replace('联通企标', 'Unicom')
       }
-      if (changeModel.indexOf('Telecom') !== -1) {
-        changeModel = changeModel.replace('Telecom', '电信企标')
+      if (changeModel.indexOf('电信企标') !== -1) {
+        changeModel = changeModel.replace('电信企标', 'Telecom')
       }
-      if (changeModel.indexOf('Definition') !== -1) {
-        changeModel = changeModel.replace('Definition', '自定义标准')
+      if (changeModel.indexOf('自定义标准') !== -1) {
+        changeModel = changeModel.replace('自定义标准', 'Definition')
       }
       this.addcaseForm.verificationModel = changeModel.split(',')
       console.log(this.addcaseForm)
