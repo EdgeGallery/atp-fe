@@ -613,7 +613,12 @@ export default {
           if (addcaseForm.file.length > 0) {
             fd.append('file', addcaseForm.file[0])
           } else {
-            fd.append('file', addcaseForm.file)
+            let obj = {
+              name: '',
+              size: 0
+            }
+            addcaseForm.file.push(obj)
+            fd.append('file', addcaseForm.file[0])
           }
         }
         Atp.editCaseApi(fd).then(res => {
