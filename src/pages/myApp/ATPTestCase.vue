@@ -613,11 +613,8 @@ export default {
           if (addcaseForm.file.length > 0) {
             fd.append('file', addcaseForm.file[0])
           } else {
-            let obj = {
-              name: '',
-              size: 0
-            }
-            addcaseForm.file.push(obj)
+            let objFile = new File([], '')
+            addcaseForm.file.push(objFile)
             fd.append('file', addcaseForm.file[0])
           }
         }
@@ -672,7 +669,6 @@ export default {
         changeType = this.testType[2].value
       }
       this.addcaseForm.type = changeType
-      console.log(this.addcaseForm)
     },
     deleteCase (row) {
       this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
