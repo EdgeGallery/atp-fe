@@ -613,7 +613,7 @@ export default {
           if (addcaseForm.file.length > 0) {
             fd.append('file', addcaseForm.file[0])
           } else {
-            let objFile = new File([], '')
+            let objFile = new File([], 'kong.java')
             addcaseForm.file.push(objFile)
             fd.append('file', addcaseForm.file[0])
           }
