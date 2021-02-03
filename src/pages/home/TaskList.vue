@@ -339,10 +339,10 @@ export default {
       )
     },
     deleteTask () {
-      let fd = new FormData()
-      let taskIds = this.taskIds
-      fd.append('taskIds', taskIds)
-      Taskmgmt.deleteTaskApi(fd).then(res => {
+      let param = {
+        taskIds: this.taskIds
+      }
+      Taskmgmt.deleteTaskApi(param).then(res => {
         console.log('删除成功')
         this.getTaskList()
       }).catch(() => {
