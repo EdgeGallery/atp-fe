@@ -75,7 +75,8 @@ const en = {
   },
   common: {
     cancel: 'Cancel',
-    confirm: 'Confirm'
+    confirm: 'Confirm',
+    delete: 'Delete'
   },
   atp: {
     success: 'success',
@@ -133,6 +134,18 @@ const en = {
     editCase: '编辑测试用例',
     import: '测试用例导入',
     sample: '样例下载'
+  },
+  home: {
+    bannerTitle: 'Application testing and certification platform',
+    bannerText1: 'Adapt to multiple enterprise standard use case sets',
+    bannerText2: 'Low threshold test case writing',
+    bannerText3: 'Visualization of the test process',
+    staReport: 'Statistical Report',
+    totalNum: 'Total number of scans',
+    chartTitle: 'Scan statistics for the past six months'
+  },
+  process: {
+    modifyStatus: 'Modify use case status'
   },
   about: {
   },
