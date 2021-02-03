@@ -19,7 +19,11 @@ const en = {
   nav: {
     logout: 'Logout',
     login: 'Login',
-    atp: 'ATP'
+    atp: 'ATP',
+    home: 'Home',
+    testMgmt: 'Testcase Management',
+    taskMgmt: 'Task Management',
+    testPlatform: 'Application Test Platform'
   },
   myApp: {
     checkTest: 'Check Test',
@@ -116,23 +120,32 @@ const en = {
     packageSizeLimit: 'no more than 10M'
   },
   testCase: {
-    management: '测试用例管理',
-    caseName: '测试用例名称',
-    caseType: '测试用例类型',
-    casePurpose: '测试用例目的',
-    expectedResult: '测试预期结果',
-    language: '测试用例语言',
-    verificationModel: '所属认证模板',
-    operation: '操作',
-    delete: '删除',
-    edit: '编辑',
-    add: '新增',
-    model: '认证模板',
-    standard: '社区标准',
-    addCase: '新增测试用例',
-    editCase: '编辑测试用例',
-    import: '测试用例导入',
-    sample: '样例下载'
+    management: 'Testcase Management',
+    caseName: 'Testcase Name',
+    caseType: 'Testcase Type',
+    casePurpose: 'Purpose',
+    expectedResult: 'Result',
+    language: 'Language',
+    verificationModel: 'Testcase Model',
+    operation: 'Operation',
+    delete: 'Delete',
+    edit: 'Edit',
+    add: 'Add',
+    model: 'Model',
+    standard: 'Community standards',
+    addCase: 'Add Case',
+    editCase: 'Edit Case',
+    import: 'Case Import',
+    sample: 'Sample Download'
+  },
+  home: {
+    bannerTitle: 'Application testing and certification platform',
+    bannerText1: 'Adapt to multiple enterprise standard use case sets',
+    bannerText2: 'Low threshold test case writing',
+    bannerText3: 'Visualization of the test process',
+    staReport: 'Statistical Report',
+    totalNum: 'Total number of scans',
+    chartTitle: 'Scan statistics for the past six months'
   },
   about: {
   },

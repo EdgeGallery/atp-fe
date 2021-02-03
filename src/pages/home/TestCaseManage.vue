@@ -19,9 +19,9 @@
     <navcomp />
     <div class="testcase padding56">
       <div style="margin:20px 0">
-        <span>应用测试平台</span>
+        <span>{{ $t('nav.testPlatform') }}</span>
         <span>></span>
-        <span>测试用例管理</span>
+        <span>{{ $t('nav.testMgmt') }}</span>
       </div>
       <div
         class="testcase-content padding20"

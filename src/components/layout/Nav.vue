@@ -34,15 +34,15 @@
           <span
             @click="jumpTo('/index')"
             :class="currentUrl==='/index' ? 'active' : ''"
-          >首页</span>
+          >{{ $t('nav.home') }}</span>
           <span
             @click="jumpTo('/testcasemanage')"
             :class="currentUrl==='/testcasemanage' ? 'active' : ''"
-          >测试用例管理</span>
+          >{{ $t('nav.testMgmt') }}</span>
           <span
             @click="jumpTo('/tasklist')"
             :class="currentUrl==='/tasklist' ? 'active' : ''"
-          >任务管理</span>
+          >{{ $t('nav.taskMgmt') }}</span>
         </div>
       </el-col>
       <el-col
