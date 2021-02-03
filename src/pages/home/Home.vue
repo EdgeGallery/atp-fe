@@ -72,16 +72,16 @@ export default {
         let data = res.data
         this.total = data.total
         for (const key in data) {
-          if (key === 'fiveMonthAge') {
-            this.chartData[0] = data['fiveMonthAge']
-          } else if (key === 'fourMonthAge') {
-            this.chartData[1] = data['fourMonthAge']
-          } else if (key === 'threeMonthAge') {
-            this.chartData[2] = data['threeMonthAge']
-          } else if (key === 'twoMonthAge') {
-            this.chartData[3] = data['twoMonthAge']
-          } else if (key === 'oneMonthAge') {
-            this.chartData[4] = data['oneMonthAge']
+          if (key === 'fiveMonthAgo') {
+            this.chartData[0] = data['fiveMonthAgo']
+          } else if (key === 'fourMonthAgo') {
+            this.chartData[1] = data['fourMonthAgo']
+          } else if (key === 'threeMonthAgo') {
+            this.chartData[2] = data['threeMonthAgo']
+          } else if (key === 'twoMonthAgo') {
+            this.chartData[3] = data['twoMonthAgo']
+          } else if (key === 'oneMonthAgo') {
+            this.chartData[4] = data['oneMonthAgo']
           } else if (key === 'currentMonth') {
             this.chartData[5] = data['currentMonth']
           }
@@ -107,6 +107,7 @@ export default {
         mon = mon - 1
       }
       this.monthData = arr.reverse()
+      console.log(this.monthData)
     },
     drawLine () {
       let myChart = this.$echarts.init(document.getElementById('main'))
