@@ -19,10 +19,10 @@
     <navcomp />
     <div class="topImage">
       <div class="left">
-        <h2>应用测试认证平台</h2>
-        <p>适配多企业标准用例集</p>
-        <p>低门槛测试用例编写</p>
-        <p>测试过程可视化</p>
+        <h2>{{ $t('home.bannerTitle') }}</h2>
+        <p>{{ $t('home.bannerText1') }}</p>
+        <p>{{ $t('home.bannerText2') }}</p>
+        <p>{{ $t('home.bannerText3') }}</p>
       </div>
       <div class="right">
         <img
@@ -33,17 +33,17 @@
     </div>
     <div class="mainreport">
       <div class="title">
-        <span>统计报告</span>
+        <span>{{ $t('home.staReport') }}</span>
       </div>
       <div class="statisticdata">
         <div class="left">
-          <p>扫描总数</p>
+          <p>{{ $t('home.totalNum') }}</p>
           <p style="margin-top:5px;">
             426
           </p>
         </div>
         <div class="mychart">
-          <span>过去六个月扫描统计数据</span>
+          <span>{{ $t('home.chartTitle') }}</span>
           <div
             id="main"
           />
@@ -84,7 +84,7 @@ export default {
         xAxis: [
           {
             type: 'category',
-            data: ['2020-08', '2020-09', '2020-10', '2020-11', '2020-12', '2020-01'],
+            data: ['2020-09', '2020-10', '2020-11', '2020-12', '2021-01', '2021-02'],
             axisTick: {
               alignWithLabel: true
             }
@@ -179,6 +179,7 @@ export default {
       }
     }
     .mychart{
+      margin-top: 10px;
       width: 80%;
     }
     #main{

@@ -19,9 +19,9 @@
     <Navcomp />
     <div class="task padding56">
       <div style="margin:20px 0">
-        <span>应用测试平台</span>
+        <span>{{ $t('nav.testPlatform') }}</span>
         <span>></span>
-        <span>任务管理</span>
+        <span>{{ $t('nav.taskMgmt') }}</span>
       </div>
       <div class="task-search">
         <el-form
