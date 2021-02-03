@@ -60,7 +60,7 @@
                     <el-option
                       v-for="item in testType"
                       :key="item.value"
-                      :label="item.label"
+                      :label="language === 'cn'?item.label:item.value"
                       :value="item.value"
                     />
                   </el-select>
@@ -82,7 +82,7 @@
                     <el-option
                       v-for="item in models"
                       :key="item.value"
-                      :label="item.label"
+                      :label="language === 'cn'?item.label:item.value"
                       :value="item.value"
                     />
                   </el-select>
@@ -222,7 +222,7 @@
               <el-option
                 v-for="item in testType"
                 :key="item.value"
-                :label="item.label"
+                :label="language === 'cn'?item.label:item.value"
                 :value="item.value"
               />
             </el-select>
@@ -275,7 +275,7 @@
               <el-option
                 v-for="item in models"
                 :key="item.value"
-                :label="item.label"
+                :label="language === 'cn'?item.label:item.value"
                 :value="item.value"
               />
             </el-select>
@@ -408,6 +408,7 @@ export default {
   name: 'TestCase',
   data () {
     return {
+      language: 'cn',
       currUrl: window.location.href,
       taskId: '',
       dialogVisible: false,
@@ -501,6 +502,7 @@ export default {
   mounted () {
     // this.getTaskId()
     this.getAllcase()
+    this.language = localStorage.getItem('language')
   },
   methods: {
     getCurrentPageData (val) {
@@ -815,6 +817,7 @@ export default {
     '$i18n.locale': function () {
       let language = localStorage.getItem('language')
       this.language = language
+
       // this.changeName()
     }
   }
