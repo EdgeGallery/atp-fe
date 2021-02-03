@@ -110,7 +110,6 @@
         </div>
         <div
           class="addbtn"
-          style="text-align:right;margin-right:20px,margin-bottom:5px"
         >
           <el-button
             type="primary"

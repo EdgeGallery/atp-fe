@@ -81,12 +81,26 @@
           </div>
         </el-form>
         <div class="task-content">
+          <div class="delBtn rt">
+            <el-button
+              size="small"
+              type="primary"
+              @click="deleteTask"
+              :disabled="taskIds.length===0?true:false"
+            >
+              {{ $t('common.delete') }}
+            </el-button>
+          </div>
           <el-table
             v-loading="dataLoading"
             :data="currentData"
             style="width: 100%;"
-            border
+            @selection-change="handleSelectionChange"
           >
+            <el-table-column
+              type="selection"
+              width="55"
+            />
             <el-table-column
               prop="id"
               :label="$t('myApp.taskNumber')"
@@ -152,16 +166,23 @@
             <el-table-column
               fixed="right"
               :label="$t('myApp.operation')"
+              width="240"
             >
               <template slot-scope="scope">
                 <el-button
-                  id="checkReportBtn"
                   @click="handleClickReport(scope.row)"
                   type="text"
                   :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
                   size="small"
                 >
                   {{ $t('myApp.checkReport') }}
+                </el-button>
+                <el-button
+                  type="text"
+                  :disabled="scope.row.status==='running'?false:true"
+                  size="small"
+                >
+                  {{ $t('process.modifyStatus') }}
                 </el-button>
               </template>
             </el-table-column>
@@ -182,7 +203,7 @@
 </template>
 
 <script>
-import { Atp } from '../../tools/api.js'
+import { Taskmgmt } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
 export default {
@@ -235,6 +256,7 @@ export default {
       telnetid: '',
       dataLoading: true,
       currentData: [],
+      taskIds: [],
       userId: sessionStorage.getItem('userId'),
       userName: sessionStorage.getItem('userName')
     }
@@ -272,6 +294,12 @@ export default {
     //   sessionStorage.setItem('taskId', taskId)
     //   this.$router.push('/atpprocess')
     // },
+    handleSelectionChange (val) {
+      this.taskIds = []
+      val.forEach(item => {
+        this.taskIds.push(item.id)
+      })
+    },
     contrastTime () {
       if (this.form.endTime && this.form.createTime > this.form.endTime) {
         this.$message({
@@ -283,7 +311,7 @@ export default {
       }
     },
     getTaskList () {
-      Atp.taskListApi(this.form).then(
+      Taskmgmt.taskListApi(this.form).then(
         res => {
           let data = res.data
           data.forEach((item, index) => {
@@ -309,6 +337,16 @@ export default {
           this.clearInterval()
         }
       )
+    },
+    deleteTask () {
+      let fd = new FormData()
+      let taskIds = this.taskIds
+      fd.append('taskIds', taskIds)
+      Taskmgmt.deleteTaskApi(fd).then(res => {
+        console.log('删除成功')
+        this.getTaskList()
+      }).catch(() => {
+      })
     },
     resetForm () {
       this.form = {
@@ -386,7 +424,10 @@ export default {
     width: 100%;
   }
   .task-content {
-    margin-top: 25px;
+    // margin-top: 25px;
+    .delBtn{
+      margin-bottom: 10px;
+    }
     .success{
       color: #67c23a;
     }

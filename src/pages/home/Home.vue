@@ -18,13 +18,13 @@
   <div>
     <navcomp />
     <div class="topImage">
-      <div class="left">
-        <h2>应用测试认证平台</h2>
-        <p>适配多企业标准用例集</p>
-        <p>低门槛测试用例编写</p>
-        <p>测试过程可视化</p>
+      <div class="bannerLeft">
+        <h2>{{ $t('home.bannerTitle') }}</h2>
+        <p>{{ $t('home.bannerText1') }}</p>
+        <p>{{ $t('home.bannerText2') }}</p>
+        <p>{{ $t('home.bannerText3') }}</p>
       </div>
-      <div class="right">
+      <div class="bannerRight">
         <img
           src="../../assets/images/atpindex.png"
           alt=""
@@ -33,17 +33,17 @@
     </div>
     <div class="mainreport">
       <div class="title">
-        <span>统计报告</span>
+        <span>{{ $t('home.staReport') }}</span>
       </div>
       <div class="statisticdata">
         <div class="left">
-          <p>扫描总数</p>
+          <p>{{ $t('home.totalNum') }}</p>
           <p style="margin-top:5px;">
-            426
+            {{ total }}
           </p>
         </div>
-        <div class="mychart">
-          <span>过去六个月扫描统计数据</span>
+        <div class="right">
+          <span>{{ $t('home.chartTitle') }}</span>
           <div
             id="main"
           />
@@ -55,18 +55,61 @@
 
 <script>
 import Navcomp from '../../components/layout/Nav.vue'
+import { Home } from '../../tools/api.js'
 export default {
   components: { Navcomp },
   name: '',
   data () {
     return {
+      chartData: [],
+      monthData: [],
+      total: ''
     }
   },
   methods: {
+    getStatisticData () {
+      Home.getStatisticApi().then(res => {
+        let data = res.data
+        this.total = data.total
+        for (const key in data) {
+          if (key === 'fiveMonthAge') {
+            this.chartData[0] = data['fiveMonthAge']
+          } else if (key === 'fourMonthAge') {
+            this.chartData[1] = data['fourMonthAge']
+          } else if (key === 'threeMonthAge') {
+            this.chartData[2] = data['threeMonthAge']
+          } else if (key === 'twoMonthAge') {
+            this.chartData[3] = data['twoMonthAge']
+          } else if (key === 'oneMonthAge') {
+            this.chartData[4] = data['oneMonthAge']
+          } else if (key === 'currentMonth') {
+            this.chartData[5] = data['currentMonth']
+          }
+        }
+        console.log(this.chartData)
+      }).catch(() => {
+      })
+    },
+    getLastSixMon () {
+      let date = new Date()
+      let year = date.getFullYear()
+      let mon = date.getMonth() + 1
+      let arr = []
+      for (let i = 0; i < 6; i++) {
+        if (mon <= 0) {
+          year = year - 1
+          mon = mon + 12
+        }
+        if (mon < 10) {
+          mon = '0' + mon
+        }
+        arr[i] = year + '-' + mon
+        mon = mon - 1
+      }
+      this.monthData = arr.reverse()
+    },
     drawLine () {
       let myChart = this.$echarts.init(document.getElementById('main'))
-      // const myChart = this.$echarts.init(this.$refs.myCharts)
-      // 绘制图表
       let option = {
         color: ['#3398DB'],
         tooltip: {
@@ -84,7 +127,8 @@ export default {
         xAxis: [
           {
             type: 'category',
-            data: ['2020-08', '2020-09', '2020-10', '2020-11', '2020-12', '2020-01'],
+            // data: ['2020-08', '2020-09', '2020-10', '2020-11', '2020-12', '2021-01'],
+            data: this.monthData,
             axisTick: {
               alignWithLabel: true
             }
@@ -95,18 +139,31 @@ export default {
             type: 'value'
           }
         ],
-        series: [
-          {
-            type: 'bar',
-            barWidth: '30%',
-            data: [75, 81, 70, 82, 99, 19]
+        series: [{
+          type: 'bar',
+          barWidth: '30%',
+          // data: [75, 81, 70, 82, 99, 19]
+          data: this.chartData,
+          itemStyle: {
+            normal: {
+              label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                  color: 'black',
+                  fontSize: 16
+                }
+              }
+            }
           }
-        ]
+        }]
       }
       myChart.setOption(option)
     }
   },
   mounted () {
+    this.getStatisticData()
+    this.getLastSixMon()
     this.drawLine()
   }
 }
@@ -118,7 +175,7 @@ export default {
   display: flex;
   justify-content: space-around;
   height: 300px;
-  .left{
+  .bannerLeft{
     margin-left: -100px;
     color: #fff;
     h2{
@@ -132,7 +189,7 @@ export default {
       margin: 10px 15px;
     }
   }
-  .right{
+  .bannerRight{
     margin:-20px -100px 0 -20px;
     img{
       height: 300px;
@@ -160,7 +217,6 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
       background-color: #50abe6;
-      // background: url('../../assets/images/sumnumber.png');
       position: relative;
       top: 100px;
       left: 50px;
@@ -178,7 +234,8 @@ export default {
         top: 80px;
       }
     }
-    .mychart{
+    .right{
+      margin-top: 10px;
       width: 80%;
     }
     #main{

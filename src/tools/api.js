@@ -52,7 +52,25 @@ function logoutApi () {
     }
   })
 }
-
+let Home = {
+  // 获取首页图表数据
+  getStatisticApi: function () {
+    let url = 'tasks/action/analysize'
+    return GET(url)
+  }
+}
+let Taskmgmt = {
+  // 获取任务列表
+  taskListApi: function (params) {
+    let url = 'tasks'
+    return GET(url, params)
+  },
+  // 批量删除任务
+  deleteTaskApi: function (params) {
+    let url = 'tasks/batch_delete'
+    return POST(url, params)
+  }
+}
 let Atp = {
   // new 获取所有用例
   getAllCaseApi: function (params) {
@@ -165,5 +183,6 @@ export {
   URL_PREFIX,
   getUserInfo,
   logoutApi,
-  Atp
+  Atp,
+  Home, Taskmgmt
 }

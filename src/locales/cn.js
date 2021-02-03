@@ -73,7 +73,8 @@ const cn = {
   },
   common: {
     cancel: '取消',
-    confirm: '确定'
+    confirm: '确定',
+    delete: '删除'
   },
   atp: {
     success: '成功数量',
@@ -113,7 +114,6 @@ const cn = {
     onlyCsar: '只能上传 .csar 文件.',
     packageSizeLimit: '文件大小不超过10M'
   },
-
   testCase: {
     management: '测试用例管理',
     caseName: '测试用例名称',
@@ -132,6 +132,18 @@ const cn = {
     editCase: '编辑测试用例',
     import: '测试用例导入',
     sample: '样例下载'
+  },
+  home: {
+    bannerTitle: '应用测试认证平台',
+    bannerText1: '适配多企业标准用例集',
+    bannerText2: '低门槛测试用例编写',
+    bannerText3: '测试过程可视化',
+    staReport: '统计报告',
+    totalNum: '扫描总数',
+    chartTitle: '过去六个月扫描统计数据'
+  },
+  process: {
+    modifyStatus: '修改用例状态'
   },
   about: {},
   ...zhLocale

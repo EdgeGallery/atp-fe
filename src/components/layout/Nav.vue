@@ -50,6 +50,12 @@
       >
         <div class="nav-tabs rt">
           <span
+            v-if="!ifGuest"
+          >{{ userName }}</span>
+          <span
+            v-if="!ifGuest"
+          >|</span>
+          <span
             class="curp"
             @click="logout()"
             v-if="ifGuest"
@@ -139,6 +145,7 @@ export default {
     getUserInfo().then(res => {
       sessionStorage.setItem('userId', res.data.userId)
       sessionStorage.setItem('userName', res.data.userName)
+      this.userName = res.data.userName
       this.loginPage = res.data.loginPage
       if (res.data.userName === 'guest') {
         this.ifGuest = true
