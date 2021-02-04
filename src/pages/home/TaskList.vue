@@ -343,9 +343,18 @@ export default {
         taskIds: this.taskIds
       }
       Taskmgmt.deleteTaskApi(param).then(res => {
-        console.log('删除成功')
+        this.$message({
+          duration: 2000,
+          type: 'success',
+          message: this.$t('promptMessage.deleteSuccess')
+        })
         this.getTaskList()
       }).catch(() => {
+        this.$message({
+          duration: 2000,
+          type: 'warning',
+          message: this.$t('promptMessage.deleteFail')
+        })
       })
     },
     resetForm () {

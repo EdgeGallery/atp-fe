@@ -71,7 +71,9 @@ const en = {
     downloadSuccess: 'Download Success',
     downloadFail: 'Download Fail',
     deletePrompt: 'Do you want to continue deleting this use case?',
-    onlyOneFile: 'Only one file is allowed, please remove the file first!'
+    onlyOneFile: 'Only one file is allowed, please remove the file first!',
+    deleteSuccess: 'Delete Success',
+    deleteFail: 'Delete Fail'
   },
   common: {
     cancel: 'Cancel',
