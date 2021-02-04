@@ -87,6 +87,7 @@ export default {
           }
         }
         console.log(this.chartData)
+        this.drawLine()
       }).catch(() => {
       })
     },
@@ -110,6 +111,7 @@ export default {
       console.log(this.monthData)
     },
     drawLine () {
+      console.log('draw')
       let myChart = this.$echarts.init(document.getElementById('main'))
       let option = {
         color: ['#3398DB'],
@@ -163,9 +165,9 @@ export default {
     }
   },
   mounted () {
-    this.getStatisticData()
     this.getLastSixMon()
-    this.drawLine()
+    this.getStatisticData()
+    // this.drawLine()
   }
 }
 </script>
