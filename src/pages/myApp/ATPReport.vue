@@ -15,7 +15,10 @@
   -->
 
 <template>
-  <div class="report padding20">
+  <div
+    class="report padding20"
+    id="pdfDom"
+  >
     <div class="report-content">
       <div class="logo">
         <img
@@ -256,6 +259,7 @@ export default {
   name: 'Atpreport',
   data () {
     return {
+      htmlTitle: 'report',
       currUrl: window.location.href,
       taskId: '',
       tableData: [],
@@ -672,19 +676,23 @@ export default {
       }
     },
     downLoadReport () {
-      Atp.downLoadReportApi(this.taskId).then(res => {
-        this.$message({
-          duration: 2000,
-          message: this.$t('promptMessage.downloadSuccess'),
-          type: 'success'
-        })
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: this.$t('promptMessage.downloadFail'),
-          type: 'warning'
-        })
-      })
+      // Atp.downLoadReportApi(this.taskId).then(res => {
+      //   this.$message({
+      //     duration: 2000,
+      //     message: this.$t('promptMessage.downloadSuccess'),
+      //     type: 'success'
+      //   })
+      // }).catch(() => {
+      //   this.$message({
+      //     duration: 2000,
+      //     message: this.$t('promptMessage.downloadFail'),
+      //     type: 'warning'
+      //   })
+      // })
+      this.activeNames = ['securityTest', 'complianceTest', 'sandboxTest']
+      setInterval(() => {
+        this.getPdf('#pdfDom')
+      }, 1000)
     }
   },
   watch: {

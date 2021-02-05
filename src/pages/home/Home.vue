@@ -167,7 +167,6 @@ export default {
   mounted () {
     this.getLastSixMon()
     this.getStatisticData()
-    // this.drawLine()
   }
 }
 </script>
