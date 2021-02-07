@@ -229,10 +229,13 @@ export default {
       dataLoading: true,
       currentData: [],
       userId: sessionStorage.getItem('userId'),
-      userName: sessionStorage.getItem('userName')
+      userName: sessionStorage.getItem('userName'),
+      currUrl: window.location.href,
+      language: 'cn'
     }
   },
   mounted () {
+    this.getLanguage()
     this.getTaskList()
     this.interval = setInterval(() => {
       this.getTaskList()
@@ -248,6 +251,14 @@ export default {
     next()
   },
   methods: {
+    getLanguage () {
+      if (this.currUrl.indexOf('?') !== -1) {
+        this.language = this.currUrl.split('?')[1].split('=')[1]
+      }
+      localStorage.setItem('language', this.language)
+      this.$i18n.locale = this.language
+      this.$store.commit('changeLaguage', { language: this.language })
+    },
     getCurrentPageData (val) {
       this.currentData = val
     },
