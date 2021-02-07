@@ -608,7 +608,13 @@ export default {
         if (this.editfile) {
           fd.append('file', addcaseForm.file[0])
         } else {
-          fd.append('file', addcaseForm.file)
+          if (addcaseForm.file.length > 0) {
+            fd.append('file', addcaseForm.file[0])
+          } else {
+            let objFile = new File([], 'kong.java')
+            addcaseForm.file.push(objFile)
+            fd.append('file', addcaseForm.file[0])
+          }
         }
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
@@ -632,7 +638,35 @@ export default {
       this.addCaseVisible = true
       this.addcaseForm = JSON.parse(JSON.stringify(row))
       this.addcaseForm.file = []
-      this.addcaseForm.verificationModel = row.verificationModel.split(',')
+      // 中英文切换
+      let changeModel = row.verificationModel
+      if (changeModel.indexOf('社区标准') !== -1) {
+        changeModel = changeModel.replace('社区标准', 'EdgeGallery')
+      }
+      if (changeModel.indexOf('移动企标') !== -1) {
+        changeModel = changeModel.replace('移动企标', 'Mobile')
+      }
+      if (changeModel.indexOf('联通企标') !== -1) {
+        changeModel = changeModel.replace('联通企标', 'Unicom')
+      }
+      if (changeModel.indexOf('电信企标') !== -1) {
+        changeModel = changeModel.replace('电信企标', 'Telecom')
+      }
+      if (changeModel.indexOf('自定义标准') !== -1) {
+        changeModel = changeModel.replace('自定义标准', 'Definition')
+      }
+      this.addcaseForm.verificationModel = changeModel.split(',')
+      let changeType = row.type
+      if (changeType === '安全测试') {
+        changeType = this.testType[0].value
+      }
+      if (changeType === '遵从性测试') {
+        changeType = this.testType[1].value
+      }
+      if (changeType === '沙箱测试') {
+        changeType = this.testType[2].value
+      }
+      this.addcaseForm.type = changeType
     },
     deleteCase (row) {
       this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
