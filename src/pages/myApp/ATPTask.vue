@@ -231,7 +231,7 @@ export default {
       userId: sessionStorage.getItem('userId'),
       userName: sessionStorage.getItem('userName'),
       currUrl: window.location.href,
-      language: 'cn'
+      language: ''
     }
   },
   mounted () {
