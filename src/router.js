@@ -37,7 +37,7 @@ export default new Router({
         {
           path: 'testcasemanage',
           name: 'testcasemanage',
-          component: () => import('./pages/home/TestCaseManage.vue')
+          component: () => import('./pages/ModelMgmt/TestCaseManage.vue')
         },
         {
           path: 'tasklist',
