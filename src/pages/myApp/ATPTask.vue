@@ -230,7 +230,7 @@ export default {
       currentData: [],
       userId: sessionStorage.getItem('userId'),
       userName: sessionStorage.getItem('userName'),
-      currUrl: window.location.href,
+      // currUrl: window.location.href,
       language: ''
     }
   },
@@ -252,8 +252,9 @@ export default {
   },
   methods: {
     getLanguage () {
-      if (this.currUrl.indexOf('?') !== -1) {
-        this.language = this.currUrl.split('?')[1].split('=')[1]
+      let currUrl = window.location.href
+      if (currUrl.indexOf('?') !== -1) {
+        this.language = currUrl.split('?')[1].split('=')[1]
       }
       localStorage.setItem('language', this.language)
       this.$i18n.locale = this.language
