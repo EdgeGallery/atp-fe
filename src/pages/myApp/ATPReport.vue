@@ -143,7 +143,7 @@
                   </el-table-column>
                   <el-table-column
                     prop="value"
-                    label="数量"
+                    :label="$t('report.number')"
                     width="100"
                   />
                 </el-table>
@@ -326,10 +326,24 @@ export default {
     }
   },
   mounted () {
+    this.getLanguage()
     this.getTaskId()
     this.getReport()
   },
   methods: {
+    getLanguage () {
+      let currUrl = window.location.href
+      if (currUrl.indexOf('&') !== -1) {
+        let language = currUrl.split('&')[1].split('=')[1]
+        localStorage.setItem('language', language)
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      } else {
+        let language = localStorage.getItem('language')
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      }
+    },
     getTaskId () {
       this.taskId = this.currUrl.split('?')[1].split('=')[1]
     },
@@ -694,14 +708,14 @@ export default {
         this.getPdf('#pdfDom')
       }, 1000)
     }
-  },
-  watch: {
-    '$i18n.locale': function () {
-      let language = localStorage.getItem('language')
-      this.language = language
-      // this.changeName()
-    }
   }
+  // watch: {
+  //   '$i18n.locale': function () {
+  //     let language = localStorage.getItem('language')
+  //     this.language = language
+  //     // this.changeName()
+  //   }
+  // }
 }
 </script>
 

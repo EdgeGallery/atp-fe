@@ -51,7 +51,8 @@ const cn = {
     failReason: '失败原因',
     rate: '通过率',
     model: '认证模板',
-    reportDetail: '测试用例详情'
+    reportDetail: '测试用例详情',
+    number: '数量'
   },
   promptMessage: {
     guestUser: 'guest用户无权操作! 请先登录',

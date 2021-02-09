@@ -500,10 +500,20 @@ export default {
     }
   },
   mounted () {
+    this.getLanguage()
     this.getTaskId()
     this.getAllcase()
   },
   methods: {
+    getLanguage () {
+      let currUrl = window.location.href
+      if (currUrl.indexOf('&') !== -1) {
+        let language = currUrl.split('&')[1].split('=')[1]
+        localStorage.setItem('language', language)
+        this.$i18n.locale = this.language
+        this.$store.commit('changeLaguage', { language: language })
+      }
+    },
     getCurrentPageData (val) {
       this.currentData = val
     },
