@@ -214,7 +214,7 @@
           type="primary"
           @click="CheckReport()"
         >
-          查看报告
+          {{ $t('myApp.checkReport') }}
         </el-button>
       </div>
     </el-dialog>
