@@ -510,7 +510,7 @@ export default {
       if (currUrl.indexOf('&') !== -1) {
         let language = currUrl.split('&')[1].split('=')[1]
         localStorage.setItem('language', language)
-        this.$i18n.locale = this.language
+        this.$i18n.locale = language
         this.$store.commit('changeLaguage', { language: language })
       }
     },
@@ -900,14 +900,14 @@ export default {
     //     })
     //   }
     // }
-  },
-  watch: {
-    '$i18n.locale': function () {
-      let language = localStorage.getItem('language')
-      this.language = language
-      // this.changeName()
-    }
   }
+  // watch: {
+  //   '$i18n.locale': function () {
+  //     let language = localStorage.getItem('language')
+  //     this.language = language
+  //     // this.changeName()
+  //   }
+  // }
 }
 </script>
 
