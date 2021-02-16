@@ -13,6 +13,16 @@
   -  See the License for the specific language governing permissions and
   -  limitations under the License.
   -->
+
 <template>
-  <div>测试套管理</div>
+  <div>
+    <Navcomp />
+    测试套管理
+  </div>
 </template>
+<script>
+import Navcomp from '../../components/layout/Nav'
+export default {
+  components: { Navcomp }
+}
+</script>

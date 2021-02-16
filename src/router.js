@@ -35,6 +35,16 @@ export default new Router({
           component: () => import('./pages/home/Home.vue')
         },
         {
+          path: 'scenarios',
+          name: 'scenarios',
+          component: () => import('./pages/ModelMgmt/ScenariosManage.vue')
+        },
+        {
+          path: 'suites',
+          name: 'suites',
+          component: () => import('./pages/ModelMgmt/SuitesManage.vue')
+        },
+        {
           path: 'testcasemanage',
           name: 'testcasemanage',
           component: () => import('./pages/ModelMgmt/TestCaseManage.vue')

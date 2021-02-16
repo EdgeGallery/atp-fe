@@ -16,7 +16,7 @@
 
 <template>
   <div>
-    <navcomp />
+    <Navcomp />
     <div class="testcase padding56">
       <div style="margin:20px 0">
         <span>应用测试平台</span>

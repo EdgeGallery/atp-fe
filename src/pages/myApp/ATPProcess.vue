@@ -27,7 +27,7 @@
         plain
         @click="jumpTo()"
       >
-        查看报告
+        {{ $t('myApp.checkReport') }}
       </el-button>
     </div>
     <div class="step-title">
@@ -256,6 +256,7 @@ export default {
   },
   mounted () {
     // 传taskid
+    this.getLanguage()
     this.getTaskId()
     this.getCaseData()
     this.interval = setInterval(() => {
@@ -282,6 +283,15 @@ export default {
     clearTimeout(this.intervalNumthree)
   },
   methods: {
+    getLanguage () {
+      let currUrl = window.location.href
+      if (currUrl.indexOf('&') !== -1) {
+        let language = currUrl.split('&')[1].split('=')[1]
+        localStorage.setItem('language', language)
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      }
+    },
     getTaskId () {
       if (this.currUrl.indexOf('?') !== -1) {
         this.taskId = this.currUrl.split('?')[1].split('=')[1]
