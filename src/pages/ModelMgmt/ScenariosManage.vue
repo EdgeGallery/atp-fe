@@ -14,5 +14,14 @@
   -  limitations under the License.
   -->
 <template>
-  <div>测试场景管理</div>
+  <div>
+    <Navcomp />
+    测试场景管理
+  </div>
 </template>
+<script>
+import Navcomp from '../../components/layout/Nav'
+export default {
+  components: { Navcomp }
+}
+</script>

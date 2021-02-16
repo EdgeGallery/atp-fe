@@ -16,7 +16,7 @@
 
 <template>
   <div>
-    <navcomp />
+    <Navcomp />
     <div class="topImage">
       <div class="bannerLeft">
         <h2>{{ $t('home.bannerTitle') }}</h2>
@@ -86,7 +86,6 @@ export default {
             this.chartData[5] = data['currentMonth']
           }
         }
-        console.log(this.chartData)
         this.drawLine()
       }).catch(() => {
       })
@@ -108,10 +107,8 @@ export default {
         mon = mon - 1
       }
       this.monthData = arr.reverse()
-      console.log(this.monthData)
     },
     drawLine () {
-      console.log('draw')
       let myChart = this.$echarts.init(document.getElementById('main'))
       let option = {
         color: ['#3398DB'],
