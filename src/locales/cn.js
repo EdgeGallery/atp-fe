@@ -77,7 +77,9 @@ const cn = {
   common: {
     cancel: '取消',
     confirm: '确定',
-    delete: '删除'
+    delete: '删除',
+    search: '搜索',
+    edit: '编辑'
   },
   atp: {
     success: '成功数量',
@@ -147,6 +149,18 @@ const cn = {
   },
   process: {
     modifyStatus: '修改用例状态'
+  },
+  Scenes: {
+    name: '名称'
+  },
+  userpage: {
+    selectScene: '选择用例场景',
+    contribution: '测试用例贡献'
+  },
+  modelmgmt: {
+    name: '名称',
+    description: '描述',
+    scene: '场景'
   },
   about: {},
   ...zhLocale

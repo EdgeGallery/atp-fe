@@ -79,7 +79,9 @@ const en = {
   common: {
     cancel: 'Cancel',
     confirm: 'Confirm',
-    delete: 'Delete'
+    delete: 'Delete',
+    search: 'Search',
+    edit: 'Modify'
   },
   atp: {
     success: 'success',
@@ -149,6 +151,18 @@ const en = {
   },
   process: {
     modifyStatus: 'Modify use case status'
+  },
+  Scenes: {
+    name: 'Name'
+  },
+  userpage: {
+    selectScene: 'Select Scene',
+    contribution: 'Testcase Contribution'
+  },
+  modelmgmt: {
+    name: 'Name',
+    description: 'Description',
+    scene: 'Scene'
   },
   about: {
   },
