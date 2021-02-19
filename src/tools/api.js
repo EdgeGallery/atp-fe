@@ -59,6 +59,7 @@ let Home = {
     return GET(url)
   }
 }
+
 let Taskmgmt = {
   // 获取任务列表
   taskListApi: function (params) {
@@ -71,6 +72,26 @@ let Taskmgmt = {
     return POST(url, params)
   }
 }
+
+let Userpage = {
+  // 获取所有场景
+  getAllSceneApi: function (params) {
+    let url = 'testscenarios'
+    return GET(url, params)
+  },
+  // 获取场景图标
+  getSceneIconApi: function (appId) {
+    let url = 'apps/' + appId
+    return GET(url)
+  },
+  // 获取任务
+  getTaskApi: function (taskId) {
+    let url = 'tasks/' + taskId
+    return GET(url)
+  }
+}
+
+// 以前的接口
 let Atp = {
   // new 获取所有用例
   getAllCaseApi: function (params) {
@@ -184,5 +205,5 @@ export {
   getUserInfo,
   logoutApi,
   Atp,
-  Home, Taskmgmt
+  Home, Taskmgmt, Userpage
 }
