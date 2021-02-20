@@ -27,6 +27,7 @@ import 'mavon-editor/dist/css/index.css'
 import echarts from 'echarts'
 import VueCookies from 'vue-cookies'
 import htmlToPdf from './tools/htmlToPdf'
+import 'eg-view/src/assets/style/element-variables.scss'
 
 Vue.use(VueCookies)
 Vue.use(ElementUI)
