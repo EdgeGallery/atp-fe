@@ -15,6 +15,7 @@
   -->
 <template>
   <div class="padding56">
+    <Navcomp />
     <div class="selectscene padding20">
       <div class="toptitle">
         <div class="left">
@@ -30,87 +31,259 @@
         </div>
       </div>
       <div class="scene-main">
-        <div class="scene">
-          <div>
-            <img
-              src="../../assets/images/logo.png"
-              alt=""
-              class="sceneimage"
-            >
-          </div>
-          <div class="choose">
-            <h4>社区场景</h4>
-            <img
-              src="../../assets/images/chenggong.png"
-              alt=""
-            >
-          </div>
-        </div>
-        <div class="scene">
-          <div>
-            <img
-              src="../../assets/images/logo.png"
-              alt=""
-              class="sceneimage"
-            >
-          </div>
-          <div class="choose">
-            <h4>社区场景</h4>
-            <img
-              src="../../assets/images/shibai.png"
-              alt=""
-            >
-          </div>
-        </div>
-        <div class="scene">
-          <div>
-            <img
-              src="../../assets/images/logo.png"
-              alt=""
-              class="sceneimage"
-            >
-          </div>
-          <div class="choose">
-            <h4>社区场景</h4>
-            <img
-              src="../../assets/images/shibai.png"
-              alt=""
-            >
-          </div>
-        </div>
-        <div class="scene">
-          <div>
-            <img
-              src="../../assets/images/logo.png"
-              alt=""
-              class="sceneimage"
-            >
-          </div>
-          <div class="choose">
-            <h4>社区场景</h4>
-            <img
-              src="../../assets/images/shibai.png"
-              alt=""
-            >
+        <div
+          class="contednt"
+          v-for="(item,index) in sceneData"
+          :key="index"
+          @click="chooseScene(item)"
+        >
+          <div class="scene">
+            <div>
+              <img
+                src="../../assets/images/logo.png"
+                alt=""
+                class="sceneimage"
+              >
+            </div>
+            <div class="choose">
+              <el-form label-width="auto">
+                <el-form-item :label="$t('modelmgmt.name')">
+                  {{ item.name }}
+                </el-form-item>
+                <el-form-item :label="$t('modelmgmt.description')">
+                  {{ item.description }}
+                </el-form-item>
+                <el-form-item>
+                  <el-button
+                    type="text"
+                    size="small"
+                    class="button"
+                    @click="getDetail()"
+                  >
+                    {{ $t('userpage.seeDetail') }}
+                  </el-button>
+                </el-form-item>
+              </el-form>
+              <img
+                src="../../assets/images/selected.png"
+                alt=""
+                v-if="item.selected"
+              >
+              <img
+                v-else
+                src="../../assets/images/notselected.png"
+                alt=""
+              >
+            </div>
           </div>
         </div>
       </div>
+      <div class="start-button">
+        <el-button
+          type="primary"
+          size="large"
+          @click="startTest()"
+        >
+          {{ $t('common.confirm') }}
+        </el-button>
+      </div>
     </div>
+    <!-- 用例详情弹框 -->
+    <el-dialog
+      :visible.sync="CaseVisible"
+      :title="$t('userpage.caseDetail')"
+      :close-on-click-modal="false"
+    >
+      <el-collapse
+        v-model="activeNames"
+      >
+        <el-collapse-item
+          :title="$t('atp.security')"
+          name="securityTest"
+        />
+        <el-collapse-item
+          :title="$t('atp.complianceTest')"
+          name="complianceTest"
+        />
+        <el-collapse-item
+          :title="$t('atp.sandboxTest')"
+          name="sandboxTest"
+        />
+      </el-collapse>
+      <div style="text-align:right;margin-top:15px;">
+        <el-button
+          type="primary"
+          size="small"
+          @click="handleClose()"
+        >
+          {{ $t('common.close') }}
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { Userpage } from '../../tools/api.js'
+import { Userpage, URL_PREFIX } from '../../tools/api.js'
+import Navcomp from '../../components/layout/Nav'
+
 export default {
+  components: { Navcomp },
   data () {
     return {
-
+      sceneData: [],
+      datacn: [],
+      dataen: [],
+      scenarioIdList: [],
+      CaseVisible: false,
+      taskId: '454445',
+      activeNames: ['securityTest']
     }
   },
+
+  mounted () {
+    // this.getTaskId()
+    this.getAllScene()
+  },
   methods: {
+    // getTaskId () {
+    //   if (this.currUrl.indexOf('?') !== -1) {
+    //     this.taskId = this.currUrl.split('?')[1].split('=')[1]
+    //     sessionStorage.setItem('taskId', this.taskId)
+    //   }
+    // },
     getAllScene () {
-      Userpage.getAllSceneApi().then(res => {
-        console.log(res.data)
+      // Userpage.getAllSceneApi().then(res => {
+      // let data=res.data
+      let data = [
+        {
+          'id': '25232323',
+          nameCh: '社区场景',
+          nameEn: 'Edgegallery',
+          descriptionCh: '适用于联通测试场景',
+          descriptionEn: 'Suitable for China Unicom test scenarios'
+        },
+        {
+          'id': '455',
+          nameCh: '社区场景',
+          nameEn: 'Edgegallery',
+          descriptionCh: '适用于联通测试场景',
+          descriptionEn: 'Suitable for China Unicom test scenarios'
+        },
+        {
+          'id': '786',
+          nameCh: '社区场景',
+          nameEn: 'Edgegallery',
+          descriptionCh: '适用于联通测试场景',
+          descriptionEn: 'Suitable for China Unicom test scenarios'
+        },
+        {
+          'id': '58',
+          nameCh: '社区场景',
+          nameEn: 'Edgegallery',
+          descriptionCh: '适用于联通测试场景',
+          descriptionEn: 'Suitable for China Unicom test scenarios'
+        }
+      ]
+      data.forEach(item => {
+        let objcn = {
+          id: '',
+          name: '',
+          description: '',
+          selected: true
+        }
+        let objen = {
+          id: '',
+          name: '',
+          description: '',
+          selected: true
+        }
+        objcn.id = item.id
+        objcn.name = item.nameCh
+        objcn.description = item.descriptionCh
+        objen.id = item.id
+        objen.name = item.nameEn
+        objen.description = item.descriptionEn
+        this.datacn.push(objcn)
+        this.dataen.push(objen)
       })
+      this.sceneData = this.datacn
+      // }).catch(() => {})
+    },
+    chooseScene (item) {
+      this.scenarioIdList.push(item.id)
+      item.selected = !item.selected
+    },
+    getAppIcon (item) {
+      return URL_PREFIX + 'file/' + item.Id
+    },
+    handleClose () {
+      this.CaseVisible = false
+    },
+    getDetail () {
+      this.CaseVisible = true
+      Userpage.getSceneCaseApi().then(res => {
+        // let data = res.data
+        let data = [
+          {
+            id: '4',
+            nameCh: '社区场景',
+            nameEn: 'Edgegallery',
+            descriptionCh: '适用于联通测试场景',
+            descriptionEn: 'Suitable for China Unicom test scenarios',
+            testSuites: [
+              {
+                id: '12',
+                nameCh: '安全性测试',
+                nameEn: 'curitytest',
+                descriptionCh: '安全性测试描述',
+                descriptionEn: 'curitytest description',
+                scenarioIdList: '',
+                testCases: [
+                  {
+                    id: '455',
+                    nameCh: '病毒扫描',
+                    nameEn: 'Application Instantiation',
+                    descriptionCh: '在一个边缘主机上实例化应用程序及其依赖项应用程序',
+                    descriptionEn: 'nstantiate application and its dependency application on one edge host',
+                    codeLanguage: 'java',
+                    expectResultCh: '应用程序可以成功实例化',
+                    expectResultEn: 'app can instantiate successfully.',
+                    type: 'automatic',
+                    testSuiteIdList: '',
+                    testStepCh: '',
+                    testStepEn: ''
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+        console.log(data)
+      }).catch(() => {})
+    },
+    startTest () {
+      this.scenarioIdList = []
+      this.sceneData.forEach(item => {
+        if (item.selected) {
+          this.scenarioIdList.push(item.id)
+        }
+      })
+      let param = {
+        scenarioIdList: this.scenarioIdList
+      }
+      Userpage.runTaskApi(this.taskId, param).then(res => {
+        this.$router.push({ name: 'atpprocess', params: { taskId: this.taskId } })
+      }).catch(() => {})
+    }
+  },
+  watch: {
+    '$i18n.locale': function () {
+      let language = localStorage.getItem('language')
+      if (language === 'cn') {
+        this.sceneData = this.datacn
+      } else if (language === 'en') {
+        this.sceneData = this.dataen
+      }
     }
   }
 }
@@ -119,11 +292,11 @@ export default {
 .selectscene{
   background-color: white;
   .toptitle{
-    background-color: #babbdc;
+    background-color: #e1e7f5;
     display: flex;
     justify-content: space-between;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     .left{
       line-height: 46px;
     }
@@ -143,28 +316,75 @@ export default {
   }
   .scene-main{
     display: flex;
+    padding: 10px;
     flex-wrap: wrap;
-    // justify-content: space-around;
-    .scene{
+    .contednt{
       width: 33%;
-      height: 200px;
-      border: 1px solid #d7dce6;
-      border-radius: 10px;
-      margin: 0 5px 10px;
-      .sceneimage{
-        width: 100%;
-        height: 150px;
-      }
-      .choose{
-        display: flex;
-        justify-content: space-between;
-        line-height: 30px;
-        img{
-          width: 30px;
-          height: 30px;
+      padding: 0 15px 40px;
+      // .scene:hover{
+      //   transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      // }
+      // .scene::after {
+      //   position: absolute;
+      //   top: 100%;
+      //   left: 0;
+      //   z-index: -1;
+      //   display: block;
+      //   content: '';
+      //   height: 22px;
+      //   width: 100%;
+      //   background: url(/images/hotel/hotel_index/floating-card-shadow.png?a=1) no-repeat;
+      //   background-size: 100%;
+      // }
+      .scene{
+        // transform-style: preserve-3d;
+        // will-change: transform;
+        // width: 33%;
+        height: 260px;
+        border: 1px solid #d7dce6;
+        box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
+        border-radius: 8px;
+        position: relative;
+        .sceneimage{
+          width: 100%;
+          height: 100px;
+        }
+        .choose{
+          display: flex;
+          justify-content: space-between;
+          .el-form{
+            // width:100%;
+            .el-form-item{
+              margin-bottom: 0;
+            }
+            .el-form-item:nth-child(3){
+              .el-form-item__content{
+                margin-left: 0 !important;
+              }
+            }
+          }
+          .el-button--text{
+            font-size: 14px;
+            padding: 3px 0;
+            color: #688ef3;
+          }
+          .el-button--text:hover{
+            color: #86a5f5;
+            border-bottom: 1px solid #688ef3;
+          }
+          img{
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            right: 10px;
+            bottom: 15px;
+          }
         }
       }
     }
+  }
+  .start-button{
+    text-align: right;
   }
 }
 </style>

@@ -72,7 +72,7 @@ let Taskmgmt = {
     return POST(url, params)
   }
 }
-
+// 用户面所有接口
 let Userpage = {
   // 获取所有场景
   getAllSceneApi: function (params) {
@@ -83,6 +83,16 @@ let Userpage = {
   getSceneIconApi: function (appId) {
     let url = 'apps/' + appId
     return GET(url)
+  },
+  // 获取场景下的用例
+  getSceneCaseApi: function (params) {
+    let url = 'testscenarios/testcases'
+    return POST(url, params)
+  },
+  // 运行任务
+  runTaskApi: function (taskId, params) {
+    let url = 'tasks/' + taskId + '/action/run'
+    return POST(url, params)
   },
   // 获取任务
   getTaskApi: function (taskId) {

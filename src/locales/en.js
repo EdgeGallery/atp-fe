@@ -81,7 +81,8 @@ const en = {
     confirm: 'Confirm',
     delete: 'Delete',
     search: 'Search',
-    edit: 'Modify'
+    edit: 'Modify',
+    close: 'Close'
   },
   atp: {
     success: 'success',
@@ -157,7 +158,9 @@ const en = {
   },
   userpage: {
     selectScene: 'Select Scene',
-    contribution: 'Testcase Contribution'
+    contribution: 'Testcase Contribution',
+    seeDetail: 'See Details',
+    caseDetail: 'Testcase Detail'
   },
   modelmgmt: {
     name: 'Name',
