@@ -79,7 +79,8 @@ const cn = {
     confirm: '确定',
     delete: '删除',
     search: '搜索',
-    edit: '编辑'
+    edit: '编辑',
+    close: '关闭'
   },
   atp: {
     success: '成功数量',
@@ -155,7 +156,9 @@ const cn = {
   },
   userpage: {
     selectScene: '选择用例场景',
-    contribution: '测试用例贡献'
+    contribution: '测试用例贡献',
+    seeDetail: '查看用例详情',
+    caseDetail: '用例详情'
   },
   modelmgmt: {
     name: '名称',

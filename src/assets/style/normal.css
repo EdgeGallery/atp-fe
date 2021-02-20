@@ -104,3 +104,13 @@ a{
   padding: 20px;
   box-sizing: border-box;
 }
+/* 弹框 */
+.el-dialog__title {
+  color: #000 !important;
+}
+.el-dialog__close {
+  color: #000 !important;
+}
+.el-icon-close:before{
+  color:#000 !important;
+}
