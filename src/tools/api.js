@@ -134,14 +134,8 @@ let Atp = {
   },
   // 预检查接口（返回依赖）
   getDependencyApi: function (taskId) {
-    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId + '/action/pre-check'
-    return axios.get(url, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-      }
-    })
+    let url = 'tasks/' + taskId + '/action/pre-check'
+    return GET(url)
   },
   // 创建测试任务
   creatTaskApi: function (params) {
