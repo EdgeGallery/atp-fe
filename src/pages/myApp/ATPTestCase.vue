@@ -500,20 +500,19 @@ export default {
     }
   },
   mounted () {
-    // this.getLanguage()
+    this.getLanguage()
     this.getTaskId()
     this.getAllcase()
   },
   methods: {
-    // getLanguage () {
-    //   let currUrl = window.location.href
-    //   if (currUrl.indexOf('&') !== -1) {
-    //     let language = currUrl.split('&')[1].split('=')[1]
-    //     localStorage.setItem('language', language)
-    //     this.$i18n.locale = language
-    //     this.$store.commit('changeLaguage', { language: language })
-    //   }
-    // },
+    getLanguage () {
+      if (this.currUrl.indexOf('&') !== -1) {
+        let language = this.currUrl.split('&')[1].split('=')[1]
+        localStorage.setItem('language', language)
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      }
+    },
     getCurrentPageData (val) {
       this.currentData = val
     },
@@ -706,7 +705,7 @@ export default {
     // 获取iframe的taskid
     getTaskId () {
       if (this.currUrl.indexOf('?') !== -1) {
-        this.taskId = this.currUrl.split('?')[1].split('=')[1]
+        this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
         sessionStorage.setItem('taskId', this.taskId)
       } else {
         let params = sessionStorage.getItem('taskId')
