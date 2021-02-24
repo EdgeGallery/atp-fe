@@ -160,7 +160,10 @@ const en = {
     selectScene: 'Select Scene',
     contribution: 'Testcase Contribution',
     seeDetail: 'See Details',
-    caseDetail: 'Testcase Detail'
+    caseDetail: 'Testcase Detail',
+    name: 'Name',
+    type: 'Type',
+    description: 'Description'
   },
   modelmgmt: {
     name: 'Name',
