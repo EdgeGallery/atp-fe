@@ -308,10 +308,12 @@ export default {
           this.scenarioIdList.push(item.id)
         }
       })
-      let param = {
-        scenarioIdList: this.scenarioIdList
-      }
-      Userpage.runTaskApi(this.taskId, param).then(res => {
+      // let param = {
+      //   scenarioIdList: this.scenarioIdList
+      // }
+      let fd = new FormData()
+      fd.append('scenarioIdList', this.scenarioIdList)
+      Userpage.runTaskApi(this.taskId, fd).then(res => {
         this.$router.push({ name: 'atpprocess', params: { taskId: this.taskId } })
       }).catch(() => {})
     },
