@@ -226,7 +226,7 @@ export default {
       item.selected = !item.selected
     },
     getAppIcon (item) {
-      return URL_PREFIX + 'file/' + item.Id
+      return URL_PREFIX + 'file/' + item.id
     },
     handleClose () {
       this.CaseVisible = false
@@ -236,7 +236,9 @@ export default {
       let scenarioIds = []
       scenarioIds.push(item.id)
       this.CaseVisible = true
-      Userpage.getSceneCaseApi(scenarioIds).then(res => {
+      let fd = new FormData()
+      fd.append('scenarioIds', scenarioIds)
+      Userpage.getSceneCaseApi(fd).then(res => {
       // let data = res.data
         let data = [
           {
