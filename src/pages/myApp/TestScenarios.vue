@@ -154,12 +154,13 @@ export default {
   // components: { Navcomp },
   data () {
     return {
+      currUrl: window.location.href,
       sceneData: [],
       datacn: [],
       dataen: [],
       scenarioIdList: [],
       CaseVisible: false,
-      taskId: '454445',
+      taskId: '',
       sceneTitle: '',
       testSuiteData: [],
       language: localStorage.getItem('language')
