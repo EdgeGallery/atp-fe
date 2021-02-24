@@ -134,6 +134,7 @@ export default {
   // components: { Navcomp },
   data () {
     return {
+      currUrl: window.location.href,
       language: localStorage.getItem('language'),
       report: true,
       isTest: '',

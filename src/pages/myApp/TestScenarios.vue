@@ -239,65 +239,7 @@ export default {
       let fd = new FormData()
       fd.append('scenarioIds', scenarioIds)
       Userpage.getSceneCaseApi(fd).then(res => {
-      // let data = res.data
-        let data = [
-          {
-            id: '4',
-            nameCh: '社区场景',
-            nameEn: 'Edgegallery',
-            descriptionCh: '适用于联通测试场景',
-            descriptionEn: 'Suitable for China Unicom test scenarios',
-            testSuites: [
-              {
-                id: '12',
-                nameCh: '安全性测试',
-                nameEn: 'curitytest',
-                descriptionCh: '安全性测试描述',
-                descriptionEn: 'curitytest description',
-                scenarioIdList: '',
-                testCases: [
-                  {
-                    id: '455',
-                    nameCh: '病毒扫描',
-                    nameEn: 'Application Instantiation',
-                    descriptionCh: '在一个边缘主机上实例化应用程序及其依赖项应用程序',
-                    descriptionEn: 'nstantiate application and its dependency application on one edge host',
-                    codeLanguage: 'java',
-                    expectResultCh: '应用程序可以成功实例化',
-                    expectResultEn: 'app can instantiate successfully.',
-                    type: 'automatic',
-                    testSuiteIdList: '',
-                    testStepCh: '',
-                    testStepEn: ''
-                  }
-                ]
-              }, {
-                id: '12',
-                nameCh: '安全性测试',
-                nameEn: 'curitytest',
-                descriptionCh: '安全性测试描述',
-                descriptionEn: 'curitytest description',
-                scenarioIdList: '',
-                testCases: [
-                  {
-                    id: '455',
-                    nameCh: '病毒扫描',
-                    nameEn: 'Application Instantiation',
-                    descriptionCh: '在一个边缘主机上实例化应用程序及其依赖项应用程序',
-                    descriptionEn: 'nstantiate application and its dependency application on one edge host',
-                    codeLanguage: 'java',
-                    expectResultCh: '应用程序可以成功实例化',
-                    expectResultEn: 'app can instantiate successfully.',
-                    type: 'automatic',
-                    testSuiteIdList: '',
-                    testStepCh: '',
-                    testStepEn: ''
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+        let data = res.data
         this.testSuiteData = data[0].testSuites
       }).catch(() => {})
     },
