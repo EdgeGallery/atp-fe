@@ -13,285 +13,156 @@
   -  See the License for the specific language governing permissions and
   -  limitations under the License.
   -->
-
 <template>
-  <div class="process">
-    <div
-      class="back"
-    >
-      <el-button
-        :disabled="report"
-        id="back_button"
-        type="primary"
-        icon="el-icon-document"
-        plain
-        @click="jumpTo()"
-      >
-        {{ $t('myApp.checkReport') }}
-      </el-button>
-    </div>
-    <div class="step-title">
-      <el-steps
-        :active="active"
-        align-center
-      >
-        <el-step
-          :title="$t('atp.security')"
-          :class="steponeIcon"
-        >
-          <em
-            class="stepone"
-            :class="step1class"
-            slot="icon"
-          />
-        </el-step>
-        <el-step
-          :title="$t('atp.complianceTest')"
-          :class="steptwoIcon"
-        >
-          <em
-            class="steptwo"
-            :class="step2class"
-            slot="icon"
-          />
-        </el-step>
-        <el-step
-          :title="$t('atp.sandboxTest')"
-          :class="stepthreeIcon"
-        >
-          <em
-            class="stepthree"
-            :class="step3class"
-            slot="icon"
-          />
-        </el-step>
-      </el-steps>
-    </div>
-    <div
-      class="case-main"
-      id="casediv"
-    >
+  <div class="padding56">
+    <!-- <Navcomp /> -->
+    <div class="process">
       <div
-        class="testcase-step"
-      >
-        <div class="case-top">
-          <div class="case-title-icon">
-            <span>{{ securityNum }}</span>
-            <span class="sum">/</span>
-            <span class="sum">{{ allcase.securityTest.length }}</span>
-          </div>
-        </div>
-        <div
-          class="case-detail"
-          id="secheight"
-        >
-          <el-timeline>
-            <el-timeline-item
-              v-for="(activity, index) in allcase.securityTest"
-              :key="index"
-              :icon="activity.icon"
-              :type="activity.type"
-              :color="activity.color"
-              :size="activity.size"
-            >
-              {{ activity.content }}
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </div>
-      <div
-        class="testcase-step"
-      >
-        <div class="case-top">
-          <div class="case-title-icon">
-            <span>{{ complianceNum }}</span>
-            <span class="sum">/</span>
-            <span class="sum">{{ allcase.complianceTest.length }}</span>
-          </div>
-        </div>
-        <div
-          class="case-detail"
-          id="comheight"
-        >
-          <el-timeline>
-            <el-timeline-item
-              v-for="(activity, index) in allcase.complianceTest"
-              :key="index"
-              :icon="activity.icon"
-              :type="activity.type"
-              :color="activity.color"
-              :size="activity.size"
-            >
-              {{ activity.content }}
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </div>
-      <div
-        class="testcase-step"
-      >
-        <div class="case-top">
-          <div class="case-title-icon">
-            <span>{{ sandboxNum }}</span>
-            <span class="sum">/</span>
-            <span class="sum">{{ allcase.sandboxTest.length }}</span>
-          </div>
-        </div>
-        <div
-          class="case-detail"
-          id="sandheight"
-        >
-          <el-timeline>
-            <el-timeline-item
-              v-for="(activity, index) in allcase.sandboxTest"
-              :key="index"
-              :icon="activity.icon"
-              :type="activity.type"
-              :color="activity.color"
-              :size="activity.size"
-            >
-              {{ activity.content }}
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </div>
-    </div>
-    <el-dialog
-      :visible.sync="dialogSuccess"
-      :close-on-click-modal="false"
-      class="finishDialog"
-    >
-      <div>
-        <p>恭喜你 通过本次测试任务！</p>
-      </div>
-      <img
-        src="../../assets/images/complianceTest_icon.png"
-        class="curp"
-        alt
-      >
-      <div
-        class="button-center"
+        class="back"
       >
         <el-button
+          :disabled="report"
+          id="back_button"
           type="primary"
-          @click="cancel()"
+          icon="el-icon-document"
           plain
-        >
-          {{ $t('atp.cancel') }}
-        </el-button>
-        <el-button
-          type="primary"
-          @click="CheckReport()"
-        >
-          查看报告
-        </el-button>
-      </div>
-    </el-dialog>
-    <el-dialog
-      :visible.sync="dialogFailed"
-      :close-on-click-modal="false"
-      class="finishDialog"
-    >
-      <div>
-        <p>您有如下用例未通过！</p>
-      </div>
-      <img
-        src="../../assets/images/complianceTest_icon.png"
-        class="curp"
-        alt
-      >
-      <div
-        class="button-center"
-      >
-        <el-button
-          type="primary"
-          @click="cancel()"
-          plain
-        >
-          {{ $t('atp.cancel') }}
-        </el-button>
-        <el-button
-          type="primary"
-          @click="CheckReport()"
+          @click="jumpTo()"
         >
           {{ $t('myApp.checkReport') }}
         </el-button>
       </div>
-    </el-dialog>
+      <div
+        class="header"
+        :class="isTest"
+      >
+        <div class="testing-score">
+          <div class="score">
+            <em class="scoreem">{{ score }}</em>
+          </div>
+        </div>
+        <div class="status-title">
+          <p>{{ language==='cn'?statusTitle[0]:statusTitle[1] }}</p>
+          <span>{{ language==='cn'?testingScene[0]:testingScene[1] }}:{{ language==='cn'?testingCase[0]:testingCase[1] }}</span>
+          <el-progress
+            :text-inside="true"
+            :stroke-width="16"
+            :percentage="percentage"
+            color="#688ef3"
+          />
+        </div>
+      </div>
+      <div class="content">
+        <div
+          v-for="(item,index) in testScenarios"
+          :key="index"
+        >
+          <div class="content-title">
+            <div class="sceneRunning">
+              <div class="testing-case-process">
+                <span>{{ item.successNum }}</span>
+                <span class="sum">/</span>
+                <span class="sum">{{ item.totalNum }}</span>
+              </div>
+            </div>
+            <span class="scene">{{ language==='cn'?item.nameCh:item.nameEn }}</span>
+            <em class="allsuccess rt" />
+          </div>
+          <el-collapse
+            v-model="activeName"
+          >
+            <el-collapse-item
+              v-for="(suiteItem,dex) in item.testSuites"
+              :key="dex"
+              :title="language==='cn'?suiteItem.nameCh:suiteItem.nameEn"
+              :name="item.nameEn+suiteItem.nameEn"
+            >
+              <el-table
+                :data="suiteItem.testCases"
+              >
+                <el-table-column
+                  :label="$t('userpage.name')"
+                >
+                  <template scope="scope">
+                    <span
+                      v-if="scope.row.result=='success'"
+                      class="el-icon-success success"
+                      title="success"
+                    />
+                    <span
+                      v-else-if="scope.row.result=='failed'"
+                      class="el-icon-error error"
+                      title="failed"
+                    />
+                    <span
+                      v-else-if="scope.row.result=='running'"
+                      class="el-icon-loading primary"
+                      title="running"
+                    />
+                    <span
+                      v-else
+                      class="el-icon-refresh-left primary"
+                    />
+                    {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :label="$t('userpage.type')"
+                >
+                  <template scope="scope">
+                    {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :label="$t('userpage.description')"
+                >
+                  <template scope="scope">
+                    {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { Atp } from '../../tools/api.js'
-// import { TESTNAME } from '../../tools/testdataname.js'
+import { Userpage } from '../../tools/api.js'
+// import Navcomp from '../../components/layout/Nav'
 export default {
+  // components: { Navcomp },
   data () {
     return {
-      currUrl: window.location.href,
-      active: 0,
-      step1class: '',
-      step2class: '',
-      step3class: '',
-      steponeIcon: '',
-      steptwoIcon: '',
-      stepthreeIcon: '',
-      intervalNumone: '',
-      intervalNumtwo: '',
-      intervalNumthree: '',
-      atptaskId: '',
+      language: localStorage.getItem('language'),
+      report: true,
+      isTest: '',
+      score: 0,
+      statusTitle: [],
+      percentage: 0,
       taskId: '',
-      allcase: {
-        securityTest: [],
-        complianceTest: [],
-        sandboxTest: []
-      },
-      interval: '',
-      timeout: '',
-      dialogSuccess: false,
-      dialogFailed: false,
-      securityNum: 0,
-      complianceNum: 0,
-      sandboxNum: 0,
-      report: true
+      testingScene: [],
+      testingCase: [],
+      testScenarios: [],
+      activeName: [],
+      finishActiveName: [],
+      interval: ''
     }
   },
   mounted () {
-    // 传taskid
-    // this.getLanguage()
     this.getTaskId()
-    this.getCaseData()
+    this.getTaskProcess()
     this.interval = setInterval(() => {
-      this.getCaseData()
+      this.getTaskProcess()
     }, 1000)
-    this.intervalNumone = setInterval(() => {
-      this.changeNumOne()
-    }, 1000)
-    this.intervalNumtwo = setInterval(() => {
-      this.changeNumTwo()
-    }, 1000)
-    this.intervalNumthree = setInterval(() => {
-      this.changeNumThree()
-    }, 1000)
-    // this.timeout = setTimeout(() => {
-    //   this.clearInterval()
-    // }, 30000)
   },
-  beforeDestroy () {
-    this.clearInterval()
-    // clearTimeout(this.timeout)
-    clearTimeout(this.intervalNumone)
-    clearTimeout(this.intervalNumtwo)
-    clearTimeout(this.intervalNumthree)
+  watch: {
+    '$i18n.locale': function () {
+      let language = localStorage.getItem('language')
+      this.language = language
+    }
   },
   methods: {
-    // getLanguage () {
-    //   let currUrl = window.location.href
-    //   if (currUrl.indexOf('&') !== -1) {
-    //     let language = currUrl.split('&')[1].split('=')[1]
-    //     localStorage.setItem('language', language)
-    //     this.$i18n.locale = language
-    //     this.$store.commit('changeLaguage', { language: language })
-    //   }
-    // },
     getTaskId () {
       if (this.currUrl.indexOf('?') !== -1) {
         this.taskId = this.currUrl.split('?')[1].split('=')[1]
@@ -305,272 +176,125 @@ export default {
       let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
       window.open(routeData.href, '_blank')
     },
-    // 设置用例高度
-    setDivHeight () {
-      this.$nextTick(() => {
-        const secDiv = document.getElementById('secheight')
-        const comDiv = document.getElementById('comheight')
-        const sandDiv = document.getElementById('sandheight')
-        const caseDivHeight = document.getElementById('casediv').clientHeight
-        secDiv.style.height = caseDivHeight - 80 + 'px'
-        comDiv.style.height = caseDivHeight - 80 + 'px'
-        sandDiv.style.height = caseDivHeight - 80 + 'px'
-      })
+    getTaskProcess () {
+      Userpage.getTaskApi(this.taskId).then(res => {
+        let data = res.data[0].testScenarios
+        this.testScenarios = data
+        this.activeName = []
+        this.finishActiveName = []
+        let allsuccessNum = 0
+        let allfailNum = 0
+        let allNum = 0
+        data.forEach(element => {
+          this.finishActiveName.push(element.nameEn + element.testSuites[0].nameEn)
+          element.totalNum = 0
+          element.successNum = 0
+          element.failNum = 0
+          element.testSuites.forEach(ele => {
+            ele.testCases.forEach(item => {
+              element.totalNum++
+              allNum++
+              if (item.result === 'success') {
+                allsuccessNum++
+                element.successNum++
+              } else if (item.result === 'failed') {
+                allfailNum++
+                element.failNum++
+              } else if (item.result === 'running') {
+                this.activeName.push(element.nameEn + ele.nameEn)
+                if (item.type === 'automatic') {
+                  this.testingCase = [item.nameCh, item.nameEn]
+                  this.testingScene = [element.nameCh, element.nameEn]
+                }
+              }
+            })
+          })
+        })
+        console.log(this.activeName)
+        // 分数和进度百分比
+        this.score = Number((allsuccessNum / allNum * 100).toFixed(0))
+        this.percentage = Number(((allsuccessNum + allfailNum) / allNum * 100).toFixed(0))
+        if (this.percentage === 100) {
+          this.statusTitle = ['测试完成', 'Finished test']
+          this.report = false
+          this.isTest = 'finished'
+          this.activeName = this.finishActiveName
+          this.clearInterval()
+        } else {
+          this.statusTitle = ['正在测试...', 'Testing...']
+          this.isTest = 'running'
+        }
+      }).catch(() => {})
     },
     clearInterval () {
       clearTimeout(this.interval)
       this.interval = null
-    },
-    getCaseData () {
-      Atp.processApi(this.taskId).then(res => {
-        let testCaseDetail = res.data.testCaseDetail
-        this.allcase = {
-          securityTest: [],
-          complianceTest: [],
-          sandboxTest: []
-        }
-        for (const key in testCaseDetail) {
-          let caseDetail = testCaseDetail[key][0]
-          for (const keyin in caseDetail) {
-            let obj = {
-              content: '',
-              size: 'large',
-              icon: '',
-              type: ''
-            }
-            obj.content = keyin
-            if (caseDetail[keyin].result === 'success') {
-              obj.type = 'primary'
-              obj.icon = 'el-icon-check'
-            } else if (caseDetail[keyin].result === 'failed') {
-              obj.type = 'danger'
-              obj.icon = 'el-icon-close'
-            } else if (caseDetail[keyin].result === 'running') {
-              obj.icon = 'el-icon-loading'
-              obj.type = 'info'
-            } else {
-              obj.icon = ''
-              obj.type = ''
-            }
-            if (key === 'securityTest') {
-              this.allcase.securityTest.push(obj)
-            } else if (key === 'complianceTest') {
-              this.allcase.complianceTest.push(obj)
-            } else {
-              this.allcase.sandboxTest.push(obj)
-            }
-          }
-        }
-        this.setDivHeight()
-        this.changeIcon()
-        this.changeNumOne()
-        this.changeNumTwo()
-        this.changeNumThree()
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: this.$t('promptMessage.getprocessFail'),
-          type: 'warning'
-        })
-        this.clearInterval()
-      })
-    },
-    changeIcon () {
-      if (this.allcase.securityTest.every((item) => {
-        return (item.type === 'primary' || item.type === 'danger')
-      })) {
-        this.active = 1
-        clearTimeout(this.intervalNumone)
-        let sec = this.allcase.securityTest.some((item) => {
-          return item.type === 'danger'
-        })
-        if (sec) {
-          this.steponeIcon = ''
-          this.step1class = 'secFinishFail'
-        } else {
-          this.steponeIcon = ''
-          this.step1class = 'secFinishSuccess'
-        }
-      }
-      if (this.allcase.complianceTest.every((item) => {
-        return (item.type === 'primary' || item.type === 'danger')
-      })) {
-        this.active = 2
-        clearTimeout(this.intervalNumtwo)
-        let com = this.allcase.complianceTest.some((item) => {
-          return item.type === 'danger'
-        })
-        if (com) {
-          this.steptwoIcon = ''
-          this.step2class = 'comFinishFail'
-        } else {
-          this.steptwoIcon = ''
-          this.step2class = 'comFinishSuccess'
-        }
-      }
-      if (this.allcase.sandboxTest.every((item) => {
-        return (item.type === 'primary' || item.type === 'danger')
-      })) {
-        this.active = 3
-        clearTimeout(this.intervalNumthree)
-        this.clearInterval()
-        let sand = this.allcase.sandboxTest.some((item) => {
-          return item.type === 'danger'
-        })
-        if (sand) {
-          this.stepthreeIcon = ''
-          this.step3class = 'sandFinishFail'
-        } else {
-          this.stepthreeIcon = ''
-          this.step3class = 'sandFinishSuccess'
-        }
-        this.report = false
-      }
-      // top图标变化
-      if (this.allcase.securityTest.some((item) => {
-        return item.type === 'info'
-      })) {
-        this.steponeIcon = 'running'
-      }
-      if (this.allcase.complianceTest.some((item) => {
-        return item.type === 'info'
-      })) {
-        this.steptwoIcon = 'running'
-      }
-      if (this.allcase.sandboxTest.some((item) => {
-        return item.type === 'info'
-      })) {
-        this.stepthreeIcon = 'running'
-      }
-    },
-    changeNumOne () {
-      this.securityNum = 0
-      // 用例执行个数
-      this.allcase.securityTest.forEach((item) => {
-        if (item.type === 'primary') {
-          this.securityNum++
-        }
-      })
-    },
-    changeNumTwo () {
-      this.complianceNum = 0
-      this.allcase.complianceTest.forEach((item) => {
-        if (item.type === 'primary') {
-          this.complianceNum++
-        }
-      })
-    },
-    changeNumThree () {
-      this.sandboxNum = 0
-      this.allcase.sandboxTest.forEach((item) => {
-        if (item.type === 'primary') {
-          this.sandboxNum++
-        }
-      })
-    },
-    // 测试完成弹框
-    CheckReport () {
-      let taskId = this.taskId
-      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
-      window.open(routeData.href, '_blank')
-    },
-    cancel () {
-      this.dialogSuccess = false
-      this.dialogFailed = false
     }
+  },
+  beforeDestroy () {
+    this.clearInterval()
   }
 }
 </script>
 <style lang="less">
-  .process{
-    background-color: white;
-    // margin: 0 56px;
-    .back{
-      padding: 10px 50px 0;
-      text-align: right;
-    }
-  .step-title{
-    margin-bottom: 50px;
-    margin-top: 50px;
-    .el-step__title {
-      font-size: 20px;
-      line-height: 45px;
-      border-radius: 50%;
-      font-weight: 500;
-      color: #303133;
-    }
-    .el-step__line {
-      background-color: #6c92fa;
-    }
-    .el-step__icon{
-      width:90px;
-      height:90px;
-      bottom: 25px;
-      border: none;
-      background-position: center;
-    }
-    .success{
-      animation-play-state: paused;
-      .el-step__icon{
-        border: 2px solid #6c92fa;
-
+.process{
+  background-color: white;
+  .back{
+    padding: 10px 50px 0;
+    text-align: right;
+  }
+    .running{
+      .testing-score{
+        border: 2px dashed #688ef3;
+        animation: rotate 8s infinite linear ;
+      }
+      .scoreem{
+        animation: rotateinside 8s infinite linear ;
       }
     }
-    .fail{
-       animation-play-state: paused;
-      .el-step__icon{
-        border: 2px solid #F56C6C;
+    .finished{
+      .testing-score{
+        border: 2px solid #688ef3;
       }
     }
-    .stepone, .steptwo, .stepthree{
+  .header{
+    display: flex;
+    .testing-score{
+      margin: 0 20px;
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background-position: center;
-      background-repeat: no-repeat;
-      border: 2px solid #6c92fa;
+      background-color: #c8d1eb;
+      // border: 2px solid #688ef3;
     }
-    .stepone{
-      background: url('../../assets/images/securityTest_icon.png');
-    }
-    .steptwo{
-      background: url('../../assets/images/complianceTest_icon.png');
-    }
-    .stepthree{
-      background: url('../../assets/images/sandboxTest_icon.png');
-    }
-    .secFinishSuccess{
-      background: url('../../assets/images/secFinishSuccess.png');
-    }
-    .comFinishSuccess{
-      background: url('../../assets/images/comFinishSuccess.png');
-    }
-    .sandFinishSuccess{
-      background: url('../../assets/images/sandFinishSuccess.png');
-    }
-    .secFinishFail{
-      border: 2px solid #F56C6C;
-      background: url('../../assets/images/secFinishFail.png');
-    }
-    .comFinishFail{
-      border: 2px solid #F56C6C;
-      background: url('../../assets/images/comFinishFail.png');
-    }
-    .sandFinishFail{
-      border: 2px solid #F56C6C;
-      background: url('../../assets/images/sandFinishFail.png');
-    }
-    .running{
-      .el-step__icon{
-        border: 3px dashed #6c92fa;
-        animation: rotate 5s infinite linear ;
-      }
-      .stepone, .steptwo, .stepthree{
-        border: none;
-        animation: rotateinside 5s infinite linear ;
+    .score{
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      text-align: center;
+      display: table-cell;
+      vertical-align:middle;
+      // border: 2px solid #688ef3;
+      em{
+        display: inline-block;
+        font-size: 30px;
+        color: #688ef3;
+        font-weight: 600;
       }
     }
-    @keyframes rotate {
+    .status-title{
+      width: 50%;
+      p{
+        font-size: 22px;
+        color: #000;
+      }
+      span{
+        font-size: 14px;
+        color: #909399;
+      }
+    }
+  }
+      @keyframes rotate {
         from {
             transform: rotate(0deg);
         }
@@ -586,58 +310,76 @@ export default {
             transform: rotate(0deg);
         }
     }
-  }
-  .case-main{
-    display: flex;
-    justify-content: space-around;
-    padding-bottom: 20px;
-    .testcase-step{
-        width: 350px;
-      .case-top{
-        width: 350px;
-        display: flex;
-        background-color:#6c93bf;
-        height:60px;
-        background: url('../../assets/images/casetop_img.png');
-        background-position:center;
-        .case-title-icon{
-          position: relative;
-          left:50%;
-          transform:translateX(-40px);
-          width:80px;
+  .content{
+    padding: 20px 60px;
+    .content-title{
+      display: flex;
+      .scene{
+        padding-left: 10px;
+        line-height: 60px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #688ef3;
+      }
+      // .allsuccess{
+      //   width: 50px;
+      //   height: 50px;
+      //   border-radius: 50%;
+      //   background-position: center;
+      //   background-repeat: no-repeat;
+      //   background: url('../../assets/images/chenggong.png');
+      // }
+      // .sceneRunning{
+      //   border-radius: 50%;
+      //    border:2px dashed #688ef3;
+      //   animation: rotate 5s infinite linear ;
+      // }
+      .testing-case-process{
+          width:60px;
           height:60px;
           text-align: center;
-          line-height: 60px;
+          display: table-cell;
+          vertical-align:middle;
+          border-radius: 50%;
+          // animation: rotateinside 5s infinite linear ;
           span{
             font-size: 40px;
-            color: #fff;
+            color: #1ececa;
             font-weight: 700;
           }
           .sum{
             font-size: 25px;
-            color: #6c8ce3;
+            color: #9163cc;
           }
-        }
-      }
-      .case-detail{
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        padding:25px 10px 10px;
-        .el-timeline{
-          font-size: 18px;
-          .el-timeline-item__node--large {
-            left: -5px;
-            width: 20px;
-            height: 20px;
-          }
-        }
       }
     }
-  }
-    .el-dialog{
-        width: 30%;
-        .button-center{
-          text-align: center;
-        }
+    .el-collapse{
+      padding: 10px 50px;
+      border: none!important;
+      .success{
+        color: #67c23a;
+      }
+      .error{
+        color: #f56c6c;
+      }
+      .primary{
+        color: #2c3fe9 ;
+      }
+      .el-collapse-item__header{
+        font-size: 15px;
+        height: 30px;
+        background-image: linear-gradient(to right, #cad5f3 , #fff);
+      }
+      .el-icon-arrow-right:before {
+        color: #000;
+      }
+    }
+    .el-table::before {
+       width: 0;
+    }
+    table th,table td{
+      border-bottom: none !important;
     }
   }
+}
 </style>

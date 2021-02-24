@@ -15,17 +15,19 @@
   -->
 <template>
   <div class="padding56">
-    <Navcomp />
+    <!-- <Navcomp /> -->
     <div class="selectscene padding20">
       <div class="toptitle">
         <div class="left">
           {{ $t('userpage.selectScene') }}
         </div>
-        <div class="right">
+        <div
+          class="right"
+          @click="jumpToGitee()"
+        >
           <img
-            src="../../assets/images/chenggong.png"
+            src="../../assets/images/gongxian.png"
             alt=""
-            class="rt"
           >
           <span> {{ $t('userpage.contribution') }}</span>
         </div>
@@ -40,7 +42,7 @@
           <div class="scene">
             <div>
               <img
-                src="../../assets/images/logo.png"
+                :src="getAppIcon(item)"
                 alt=""
                 class="sceneimage"
               >
@@ -58,7 +60,7 @@
                     type="text"
                     size="small"
                     class="button"
-                    @click="getDetail()"
+                    @click="getDetail(item)"
                   >
                     {{ $t('userpage.seeDetail') }}
                   </el-button>
@@ -92,23 +94,45 @@
     <el-dialog
       :visible.sync="CaseVisible"
       :title="$t('userpage.caseDetail')"
-      :close-on-click-modal="false"
     >
+      <div class="detailtitle">
+        <span>{{ this.sceneTitle }}</span>
+      </div>
       <el-collapse
-        v-model="activeNames"
+        :value="opened"
       >
         <el-collapse-item
-          :title="$t('atp.security')"
-          name="securityTest"
-        />
-        <el-collapse-item
-          :title="$t('atp.complianceTest')"
-          name="complianceTest"
-        />
-        <el-collapse-item
-          :title="$t('atp.sandboxTest')"
-          name="sandboxTest"
-        />
+          v-for="(item,index) in testSuiteData"
+          :key="index"
+          :title="language==='cn'?item.nameCh:item.nameEn"
+          :name="item.nameEn"
+        >
+          <el-table
+            :data="item.testCases"
+          >
+            <el-table-column
+              :label="$t('userpage.name')"
+            >
+              <template scope="scope">
+                {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('userpage.type')"
+            >
+              <template scope="scope">
+                {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('userpage.description')"
+            >
+              <template scope="scope">
+                {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-collapse-item>
       </el-collapse>
       <div style="text-align:right;margin-top:15px;">
         <el-button
@@ -124,10 +148,10 @@
 </template>
 <script>
 import { Userpage, URL_PREFIX } from '../../tools/api.js'
-import Navcomp from '../../components/layout/Nav'
+// import Navcomp from '../../components/layout/Nav'
 
 export default {
-  components: { Navcomp },
+  // components: { Navcomp },
   data () {
     return {
       sceneData: [],
@@ -136,78 +160,65 @@ export default {
       scenarioIdList: [],
       CaseVisible: false,
       taskId: '454445',
-      activeNames: ['securityTest']
+      sceneTitle: '',
+      testSuiteData: [],
+      language: localStorage.getItem('language')
     }
   },
-
+  computed: {
+    opened () {
+      return this.testSuiteData.map((i) => {
+        return i.nameEn
+      })
+    }
+  },
   mounted () {
-    // this.getTaskId()
+    this.getLanguage()
+    this.getTaskId()
     this.getAllScene()
   },
   methods: {
-    // getTaskId () {
-    //   if (this.currUrl.indexOf('?') !== -1) {
-    //     this.taskId = this.currUrl.split('?')[1].split('=')[1]
-    //     sessionStorage.setItem('taskId', this.taskId)
-    //   }
-    // },
+    getLanguage () {
+      if (this.currUrl.indexOf('&') !== -1) {
+        let language = this.currUrl.split('&')[1].split('=')[1]
+        localStorage.setItem('language', language)
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      }
+    },
+    getTaskId () {
+      if (this.currUrl.indexOf('?') !== -1) {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
+        sessionStorage.setItem('taskId', this.taskId)
+      }
+    },
     getAllScene () {
-      // Userpage.getAllSceneApi().then(res => {
-      // let data=res.data
-      let data = [
-        {
-          'id': '25232323',
-          nameCh: '社区场景',
-          nameEn: 'Edgegallery',
-          descriptionCh: '适用于联通测试场景',
-          descriptionEn: 'Suitable for China Unicom test scenarios'
-        },
-        {
-          'id': '455',
-          nameCh: '社区场景',
-          nameEn: 'Edgegallery',
-          descriptionCh: '适用于联通测试场景',
-          descriptionEn: 'Suitable for China Unicom test scenarios'
-        },
-        {
-          'id': '786',
-          nameCh: '社区场景',
-          nameEn: 'Edgegallery',
-          descriptionCh: '适用于联通测试场景',
-          descriptionEn: 'Suitable for China Unicom test scenarios'
-        },
-        {
-          'id': '58',
-          nameCh: '社区场景',
-          nameEn: 'Edgegallery',
-          descriptionCh: '适用于联通测试场景',
-          descriptionEn: 'Suitable for China Unicom test scenarios'
-        }
-      ]
-      data.forEach(item => {
-        let objcn = {
-          id: '',
-          name: '',
-          description: '',
-          selected: true
-        }
-        let objen = {
-          id: '',
-          name: '',
-          description: '',
-          selected: true
-        }
-        objcn.id = item.id
-        objcn.name = item.nameCh
-        objcn.description = item.descriptionCh
-        objen.id = item.id
-        objen.name = item.nameEn
-        objen.description = item.descriptionEn
-        this.datacn.push(objcn)
-        this.dataen.push(objen)
-      })
-      this.sceneData = this.datacn
-      // }).catch(() => {})
+      Userpage.getAllSceneApi().then(res => {
+        let data = res.data
+        data.forEach(item => {
+          let objcn = {
+            id: '',
+            name: '',
+            description: '',
+            selected: true
+          }
+          let objen = {
+            id: '',
+            name: '',
+            description: '',
+            selected: true
+          }
+          objcn.id = item.id
+          objcn.name = item.nameCh
+          objcn.description = item.descriptionCh
+          objen.id = item.id
+          objen.name = item.nameEn
+          objen.description = item.descriptionEn
+          this.datacn.push(objcn)
+          this.dataen.push(objen)
+        })
+        this.sceneData = this.datacn
+      }).catch(() => {})
     },
     chooseScene (item) {
       this.scenarioIdList.push(item.id)
@@ -219,10 +230,13 @@ export default {
     handleClose () {
       this.CaseVisible = false
     },
-    getDetail () {
+    getDetail (item) {
+      this.sceneTitle = item.name
+      let scenarioIds = []
+      scenarioIds.push(item.id)
       this.CaseVisible = true
-      Userpage.getSceneCaseApi().then(res => {
-        // let data = res.data
+      Userpage.getSceneCaseApi(scenarioIds).then(res => {
+      // let data = res.data
         let data = [
           {
             id: '4',
@@ -254,11 +268,34 @@ export default {
                     testStepEn: ''
                   }
                 ]
+              }, {
+                id: '12',
+                nameCh: '安全性测试',
+                nameEn: 'curitytest',
+                descriptionCh: '安全性测试描述',
+                descriptionEn: 'curitytest description',
+                scenarioIdList: '',
+                testCases: [
+                  {
+                    id: '455',
+                    nameCh: '病毒扫描',
+                    nameEn: 'Application Instantiation',
+                    descriptionCh: '在一个边缘主机上实例化应用程序及其依赖项应用程序',
+                    descriptionEn: 'nstantiate application and its dependency application on one edge host',
+                    codeLanguage: 'java',
+                    expectResultCh: '应用程序可以成功实例化',
+                    expectResultEn: 'app can instantiate successfully.',
+                    type: 'automatic',
+                    testSuiteIdList: '',
+                    testStepCh: '',
+                    testStepEn: ''
+                  }
+                ]
               }
             ]
           }
         ]
-        console.log(data)
+        this.testSuiteData = data[0].testSuites
       }).catch(() => {})
     },
     startTest () {
@@ -274,11 +311,15 @@ export default {
       Userpage.runTaskApi(this.taskId, param).then(res => {
         this.$router.push({ name: 'atpprocess', params: { taskId: this.taskId } })
       }).catch(() => {})
+    },
+    jumpToGitee () {
+      window.open('https://gitee.com/edgegallery/community/tree/master/Integration%20WG/ATP%20Test%20Case%20Contribution', '_blank')
     }
   },
   watch: {
     '$i18n.locale': function () {
       let language = localStorage.getItem('language')
+      this.language = language
       if (language === 'cn') {
         this.sceneData = this.datacn
       } else if (language === 'en') {
@@ -295,10 +336,10 @@ export default {
     background-color: #e1e7f5;
     display: flex;
     justify-content: space-between;
-    text-align: center;
     margin-bottom: 25px;
     .left{
       line-height: 46px;
+      font-weight: 600;
     }
     .right{
       // height: 50px;
@@ -307,10 +348,10 @@ export default {
       img{
         width: 30px;
         height: 30px;
-        text-align: center;
+        margin-left: 20px;
       }
       span{
-        font-size: 12px;
+        font-size: 14px;
       }
     }
   }
@@ -319,7 +360,7 @@ export default {
     padding: 10px;
     flex-wrap: wrap;
     .contednt{
-      width: 33%;
+      width: 25%;
       padding: 0 15px 40px;
       // .scene:hover{
       //   transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
@@ -382,9 +423,45 @@ export default {
         }
       }
     }
+    // .contednt:hover{
+    //   transform: translate3d(0,-10px,0);
+    // }
+    @media screen and (max-width: 1320px) {
+      .contednt{
+          width: 33%;
+      }
+    }
   }
   .start-button{
     text-align: right;
+  }
+}
+.el-dialog__body{
+  padding: 0 20px 30px;
+  .el-collapse-item__header{
+    font-size: 15px;
+    color: #fff;
+    height: 30px;
+    background-image: linear-gradient(to right, #688ef3 , #fff);
+  }
+  .el-icon-arrow-right:before {
+    color: #000;
+  }
+  .detailtitle{
+    height: 50px;
+    line-height: 50px;
+    padding-left: 8px;
+    span{
+      font-size: 18px;
+      font-weight: 600;
+      color: #688ef3;
+    }
+  }
+  .el-table::before {
+      width: 0;
+  }
+  table th,table td{
+    border-bottom: none !important;
   }
 }
 </style>

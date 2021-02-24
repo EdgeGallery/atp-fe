@@ -69,6 +69,11 @@ export default new Router({
           name: 'atpprocess',
           component: () => import('./pages/myApp/ATPProcess.vue')
         },
+        // {
+        //   path: 'atpprocess-new',
+        //   name: 'atpprocess-new',
+        //   component: () => import('./pages/myApp/ATPProcess--oldnew.vue')
+        // },
         {
           path: 'atptestcase',
           name: 'atptestcase',

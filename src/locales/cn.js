@@ -158,7 +158,10 @@ const cn = {
     selectScene: '选择用例场景',
     contribution: '测试用例贡献',
     seeDetail: '查看用例详情',
-    caseDetail: '用例详情'
+    caseDetail: '用例详情',
+    name: '用例名称',
+    type: '类型',
+    description: '描述'
   },
   modelmgmt: {
     name: '名称',
