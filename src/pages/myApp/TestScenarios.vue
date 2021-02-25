@@ -200,62 +200,32 @@ export default {
       }
     },
     getAllScene () {
-      // Userpage.getAllSceneApi().then(res => {
-      // let data = res.data
-      let data = [
-        {
-          'id': '25232323',
-          nameCh: '社区场景',
-          nameEn: 'Edgegallery',
-          descriptionCh: '适用于联通测试场景',
-          descriptionEn: 'Suitable for China Unicom test scenarios'
-        },
-        {
-          'id': '455',
-          nameCh: '社区场景',
-          nameEn: 'Edgegallery',
-          descriptionCh: '适用于联通测试场景',
-          descriptionEn: 'Suitable for China Unicom test scenarios'
-        },
-        {
-          'id': '786',
-          nameCh: '社区场景',
-          nameEn: 'Edgegallery',
-          descriptionCh: '适用于联通测试适用于联通测试场景场景',
-          descriptionEn: 'Suitable for China Unicom test scenarios'
-        },
-        {
-          'id': '58',
-          nameCh: '联通场景',
-          nameEn: 'Edgegallery',
-          descriptionCh: '适用于联通测试场景',
-          descriptionEn: 'Suitable for China Unicom test scenarios'
-        }
-      ]
-      data.forEach(item => {
-        let objcn = {
-          id: '',
-          name: '',
-          description: '',
-          selected: true
-        }
-        let objen = {
-          id: '',
-          name: '',
-          description: '',
-          selected: true
-        }
-        objcn.id = item.id
-        objcn.name = item.nameCh
-        objcn.description = item.descriptionCh
-        objen.id = item.id
-        objen.name = item.nameEn
-        objen.description = item.descriptionEn
-        this.datacn.push(objcn)
-        this.dataen.push(objen)
-      })
-      this.sceneData = this.datacn
-      // }).catch(() => {})
+      Userpage.getAllSceneApi().then(res => {
+        let data = res.data
+        data.forEach(item => {
+          let objcn = {
+            id: '',
+            name: '',
+            description: '',
+            selected: true
+          }
+          let objen = {
+            id: '',
+            name: '',
+            description: '',
+            selected: true
+          }
+          objcn.id = item.id
+          objcn.name = item.nameCh
+          objcn.description = item.descriptionCh
+          objen.id = item.id
+          objen.name = item.nameEn
+          objen.description = item.descriptionEn
+          this.datacn.push(objcn)
+          this.dataen.push(objen)
+        })
+        this.sceneData = this.datacn
+      }).catch(() => {})
     },
     chooseScene (item) {
       this.scenarioIdList.push(item.id)
