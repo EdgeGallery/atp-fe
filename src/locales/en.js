@@ -163,11 +163,12 @@ const en = {
     caseDetail: 'Testcase Detail',
     name: 'Name',
     type: 'Type',
-    description: 'Description'
+    description: 'Description',
+    score: 'score'
   },
   modelmgmt: {
-    name: 'Name',
-    description: 'Description',
+    name: 'Name:',
+    description: 'Description:',
     scene: 'Scene'
   },
   about: {

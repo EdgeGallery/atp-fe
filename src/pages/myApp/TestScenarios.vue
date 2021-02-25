@@ -21,16 +21,22 @@
         <div class="left">
           {{ $t('userpage.selectScene') }}
         </div>
-        <div
-          class="right"
-          @click="jumpToGitee()"
+        <el-tooltip
+          effect="light"
+          content="点击贡献用例"
+          placement="left"
         >
-          <img
-            src="../../assets/images/gongxian.png"
-            alt=""
+          <div
+            class="right"
+            @click="jumpToGitee()"
           >
-          <span> {{ $t('userpage.contribution') }}</span>
-        </div>
+            <img
+              src="../../assets/images/gongxian.png"
+              alt=""
+            >
+            <span> {{ $t('userpage.contribution') }}</span>
+          </div>
+        </el-tooltip>
       </div>
       <div class="scene-main">
         <div
@@ -40,7 +46,7 @@
           @click="chooseScene(item)"
         >
           <div class="scene">
-            <div>
+            <div style="text-align:center;">
               <img
                 :src="getAppIcon(item)"
                 alt=""
@@ -194,32 +200,62 @@ export default {
       }
     },
     getAllScene () {
-      Userpage.getAllSceneApi().then(res => {
-        let data = res.data
-        data.forEach(item => {
-          let objcn = {
-            id: '',
-            name: '',
-            description: '',
-            selected: true
-          }
-          let objen = {
-            id: '',
-            name: '',
-            description: '',
-            selected: true
-          }
-          objcn.id = item.id
-          objcn.name = item.nameCh
-          objcn.description = item.descriptionCh
-          objen.id = item.id
-          objen.name = item.nameEn
-          objen.description = item.descriptionEn
-          this.datacn.push(objcn)
-          this.dataen.push(objen)
-        })
-        this.sceneData = this.datacn
-      }).catch(() => {})
+      // Userpage.getAllSceneApi().then(res => {
+      // let data = res.data
+      let data = [
+        {
+          'id': '25232323',
+          nameCh: '社区场景',
+          nameEn: 'Edgegallery',
+          descriptionCh: '适用于联通测试场景',
+          descriptionEn: 'Suitable for China Unicom test scenarios'
+        },
+        {
+          'id': '455',
+          nameCh: '社区场景',
+          nameEn: 'Edgegallery',
+          descriptionCh: '适用于联通测试场景',
+          descriptionEn: 'Suitable for China Unicom test scenarios'
+        },
+        {
+          'id': '786',
+          nameCh: '社区场景',
+          nameEn: 'Edgegallery',
+          descriptionCh: '适用于联通测试适用于联通测试场景场景',
+          descriptionEn: 'Suitable for China Unicom test scenarios'
+        },
+        {
+          'id': '58',
+          nameCh: '联通场景',
+          nameEn: 'Edgegallery',
+          descriptionCh: '适用于联通测试场景',
+          descriptionEn: 'Suitable for China Unicom test scenarios'
+        }
+      ]
+      data.forEach(item => {
+        let objcn = {
+          id: '',
+          name: '',
+          description: '',
+          selected: true
+        }
+        let objen = {
+          id: '',
+          name: '',
+          description: '',
+          selected: true
+        }
+        objcn.id = item.id
+        objcn.name = item.nameCh
+        objcn.description = item.descriptionCh
+        objen.id = item.id
+        objen.name = item.nameEn
+        objen.description = item.descriptionEn
+        this.datacn.push(objcn)
+        this.dataen.push(objen)
+      })
+      this.sceneData = this.datacn
+      // }).catch(() => {})
     },
     chooseScene (item) {
       this.scenarioIdList.push(item.id)
@@ -281,25 +317,26 @@ export default {
 .selectscene{
   background-color: white;
   .toptitle{
-    background-color: #e1e7f5;
+    color: #688ef3;
+    // background-color: #e1e7f5;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     .left{
-      line-height: 46px;
+      line-height: 50px;
       font-weight: 600;
     }
     .right{
-      // height: 50px;
       display: flex;
       flex-direction: column;
+      margin-right: 20px;
       img{
         width: 30px;
         height: 30px;
-        margin-left: 20px;
+        margin-left: 30px;
       }
       span{
-        font-size: 14px;
+        font-size: 16px;
       }
     }
   }
@@ -309,7 +346,7 @@ export default {
     flex-wrap: wrap;
     .contednt{
       width: 25%;
-      padding: 0 15px 40px;
+      padding: 0 15px 25px;
       // .scene:hover{
       //   transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
       // }
@@ -334,8 +371,10 @@ export default {
         box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
         border-radius: 8px;
         position: relative;
+        background-color: #fafafa;
         .sceneimage{
-          width: 100%;
+          margin: 0 auto;
+          width: 80%;
           height: 100px;
         }
         .choose{
@@ -343,6 +382,9 @@ export default {
           justify-content: space-between;
           .el-form{
             // width:100%;
+            .el-form-item__label{
+              padding-left: 8px;
+            }
             .el-form-item{
               margin-bottom: 0;
             }
@@ -354,7 +396,7 @@ export default {
           }
           .el-button--text{
             font-size: 14px;
-            padding: 3px 0;
+            padding: 3px 8px;
             color: #688ef3;
           }
           .el-button--text:hover{
@@ -386,7 +428,11 @@ export default {
 }
 .el-dialog__body{
   padding: 0 20px 30px;
+  .el-collapse{
+    margin-left: 8px;
+  }
   .el-collapse-item__header{
+    padding-left: 8px;
     font-size: 15px;
     color: #fff;
     height: 30px;
