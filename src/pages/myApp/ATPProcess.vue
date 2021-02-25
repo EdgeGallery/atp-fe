@@ -179,7 +179,7 @@ export default {
     },
     getTaskProcess () {
       Userpage.getTaskApi(this.taskId).then(res => {
-        let data = res.data[0].testScenarios
+        let data = res.data.testScenarios
         this.testScenarios = data
         this.activeName = []
         this.finishActiveName = []
@@ -225,6 +225,7 @@ export default {
           this.statusTitle = ['正在测试...', 'Testing...']
           this.isTest = 'running'
         }
+        console.log(this.testScenarios)
       }).catch(() => {})
     },
     clearInterval () {
