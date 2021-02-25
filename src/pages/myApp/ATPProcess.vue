@@ -37,17 +37,22 @@
       >
         <div class="testing-score">
           <div class="score">
-            <em class="scoreem">{{ score }}</em>
+            <em class="scoreem">{{ score }}{{ $t('userpage.score') }}</em>
           </div>
         </div>
         <div class="status-title">
           <p>{{ language==='cn'?statusTitle[0]:statusTitle[1] }}</p>
-          <span>{{ language==='cn'?testingScene[0]:testingScene[1] }}:{{ language==='cn'?testingCase[0]:testingCase[1] }}</span>
+          <span v-if=" isTest === 'running'">{{ language==='cn'?testingScene[0]:testingScene[1] }}:{{ language==='cn'?testingCase[0]:testingCase[1] }}</span>
+          <span
+            v-if="allfailNum!==0"
+            class="findproblem"
+          >发现{{ allfailNum }}项问题</span>
           <el-progress
             :text-inside="true"
             :stroke-width="16"
             :percentage="percentage"
-            color="#688ef3"
+            class="percenprocess"
+            :class="casefailclass"
           />
         </div>
       </div>
@@ -58,14 +63,31 @@
         >
           <div class="content-title">
             <div class="sceneRunning">
-              <div class="testing-case-process">
-                <span>{{ item.successNum }}</span>
-                <span class="sum">/</span>
-                <span class="sum">{{ item.totalNum }}</span>
-              </div>
+              <el-tooltip
+                effect="light"
+                content="成功用例/总用例"
+                placement="right"
+              >
+                <div class="testing-case-process">
+                  <span>{{ item.successNum }}</span>
+                  <span class="sum">/</span>
+                  <span class="sum">{{ item.totalNum }}</span>
+                </div>
+              </el-tooltip>
             </div>
             <span class="scene">{{ language==='cn'?item.nameCh:item.nameEn }}</span>
-            <em class="allsuccess rt" />
+            <img
+              src="../../assets/images/chenggong.png"
+              alt=""
+              class="ishasFailIcon"
+              v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum===item.totalNum"
+            >
+            <img
+              v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum!==item.totalNum"
+              src="../../assets/images/shibai.png"
+              alt=""
+              class="ishasFailIcon"
+            >
           </div>
           <el-collapse
             v-model="activeName"
@@ -75,9 +97,11 @@
               :key="dex"
               :title="language==='cn'?suiteItem.nameCh:suiteItem.nameEn"
               :name="item.nameEn+suiteItem.nameEn"
+              :class="hasFailActiveName.indexOf(item.nameEn+suiteItem.nameEn)!==-1?'hasfailed':''"
             >
               <el-table
                 :data="suiteItem.testCases"
+                header-cell-class-name="headerStyle"
               >
                 <el-table-column
                   :label="$t('userpage.name')"
@@ -147,7 +171,10 @@ export default {
       testScenarios: [],
       activeName: [],
       finishActiveName: [],
-      interval: ''
+      interval: '',
+      casefailclass: '',
+      allfailNum: 0,
+      hasFailActiveName: []
     }
   },
   mounted () {
@@ -180,8 +207,10 @@ export default {
     getTaskProcess () {
       Userpage.getTaskApi(this.taskId).then(res => {
         let data = res.data.testScenarios
+        let taskStatus = res.data.status
         this.testScenarios = data
         this.activeName = []
+        this.hasFailActiveName = []
         this.finishActiveName = []
         let allsuccessNum = 0
         let allfailNum = 0
@@ -201,6 +230,8 @@ export default {
               } else if (item.result === 'failed') {
                 allfailNum++
                 element.failNum++
+                this.casefailclass = 'casefail'
+                this.hasFailActiveName.push(element.nameEn + ele.nameEn)
               } else if (item.result === 'running') {
                 this.activeName.push(element.nameEn + ele.nameEn)
                 if (item.type === 'automatic') {
@@ -211,12 +242,11 @@ export default {
             })
           })
         })
-        console.log(this.activeName)
         // 分数和进度百分比
         this.score = Number((allsuccessNum / allNum * 100).toFixed(0))
         this.percentage = Number(((allsuccessNum + allfailNum) / allNum * 100).toFixed(0))
+        this.allfailNum = allfailNum
         if (this.percentage === 100) {
-          this.statusTitle = ['测试完成', 'Finished test']
           this.report = false
           this.isTest = 'finished'
           this.activeName = this.finishActiveName
@@ -225,7 +255,11 @@ export default {
           this.statusTitle = ['正在测试...', 'Testing...']
           this.isTest = 'running'
         }
-        console.log(this.testScenarios)
+        if (taskStatus === 'success') {
+          this.statusTitle = ['测试成功', 'Test Successful']
+        } else if (taskStatus === 'failed') {
+          this.statusTitle = ['测试失败', 'Test Failed']
+        }
       }).catch(() => {})
     },
     clearInterval () {
@@ -263,15 +297,15 @@ export default {
     display: flex;
     .testing-score{
       margin: 0 20px;
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      background-color: #c8d1eb;
+      // background-color: #c8d1eb;
       // border: 2px solid #688ef3;
     }
     .score{
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       text-align: center;
       display: table-cell;
@@ -289,10 +323,29 @@ export default {
       p{
         font-size: 22px;
         color: #000;
+        margin-bottom: 8px;
+        font-weight: bold;
       }
       span{
+        display: inline-block;
         font-size: 14px;
         color: #909399;
+      }
+      .findproblem{
+        padding-left: 5px;
+        font-size: 20px;
+        color: #000;
+      }
+      .percenprocess{
+        margin-top: 8px;
+        .el-progress-bar__inner{
+          background-color: #688ef3;
+        }
+      }
+      .casefail{
+        .el-progress-bar__inner{
+          background-color: #f67878;
+        }
       }
     }
   }
@@ -323,14 +376,12 @@ export default {
         font-weight: 600;
         color: #688ef3;
       }
-      // .allsuccess{
-      //   width: 50px;
-      //   height: 50px;
-      //   border-radius: 50%;
-      //   background-position: center;
-      //   background-repeat: no-repeat;
-      //   background: url('../../assets/images/chenggong.png');
-      // }
+      .ishasFailIcon{
+        // width: 50px;
+        // height: 50px;
+        position: relative;
+        right: -10px;
+      }
       // .sceneRunning{
       //   border-radius: 50%;
       //    border:2px dashed #688ef3;
@@ -358,6 +409,11 @@ export default {
     .el-collapse{
       padding: 10px 50px;
       border: none!important;
+      font-size: large;
+      .success,.error,.primary{
+        padding-right: 5px;
+        font-size: large;
+      }
       .success{
         color: #67c23a;
       }
@@ -367,21 +423,44 @@ export default {
       .primary{
         color: #2c3fe9 ;
       }
+      .el-collapse-item{
+        padding: 3px 0;
+      }
       .el-collapse-item__header{
+        padding-left: 8px;
         font-size: 15px;
         height: 30px;
         background-image: linear-gradient(to right, #cad5f3 , #fff);
+      }
+      .hasfailed{
+        .el-collapse-item__header{
+          background-image: linear-gradient(to right, #f67878 , #fff);
+        }
       }
       .el-icon-arrow-right:before {
         color: #000;
       }
     }
+    .headerStyle{
+      padding: 0;
+      height: 30px;
+      line-height: 30px;
+      font-size: 14px;
+    }
     .el-table::before {
        width: 0;
+    }
+    .el-table td{
+      padding: 0;
+      height: 45px;
+      line-height: 45px;
     }
     table th,table td{
       border-bottom: none !important;
     }
   }
 }
+  .el-tooltip__popper.is-light{
+    border: 1px solid #688ef3!important;
+  }
 </style>
