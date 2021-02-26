@@ -16,19 +16,18 @@
 <template>
   <div>
     <Navcomp />
-    <div class="padding56">
+    <div class="padding56 h100">
       <div style="margin:20px 0">
         <span>应用测试平台</span>
         <span>></span>
         <span>测试场景管理</span>
       </div>
-      <div class="testscenarios padding20">
+      <div class="testscenarios padding20 h100">
         <div class="scenarioTop">
           <div class="searchBar">
             <el-form
               ref="form"
               :model="form"
-              label-width="100px"
             >
               <div>
                 <el-form-item :label="$t('modelmgmt.name')">
@@ -50,7 +49,7 @@
               </div>
             </el-form>
           </div>
-          <div class="rt">
+          <div class="addBtn">
             <el-button
               type="primary"
               size="small"
@@ -66,7 +65,7 @@
                 联通场景
               </el-form-item>
               <el-form-item :label="$t('modelmgmt.description')">
-                适用于联通测试场景
+                适用于中国联通测试场景
               </el-form-item>
               <el-form-item class="rt">
                 <el-button
@@ -92,7 +91,7 @@
                 移动场景
               </el-form-item>
               <el-form-item :label="$t('modelmgmt.description')">
-                适用于移动测试场景
+                适用于中国移动测试场景
               </el-form-item>
               <el-form-item class="rt">
                 <el-button
@@ -138,6 +137,58 @@
               </el-form-item>
             </el-form>
           </div>
+          <div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                电信场景
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                适用于中国电信测试场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                电信场景
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                适用于中国电信测试场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div>
         </div>
       </div>
     </div>
@@ -160,10 +211,13 @@ export default {
 <style lang="less">
 .testscenarios{
   .scenarioTop {
-    height: 300px;
+    // height: 300px;
+    display: flex;
     .searchBar {
-      padding-top: 100px;
-    margin-left: 600px;
+      width: 90%;
+    }
+    .addBtn{
+      padding: 5px 55px;
     }
     .searchInput{
       width: 200px;
@@ -174,8 +228,9 @@ export default {
   background-color: white;
   .allscene{
     display: flex;
+    flex-wrap: wrap;
     .list {
-      width: 33%;
+      width: 23%;
       margin: 0 10px 10px;
       padding:15px 0 15px 15px;
       border: 3px solid#1ececa;

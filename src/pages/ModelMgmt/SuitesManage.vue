@@ -23,50 +23,141 @@
         <span>测试套管理</span>
       </div>
       <div class="testsuites padding20">
-        <div>
-          <el-row>
-            <el-form
-              ref="form"
-              :model="form"
-              label-width="100px"
-            >
-              <el-col :span="6">
-                <el-form-item :label="$t('Scenes.name')">
+        <div class="searchBtn">
+          <el-form
+            ref="form"
+            :model="form"
+            label-width="100px"
+          >
+            <el-row>
+              <el-col :span="4">
+                <el-form-item :label="$t('modelmgmt.name')">
                   <el-input
-                    size="small"
-                    id="name"
-                    v-model="form.name"
-                  />
-                </el-form-item>
-                <el-form-item :label="$t('Scenes.name')">
-                  <el-input
+                    class="searchInput"
                     size="small"
                     id="name"
                     v-model="form.name"
                   />
                 </el-form-item>
               </el-col>
+              <el-col :span="5">
+                <el-form-item :label="$t('modelmgmt.scene')">
+                  <el-input
+                    class="searchInput"
+                    size="small"
+                    id="name"
+                    v-model="form.scene"
+                  />
+                </el-form-item>
+              </el-col>
               <el-col :span="6">
                 <el-button
-                  style="text-align:center;"
+                  style="text-align:center;margin:5px 15px 0"
                   type="primary"
                   size="small"
                 >
                   {{ $t('common.search') }}
                 </el-button>
               </el-col>
-            </el-form>
-            <div class="rt">
-              <el-button
-                type="primary"
-                size="small"
-              >
-                {{ $t('testCase.add') }}
-              </el-button>
-            </div>
-          </el-row>
+            </el-row>
+          </el-form>
+          <div class="addBtn">
+            <el-button
+              type="primary"
+              size="small"
+            >
+              {{ $t('testCase.add') }}
+            </el-button>
+          </div>
         </div>
         <div class="allsuite">
+          <div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                社区遵从性测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                社区场景下的遵从性测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.scene')">
+                社区场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                社区沙箱测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                社区场景下的沙箱测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.scene')">
+                社区场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                社区安全性测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                社区场景下的安全性测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.scene')">
+                社区场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div>
           <div class="list">
             <el-form label-width="auto">
               <el-form-item :label="$t('modelmgmt.name')">
@@ -77,6 +168,121 @@
               </el-form-item>
               <el-form-item :label="$t('modelmgmt.scene')">
                 联通场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div><div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                联通沙箱测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                联通场景下的沙箱测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.scene')">
+                联通场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                移动安全性测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                移动场景下的安全测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.scene')">
+                移动场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                移动沙箱测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                移动场景下的沙箱测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.scene')">
+                移动场景
+              </el-form-item>
+              <el-form-item class="rt">
+                <el-button
+                  type="warning"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.delete') }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="button"
+                >
+                  {{ $t('common.edit') }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="list">
+            <el-form label-width="auto">
+              <el-form-item :label="$t('modelmgmt.name')">
+                电信安全性测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.description')">
+                电信场景下的安全测试
+              </el-form-item>
+              <el-form-item :label="$t('modelmgmt.scene')">
+                电信场景
               </el-form-item>
               <el-form-item class="rt">
                 <el-button
@@ -108,7 +314,8 @@ export default {
   data () {
     return {
       form: {
-        name: ''
+        name: '',
+        scene: ''
       }
     }
   }
@@ -117,10 +324,20 @@ export default {
 <style lang="less">
 .testsuites{
   background-color: white;
+  .searchBtn{
+    display: flex;
+    .el-form{
+      width: 90%;
+    }
+    .addBtn{
+      padding: 5px 55px;
+    }
+  }
   .allsuite{
     display: flex;
+    flex-wrap: wrap;
     .list {
-      width: 25%;
+      width: 23%;
       margin: 0 10px 10px;
       padding:15px 0 15px 15px;
       border: 3px solid#1ececa;
