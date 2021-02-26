@@ -161,11 +161,12 @@ const cn = {
     caseDetail: '用例详情',
     name: '用例名称',
     type: '类型',
-    description: '描述'
+    description: '描述',
+    score: '分'
   },
   modelmgmt: {
-    name: '名称',
-    description: '描述',
+    name: '名称:',
+    description: '描述:',
     scene: '场景'
   },
   about: {},
