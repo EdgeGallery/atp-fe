@@ -46,7 +46,7 @@
           @click="chooseScene(item)"
         >
           <div class="scene">
-            <div style="text-align:center;">
+            <div style="text-align:center;background-color: #fff;">
               <img
                 :src="getAppIcon(item)"
                 alt=""
@@ -344,7 +344,7 @@ export default {
         background-color: #fafafa;
         .sceneimage{
           margin: 0 auto;
-          width: 80%;
+          // width: 80%;
           height: 100px;
         }
         .choose{
