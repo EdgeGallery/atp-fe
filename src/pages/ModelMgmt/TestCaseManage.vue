@@ -125,36 +125,35 @@
             style="width: 100%"
           >
             <el-table-column
-              prop="name"
+              prop="nameCh"
               :label="$t('testCase.caseName')"
-              width="250"
             />
             <el-table-column
-              prop="type"
-              :label="$t('testCase.caseType')"
-              width="140"
+              prop="testSuiteIdList"
+              :label="$t('testCase.testSuiteList')"
             />
             <el-table-column
-              prop="description"
+              prop="descriptionCh"
               :label="$t('testCase.casePurpose')"
             />
             <el-table-column
-              prop="expectResult"
+              prop="expectResultCh"
               :label="$t('testCase.expectedResult')"
             />
             <el-table-column
               prop="codeLanguage"
               :label="$t('testCase.language')"
-              width="110"
             />
             <el-table-column
-              prop="verificationModel"
-              :label="$t('testCase.verificationModel')"
-              width="200"
+              prop="testStepCh"
+              :label="$t('testCase.testStep')"
+            />
+            <el-table-column
+              prop="type"
+              :label="$t('testCase.caseType')"
             />
             <el-table-column
               :label="$t('testCase.operation')"
-              width="160px"
             >
               <template slot-scope="scope">
                 <el-button
@@ -398,7 +397,7 @@
 </template>
 
 <script>
-import { Atp } from '../../tools/api.js'
+import { Atp, ModelMgmt } from '../../tools/api.js'
 import { TESTNAME } from '../../tools/testdataname.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
@@ -553,6 +552,12 @@ export default {
           if (item.type === 'sandboxTest') {
             item.type = this.testType[2].label
           }
+          // 测试套
+          let testSuiteList = []
+          item.testSuiteIdList.forEach(testSuiteId => {
+            testSuiteList.push(ModelMgmt.getTestSuite(testSuiteId).nameCh)
+          })
+          item.testSuiteIdList = testSuiteList
         })
       }).catch(() => {
         this.$message({
