@@ -74,7 +74,9 @@ const en = {
     deletePrompt: 'Do you want to continue deleting this use case?',
     onlyOneFile: 'Only one file is allowed, please remove the file first!',
     deleteSuccess: 'Delete Success',
-    deleteFail: 'Delete Fail'
+    deleteFail: 'Delete Fail',
+    runFailed: 'Run Failed',
+    getSceneFail: 'Failed to get scene'
   },
   common: {
     cancel: 'Cancel',

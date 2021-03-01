@@ -43,7 +43,6 @@
           class="contednt"
           v-for="(item,index) in sceneData"
           :key="index"
-          @click="chooseScene(item)"
         >
           <div class="scene">
             <div style="text-align:center;background-color: #fff;">
@@ -56,10 +55,10 @@
             <div class="choose">
               <el-form label-width="auto">
                 <el-form-item :label="$t('modelmgmt.name')">
-                  {{ item.name }}
+                  {{ language==='cn'?item.nameCh:item.nameEn }}
                 </el-form-item>
                 <el-form-item :label="$t('modelmgmt.description')">
-                  {{ item.description }}
+                  {{ language==='cn'?item.descriptionCh:item.descriptionEn }}
                 </el-form-item>
                 <el-form-item>
                   <el-button
@@ -76,11 +75,13 @@
                 src="../../assets/images/selected.png"
                 alt=""
                 v-if="item.selected"
+                @click="chooseScene(item)"
               >
               <img
                 v-else
                 src="../../assets/images/notselected.png"
                 alt=""
+                @click="chooseScene(item)"
               >
             </div>
           </div>
@@ -169,7 +170,7 @@ export default {
       taskId: '',
       sceneTitle: '',
       testSuiteData: [],
-      language: localStorage.getItem('language')
+      language: ''
     }
   },
   computed: {
@@ -188,6 +189,7 @@ export default {
     getLanguage () {
       if (this.currUrl.indexOf('&') !== -1) {
         let language = this.currUrl.split('&')[1].split('=')[1]
+        this.language = language
         localStorage.setItem('language', language)
         this.$i18n.locale = language
         this.$store.commit('changeLaguage', { language: language })
@@ -203,29 +205,17 @@ export default {
       Userpage.getAllSceneApi().then(res => {
         let data = res.data
         data.forEach(item => {
-          let objcn = {
-            id: '',
-            name: '',
-            description: '',
-            selected: true
-          }
-          let objen = {
-            id: '',
-            name: '',
-            description: '',
-            selected: true
-          }
-          objcn.id = item.id
-          objcn.name = item.nameCh
-          objcn.description = item.descriptionCh
-          objen.id = item.id
-          objen.name = item.nameEn
-          objen.description = item.descriptionEn
-          this.datacn.push(objcn)
-          this.dataen.push(objen)
+          item.selected = true
         })
-        this.sceneData = this.datacn
-      }).catch(() => {})
+        this.sceneData = data
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('promptMessage.getSceneFail'),
+          type: 'error'
+        })
+      })
     },
     chooseScene (item) {
       this.scenarioIdList.push(item.id)
@@ -238,7 +228,11 @@ export default {
       this.CaseVisible = false
     },
     getDetail (item) {
-      this.sceneTitle = item.name
+      if (this.language === 'cn') {
+        this.sceneTitle = item.nameCh
+      } else {
+        this.sceneTitle = item.nameEn
+      }
       let scenarioIds = []
       scenarioIds.push(item.id)
       this.CaseVisible = true
@@ -256,29 +250,22 @@ export default {
           this.scenarioIdList.push(item.id)
         }
       })
-      // let param = {
-      //   scenarioIdList: this.scenarioIdList
-      // }
       let fd = new FormData()
       fd.append('scenarioIdList', this.scenarioIdList)
       Userpage.runTaskApi(this.taskId, fd).then(res => {
         sessionStorage.setItem('taskId', this.taskId)
         this.$router.push({ name: 'atpprocess', params: { taskId: this.taskId } })
-      }).catch(() => {})
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('promptMessage.runFailed'),
+          type: 'error'
+        })
+      })
     },
     jumpToGitee () {
       window.open('https://gitee.com/edgegallery/community/tree/master/Integration%20WG/ATP%20Test%20Case%20Contribution', '_blank')
-    }
-  },
-  watch: {
-    '$i18n.locale': function () {
-      let language = localStorage.getItem('language')
-      this.language = language
-      if (language === 'cn') {
-        this.sceneData = this.datacn
-      } else if (language === 'en') {
-        this.sceneData = this.dataen
-      }
     }
   }
 }

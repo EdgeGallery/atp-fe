@@ -72,7 +72,9 @@ const cn = {
     deletePrompt: '是否要继续删除此用例？',
     onlyOneFile: '仅支持一个文件，请先移除已有文件！',
     deleteSuccess: '删除成功',
-    deleteFail: '删除失败'
+    deleteFail: '删除失败',
+    runFailed: '运行失败',
+    getSceneFail: '获取场景失败'
   },
   common: {
     cancel: '取消',
