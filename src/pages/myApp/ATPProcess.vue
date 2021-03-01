@@ -57,96 +57,104 @@
         </div>
       </div>
       <div class="content">
-        <div
-          v-for="(item,index) in testScenarios"
-          :key="index"
+        <el-tabs
+          v-model="activeTabsName"
+          type="border-card"
+          @tab-click="handleClick"
         >
-          <div class="content-title">
-            <div class="sceneRunning">
-              <el-tooltip
-                effect="light"
-                content="成功用例/总用例"
-                placement="right"
-              >
-                <div class="testing-case-process">
-                  <span>{{ item.successNum }}</span>
-                  <span class="sum">/</span>
-                  <span class="sum">{{ item.totalNum }}</span>
-                </div>
-              </el-tooltip>
-            </div>
-            <span class="scene">{{ language==='cn'?item.nameCh:item.nameEn }}</span>
-            <img
-              src="../../assets/images/chenggong.png"
-              alt=""
-              class="ishasFailIcon"
-              v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum===item.totalNum"
-            >
-            <img
-              v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum!==item.totalNum"
-              src="../../assets/images/shibai.png"
-              alt=""
-              class="ishasFailIcon"
-            >
-          </div>
-          <el-collapse
-            v-model="activeName"
+          <el-tab-pane
+            v-for="(item,index) in testScenarios"
+            :key="index"
+            :label="language==='cn'?item.nameCh:item.nameEn"
+            :name="item.nameEn"
           >
-            <el-collapse-item
-              v-for="(suiteItem,dex) in item.testSuites"
-              :key="dex"
-              :title="language==='cn'?suiteItem.nameCh:suiteItem.nameEn"
-              :name="item.nameEn+suiteItem.nameEn"
-              :class="hasFailActiveName.indexOf(item.nameEn+suiteItem.nameEn)!==-1?'hasfailed':''"
-            >
-              <el-table
-                :data="suiteItem.testCases"
-                header-cell-class-name="headerStyle"
+            <div class="content-title">
+              <div class="sceneRunning">
+                <el-tooltip
+                  effect="light"
+                  content="成功用例/总用例"
+                  placement="right"
+                >
+                  <div class="testing-case-process">
+                    <span>{{ item.successNum }}</span>
+                    <span class="sum">/</span>
+                    <span class="sum">{{ item.totalNum }}</span>
+                  </div>
+                </el-tooltip>
+              </div>
+              <span class="scene">{{ language==='cn'?item.nameCh:item.nameEn }}</span>
+              <img
+                src="../../assets/images/chenggong.png"
+                alt=""
+                class="ishasFailIcon"
+                v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum===item.totalNum"
               >
-                <el-table-column
-                  :label="$t('userpage.name')"
+              <img
+                v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum!==item.totalNum"
+                src="../../assets/images/shibai.png"
+                alt=""
+                class="ishasFailIcon"
+              >
+            </div>
+            <el-collapse
+              v-model="activeName"
+            >
+              <el-collapse-item
+                v-for="(suiteItem,dex) in item.testSuites"
+                :key="dex"
+                :title="language==='cn'?suiteItem.nameCh:suiteItem.nameEn"
+                :name="item.nameEn+suiteItem.nameEn"
+                :class="hasFailActiveName.indexOf(item.nameEn+suiteItem.nameEn)!==-1?'hasfailed':''"
+              >
+                <el-table
+                  :data="suiteItem.testCases"
+                  header-cell-class-name="headerStyle"
                 >
-                  <template scope="scope">
-                    <span
-                      v-if="scope.row.result=='success'"
-                      class="el-icon-success success"
-                      title="success"
-                    />
-                    <span
-                      v-else-if="scope.row.result=='failed'"
-                      class="el-icon-error error"
-                      title="failed"
-                    />
-                    <span
-                      v-else-if="scope.row.result=='running'"
-                      class="el-icon-loading primary"
-                      title="running"
-                    />
-                    <span
-                      v-else
-                      class="el-icon-refresh-left primary"
-                    />
-                    {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  :label="$t('userpage.type')"
-                >
-                  <template scope="scope">
-                    {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  :label="$t('userpage.description')"
-                >
-                  <template scope="scope">
-                    {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-collapse-item>
-          </el-collapse>
-        </div>
+                  <el-table-column
+                    :label="$t('userpage.name')"
+                  >
+                    <template scope="scope">
+                      <span
+                        v-if="scope.row.result=='success'"
+                        class="el-icon-success success"
+                        title="success"
+                      />
+                      <span
+                        v-else-if="scope.row.result=='failed'"
+                        class="el-icon-error error"
+                        title="failed"
+                      />
+                      <span
+                        v-else-if="scope.row.result=='running'"
+                        class="el-icon-loading primary"
+                        title="running"
+                      />
+                      <span
+                        v-else
+                        class="el-icon-refresh-left primary"
+                      />
+                      {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    :label="$t('userpage.type')"
+                  >
+                    <template scope="scope">
+                      {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    :label="$t('userpage.description')"
+                  >
+                    <template scope="scope">
+                      {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-collapse-item>
+            </el-collapse>
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
   </div>
@@ -174,7 +182,8 @@ export default {
       interval: '',
       casefailclass: '',
       allfailNum: 0,
-      hasFailActiveName: []
+      hasFailActiveName: [],
+      activeTabsName: ''
     }
   },
   mounted () {
@@ -212,15 +221,16 @@ export default {
         this.activeName = []
         this.hasFailActiveName = []
         this.finishActiveName = []
+        this.activeTabsName = ''
         let allsuccessNum = 0
         let allfailNum = 0
         let allNum = 0
         data.forEach(element => {
-          this.finishActiveName.push(element.nameEn + element.testSuites[0].nameEn)
           element.totalNum = 0
           element.successNum = 0
           element.failNum = 0
           element.testSuites.forEach(ele => {
+            this.finishActiveName.push(element.nameEn + ele.nameEn)
             ele.testCases.forEach(item => {
               element.totalNum++
               allNum++
@@ -237,6 +247,8 @@ export default {
                 if (item.type === 'automatic') {
                   this.testingCase = [item.nameCh, item.nameEn]
                   this.testingScene = [element.nameCh, element.nameEn]
+                  // 判断显示哪一个tab
+                  this.activeTabsName = element.nameEn
                 }
               }
             })
@@ -257,10 +269,15 @@ export default {
         }
         if (taskStatus === 'success') {
           this.statusTitle = ['测试成功', 'Test Successful']
+          this.activeTabsName = data[0].nameEn
         } else if (taskStatus === 'failed') {
           this.statusTitle = ['测试失败', 'Test Failed']
+          this.activeTabsName = data[0].nameEn
         }
       }).catch(() => {})
+    },
+    handleClick (tab) {
+      this.activeTabsName = tab.name
     },
     clearInterval () {
       clearTimeout(this.interval)
@@ -367,6 +384,9 @@ export default {
     }
   .content{
     padding: 20px 60px;
+    .el-tabs--border-card {
+      border: none;
+    }
     .content-title{
       display: flex;
       .scene{
