@@ -139,7 +139,10 @@ const cn = {
     addCase: '新增测试用例',
     editCase: '编辑测试用例',
     import: '测试用例导入',
-    sample: '样例下载'
+    sample: '样例下载',
+    testSuiteList: '测试套',
+    testStep: '测试步骤',
+    testLanguage: '测试语言'
   },
   home: {
     bannerTitle: '应用测试认证平台',

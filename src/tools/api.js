@@ -60,6 +60,14 @@ let Home = {
   }
 }
 
+let ModelMgmt = {
+  // 查询某个测试套
+  getTestSuite: function (params) {
+    let url = 'testsuites'
+    return GET(url, params)
+  }
+}
+
 let Taskmgmt = {
   // 获取任务列表
   taskListApi: function (params) {
@@ -209,5 +217,6 @@ export {
   getUserInfo,
   logoutApi,
   Atp,
+  ModelMgmt,
   Home, Taskmgmt, Userpage
 }
