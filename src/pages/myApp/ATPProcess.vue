@@ -88,12 +88,14 @@
                 alt=""
                 class="ishasFailIcon"
                 v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum===item.totalNum"
+                style="height:50px;margin-top:5px;"
               >
               <img
                 v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum!==item.totalNum"
                 src="../../assets/images/shibai.png"
                 alt=""
                 class="ishasFailIcon"
+                style="height:50px;margin-top:5px;"
               >
             </div>
             <el-collapse
@@ -397,8 +399,6 @@ export default {
         color: #688ef3;
       }
       .ishasFailIcon{
-        // width: 50px;
-        // height: 50px;
         position: relative;
         right: -10px;
       }
