@@ -19,16 +19,28 @@
       <div
         class="back"
       >
-        <el-button
+        <el-popover
           :disabled="report"
-          id="back_button"
-          type="primary"
-          icon="el-icon-document"
-          plain
-          @click="jumpTo()"
+          placement="top"
+          v-model="visible"
         >
-          {{ $t('myApp.checkReport') }}
-        </el-button>
+          <div style="text-align: center; margin: 0">
+            <el-button
+              type="primary"
+              size="mini"
+              plain
+              icon="el-icon-document"
+              v-for="(item,index) in reportData"
+              :key="index"
+              @click="jumpTo(item)"
+            >
+              {{ language==='cn'?item.nameCh:item.nameEn }}
+            </el-button>
+          </div>
+          <el-button slot="reference">
+            {{ $t('myApp.checkReport') }}
+          </el-button>
+        </el-popover>
       </div>
       <div
         class="header"
@@ -182,7 +194,9 @@ export default {
       casefailclass: '',
       allfailNum: 0,
       hasFailActiveName: [],
-      activeTabsName: ''
+      activeTabsName: '',
+      visible: false,
+      reportData: []
     }
   },
   mounted () {
@@ -207,9 +221,11 @@ export default {
         this.taskId = params
       }
     },
-    jumpTo () {
+    jumpTo (item) {
+      this.visible = false
       let taskId = this.taskId
-      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
+      let scenarioId = item.id
+      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId, scenarioId: scenarioId } })
       window.open(routeData.href, '_blank')
     },
     getTaskProcess () {
@@ -224,11 +240,24 @@ export default {
         let allsuccessNum = 0
         let allfailNum = 0
         let allNum = 0
+        this.reportData = []
         data.forEach(element => {
+        // 查看报告遍历
+          let reportobj = {
+            nameCh: '',
+            nameEn: '',
+            id: ''
+          }
+          reportobj.nameCh = element.nameCh
+          reportobj.nameEn = element.nameEn
+          reportobj.id = element.id
+          this.reportData.push(reportobj)
+          // 场景前的数字
           element.totalNum = 0
           element.successNum = 0
           element.failNum = 0
           element.testSuites.forEach(ele => {
+          // 完成后打开的页签
             this.finishActiveName.push(element.nameEn + ele.nameEn)
             ele.testCases.forEach(item => {
               element.totalNum++
