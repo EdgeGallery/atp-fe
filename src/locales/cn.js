@@ -167,7 +167,8 @@ const cn = {
     name: '用例名称',
     type: '类型',
     description: '描述',
-    score: '分'
+    score: '分',
+    result: '结果'
   },
   modelmgmt: {
     name: '名称:',
