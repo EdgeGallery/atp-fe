@@ -27,10 +27,6 @@
         >
         <div class="report-tap">
           <h3> {{ $t('report.testReport') }}</h3>
-          <img
-            :src="resulticon"
-            alt=""
-          >
         </div>
         <div class="download">
           <el-button
@@ -44,11 +40,10 @@
           </el-button>
         </div>
       </div>
-
       <div class="title">
         {{ $t('atp.baseInfo') }}
       </div>
-      <div class="report-app--info">
+      <div class="report-app-info">
         <el-row :gutter="20">
           <el-col
             :span="23"
@@ -56,7 +51,6 @@
           >
             <el-table
               :data="tableData"
-              border
               style="width: 100%"
             >
               <el-table-column
@@ -97,155 +91,86 @@
             </el-table>
           </el-col>
         </el-row>
+        <img
+          :src="resulticon"
+          alt=""
+          class="resulticon"
+        >
       </div>
-      <div class="report-chart">
+      <div class="report-detail">
         <div class="title">
-          {{ $t('report.reportanalysis') }}
+          {{ $t('report.reportDetail') }}
         </div>
-        <div class="report_analysis">
-          <el-row :gutter="20">
-            <el-col
-              :span="12"
+        <div
+          v-for="(item,index) in testScenarios"
+          :key="index"
+          class="detail-content"
+        >
+          <div>
+            <span class="scene">{{ language==='cn'?item.nameCh:item.nameEn }}</span>
+          </div>
+          <el-collapse
+            v-model="activeName"
+          >
+            <el-collapse-item
+              v-for="(suiteItem,dex) in item.testSuites"
+              :key="dex"
+              :title="language==='cn'?suiteItem.nameCh:suiteItem.nameEn"
+              :name="item.nameEn+suiteItem.nameEn"
             >
+              <el-table
+                :data="suiteItem.testCases"
+                header-cell-class-name="headerStyle"
+              >
+                <el-table-column
+                  :label="$t('userpage.name')"
+                >
+                  <template scope="scope">
+                    {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="result"
+                  :label="$t('userpage.result')"
+                />
+                <el-table-column
+                  prop="reason"
+                  :label="$t('report.failReason')"
+                />
+                <el-table-column
+                  :label="$t('userpage.type')"
+                >
+                  <template scope="scope">
+                    {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :label="$t('userpage.description')"
+                >
+                  <template scope="scope">
+                    {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-collapse-item>
+          </el-collapse>
+          <div class="report-chart">
+            <span> {{ $t('report.reportanalysis') }}</span>
+            <div class="report_analysis">
               <div class="left">
                 <div
                   class="sumchart"
-                  id="leftchart"
+                  :id="`${item.nameEn}left`"
                 />
-                <el-table :data="chartData">
-                  <el-table-column
-                    prop="name"
-                    :label="$t('report.model')"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        v-if="scope.row.name==='社区标准'"
-                        class="modelone"
-                      />
-                      <span
-                        v-else-if="scope.row.name==='移动企标'"
-                        class="modeltwo"
-                      />
-                      <span
-                        v-else-if="scope.row.name==='联通企标'"
-                        class="modelthree"
-                      />
-                      <span
-                        v-else-if="scope.row.name==='电信企标'"
-                        class="modelfour"
-                      />
-                      <span
-                        v-else-if="scope.row.name==='自定义标准'"
-                        class="modelfive"
-                      />
-                      <span>{{ scope.row.name }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    prop="value"
-                    :label="$t('report.number')"
-                    width="100"
-                  />
-                </el-table>
               </div>
-            </el-col>
-            <el-col
-              :span="12"
-            >
-              <div
-                class="detailchart"
-                id="rightchart"
-              />
-            </el-col>
-          </el-row>
-        </div>
-        <div class="report_detail">
-          <div class="title">
-            {{ $t('report.reportDetail') }}
+              <div class="right">
+                <div
+                  class="detailchart"
+                  :id="`${item.nameEn}right`"
+                />
+              </div>
+            </div>
           </div>
-          <el-row :gutter="20">
-            <el-col :span="23">
-              <el-collapse
-                v-model="activeNames"
-              >
-                <el-collapse-item
-                  :title="$t('atp.security')"
-                  name="securityTest"
-                >
-                  <el-table
-                    :data="securityTest"
-                  >
-                    <el-table-column
-                      prop="name"
-                      :label="$t('atp.caseName')"
-                    />
-                    <el-table-column
-                      prop="result"
-                      :label="$t('atp.result')"
-                    />
-                    <el-table-column
-                      prop="reason"
-                      :label="$t('report.failReason')"
-                    />
-                    <el-table-column
-                      prop="verificationModel"
-                      :label="$t('report.model')"
-                    />
-                  </el-table>
-                </el-collapse-item>
-                <el-collapse-item
-                  :title="$t('atp.complianceTest')"
-                  name="complianceTest"
-                >
-                  <el-table
-                    :data="complianceTest"
-                  >
-                    <el-table-column
-                      prop="name"
-                      :label="$t('atp.caseName')"
-                    />
-                    <el-table-column
-                      prop="result"
-                      :label="$t('atp.result')"
-                    />
-                    <el-table-column
-                      prop="reason"
-                      :label="$t('report.failReason')"
-                    />
-                    <el-table-column
-                      prop="verificationModel"
-                      :label="$t('report.model')"
-                    />
-                  </el-table>
-                </el-collapse-item>
-                <el-collapse-item
-                  :title="$t('atp.sandboxTest')"
-                  name="sandboxTest"
-                >
-                  <el-table
-                    :data="sandboxTest"
-                  >
-                    <el-table-column
-                      prop="name"
-                      :label="$t('atp.caseName')"
-                    />
-                    <el-table-column
-                      prop="result"
-                      :label="$t('atp.result')"
-                    />
-                    <el-table-column
-                      prop="reason"
-                      :label="$t('report.failReason')"
-                    />
-                    <el-table-column
-                      prop="verificationModel"
-                      :label="$t('report.model')"
-                    />
-                  </el-table>
-                </el-collapse-item>
-              </el-collapse>
-            </el-col>
-          </el-row>
         </div>
       </div>
     </div>
@@ -253,107 +178,61 @@
 </template>
 
 <script>
-import { Atp } from '../../tools/api.js'
-import { TESTNAME } from '../../tools/testdataname.js'
+import { Userpage } from '../../tools/api.js'
+
 export default {
   name: 'Atpreport',
   data () {
     return {
+      testScenarios: [],
+      language: '',
+      activeName: [],
+      resulticon: '',
       htmlTitle: 'report',
       currUrl: window.location.href,
       taskId: '',
+      scenarioId: '',
       tableData: [],
-      // TestDataSum: [
-      //   {
-      //     name: '安全测试',
-      //     success: 0,
-      //     failed: 0
-      //   },
-      //   {
-      //     name: '遵从性测试',
-      //     success: 0,
-      //     failed: 0
-      //   },
-      //   {
-      //     name: '沙箱测试',
-      //     success: 0,
-      //     failed: 0
-      //   }
-      // ],
-      modelData: [
-        {
-          model: '社区标准',
-          success: 0,
-          fail: 0,
-          passRate: 0
-        }, {
-          model: '移动企标',
-          success: 0,
-          fail: 0,
-          passRate: 0
-        }, {
-          model: '联通企标',
-          success: 0,
-          fail: 0,
-          passRate: 0
-        }, {
-          model: '电信企标',
-          success: 0,
-          fail: 0,
-          passRate: 0
-        }, {
-          model: '自定义标准',
-          success: 0,
-          fail: 0,
-          passRate: 0
-        }
-      ],
-      successData: [],
-      failData: [],
-      passRateData: [],
-      activeNames: ['securityTest'],
-      securityTest: [],
-      complianceTest: [],
-      sandboxTest: [],
-      chartData: [
-        { name: '社区标准', value: 0 },
-        { name: '移动企标', value: 0 },
-        { name: '联通企标', value: 0 },
-        { name: '电信企标', value: 0 },
-        { name: '自定义标准', value: 0 }
-      ],
-      resulticon: ''
+      ChartData: [],
+      finishActiveName: []
     }
   },
   mounted () {
     this.getLanguage()
     this.getTaskId()
+    this.getScenarioId()
     this.getReport()
   },
   methods: {
     getLanguage () {
-      let currUrl = window.location.href
-      if (currUrl.indexOf('&') !== -1) {
-        let language = currUrl.split('&')[1].split('=')[1]
+      if (this.currUrl.indexOf('language') !== -1) {
+        let language = this.currUrl.split('language')[1].split('=')[1]
+        this.language = language
         localStorage.setItem('language', language)
         this.$i18n.locale = language
         this.$store.commit('changeLaguage', { language: language })
       } else {
         let language = localStorage.getItem('language')
+        this.language = language
         this.$i18n.locale = language
         this.$store.commit('changeLaguage', { language: language })
       }
     },
     getTaskId () {
-      this.taskId = this.currUrl.split('?')[1].split('=')[1]
+      this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
+    },
+    getScenarioId () {
+      this.scenarioId = this.currUrl.split('&')[1].split('=')[1]
     },
     getReport () {
-      Atp.processApi(this.taskId).then(res => {
-        this.tableData.push(res.data)
+      Userpage.getTaskApi(this.taskId).then(res => {
+        let data = res.data
+        // 基本信息显示
+        this.tableData.push(data)
         if (this.tableData[0].status === 'success') {
-          this.resulticon = require('../../assets/images/chenggong.png')
+          this.resulticon = require('../../assets/images/success.png')
         } else {
-          this.resulticon = require('../../assets/images/shibai.png')
+          this.resulticon = require('../../assets/images/fail.png')
         }
         this.tableData.forEach(item => {
           let newDateBegin = this.dateChange(item.createTime)
@@ -361,297 +240,148 @@ export default {
           let newDateEnd = this.dateChange(item.endTime)
           item.endTime = newDateEnd
         })
-        let testCaseDetail = res.data.testCaseDetail
-        for (const key in testCaseDetail) {
-          let casedata = testCaseDetail[key][0]
-          for (const keyin in casedata) {
-            let obj = {
-              name: '',
-              result: '',
-              reason: '',
-              verificationModel: ''
+        // 测试用例详情
+        this.activeName = []
+        this.finishActiveName = []
+        data.testScenarios.forEach(element => {
+          if (element.label === 'EdgeGallery' || element.id === this.scenarioId) {
+            this.testScenarios.push(element)
+          }
+        })
+        this.testScenarios.forEach(element => {
+          let chartobj = {
+            dataRight: [],
+            nameRightCh: [],
+            nameRightEn: [],
+            nameCh: '',
+            nameEn: '',
+            dataCh: [],
+            dataEn: []
+          }
+          chartobj.nameCh = element.nameCh
+          chartobj.nameEn = element.nameEn
+          this.activeName.push(element.nameEn + element.testSuites[0].nameEn)
+          element.testSuites.forEach(ele => {
+            this.finishActiveName.push(element.nameEn + ele.nameEn)
+            ele.successNum = 0
+            ele.failNum = 0
+            chartobj.nameRightCh.push(ele.nameCh)
+            chartobj.nameRightEn.push(ele.nameEn)
+            let objDataCh = {
+              name: '', value: 0
             }
-            obj.name = keyin
-            obj.result = casedata[keyin].result
-            obj.reason = casedata[keyin].reason
-            obj.verificationModel = casedata[keyin].verificationModel
-            if (key === 'securityTest') {
-              this.securityTest.push(obj)
-            } else if (key === 'complianceTest') {
-              this.complianceTest.push(obj)
-            } else {
-              this.sandboxTest.push(obj)
+            let objDataEn = {
+              name: '', value: 0
             }
-          }
-        }
-        this.getModelData()
-        this.getChartData()
-        this.getRightChart()
-      })
-    },
-    getModelData () {
-      // 模板data
-      this.securityTest.forEach(item => {
-        if (item.result === 'success') {
-          item.reason = '---'
-        }
-        if (item.verificationModel.indexOf('EdgeGallery') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[0].success++
-          } else {
-            this.modelData[0].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Mobile') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[1].success++
-          } else {
-            this.modelData[1].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Unicom') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[2].success++
-          } else {
-            this.modelData[2].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Telecom') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[3].success++
-          } else {
-            this.modelData[3].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Definition') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[4].success++
-          } else {
-            this.modelData[4].fail++
-          }
-        }
-      })
-      this.complianceTest.forEach(item => {
-        if (item.result === 'success') {
-          item.reason = '---'
-        }
-        if (item.verificationModel.indexOf('EdgeGallery') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[0].success++
-          } else {
-            this.modelData[0].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Mobile') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[1].success++
-          } else {
-            this.modelData[1].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Unicom') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[2].success++
-          } else {
-            this.modelData[2].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Telecom') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[3].success++
-          } else {
-            this.modelData[3].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Definition') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[4].success++
-          } else {
-            this.modelData[4].fail++
-          }
-        }
-      })
-      this.sandboxTest.forEach(item => {
-        if (item.result === 'success') {
-          item.reason = '---'
-        }
-        if (item.verificationModel.indexOf('EdgeGallery') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[0].success++
-          } else {
-            this.modelData[0].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Mobile') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[1].success++
-          } else {
-            this.modelData[1].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Unicom') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[2].success++
-          } else {
-            this.modelData[2].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Telecom') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[3].success++
-          } else {
-            this.modelData[3].fail++
-          }
-        }
-        if (item.verificationModel.indexOf('Definition') !== -1) {
-          if (item.result === 'success') {
-            this.modelData[4].success++
-          } else {
-            this.modelData[4].fail++
-          }
-        }
-      })
-    },
-    getChartData () {
-      // 通过率
-      for (let index = 0; index < this.modelData.length; index++) {
-        let chartitem = this.chartData[index]
-        const item = this.modelData[index]
-        chartitem.value = item.success + item.fail
-        // item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2) + '%'
-        item.passRate = (item.success / (item.success + item.fail) * 100).toFixed(2)
-      }
-      this.drawLeftLine()
-    },
-    getRightChart () {
-      this.modelData.forEach((item) => {
-        this.successData.push(item.success)
-        this.failData.push(item.fail)
-        this.passRateData.push(item.passRate)
-      })
-      this.drawRightLine()
+            objDataCh.name = ele.nameCh
+            objDataEn.name = ele.nameEn
+            objDataCh.value = ele.testCases.length
+            objDataEn.value = ele.testCases.length
+            chartobj.dataCh.push(objDataCh)
+            chartobj.dataEn.push(objDataEn)
+            ele.testCases.forEach(item => {
+              if (item.result === 'success') {
+                item.reason = '---'
+                ele.successNum++
+              } else if (item.result === 'failed') {
+                ele.failNum++
+              }
+            })
+            let passRate = Number((ele.successNum / (ele.successNum + ele.failNum) * 100).toFixed(0))
+            chartobj.dataRight.push(passRate)
+          })
+          this.ChartData.push(chartobj)
+        })
+        this.$nextTick(() => {
+          this.drawLeftLine()
+          this.drawRightLine()
+        })
+      }).catch(() => {})
     },
     drawLeftLine () {
-      let Chart = this.$echarts.init(document.getElementById('leftchart'))
-      let colors = ['#89a6e6', '#a8d89b', '#9ed0c9', '#deba69', '#baa3d4']
-      let option = {
-        color: colors,
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
-        },
-        series: [
-          {
-            name: '认证模板',
-            type: 'pie',
-            radius: ['20%', '40%'],
-            avoidLabelOverlap: false,
-            labelLine: {
-              show: false
-            },
-            data: this.chartData
-          }
-        ]
-      }
-      Chart.setOption(option)
+      this.ChartData.forEach(item => {
+        let Chart = this.$echarts.init(document.getElementById(item.nameEn + 'left'))
+        let colors = ['#89a6e6', '#deba69', '#a8d89b', '#9ed0c9', '#baa3d4']
+        let option = {
+          color: colors,
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+          },
+          series: [
+            {
+              name: '',
+              type: 'pie',
+              radius: ['30%', '60%'],
+              avoidLabelOverlap: false,
+              labelLine: {
+                show: false
+              },
+              data: []
+            }
+          ]
+        }
+        if (this.language === 'en') {
+          option.series[0].name = item.nameEn
+          option.series[0].data = item.dataEn
+        } else if (this.language === 'cn') {
+          option.series[0].name = item.nameCh
+          option.series[0].data = item.dataCh
+        }
+        Chart.setOption(option)
+      })
     },
     drawRightLine () {
-      let passChart = this.$echarts.init(document.getElementById('rightchart'))
-      var colors = ['#89a6e6', '#f59898', '#675bba']
-      let option = {
-        color: colors,
-        tooltip: {
-          trigger: 'axis'
-        },
-        grid: {
-          right: '25%'
-        },
-        legend: {
-          left: 10,
-          data: ['成功数量', '失败数量', '通过率']
-        },
-        xAxis: [
-          {
+      this.ChartData.forEach(item => {
+        let Chart = this.$echarts.init(document.getElementById(item.nameEn + 'right'))
+        let option = {
+          title: {
+            text: '',
+            x: 'center'
+          },
+          xAxis: {
             type: 'category',
-            axisTick: {
-              alignWithLabel: true
-            },
-            data: ['社区标准', '移动企标', '联通企标', '电信企标', '自定义标准']
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value',
-            name: '成功数量',
-            min: 0,
-            max: 80,
-            position: 'right',
-            axisLine: {
-              lineStyle: {
-                color: colors[0]
-              }
-            },
-            axisLabel: {
-              formatter: '{value}'
+            data: []
+          },
+          yAxis: [
+            {
+              type: 'value',
+              axisLabel: {
+                show: true,
+                interval: 'auto',
+                formatter: '{value} %'
+              },
+              show: true
             }
-          },
-          {
-            type: 'value',
-            name: '失败数量',
-            min: 0,
-            max: 80,
-            position: 'right',
-            offset: 80,
-            axisLine: {
-              lineStyle: {
-                color: colors[1]
-              }
-            },
-            axisLabel: {
-              formatter: '{value}'
-            }
-          },
-          {
-            type: 'value',
-            name: '成功率',
-            min: 0,
-            max: 100,
-            position: 'left',
-            axisLine: {
-              lineStyle: {
-                color: colors[2]
-              }
-            },
-            axisLabel: {
-              formatter: '{value} %'
-            }
-          }
-        ],
-        series: [
-          {
-            name: '成功数量',
-            type: 'bar',
-            data: this.successData
-          },
-          {
-            name: '失败数量',
-            type: 'bar',
-            yAxisIndex: 1,
-            data: this.failData
-          },
-          {
-            name: '通过率',
+          ],
+          series: [{
+            data: [],
             type: 'line',
-            symbolSize: 15,
+            symbol: 'triangle',
+            symbolSize: 20,
             lineStyle: {
-              color: '#6c50f3'
+              color: '#5470C6',
+              width: 4,
+              type: 'dashed'
             },
-            yAxisIndex: 2,
-            data: this.passRateData
-          }
-        ]
-      }
-      passChart.setOption(option)
+            itemStyle: {
+              borderWidth: 3,
+              borderColor: '#EE6666',
+              color: 'yellow'
+            }
+          }]
+        }
+        if (this.language === 'en') {
+          option.title.text = 'Test case success rate'
+          option.xAxis.data = item.nameRightEn
+          option.series[0].data = item.dataRight
+        } else if (this.language === 'cn') {
+          option.title.text = '测试用例成功率'
+          option.xAxis.data = item.nameRightCh
+          option.series[0].data = item.dataRight
+        }
+        Chart.setOption(option)
+      })
     },
 
     dateChange (dateStr) {
@@ -678,44 +408,13 @@ export default {
         return changeDate
       }
     },
-    changeName () {
-      if (this.language === 'en') {
-        this.TestDataSum[0].name = TESTNAME[0].label[1]
-        this.TestDataSum[1].name = TESTNAME[1].label[1]
-        this.TestDataSum[2].name = TESTNAME[2].label[1]
-      } else if (this.language === 'cn') {
-        this.TestDataSum[0].name = TESTNAME[0].label[0]
-        this.TestDataSum[1].name = TESTNAME[1].label[0]
-        this.TestDataSum[2].name = TESTNAME[2].label[0]
-      }
-    },
     downLoadReport () {
-      // Atp.downLoadReportApi(this.taskId).then(res => {
-      //   this.$message({
-      //     duration: 2000,
-      //     message: this.$t('promptMessage.downloadSuccess'),
-      //     type: 'success'
-      //   })
-      // }).catch(() => {
-      //   this.$message({
-      //     duration: 2000,
-      //     message: this.$t('promptMessage.downloadFail'),
-      //     type: 'warning'
-      //   })
-      // })
-      this.activeNames = ['securityTest', 'complianceTest', 'sandboxTest']
+      this.activeName = this.finishActiveName
       setInterval(() => {
         this.getPdf('#pdfDom')
       }, 1000)
     }
   }
-  // watch: {
-  //   '$i18n.locale': function () {
-  //     let language = localStorage.getItem('language')
-  //     this.language = language
-  //     // this.changeName()
-  //   }
-  // }
 }
 </script>
 
@@ -758,20 +457,19 @@ export default {
         margin-right: 30px;
       }
     }
-
-    .app-img {
-      text-align: center;
-      border: 1px solid #ddd;
-      border-right: 0;
-      height: 97px;
-      img {
-        width: 85px;
+    .report-app-info{
+      position: relative;
+      .app-table {
+        padding-left: 0 !important;
+        margin-left: 25px;
+      }
+      .resulticon{
+        position: absolute;
+        right: 30px;
+        top: -25px;
       }
     }
-    .app-table {
-      padding-left: 0 !important;
-      margin-left: 25px;
-    }
+
     .title {
       font-size: 20px;
       margin: 15px 0;
@@ -785,82 +483,62 @@ export default {
       position: relative;
       top: 5px;
     }
-    .report-chart {
-      .report_analysis{
-        .left{
-          display: flex;
-          .el-table{
-            margin-top: 45px;
+
+    .report-detail{
+      .detail-content{
+        .scene{
+          padding-left: 10px;
+          line-height: 40px;
+          font-size: 20px;
+          font-weight: 600;
+          color: #688ef3;
+        }
+        .report-chart{
+          span{
+            padding-left: 25px;
+            line-height: 40px;
+            font-size: 16px;
           }
-          .el-table::before{
-            background-color: #fff;
+          .report_analysis{
+            display: flex;
+            justify-content: space-around;
+            .left,.right{
+              width: 100%;
+            }
+            .sumchart{
+              width: 80%;
+              height: 300px;
+            }
+            .detailchart{
+              width: 85%;
+              height: 300px;
+            }
           }
         }
-        .sumchart{
-          width: 60%;
-          height: 400px;
-        }
-        .modelone,.modeltwo,.modelthree,.modelfour,.modelfive{
-          width: 8px;
-            height: 8px;
-            display: inline-block;
-            margin-right: 10px;
-            border-radius: 50%;
-        }
-        .modelone{
-          background-color: #89a6e6;
-        }
-        .modeltwo{
-          background-color: #a8d89b;
-        }
-        .modelthree{
-          background-color: #9ed0c9;
-        }
-        .modelfour{
-          background-color: #deba69;
-        }
-        .modelfive{
-          background-color: #baa3d4;
-        }
-        .detailchart{
-          width: 100%;
-          height: 400px;
-        }
-      }
-      .report_detail{
-        .el-collapse-item__header{
-            font-size: 17px;
-            background-color: #FAFAFA;
-            padding-left: 20px;
+          .el-collapse{
+            padding: 5px 20px;
+            .el-collapse-item__header{
+              font-size: 16px !important;
+            }
           }
-        // .el-collapse-item__header:before {
-        //   content: "";
-        //   display: inline-block;
-        //   border: 8px solid #fff;
-        //   border-left-color: rgb(101, 129, 221);
-        //   border-right: 0;
-        //   position: relative;
-        //   right: 10px;
-        //   animation: rotate 1s infinite;
-        // }
-        // .isActive{
-        //   animation: rotate 1s infinite;
-        // }
-        // @keyframes rotate {
-        //   from {
-        //       transform: rotate(0deg);
-        //   }
-        //   to {
-        //       transform: rotate(90deg);
-        //   }
-        // }
-      }
-    }
-    @media screen and (max-width: 1380) {
-      .sumchart{
-          width: 60%;
-          height: 300px;
-      }
+          .headerStyle{
+            padding: 0;
+            height: 40px;
+            line-height: 40px;
+            font-size: 15px;
+          }
+          .el-table::before {
+            width: 0;
+          }
+          .el-table td{
+            padding: 0;
+            height: 45px;
+            line-height: 45px;
+          }
+          table th,table td{
+            border-bottom: none !important;
+          }
+        }
     }
     .el-table{
       font-size: 16px;

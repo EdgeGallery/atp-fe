@@ -15,7 +15,6 @@
   -->
 <template>
   <div class="padding56">
-    <!-- <Navcomp /> -->
     <div class="process">
       <div
         class="back"
@@ -163,9 +162,7 @@
 </template>
 <script>
 import { Userpage } from '../../tools/api.js'
-// import Navcomp from '../../components/layout/Nav'
 export default {
-  // components: { Navcomp },
   data () {
     return {
       currUrl: window.location.href,

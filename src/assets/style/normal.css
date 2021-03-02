@@ -114,3 +114,21 @@ a{
 .el-icon-close:before{
   color:#000 !important;
 }
+
+/* 折叠面板 */
+.el-collapse{
+  padding: 10px 50px;
+  border: none!important;
+}
+.el-collapse-item{
+  padding: 3px 0;
+}
+.el-collapse-item__header{
+  padding-left: 8px;
+  font-size: 15px !important;
+  height: 30px!important;
+  background-image: linear-gradient(to right, #cad5f3 , #fff);
+}
+.el-icon-arrow-right:before {
+  color: #000;
+}

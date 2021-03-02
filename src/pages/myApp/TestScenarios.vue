@@ -15,7 +15,6 @@
   -->
 <template>
   <div class="padding56">
-    <!-- <Navcomp /> -->
     <div class="selectscene padding20">
       <div class="toptitle">
         <div class="left">
@@ -155,10 +154,8 @@
 </template>
 <script>
 import { Userpage, URL_PREFIX } from '../../tools/api.js'
-// import Navcomp from '../../components/layout/Nav'
 
 export default {
-  // components: { Navcomp },
   data () {
     return {
       currUrl: window.location.href,

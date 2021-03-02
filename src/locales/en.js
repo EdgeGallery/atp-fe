@@ -166,7 +166,8 @@ const en = {
     name: 'Name',
     type: 'Type',
     description: 'Description',
-    score: 'score'
+    score: 'score',
+    result: 'Result'
   },
   modelmgmt: {
     name: 'Name:',
