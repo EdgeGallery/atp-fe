@@ -14,15 +14,18 @@
   -  limitations under the License.
   -->
 <template>
-  <div class="padding56">
-    <div class="selectscene padding20">
+  <div>
+    <div
+      class="selectscene padding20"
+      id="selectscene"
+    >
       <div class="toptitle">
         <div class="left">
           {{ $t('userpage.selectScene') }}
         </div>
         <el-tooltip
           effect="light"
-          content="点击贡献用例"
+          :content="$t('userpage.clickContribution')"
           placement="left"
         >
           <div
@@ -213,6 +216,7 @@ export default {
           type: 'error'
         })
       })
+      this.setDivHeight()
     },
     chooseScene (item) {
       this.scenarioIdList.push(item.id)
@@ -259,6 +263,13 @@ export default {
           message: this.$t('promptMessage.runFailed'),
           type: 'error'
         })
+      })
+    },
+    setDivHeight () {
+      this.$nextTick(() => {
+        const selectsceneDiv = document.getElementById('selectscene')
+        const appDivHeight = document.getElementById('app').clientHeight
+        selectsceneDiv.style.height = appDivHeight - 20 + 'px'
       })
     },
     jumpToGitee () {
@@ -378,6 +389,7 @@ export default {
   }
   .start-button{
     text-align: right;
+    margin: 0px 25px;
   }
 }
 .el-dialog__body{

@@ -14,13 +14,15 @@
   -  limitations under the License.
   -->
 <template>
-  <div class="padding56">
-    <div class="process">
+  <div>
+    <div
+      class="process padding56"
+      id="process"
+    >
       <div
         class="back"
       >
         <el-popover
-          :disabled="report"
           placement="top"
           v-model="visible"
         >
@@ -29,15 +31,21 @@
               type="primary"
               size="mini"
               plain
-              icon="el-icon-document"
               v-for="(item,index) in reportData"
               :key="index"
-              @click="jumpTo(item)"
+              @click="jumpToReport(item)"
             >
               {{ language==='cn'?item.nameCh:item.nameEn }}
+              <em
+                v-if="item.label==='EdgeGallery'"
+                class="el-icon-check"
+              />
             </el-button>
           </div>
-          <el-button slot="reference">
+          <el-button
+            slot="reference"
+            :disabled="report"
+          >
             {{ $t('myApp.checkReport') }}
           </el-button>
         </el-popover>
@@ -57,7 +65,7 @@
           <span
             v-if="allfailNum!==0"
             class="findproblem"
-          >发现{{ allfailNum }}项问题</span>
+          >{{ $t('userpage.find') }}{{ allfailNum }}{{ $t('userpage.issue') }}</span>
           <el-progress
             :text-inside="true"
             :stroke-width="16"
@@ -67,7 +75,10 @@
           />
         </div>
       </div>
-      <div class="content">
+      <div
+        class="content"
+        id="content"
+      >
         <el-tabs
           v-model="activeTabsName"
           type="border-card"
@@ -83,7 +94,7 @@
               <div class="sceneRunning">
                 <el-tooltip
                   effect="light"
-                  content="成功用例/总用例"
+                  :content="$t('userpage.hover')"
                   placement="right"
                 >
                   <div class="testing-case-process">
@@ -221,7 +232,7 @@ export default {
         this.taskId = params
       }
     },
-    jumpTo (item) {
+    jumpToReport (item) {
       this.visible = false
       let taskId = this.taskId
       let scenarioId = item.id
@@ -244,12 +255,14 @@ export default {
         data.forEach(element => {
         // 查看报告遍历
           let reportobj = {
+            label: '',
             nameCh: '',
             nameEn: '',
             id: ''
           }
           reportobj.nameCh = element.nameCh
           reportobj.nameEn = element.nameEn
+          reportobj.label = element.label
           reportobj.id = element.id
           this.reportData.push(reportobj)
           // 场景前的数字
@@ -302,7 +315,16 @@ export default {
           this.statusTitle = ['测试失败', 'Test Failed']
           this.activeTabsName = data[0].nameEn
         }
+        this.setDivHeight()
       }).catch(() => {})
+    },
+    // 设置用例高度
+    setDivHeight () {
+      this.$nextTick(() => {
+        const processcDiv = document.getElementById('process')
+        const appDiv = document.getElementById('app')
+        processcDiv.style.height = appDiv.clientHeight - 20 + 'px'
+      })
     },
     handleClick (tab) {
       this.activeTabsName = tab.name
