@@ -168,7 +168,11 @@ const cn = {
     type: '类型',
     description: '描述',
     score: '分',
-    result: '结果'
+    result: '结果',
+    find: '所有场景共发现',
+    issue: '项问题',
+    hover: '成功用例/总用例',
+    clickContribution: '点击贡献用例'
   },
   modelmgmt: {
     name: '名称:',

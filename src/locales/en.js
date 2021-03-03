@@ -167,7 +167,11 @@ const en = {
     type: 'Type',
     description: 'Description',
     score: 'score',
-    result: 'Result'
+    result: 'Result',
+    find: '',
+    issue: 'issues were found in all scenarios',
+    hover: 'Successful / total',
+    clickContribution: 'Click to contribute use case'
   },
   modelmgmt: {
     name: 'Name:',
