@@ -229,10 +229,12 @@ export default {
       dataLoading: true,
       currentData: [],
       userId: sessionStorage.getItem('userId'),
-      userName: sessionStorage.getItem('userName')
+      userName: sessionStorage.getItem('userName'),
+      language: ''
     }
   },
   mounted () {
+    this.getLanguage()
     this.getTaskList()
     this.interval = setInterval(() => {
       this.getTaskList()
@@ -248,6 +250,15 @@ export default {
     next()
   },
   methods: {
+    getLanguage () {
+      let currUrl = window.location.href
+      if (currUrl.indexOf('?') !== -1) {
+        this.language = currUrl.split('?')[1].split('=')[1]
+      }
+      localStorage.setItem('language', this.language)
+      this.$i18n.locale = this.language
+      this.$store.commit('changeLaguage', { language: this.language })
+    },
     getCurrentPageData (val) {
       this.currentData = val
     },
