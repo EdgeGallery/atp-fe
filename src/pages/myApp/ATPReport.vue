@@ -113,6 +113,33 @@
             v-model="activeName"
           >
             <el-collapse-item
+              :title="$t('report.reportanalysis')"
+              :name="item.nameEn"
+            >
+              <div class="report-chart">
+                <div class="report_analysis">
+                  <div
+                    class="left"
+                    id="chartwidth"
+                  >
+                    <div
+                      class="sumchart"
+                      :id="`${item.nameEn}left`"
+                    />
+                  </div>
+                  <div
+                    class="right"
+                    id="chartwidth"
+                  >
+                    <div
+                      class="detailchart"
+                      :id="`${item.nameEn}right`"
+                    />
+                  </div>
+                </div>
+              </div>
+            </el-collapse-item>
+            <el-collapse-item
               v-for="(suiteItem,dex) in item.testSuites"
               :key="dex"
               :title="language==='cn'?suiteItem.nameCh:suiteItem.nameEn"
@@ -154,23 +181,6 @@
               </el-table>
             </el-collapse-item>
           </el-collapse>
-          <div class="report-chart">
-            <span> {{ $t('report.reportanalysis') }}</span>
-            <div class="report_analysis">
-              <div class="left">
-                <div
-                  class="sumchart"
-                  :id="`${item.nameEn}left`"
-                />
-              </div>
-              <div class="right">
-                <div
-                  class="detailchart"
-                  :id="`${item.nameEn}right`"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -260,9 +270,11 @@ export default {
           }
           chartobj.nameCh = element.nameCh
           chartobj.nameEn = element.nameEn
-          this.activeName.push(element.nameEn + element.testSuites[0].nameEn)
+          // this.activeName.push(element.nameEn + element.testSuites[0].nameEn)
+          this.activeName.push(element.nameEn)
           element.testSuites.forEach(ele => {
             this.finishActiveName.push(element.nameEn + ele.nameEn)
+            this.finishActiveName.push(element.nameEn)
             ele.successNum = 0
             ele.failNum = 0
             chartobj.nameRightCh.push(ele.nameCh)
@@ -503,14 +515,15 @@ export default {
             display: flex;
             justify-content: space-around;
             .left,.right{
-              width: 100%;
+              width: 600px;
+              height: 300px;
             }
             .sumchart{
-              width: 80%;
+              width: 500px;
               height: 300px;
             }
             .detailchart{
-              width: 85%;
+              width: 500px;
               height: 300px;
             }
           }
