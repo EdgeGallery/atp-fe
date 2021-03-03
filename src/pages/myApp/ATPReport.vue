@@ -109,7 +109,7 @@
                   class="sumchart"
                   id="leftchart"
                 />
-                <el-table :data="chartData">
+                <el-table :data="language==='cn'?chartData:chartDataEn">
                   <el-table-column
                     prop="name"
                     :label="$t('report.model')"
@@ -140,7 +140,7 @@
                   </el-table-column>
                   <el-table-column
                     prop="value"
-                    label="数量"
+                    :label="$t('report.number')"
                     width="100"
                   />
                 </el-table>
@@ -259,23 +259,6 @@ export default {
       currUrl: window.location.href,
       taskId: '',
       tableData: [],
-      // TestDataSum: [
-      //   {
-      //     name: '安全测试',
-      //     success: 0,
-      //     failed: 0
-      //   },
-      //   {
-      //     name: '遵从性测试',
-      //     success: 0,
-      //     failed: 0
-      //   },
-      //   {
-      //     name: '沙箱测试',
-      //     success: 0,
-      //     failed: 0
-      //   }
-      // ],
       modelData: [
         {
           model: '社区标准',
@@ -318,16 +301,43 @@ export default {
         { name: '电信企标', value: 0 },
         { name: '自定义标准', value: 0 }
       ],
-      resulticon: ''
+      chartDataEn: [
+        { name: 'EdgeGallery', value: 0 },
+        { name: 'Mobile', value: 0 },
+        { name: 'Unicom', value: 0 },
+        { name: 'Telecom', value: 0 },
+        { name: 'Definition', value: 0 }
+      ],
+      resulticon: '',
+      language: ''
     }
   },
   mounted () {
+    this.getLanguage()
     this.getTaskId()
     this.getReport()
   },
   methods: {
+    getLanguage () {
+      if (this.currUrl.indexOf('language') !== -1) {
+        let language = this.currUrl.split('language')[1].split('=')[1]
+        this.language = language
+        localStorage.setItem('language', language)
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      } else {
+        let language = localStorage.getItem('language')
+        this.language = language
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      }
+    },
     getTaskId () {
-      this.taskId = this.currUrl.split('?')[1].split('=')[1]
+      if (this.currUrl.indexOf('language') !== -1) {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
+      } else {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1]
+      }
     },
     getReport () {
       Atp.processApi(this.taskId).then(res => {
@@ -535,6 +545,12 @@ export default {
           }
         ]
       }
+      if (this.language === 'en') {
+        this.chartData.forEach((item, index) => {
+          this.chartDataEn[index].value = item.value
+        })
+        option.series[0].data = this.chartDataEn
+      }
       Chart.setOption(option)
     },
     drawRightLine () {
@@ -632,6 +648,16 @@ export default {
             data: this.passRateData
           }
         ]
+      }
+      if (this.language === 'en') {
+        option.legend.data = ['Successful', 'Failed', 'Passing rate']
+        option.xAxis[0].data = ['EdgeGallery', 'Mobile', 'Unicom', 'Telecom', 'Definition']
+        option.yAxis[0].name = 'Successful'
+        option.yAxis[1].name = 'Failed'
+        option.yAxis[2].name = 'Passing rate'
+        option.series[0].name = 'Successful'
+        option.series[1].name = 'Failed'
+        option.series[2].name = 'Passing rate'
       }
       passChart.setOption(option)
     },

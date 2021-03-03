@@ -27,7 +27,7 @@
         plain
         @click="jumpTo()"
       >
-        查看报告
+        {{ $t('myApp.checkReport') }}
       </el-button>
     </div>
     <div class="step-title">
@@ -156,68 +156,6 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      :visible.sync="dialogSuccess"
-      :close-on-click-modal="false"
-      class="finishDialog"
-    >
-      <div>
-        <p>恭喜你 通过本次测试任务！</p>
-      </div>
-      <img
-        src="../../assets/images/complianceTest_icon.png"
-        class="curp"
-        alt
-      >
-      <div
-        class="button-center"
-      >
-        <el-button
-          type="primary"
-          @click="cancel()"
-          plain
-        >
-          {{ $t('atp.cancel') }}
-        </el-button>
-        <el-button
-          type="primary"
-          @click="CheckReport()"
-        >
-          查看报告
-        </el-button>
-      </div>
-    </el-dialog>
-    <el-dialog
-      :visible.sync="dialogFailed"
-      :close-on-click-modal="false"
-      class="finishDialog"
-    >
-      <div>
-        <p>您有如下用例未通过！</p>
-      </div>
-      <img
-        src="../../assets/images/complianceTest_icon.png"
-        class="curp"
-        alt
-      >
-      <div
-        class="button-center"
-      >
-        <el-button
-          type="primary"
-          @click="cancel()"
-          plain
-        >
-          {{ $t('atp.cancel') }}
-        </el-button>
-        <el-button
-          type="primary"
-          @click="CheckReport()"
-        >
-          查看报告
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -246,8 +184,6 @@ export default {
       },
       interval: '',
       timeout: '',
-      dialogSuccess: false,
-      dialogFailed: false,
       securityNum: 0,
       complianceNum: 0,
       sandboxNum: 0,
@@ -256,6 +192,7 @@ export default {
   },
   mounted () {
     // 传taskid
+    this.getLanguage()
     this.getTaskId()
     this.getCaseData()
     this.interval = setInterval(() => {
@@ -282,9 +219,17 @@ export default {
     clearTimeout(this.intervalNumthree)
   },
   methods: {
+    getLanguage () {
+      if (this.currUrl.indexOf('language') !== -1) {
+        let language = this.currUrl.split('language')[1].split('=')[1]
+        localStorage.setItem('language', language)
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      }
+    },
     getTaskId () {
       if (this.currUrl.indexOf('?') !== -1) {
-        this.taskId = this.currUrl.split('?')[1].split('=')[1]
+        this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
       } else {
         let params = sessionStorage.getItem('taskId')
         this.taskId = params
@@ -457,16 +402,6 @@ export default {
           this.sandboxNum++
         }
       })
-    },
-    // 测试完成弹框
-    CheckReport () {
-      let taskId = this.taskId
-      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
-      window.open(routeData.href, '_blank')
-    },
-    cancel () {
-      this.dialogSuccess = false
-      this.dialogFailed = false
     }
   }
 }
