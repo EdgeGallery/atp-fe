@@ -267,9 +267,9 @@ export default {
     },
     setDivHeight () {
       this.$nextTick(() => {
-        const selectsceneDiv = document.getElementById('selectscene')
-        const appDivHeight = document.getElementById('app').clientHeight
-        selectsceneDiv.style.height = appDivHeight - 20 + 'px'
+        const processcDiv = document.getElementById('process')
+        const appDiv = document.getElementById('app')
+        processcDiv.style.minHeight = appDiv.clientHeight + 'px'
       })
     },
     jumpToGitee () {

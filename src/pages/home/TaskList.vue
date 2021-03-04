@@ -169,14 +169,36 @@
               width="240"
             >
               <template slot-scope="scope">
-                <el-button
-                  @click="handleClickReport(scope.row)"
-                  type="text"
-                  :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
-                  size="small"
+                <el-popover
+                  placement="right"
+                  trigger="click"
                 >
-                  {{ $t('myApp.checkReport') }}
-                </el-button>
+                  <div style="text-align: center; margin: 0">
+                    <el-button
+                      type="primary"
+                      size="mini"
+                      plain
+                      v-for="(item,index) in reportData"
+                      :key="index"
+                      @click="jumpToReport(item)"
+                    >
+                      {{ language==='cn'?item.nameCh:item.nameEn }}
+                      <em
+                        v-if="item.label==='EdgeGallery'"
+                        class="el-icon-check"
+                      />
+                    </el-button>
+                  </div>
+                  <el-button
+                    slot="reference"
+                    type="text"
+                    :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
+                    size="small"
+                    @click="handleClickReport(scope.row)"
+                  >
+                    {{ $t('myApp.checkReport') }}
+                  </el-button>
+                </el-popover>
                 <el-button
                   type="text"
                   :disabled="scope.row.status==='running'?false:true"
@@ -219,8 +241,6 @@ export default {
       form: {
         appName: '',
         status: ''
-        // createTime: '',
-        // endTime: ''
       },
       pageData: [],
       caseList: [],
@@ -258,7 +278,10 @@ export default {
       currentData: [],
       taskIds: [],
       userId: sessionStorage.getItem('userId'),
-      userName: sessionStorage.getItem('userName')
+      userName: sessionStorage.getItem('userName'),
+      reportData: [],
+      language: localStorage.getItem('language'),
+      visible: false
     }
   },
   mounted () {
@@ -285,8 +308,28 @@ export default {
       this.interval = null
     },
     handleClickReport (val) {
-      let taskId = val.id
-      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
+      this.reportData = []
+      val.testScenarios.forEach(item => {
+        let reportobj = {
+          taskId: '',
+          label: '',
+          nameCh: '',
+          nameEn: '',
+          scenarioId: ''
+        }
+        reportobj.label = item.label
+        reportobj.nameCh = item.nameCh
+        reportobj.nameEn = item.nameEn
+        reportobj.scenarioId = item.id
+        reportobj.taskId = val.id
+        this.reportData.push(reportobj)
+      })
+    },
+    jumpToReport (item) {
+      this.visible = false
+      let taskId = item.taskId
+      let scenarioId = item.scenarioId
+      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId, scenarioId: scenarioId } })
       window.open(routeData.href, '_blank')
     },
     // handleClickTaskNo (val) {
@@ -311,32 +354,29 @@ export default {
       }
     },
     getTaskList () {
-      Taskmgmt.taskListApi(this.form).then(
-        res => {
-          let data = res.data
-          data.forEach((item, index) => {
-            let newDateBegin = this.dateChange(item.createTime)
-            item.createTime = newDateBegin
-            let newDateEnd = this.dateChange(item.endTime)
-            item.endTime = newDateEnd
-          })
-          this.pageData = data
-          this.totalNum = this.pageData.length
-          this.dataLoading = false
-          if (this.pageData.length === 0) {
-            this.clearInterval()
-          }
-        },
-        () => {
-          this.dataLoading = false
-          this.$message({
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.getTaskListFail')
-          })
+      Taskmgmt.taskListApi(this.form).then(res => {
+        let data = res.data
+        data.forEach((item, index) => {
+          let newDateBegin = this.dateChange(item.createTime)
+          item.createTime = newDateBegin
+          let newDateEnd = this.dateChange(item.endTime)
+          item.endTime = newDateEnd
+        })
+        this.pageData = data
+        this.totalNum = this.pageData.length
+        this.dataLoading = false
+        if (this.pageData.length === 0) {
           this.clearInterval()
         }
-      )
+      }).catch(() => {
+        this.dataLoading = false
+        this.$message({
+          duration: 2000,
+          type: 'warning',
+          message: this.$t('promptMessage.getTaskListFail')
+        })
+        this.clearInterval()
+      })
     },
     deleteTask () {
       let param = {
@@ -361,8 +401,6 @@ export default {
       this.form = {
         appName: '',
         status: ''
-        // createTime: '',
-        // endTime: ''
       }
       this.getTaskList()
     },

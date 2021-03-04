@@ -229,10 +229,16 @@ export default {
       }
     },
     getTaskId () {
-      this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
+      if (this.currUrl.indexOf('scenarioId') !== -1 || this.currUrl.indexOf('language') !== -1) {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
+      } else {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1]
+      }
     },
     getScenarioId () {
-      this.scenarioId = this.currUrl.split('&')[1].split('=')[1]
+      if (this.currUrl.indexOf('scenarioId') !== -1) {
+        this.scenarioId = this.currUrl.split('&')[1].split('=')[1]
+      }
     },
     getReport () {
       Userpage.getTaskApi(this.taskId).then(res => {
@@ -253,11 +259,15 @@ export default {
         // 测试用例详情
         this.activeName = []
         this.finishActiveName = []
-        data.testScenarios.forEach(element => {
-          if (element.label === 'EdgeGallery' || element.id === this.scenarioId) {
-            this.testScenarios.push(element)
-          }
-        })
+        if (this.currUrl.indexOf('scenarioId') !== -1) {
+          data.testScenarios.forEach(element => {
+            if (element.label === 'EdgeGallery' || element.id === this.scenarioId) {
+              this.testScenarios.push(element)
+            }
+          })
+        } else {
+          this.testScenarios = data.testScenarios
+        }
         this.testScenarios.forEach(element => {
           let chartobj = {
             dataRight: [],

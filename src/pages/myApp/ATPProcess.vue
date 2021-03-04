@@ -323,7 +323,7 @@ export default {
       this.$nextTick(() => {
         const processcDiv = document.getElementById('process')
         const appDiv = document.getElementById('app')
-        processcDiv.style.height = appDiv.clientHeight - 20 + 'px'
+        processcDiv.style.minHeight = appDiv.clientHeight + 'px'
       })
     },
     handleClick (tab) {
