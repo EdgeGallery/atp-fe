@@ -42,6 +42,7 @@
                     type="primary"
                     size="small"
                     class="searchButton"
+                    @click="getAllScene"
                   >
                     {{ $t('common.search') }}
                   </el-button>
@@ -59,117 +60,17 @@
           </div>
         </div>
         <div class="allscene">
-          <div class="list">
+          <div
+            class="list"
+            v-for="item in scenarios"
+            :key="item.id"
+          >
             <el-form label-width="auto">
               <el-form-item :label="$t('modelmgmt.name')">
-                联通场景
+                {{ language === 'cn' ? item.nameCh :item.nameEn }}
               </el-form-item>
               <el-form-item :label="$t('modelmgmt.description')">
-                适用于中国联通测试场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                移动场景
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                适用于中国移动测试场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                社区场景
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                适用于社区测试场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                电信场景
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                适用于中国电信测试场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                电信场景
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                适用于中国电信测试场景
+                {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
               </el-form-item>
               <el-form-item class="rt">
                 <el-button
@@ -196,14 +97,36 @@
 </template>
 <script>
 import Navcomp from '../../components/layout/Nav'
+import { Userpage } from '../../tools/api.js'
+
 // import pagination from '../../components/common/Pagination.vue'
 export default {
   components: { Navcomp },
   data () {
     return {
+      language: localStorage.getItem('language'),
       form: {
-        name: ''
-      }
+        name: '',
+        locale: ''
+      },
+      scenarios: []
+    }
+  },
+  methods: {
+    getAllScene () {
+      this.form.locale = this.language === 'cn' ? 'ch' : 'en'
+      Userpage.getAllSceneApi(this.form).then(res => {
+        this.scenarios = res.data
+      }).catch(() => {})
+    }
+  },
+  mounted () {
+    this.getAllScene()
+  },
+  watch: {
+    '$i18n.locale': function () {
+      this.language = localStorage.getItem('language')
+      this.getAllScene()
     }
   }
 }
