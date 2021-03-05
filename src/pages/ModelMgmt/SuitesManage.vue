@@ -131,7 +131,7 @@ export default {
       form: {
         locale: '',
         name: '',
-        scenarioList: []
+        scenarioList: ''
       },
       options: [],
       testScenes: [],
@@ -141,12 +141,12 @@ export default {
   },
   methods: {
     getAllSuites () {
+      let tempArray = []
       this.fillOptions()
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       if (this.value !== '') {
-        this.form.scenarioList.push(this.value)
-      } else {
-        this.form.scenarioList = []
+        tempArray.push(this.value)
+        this.form.scenarioList = tempArray.toString()
       }
       ModelMgmt.getTestSuite(this.form).then(res => {
         this.testSuites = res.data
@@ -164,7 +164,7 @@ export default {
       }).catch(() => {})
     },
 
-    fillOptions () {
+    async fillOptions () {
       let cacheArray = []
       let para = { locale: '' }
       para.locale = this.language === 'cn' ? 'ch' : 'en'
