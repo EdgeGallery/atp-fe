@@ -255,8 +255,6 @@ export default {
         this.ifGuest = false
       }
     })
-    sessionStorage.setItem('userId', '58bbeb8d-c020-46e5-bab9-7d4bc9e875b8')
-    sessionStorage.setItem('userName', 'baizhenzhen')
     let historyRoute = sessionStorage.getItem('historyRoute')
     if (historyRoute) {
       this.$router.push(historyRoute)

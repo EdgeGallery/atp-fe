@@ -74,7 +74,8 @@ const cn = {
     deleteSuccess: '删除成功',
     deleteFail: '删除失败',
     runFailed: '运行失败',
-    getSceneFail: '获取场景失败'
+    getSceneFail: '获取场景失败',
+    modifySuccess: '修改成功'
   },
   common: {
     cancel: '取消',
@@ -165,6 +166,7 @@ const cn = {
     seeDetail: '查看用例详情',
     caseDetail: '用例详情',
     name: '用例名称',
+    status: '用例状态',
     type: '类型',
     description: '描述',
     score: '分',
@@ -172,7 +174,9 @@ const cn = {
     find: '所有场景共发现',
     issue: '项问题',
     hover: '成功用例/总用例',
-    clickContribution: '点击贡献用例'
+    clickContribution: '点击贡献用例',
+    choose: '请选择',
+    failReason: '失败理由'
   },
   modelmgmt: {
     name: '名称:',
