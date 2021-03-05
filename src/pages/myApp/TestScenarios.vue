@@ -255,7 +255,7 @@ export default {
       fd.append('scenarioIdList', this.scenarioIdList)
       Userpage.runTaskApi(this.taskId, fd).then(res => {
         sessionStorage.setItem('taskId', this.taskId)
-        this.$router.push({ name: 'atpprocess', params: { taskId: this.taskId } })
+        this.$router.push({ name: 'atpprocess', query: { taskId: this.taskId } })
       }).catch(() => {
         this.$message({
           showClose: true,

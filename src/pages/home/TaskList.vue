@@ -203,6 +203,7 @@
                   type="text"
                   :disabled="scope.row.status==='running'?false:true"
                   size="small"
+                  @click="modifyStatus(scope.row)"
                 >
                   {{ $t('process.modifyStatus') }}
                 </el-button>
@@ -337,6 +338,11 @@ export default {
     //   sessionStorage.setItem('taskId', taskId)
     //   this.$router.push('/atpprocess')
     // },
+    modifyStatus (row) {
+      let taskId = row.id
+      let routeData = this.$router.resolve({ name: 'atpprocess', query: { taskId: taskId } })
+      window.open(routeData.href, '_blank')
+    },
     handleSelectionChange (val) {
       this.taskIds = []
       val.forEach(item => {

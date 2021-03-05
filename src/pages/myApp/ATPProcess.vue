@@ -174,12 +174,91 @@
                       {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
                     </template>
                   </el-table-column>
+                  <el-table-column
+                    v-if="userName==='admin'"
+                    :label="$t('myApp.operation')"
+                    width="100"
+                  >
+                    <template scope="scope">
+                      <el-button
+                        :disabled="scope.row.type==='automatic' || scope.row.result!=='running'"
+                        type="text"
+                        style="font-size:xx-large;"
+                        class="el-icon-edit"
+                        @click="modify(scope.row,item.id,suiteItem.id)"
+                      />
+                    </template>
+                  </el-table-column>
                 </el-table>
               </el-collapse-item>
             </el-collapse>
           </el-tab-pane>
         </el-tabs>
       </div>
+      <el-dialog
+        :title="$t('process.modifyStatus')"
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
+        <el-form
+          :model="form"
+          label-width="100px"
+        >
+          <el-form-item
+            :label="$t('userpage.name')"
+          >
+            <el-input
+              width="100px"
+              size="small"
+              v-model="form.name"
+            />
+          </el-form-item>
+          <el-form-item
+            :label="$t('userpage.status')"
+          >
+            <el-select
+              v-model="form.result"
+              :placeholder="$t('userpage.choose')"
+            >
+              <el-option
+                label="success"
+                value="success"
+              />
+              <el-option
+                label="failed"
+                value="failed"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            :label="$t('userpage.failReason')"
+          >
+            <el-input
+              type="textarea"
+              autosize
+              v-model="form.reason"
+            />
+          </el-form-item>
+        </el-form>
+        <div
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button
+            size="small"
+            @click="dialogVisible = false"
+          >
+            {{ $t('common.cancel') }}
+          </el-button>
+          <el-button
+            size="small"
+            type="primary"
+            @click="confirmModify()"
+          >
+            {{ $t('common.confirm') }}
+          </el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -207,7 +286,14 @@ export default {
       hasFailActiveName: [],
       activeTabsName: '',
       visible: false,
-      reportData: []
+      reportData: [],
+      form: {
+        name: '',
+        result: '',
+        reason: ''
+      },
+      dialogVisible: false,
+      userName: sessionStorage.getItem('userName')
     }
   },
   mounted () {
@@ -228,8 +314,9 @@ export default {
       if (this.currUrl.indexOf('?') !== -1) {
         this.taskId = this.currUrl.split('?')[1].split('=')[1]
       } else {
-        let params = sessionStorage.getItem('taskId')
-        this.taskId = params
+        // let params = sessionStorage.getItem('taskId')
+        // this.taskId = params
+        this.taskId = this.$route.query.taskId
       }
     },
     jumpToReport (item) {
@@ -328,6 +415,36 @@ export default {
     },
     handleClick (tab) {
       this.activeTabsName = tab.name
+    },
+    modify (row, testScenarioId, testSuiteId) {
+      this.dialogVisible = true
+      this.form.testCaseId = row.id
+      this.form.testSuiteId = testSuiteId
+      this.form.testScenarioId = testScenarioId
+      if (this.language === 'cn') {
+        this.form.name = row.nameCh
+      } else {
+        this.form.name = row.nameEn
+      }
+    },
+    confirmModify () {
+      this.dialogVisible = false
+      let param = [{
+        testScenarioId: this.form.testScenarioId,
+        testSuiteId: this.form.testSuiteId,
+        testCaseId: this.form.testCaseId,
+        result: this.form.result,
+        reason: this.form.reason
+      }]
+      Userpage.modifyStatusApi(this.taskId, param).then(res => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('promptMessage.modifySuccess'),
+          type: 'success'
+        })
+        this.getTaskProcess()
+      })
     },
     clearInterval () {
       clearTimeout(this.interval)

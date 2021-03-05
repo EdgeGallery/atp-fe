@@ -106,6 +106,14 @@ let Userpage = {
   getTaskApi: function (taskId) {
     let url = 'tasks/' + taskId
     return GET(url)
+  },
+  modifyStatusApi: function (taskId, params) {
+    let url = 'tasks/' + taskId + '/testcase'
+    return PUT(url, params)
+  },
+  contributionApi: function (params) {
+    let url = 'contribution'
+    return POST(url, params)
   }
 }
 

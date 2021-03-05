@@ -76,7 +76,8 @@ const en = {
     deleteSuccess: 'Delete Success',
     deleteFail: 'Delete Fail',
     runFailed: 'Run Failed',
-    getSceneFail: 'Failed to get scene'
+    getSceneFail: 'Failed to get scene',
+    modifySuccess: 'Successfully modified'
   },
   common: {
     cancel: 'Cancel',
@@ -164,6 +165,7 @@ const en = {
     seeDetail: 'See Details',
     caseDetail: 'Testcase Detail',
     name: 'Name',
+    status: 'Status',
     type: 'Type',
     description: 'Description',
     score: 'score',
@@ -171,7 +173,9 @@ const en = {
     find: '',
     issue: 'issues were found in all scenarios',
     hover: 'Successful / total',
-    clickContribution: 'Click to contribute use case'
+    clickContribution: 'Click to contribute use case',
+    choose: 'Please choose',
+    failReason: 'Reason for failure'
   },
   modelmgmt: {
     name: 'Name:',
