@@ -77,7 +77,8 @@ const en = {
     deleteFail: 'Delete Fail',
     runFailed: 'Run Failed',
     getSceneFail: 'Failed to get scene',
-    modifySuccess: 'Successfully modified'
+    modifySuccess: 'Successfully modified',
+    submitSuccess: 'Submitted successfully'
   },
   common: {
     cancel: 'Cancel',
@@ -130,6 +131,8 @@ const en = {
     caseName: 'Testcase Name',
     caseType: 'Testcase Type',
     casePurpose: 'Purpose',
+    step: 'Test steps',
+    type: 'Type',
     expectedResult: 'Result',
     language: 'Language',
     verificationModel: 'Testcase Model',

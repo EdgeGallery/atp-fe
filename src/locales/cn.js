@@ -75,7 +75,8 @@ const cn = {
     deleteFail: '删除失败',
     runFailed: '运行失败',
     getSceneFail: '获取场景失败',
-    modifySuccess: '修改成功'
+    modifySuccess: '修改成功',
+    submitSuccess: '提交成功'
   },
   common: {
     cancel: '取消',
@@ -128,6 +129,8 @@ const cn = {
     caseName: '测试用例名称',
     caseType: '测试用例类型',
     casePurpose: '测试用例目的',
+    step: '测试步骤',
+    type: '贡献类型',
     expectedResult: '测试预期结果',
     language: '测试用例语言',
     verificationModel: '所属认证模板',

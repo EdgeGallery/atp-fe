@@ -30,7 +30,7 @@
         >
           <div
             class="right"
-            @click="jumpToGitee()"
+            @click="addCaseVisible = true"
           >
             <img
               src="../../assets/images/gongxian.png"
@@ -73,18 +73,23 @@
                   </el-button>
                 </el-form-item>
               </el-form>
-              <img
-                src="../../assets/images/selected.png"
-                alt=""
-                v-if="item.selected"
-                @click="chooseScene(item)"
+              <el-button
+                type="text"
+                :disabled="item.label==='EdgeGallery'"
               >
-              <img
-                v-else
-                src="../../assets/images/notselected.png"
-                alt=""
-                @click="chooseScene(item)"
-              >
+                <img
+                  src="../../assets/images/selected.png"
+                  alt=""
+                  v-if="item.selected"
+                  @click="chooseScene(item)"
+                >
+                <img
+                  v-else
+                  src="../../assets/images/notselected.png"
+                  alt=""
+                  @click="chooseScene(item)"
+                >
+              </el-button>
             </div>
           </div>
         </div>
@@ -153,6 +158,133 @@
         </el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      :visible.sync="addCaseVisible"
+      :title="$t('userpage.contribution')"
+      :close-on-click-modal="false"
+      width="30%"
+    >
+      <el-form
+        :model="addcaseForm"
+        label-width="110px"
+      >
+        <el-form-item
+          :label="$t('testCase.caseName')"
+          prop="name"
+        >
+          <el-input
+            width="100px"
+            size="small"
+            v-model="addcaseForm.name"
+          />
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.casePurpose')"
+          prop="objective"
+        >
+          <el-input
+            v-model="addcaseForm.objective"
+            type="textarea"
+            autosize
+          />
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.step')"
+          prop="step"
+        >
+          <el-input
+            v-model="addcaseForm.step"
+            type="textarea"
+            autosize
+          />
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.expectedResult')"
+          prop="expectResult"
+        >
+          <el-input
+            size="small"
+            v-model="addcaseForm.expectResult"
+          />
+        </el-form-item>
+        <el-form-item
+          :label="$t('testCase.type')"
+          prop="type"
+        >
+          <el-select
+            v-model="addcaseForm.type"
+            :placeholder="$t('userpage.choose')"
+          >
+            <el-option
+              :label="language==='cn'?'文本':'text'"
+              value="text"
+            />
+            <el-option
+              :label="language==='cn'?'脚本':'script'"
+              value="script"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          v-if="addcaseForm.type==='script'"
+          :label="$t('testCase.import')"
+          prop="file"
+        >
+          <el-upload
+            action=""
+            :limit="1"
+            :on-exceed="handleExceed"
+            :on-change="handleChange"
+            :on-remove="handleDelte"
+            :file-list="addcaseForm.file"
+            :auto-upload="false"
+            accept=".java,.py,.jar"
+          >
+            <el-button
+              slot="trigger"
+              size="small"
+              plain
+            >
+              {{ $t('testCase.import') }}
+            </el-button>
+            <a
+              href="./javaExample.java"
+              download
+              style="padding-left:10px;"
+            >
+              <el-button
+                slot="trigger"
+                size="small"
+                type="primary"
+                plain
+              >
+                {{ $t('testCase.sample') }}
+              </el-button>
+            </a>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          id="upload_package_close"
+          @click="addCaseVisible=false"
+          size="small"
+        >
+          {{ $t('common.cancel') }}
+        </el-button>
+        <el-button
+          id="upload_package_ipload"
+          type="primary"
+          size="small"
+          @click="confirmAddCase()"
+        >
+          {{ $t('common.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -170,7 +302,16 @@ export default {
       taskId: '',
       sceneTitle: '',
       testSuiteData: [],
-      language: ''
+      language: '',
+      addCaseVisible: false,
+      addcaseForm: {
+        name: '',
+        objective: '',
+        step: '',
+        expectResult: '',
+        type: '',
+        file: []
+      }
     }
   },
   computed: {
@@ -267,13 +408,46 @@ export default {
     },
     setDivHeight () {
       this.$nextTick(() => {
-        const processcDiv = document.getElementById('process')
+        const selectsceneDiv = document.getElementById('selectscene')
         const appDiv = document.getElementById('app')
-        processcDiv.style.minHeight = appDiv.clientHeight + 'px'
+        selectsceneDiv.style.minHeight = appDiv.clientHeight + 'px'
       })
     },
-    jumpToGitee () {
-      window.open('https://gitee.com/edgegallery/community/tree/master/Integration%20WG/ATP%20Test%20Case%20Contribution', '_blank')
+    // 贡献用例
+    confirmAddCase () {
+      let fd = new FormData()
+      let addcaseForm = this.addcaseForm
+      fd.append('name', addcaseForm.name)
+      fd.append('objective', addcaseForm.objective)
+      fd.append('step', addcaseForm.step)
+      fd.append('expectResult', addcaseForm.expectResult)
+      fd.append('type', addcaseForm.type)
+      if (addcaseForm.file.length > 0) {
+        fd.append('file', addcaseForm.file[0])
+      } else {
+        let objFile = new File([], 'kong.java')
+        addcaseForm.file.push(objFile)
+        fd.append('file', addcaseForm.file[0])
+      }
+      Userpage.contributionApi(fd).then(res => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('promptMessage.submitSuccess'),
+          type: 'success'
+        })
+      })
+    },
+    handleExceed (file, fileList) {
+      if (fileList.length === 1) {
+        this.$message.warning(this.$t('promptMessage.onlyOneFile'))
+      }
+    },
+    handleChange (file, fileList) {
+      this.addcaseForm.file.push(file.raw)
+    },
+    handleDelte (file, fileList) {
+      this.addcaseForm.file = fileList
     }
   }
 }
