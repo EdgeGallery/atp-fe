@@ -131,7 +131,7 @@ export default {
       form: {
         locale: '',
         name: '',
-        scenarioList: ''
+        scenarioList: []
       },
       options: [],
       testScenes: [],
@@ -140,13 +140,13 @@ export default {
     }
   },
   methods: {
-    getAllSuites () {
-      let tempArray = []
-      this.fillOptions()
+    async getAllSuites () {
+      await this.fillOptions()
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       if (this.value !== '') {
-        tempArray.push(this.value)
-        this.form.scenarioList = tempArray.toString()
+        this.form.scenarioList.push(this.value)
+      } else {
+        this.form.scenarioList = []
       }
       ModelMgmt.getTestSuite(this.form).then(res => {
         this.testSuites = res.data
