@@ -42,12 +42,17 @@
               </el-col>
               <el-col :span="5">
                 <el-form-item :label="$t('modelmgmt.scene')">
-                  <el-input
-                    class="searchInput"
-                    size="small"
-                    id="name"
-                    v-model="form.scene"
-                  />
+                  <el-select
+                    v-model="value"
+                    :placeholder="$t('userpage.selectScene')"
+                  >
+                    <el-option
+                      v-for="item in options"
+                      :key="item.nameCh"
+                      :label="language == 'cn' ? item.nameCh : item.nameEn"
+                      :value="item.id"
+                    />
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
@@ -55,6 +60,7 @@
                   style="text-align:center;margin:5px 15px 0"
                   type="primary"
                   size="small"
+                  @click="getAllSuites"
                 >
                   {{ $t('common.search') }}
                 </el-button>
@@ -70,219 +76,23 @@
             </el-button>
           </div>
         </div>
-        <div class="allsuite">
-          <div class="list">
+        <div
+          class="allsuite"
+        >
+          <div
+            class="list"
+            v-for="item in testSuites"
+            :key="item.id"
+          >
             <el-form label-width="auto">
               <el-form-item :label="$t('modelmgmt.name')">
-                社区遵从性测试
+                {{ language === 'cn' ? item.nameCh :item.nameEn }}
               </el-form-item>
               <el-form-item :label="$t('modelmgmt.description')">
-                社区场景下的遵从性测试
+                {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
               </el-form-item>
               <el-form-item :label="$t('modelmgmt.scene')">
-                社区场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                社区沙箱测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                社区场景下的沙箱测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.scene')">
-                社区场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                社区安全性测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                社区场景下的安全性测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.scene')">
-                社区场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                联通安全性测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                联通场景下的安全测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.scene')">
-                联通场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div><div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                联通沙箱测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                联通场景下的沙箱测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.scene')">
-                联通场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                移动安全性测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                移动场景下的安全测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.scene')">
-                移动场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                移动沙箱测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                移动场景下的沙箱测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.scene')">
-                移动场景
-              </el-form-item>
-              <el-form-item class="rt">
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="list">
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                电信安全性测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                电信场景下的安全测试
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.scene')">
-                电信场景
+                {{ item.scenarioIdList }}
               </el-form-item>
               <el-form-item class="rt">
                 <el-button
@@ -309,14 +119,81 @@
 </template>
 <script>
 import Navcomp from '../../components/layout/Nav'
+import { Userpage, ModelMgmt } from '../../tools/api.js'
+
 export default {
   components: { Navcomp },
   data () {
     return {
+      mapCh: new Map(),
+      mapEn: new Map(),
+      language: localStorage.getItem('language'),
       form: {
+        locale: '',
         name: '',
-        scene: ''
+        scenarioList: []
+      },
+      options: [],
+      testScenes: [],
+      testSuites: [],
+      value: ''
+    }
+  },
+  methods: {
+    getAllSuites () {
+      this.fillOptions()
+      this.form.locale = this.language === 'cn' ? 'ch' : 'en'
+      if (this.value !== '') {
+        this.form.scenarioList.push(this.value)
+      } else {
+        this.form.scenarioList = []
       }
+      ModelMgmt.getTestSuite(this.form).then(res => {
+        this.testSuites = res.data
+        this.testSuites.forEach(suite => {
+          let scenarioList = []
+          suite.scenarioIdList.forEach(id => {
+            if (this.language === 'cn') {
+              scenarioList.push(this.mapCh.get(id))
+            } else {
+              scenarioList.push(this.mapEn.get(id))
+            }
+          })
+          suite.scenarioIdList = scenarioList
+        })
+      }).catch(() => {})
+    },
+
+    fillOptions () {
+      let cacheArray = []
+      let para = { locale: '' }
+      para.locale = this.language === 'cn' ? 'ch' : 'en'
+      Userpage.getAllSceneApi(para).then(res => {
+        this.testScenes = res.data // 获取所有测试场景
+      }).catch(() => {})
+      this.testScenes.forEach(item => {
+        let obj = {
+          id: '',
+          nameCh: '',
+          nameEn: ''
+        }
+        obj.id = item.id
+        obj.nameCh = item.nameCh
+        obj.nameEn = item.nameEn
+        cacheArray.push(obj)
+        this.mapCh.set(obj.id, obj.nameCh)
+        this.mapEn.set(obj.id, obj.nameEn)
+      })
+      this.options = cacheArray
+    }
+  },
+  mounted () {
+    this.getAllSuites()
+  },
+  watch: {
+    '$i18n.locale': function () {
+      this.language = localStorage.getItem('language')
+      this.getAllSuites()
     }
   }
 }
