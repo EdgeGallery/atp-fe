@@ -79,16 +79,22 @@
         class="content"
         id="content"
       >
-        <el-tabs
-          v-model="activeTabsName"
-          type="border-card"
-          @tab-click="handleClick"
+        <el-carousel
+          indicator-position="outside"
+          trigger="click"
+          :autoplay="false"
+          :height="carouselHeight"
+          :loop="false"
+          arrow="always"
+          ref="carousel"
+          style="box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);"
         >
-          <el-tab-pane
+          <el-carousel-item
             v-for="(item,index) in testScenarios"
             :key="index"
             :label="language==='cn'?item.nameCh:item.nameEn"
             :name="item.nameEn"
+            @click="setActiveItem()"
           >
             <div class="content-title">
               <div class="sceneRunning">
@@ -122,6 +128,7 @@
             </div>
             <el-collapse
               v-model="activeName"
+              class="collapseHeight"
             >
               <el-collapse-item
                 v-for="(suiteItem,dex) in item.testSuites"
@@ -192,73 +199,85 @@
                 </el-table>
               </el-collapse-item>
             </el-collapse>
-          </el-tab-pane>
-        </el-tabs>
-      </div>
-      <el-dialog
-        :title="$t('process.modifyStatus')"
-        :visible.sync="dialogVisible"
-        width="30%"
-      >
-        <el-form
-          :model="form"
-          label-width="100px"
-        >
-          <el-form-item
-            :label="$t('userpage.name')"
-          >
-            <el-input
-              width="100px"
-              size="small"
-              v-model="form.name"
-            />
-          </el-form-item>
-          <el-form-item
-            :label="$t('userpage.status')"
-          >
-            <el-select
-              v-model="form.result"
-              :placeholder="$t('userpage.choose')"
-            >
-              <el-option
-                label="success"
-                value="success"
-              />
-              <el-option
-                label="failed"
-                value="failed"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            :label="$t('userpage.failReason')"
-          >
-            <el-input
-              type="textarea"
-              autosize
-              v-model="form.reason"
-            />
-          </el-form-item>
-        </el-form>
-        <div
-          slot="footer"
-          class="dialog-footer"
-        >
+          </el-carousel-item>
+        </el-carousel>
+        <div style="text-align: center; margin: 10px;">
           <el-button
-            size="small"
-            @click="dialogVisible = false"
-          >
-            {{ $t('common.cancel') }}
-          </el-button>
-          <el-button
-            size="small"
             type="primary"
-            @click="confirmModify()"
+            size="mini"
+            plain
+            v-for="(item,index) in reportData"
+            :key="index"
+            @click="setActiveItem(item)"
           >
-            {{ $t('common.confirm') }}
+            {{ language==='cn'?item.nameCh:item.nameEn }}
           </el-button>
         </div>
-      </el-dialog>
+        <el-dialog
+          :title="$t('process.modifyStatus')"
+          :visible.sync="dialogVisible"
+          width="30%"
+        >
+          <el-form
+            :model="form"
+            label-width="100px"
+          >
+            <el-form-item
+              :label="$t('userpage.name')"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="form.name"
+              />
+            </el-form-item>
+            <el-form-item
+              :label="$t('userpage.status')"
+            >
+              <el-select
+                v-model="form.result"
+                :placeholder="$t('userpage.choose')"
+              >
+                <el-option
+                  label="success"
+                  value="success"
+                />
+                <el-option
+                  label="failed"
+                  value="failed"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              :label="$t('userpage.failReason')"
+            >
+              <el-input
+                type="textarea"
+                autosize
+                v-model="form.reason"
+              />
+            </el-form-item>
+          </el-form>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button
+              size="small"
+              @click="dialogVisible = false"
+            >
+              {{ $t('common.cancel') }}
+            </el-button>
+            <el-button
+              size="small"
+              type="primary"
+              @click="confirmModify()"
+            >
+              {{ $t('common.confirm') }}
+            </el-button>
+          </div>
+        </el-dialog>
+      </div>
     </div>
   </div>
 </template>
@@ -284,7 +303,7 @@ export default {
       casefailclass: '',
       allfailNum: 0,
       hasFailActiveName: [],
-      activeTabsName: '',
+      // activeTabsName: '',
       visible: false,
       reportData: [],
       form: {
@@ -293,7 +312,9 @@ export default {
         reason: ''
       },
       dialogVisible: false,
-      userName: sessionStorage.getItem('userName')
+      userName: sessionStorage.getItem('userName'),
+      carouselHeight: '',
+      alltestCase: []
     }
   },
   mounted () {
@@ -302,12 +323,6 @@ export default {
     this.interval = setInterval(() => {
       this.getTaskProcess()
     }, 1000)
-  },
-  watch: {
-    '$i18n.locale': function () {
-      let language = localStorage.getItem('language')
-      this.language = language
-    }
   },
   methods: {
     getTaskId () {
@@ -334,7 +349,8 @@ export default {
         this.activeName = []
         this.hasFailActiveName = []
         this.finishActiveName = []
-        this.activeTabsName = ''
+        // this.activeTabsName = ''
+        this.alltestCase = []
         let allsuccessNum = 0
         let allfailNum = 0
         let allNum = 0
@@ -360,6 +376,7 @@ export default {
           // 完成后打开的页签
             this.finishActiveName.push(element.nameEn + ele.nameEn)
             ele.testCases.forEach(item => {
+              this.alltestCase.push(item)
               element.totalNum++
               allNum++
               if (item.result === 'success') {
@@ -375,13 +392,23 @@ export default {
                 if (item.type === 'automatic') {
                   this.testingCase = [item.nameCh, item.nameEn]
                   this.testingScene = [element.nameCh, element.nameEn]
-                  // 判断显示哪一个tab
-                  this.activeTabsName = element.nameEn
+                  // 判断显示哪一页
+                  // this.activeTabsName = element.nameEn
+                  this.$refs.carousel.setActiveItem(element.nameEn)
                 }
               }
             })
           })
         })
+        // 判断是否只剩下手动类型
+        let everyBoolan = this.alltestCase.some(function (item) {
+          return (item.result === 'running' && item.type === 'automatic')
+        })
+        if (!everyBoolan) {
+          this.activeName = this.finishActiveName
+          this.$refs.carousel.setActiveItem(data[0].nameEn)
+          this.clearInterval()
+        }
         // 分数和进度百分比
         this.score = Number((allsuccessNum / allNum * 100).toFixed(0))
         this.percentage = Number(((allsuccessNum + allfailNum) / allNum * 100).toFixed(0))
@@ -397,10 +424,12 @@ export default {
         }
         if (taskStatus === 'success') {
           this.statusTitle = ['测试成功', 'Test Successful']
-          this.activeTabsName = data[0].nameEn
+          // this.activeTabsName = data[0].nameEn
+          this.$refs.carousel.setActiveItem(data[0].nameEn)
         } else if (taskStatus === 'failed') {
           this.statusTitle = ['测试失败', 'Test Failed']
-          this.activeTabsName = data[0].nameEn
+          // this.activeTabsName = data[0].nameEn
+          this.$refs.carousel.setActiveItem(data[0].nameEn)
         }
         this.setDivHeight()
       }).catch(() => {})
@@ -409,12 +438,20 @@ export default {
     setDivHeight () {
       this.$nextTick(() => {
         const processcDiv = document.getElementById('process')
+        const collapseDiv = document.getElementsByClassName('collapseHeight')
         const appDiv = document.getElementById('app')
         processcDiv.style.minHeight = appDiv.clientHeight + 'px'
+        this.carouselHeight = appDiv.clientHeight - 250 + 'px'
+        for (let index = 0; index < collapseDiv.length; index++) {
+          collapseDiv[index].style.maxHeight = appDiv.clientHeight - 310 + 'px'
+        }
       })
     },
-    handleClick (tab) {
-      this.activeTabsName = tab.name
+    // handleClick (tab) {
+    //   this.activeTabsName = tab.name
+    // },
+    setActiveItem (item) {
+      this.$refs.carousel.setActiveItem(item.nameEn)
     },
     modify (row, testScenarioId, testSuiteId) {
       this.dialogVisible = true
@@ -595,6 +632,7 @@ export default {
       padding: 10px 50px;
       border: none!important;
       font-size: large;
+      overflow-y: scroll;
       .success,.error,.primary{
         padding-right: 5px;
         font-size: large;
@@ -625,6 +663,10 @@ export default {
       .el-icon-arrow-right:before {
         color: #000;
       }
+    }
+    .el-carousel__indicators--labels{
+      margin-bottom: 10px;
+      display: none;
     }
     .headerStyle{
       padding: 0;
