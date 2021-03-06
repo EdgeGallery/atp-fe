@@ -76,18 +76,17 @@
               <el-button
                 type="text"
                 :disabled="item.label==='EdgeGallery'"
+                @click="chooseScene(item)"
               >
                 <img
                   src="../../assets/images/selected.png"
                   alt=""
                   v-if="item.selected"
-                  @click="chooseScene(item)"
                 >
                 <img
                   v-else
                   src="../../assets/images/notselected.png"
                   alt=""
-                  @click="chooseScene(item)"
                 >
               </el-button>
             </div>
@@ -436,6 +435,7 @@ export default {
           message: this.$t('promptMessage.submitSuccess'),
           type: 'success'
         })
+        this.addCaseVisible = false
       })
     },
     handleExceed (file, fileList) {
@@ -567,7 +567,7 @@ export default {
   }
 }
 .el-dialog__body{
-  padding: 0 20px 30px;
+  padding: 10px 30px;
   .el-collapse{
     margin-left: 8px;
   }
