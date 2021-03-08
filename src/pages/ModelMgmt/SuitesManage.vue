@@ -71,6 +71,7 @@
             <el-button
               type="primary"
               size="small"
+              @click="addTestSuiteBtn"
             >
               {{ $t('testCase.add') }}
             </el-button>
@@ -113,6 +114,93 @@
             </el-form>
           </div>
         </div>
+        <el-dialog
+          :visible.sync="addTestSuiteVisible"
+          :title="dialogTitle"
+          :close-on-click-modal="false"
+          width="30%"
+        >
+          <el-form
+            :model="addTestSuiteForm"
+            label-width="110px"
+          >
+            <el-form-item
+              label="测试套中文名"
+              prop="nameCh"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="addTestSuiteForm.nameCh"
+                :disabled="cannotEdit"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试套英文名"
+              prop="name"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="addTestSuiteForm.nameEn"
+                :disabled="cannotEdit"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试套描述中文"
+              prop="name"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="addTestSuiteForm.nameEn"
+                :disabled="cannotEdit"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试套描述英文"
+              prop="name"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="addTestSuiteForm.nameEn"
+                :disabled="cannotEdit"
+              />
+            </el-form-item>
+            <el-form-item :label="$t('modelmgmt.scene')">
+              <el-select
+                v-model="value"
+                :placeholder="$t('userpage.selectScene')"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.nameCh"
+                  :label="language == 'cn' ? item.nameCh : item.nameEn"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button
+              @click="handleClose"
+              size="small"
+            >
+              {{ $t('common.cancel') }}
+            </el-button>
+            <el-button
+              type="primary"
+              size="small"
+              @click="confirmAddTestSuite"
+            >
+              {{ $t('common.confirm') }}
+            </el-button>
+          </div>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -125,6 +213,18 @@ export default {
   components: { Navcomp },
   data () {
     return {
+      addTestSuiteVisible: false,
+      confirmBtnApi: '',
+      dialogTitle: '',
+      editid: '',
+      cannotEdit: false,
+      addTestSuiteForm: {
+        nameCh: '',
+        nameEN: '',
+        descriptionCh: '',
+        descriptionEn: '',
+        scenarioList: []
+      },
       mapCh: new Map(),
       mapEn: new Map(),
       language: localStorage.getItem('language'),
@@ -163,12 +263,19 @@ export default {
         })
       }).catch(() => {})
     },
-
+    handleClose () {
+      this.addTestSuiteVisible = false
+    },
+    addTestSuiteBtn () {
+      this.confirmBtnApi = 'add'
+      this.dialogTitle = '新增测试套'
+      this.addTestSuiteVisible = true
+    },
     async fillOptions () {
       let cacheArray = []
       let para = { locale: '' }
       para.locale = this.language === 'cn' ? 'ch' : 'en'
-      Userpage.getAllSceneApi(para).then(res => {
+      await Userpage.getAllSceneApi(para).then(res => {
         this.testScenes = res.data // 获取所有测试场景
       }).catch(() => {})
       this.testScenes.forEach(item => {
@@ -185,6 +292,19 @@ export default {
         this.mapEn.set(obj.id, obj.nameEn)
       })
       this.options = cacheArray
+    },
+    confirmAddTestSuite () {
+      ModelMgmt.createTestSuiteApi(this.addTestSuiteForm).then(res => {
+        this.addTestSuiteVisible = false
+        this.getAllSuites()
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: '创建失败',
+          type: 'warning'
+        })
+        this.addCaseVisible = false
+      })
     }
   },
   mounted () {
