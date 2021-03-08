@@ -292,6 +292,9 @@ export default {
       this.options = cacheArray
     },
     confirmAddTestSuite () {
+      let tempList = []
+      tempList.push(this.addTestSuiteForm.scenarioList)
+      this.addTestSuiteForm.scenarioList = tempList
       ModelMgmt.createTestSuiteApi(this.addTestSuiteForm).then(res => {
         this.addTestSuiteVisible = false
         this.getAllSuites()
