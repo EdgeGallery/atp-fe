@@ -107,6 +107,7 @@
                   type="primary"
                   size="small"
                   class="button"
+                  @click="editCase(item.id)"
                 >
                   {{ $t('common.edit') }}
                 </el-button>
@@ -217,7 +218,7 @@ export default {
       cannotEdit: false,
       addTestSuiteForm: {
         nameCh: '',
-        nameEN: '',
+        nameEn: '',
         descriptionCh: '',
         descriptionEn: '',
         scenarioList: []
@@ -302,6 +303,9 @@ export default {
         })
         this.addCaseVisible = false
       })
+    },
+    editCase (id) {
+      console.log(id)
     }
   },
   mounted () {
