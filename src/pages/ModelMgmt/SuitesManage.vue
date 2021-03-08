@@ -143,7 +143,6 @@
                 width="100px"
                 size="small"
                 v-model="addTestSuiteForm.nameEn"
-                :disabled="cannotEdit"
               />
             </el-form-item>
             <el-form-item
@@ -153,8 +152,7 @@
               <el-input
                 width="100px"
                 size="small"
-                v-model="addTestSuiteForm.nameEn"
-                :disabled="cannotEdit"
+                v-model="addTestSuiteForm.descriptionCh"
               />
             </el-form-item>
             <el-form-item
@@ -164,13 +162,12 @@
               <el-input
                 width="100px"
                 size="small"
-                v-model="addTestSuiteForm.nameEn"
-                :disabled="cannotEdit"
+                v-model="addTestSuiteForm.descriptionEn"
               />
             </el-form-item>
             <el-form-item :label="$t('modelmgmt.scene')">
               <el-select
-                v-model="value"
+                v-model="addTestSuiteForm.scenarioList"
                 :placeholder="$t('userpage.selectScene')"
               >
                 <el-option
