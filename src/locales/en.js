@@ -78,7 +78,8 @@ const en = {
     runFailed: 'Run Failed',
     getSceneFail: 'Failed to get scene',
     modifySuccess: 'Successfully modified',
-    submitSuccess: 'Submitted successfully'
+    submitSuccess: 'Submitted successfully',
+    manualTip: 'There are also manual use cases, which need to be completed manually by the administrator'
   },
   common: {
     cancel: 'Cancel',

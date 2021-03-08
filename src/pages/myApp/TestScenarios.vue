@@ -246,20 +246,6 @@
             >
               {{ $t('testCase.import') }}
             </el-button>
-            <a
-              href="./javaExample.java"
-              download
-              style="padding-left:10px;"
-            >
-              <el-button
-                slot="trigger"
-                size="small"
-                type="primary"
-                plain
-              >
-                {{ $t('testCase.sample') }}
-              </el-button>
-            </a>
           </el-upload>
         </el-form-item>
       </el-form>

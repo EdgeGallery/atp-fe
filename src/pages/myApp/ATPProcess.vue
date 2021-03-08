@@ -201,7 +201,7 @@
             </el-collapse>
           </el-carousel-item>
         </el-carousel>
-        <div style="text-align: center; margin: 10px;">
+        <div style="text-align: center; margin: 25px;">
           <el-button
             type="primary"
             size="mini"
@@ -400,15 +400,6 @@ export default {
             })
           })
         })
-        // 判断是否只剩下手动类型
-        let everyBoolan = this.alltestCase.some(function (item) {
-          return (item.result === 'running' && item.type === 'automatic')
-        })
-        if (!everyBoolan) {
-          this.activeName = this.finishActiveName
-          this.$refs.carousel.setActiveItem(data[0].nameEn)
-          this.clearInterval()
-        }
         // 分数和进度百分比
         this.score = Number((allsuccessNum / allNum * 100).toFixed(0))
         this.percentage = Number(((allsuccessNum + allfailNum) / allNum * 100).toFixed(0))
@@ -430,6 +421,21 @@ export default {
           this.statusTitle = ['测试失败', 'Test Failed']
           // this.activeTabsName = data[0].nameEn
           this.$refs.carousel.setActiveItem(data[0].nameEn)
+        }
+        // 判断是否只剩下手动类型
+        let everyBoolan = this.alltestCase.some(function (item) {
+          return (item.result === 'running' && item.type === 'automatic')
+        })
+        if (!everyBoolan) {
+          this.activeName = this.finishActiveName
+          this.$refs.carousel.setActiveItem(data[0].nameEn)
+          // this.clearInterval()
+          this.activeName = this.finishActiveName
+          this.$message({
+            duration: 2000,
+            showClose: true,
+            message: this.$t('promptMessage.manualTip')
+          })
         }
         this.setDivHeight()
       }).catch(() => {})
