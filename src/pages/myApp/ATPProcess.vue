@@ -304,6 +304,7 @@ export default {
       allfailNum: 0,
       hasFailActiveName: [],
       // activeTabsName: '',
+      firstScene: '',
       visible: false,
       reportData: [],
       form: {
@@ -349,6 +350,7 @@ export default {
         this.activeName = []
         this.hasFailActiveName = []
         this.finishActiveName = []
+        this.firstScene = data[0].nameEn
         // this.activeTabsName = ''
         this.alltestCase = []
         let allsuccessNum = 0
@@ -427,18 +429,22 @@ export default {
           return (item.result === 'running' && item.type === 'automatic')
         })
         if (!everyBoolan) {
-          this.activeName = this.finishActiveName
-          this.$refs.carousel.setActiveItem(data[0].nameEn)
-          // this.clearInterval()
-          this.activeName = this.finishActiveName
-          this.$message({
-            duration: 2000,
-            showClose: true,
-            message: this.$t('promptMessage.manualTip')
-          })
+          this.promptWait()
+          this.promptWait = function () {}
         }
         this.setDivHeight()
       }).catch(() => {})
+    },
+    // 提示手动类型
+    promptWait () {
+      this.activeName = this.finishActiveName
+      // this.$refs.carousel.setActiveItem(this.firstScene)
+      this.$message({
+        duration: 2000,
+        showClose: true,
+        message: this.$t('promptMessage.manualTip')
+      })
+      // this.clearInterval()
     },
     // 设置用例高度
     setDivHeight () {
