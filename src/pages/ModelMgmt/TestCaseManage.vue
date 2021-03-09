@@ -534,62 +534,31 @@ export default {
     getAllcase () {
       this.allcaseData = []
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
-      // Atp.getAllCaseApi(this.form).then(res => {
-      //   this.allcaseData = res.data
-      this.allcaseData = [
-        {
-          codeLanguage: 'java',
-          descriptionCh: '根目录下必须包含APPD文件目录',
-          descriptionEn: 'Root directory must contain APPD file dir',
-          expectResultCh: '根目录下存在APPD文件目录',
-          expectResultEn: 'Root directory contains APPD file dir',
-          hashCode: '',
-          id: '4d203173-9999-4f62-aabb-8ebcec357f87',
-          nameCh: 'APPD文件目录校验',
-          nameEn: 'APPD File Dir Validation',
-          testStepCh: '1.打开csar包 2.校验根目录下存在APPD目录',
-          testStepEn: '1.open csar package 2.validate root directory contains APPD directory',
-          testSuiteIdList: ['522684bd-d6df-4b47-aab8-b43f1b4c19c0'],
-          type: 'automatic'
-        }, {
-          codeLanguage: 'jar',
-          descriptionCh: '将应用包部署到边缘节点',
-          descriptionEn: 'Instantiate application and its dependency application on one edge host',
-          expectResultCh: '应用包可以成功部署',
-          expectResultEn: 'app can instantiate successfully.',
-          hashCode: '',
-          id: '4d203173-5555-4f62-aabb-8ebcec357f87',
-          nameCh: '应用实例化',
-          nameEn: 'Application Instantiation',
-          testStepCh: '部署应用包到对应的边缘节点',
-          testStepEn: 'Deploy application package to edge node',
-          testSuiteIdList: ['6d04da1b-1f36-4295-920a-8074f7f9d942,6d04da1b-1f36-4295-920a-8074f7f9d942'],
-          type: 'automatic'
-        }
-      ]
-      this.allcaseData.forEach(item => {
+      Atp.getAllCaseApi(this.form).then(res => {
+        this.allcaseData = res.data
+        this.allcaseData.forEach(item => {
         // 测试套
-        let testSuiteListCh = []
-        let testSuiteListEn = []
-        item.testSuiteIdList.forEach(testSuiteId => {
-          ModelMgmt.getOneSuite(testSuiteId).then(res => {
-            testSuiteListCh.push(res.nameCh)
-            testSuiteListEn.push(res.nameEn)
+          let testSuiteListCh = []
+          let testSuiteListEn = []
+          item.testSuiteIdList.forEach(testSuiteId => {
+            ModelMgmt.getOneSuite(testSuiteId).then(res => {
+              testSuiteListCh.push(res.nameCh)
+              testSuiteListEn.push(res.nameEn)
+            })
           })
+          if (this.language === 'cn') {
+            item.testSuiteIdList = testSuiteListCh
+          } else {
+            item.testSuiteIdList = testSuiteListEn
+          }
         })
-        if (this.language === 'cn') {
-          item.testSuiteIdList = testSuiteListCh
-        } else {
-          item.testSuiteIdList = testSuiteListEn
-        }
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: this.$t('promptMessage.gettestcaseFail'),
+          type: 'warning'
+        })
       })
-      // }).catch(() => {
-      //   this.$message({
-      //     duration: 2000,
-      //     message: this.$t('promptMessage.gettestcaseFail'),
-      //     type: 'warning'
-      //   })
-      // })
     },
     downLoadCase (row) {
       let Id = row.id
