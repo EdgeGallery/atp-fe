@@ -66,6 +66,8 @@ let ModelMgmt = {
     let url = 'testsuites'
     return GET(url, params)
   },
+  getTestSuiteApi: function (id) {
+    let url = 'testsuites/' + id
   // 查询一个测试套
   getOneSuite: function (Id) {
     let url = 'testsuites/' + Id
@@ -81,7 +83,7 @@ let ModelMgmt = {
   },
   editTestSuiteApit: function (params, id) {
     let url = 'testsuites/' + id
-    return POST(url, params)
+    return PUT(url, params)
   }
 }
 
