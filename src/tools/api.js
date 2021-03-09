@@ -61,12 +61,16 @@ let Home = {
 }
 
 let ModelMgmt = {
-  // 查询某个测试套
+  // 查询测试套
   getTestSuite: function (params) {
     let url = 'testsuites'
     return GET(url, params)
   },
-
+  // 查询一个测试套
+  getOneSuite: function (Id) {
+    let url = 'testsuites/' + Id
+    return GET(url)
+  },
   deleteTestSuite: function (id) {
     let url = 'testsuites/' + id
     return DELETE(url)
@@ -212,45 +216,24 @@ let Atp = {
     })
   },
   // 下载
-  // downLoadCaseApi: function (Id) {
-  //   let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
-  //   return axios({
-  //     method: 'get',
-  //     url: url,
-  //     responseType: 'blob'
-  //   }).then((res) => {
-  //     if (!res) {
-  //       return
-  //     }
-  //     let objectUrl = window.URL.createObjectURL(res.data)
-  //     let link = document.createElement('a')
-  //     link.style.display = 'none'
-  //     link.href = objectUrl
-  //     link.setAttribute('download', Id + '.yaml')
-  //     document.body.appendChild(link)
-  //     link.click()
-  //   })
-  // },
-  downLoadCaseApi (Id) {
+  downLoadCaseApi: function (Id) {
     let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
     return axios({
       method: 'get',
       url: url,
       responseType: 'blob'
-    }).then(res => {
-      this.downloadFile(res.data)
-    }).catch(res => {
-      this.downloadFile(res.data)
+    }).then((res) => {
+      if (!res) {
+        return
+      }
+      let objectUrl = window.URL.createObjectURL(res.data)
+      let link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = objectUrl
+      link.setAttribute('download', Id + '.yaml')
+      document.body.appendChild(link)
+      link.click()
     })
-  },
-  downloadFile (data) {
-    let blob = new Blob([data], { type: 'application/zip' })
-    let url = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `导出${new Date()}`
-    link.click()
-    URL.revokeObjectURL(url)
   }
 }
 
