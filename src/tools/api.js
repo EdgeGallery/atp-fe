@@ -61,13 +61,16 @@ let Home = {
 }
 
 let ModelMgmt = {
-  // 查询某个测试套
+  // 查询测试套
   getTestSuite: function (params) {
     let url = 'testsuites'
     return GET(url, params)
   },
   getTestSuiteApi: function (id) {
     let url = 'testsuites/' + id
+  // 查询一个测试套
+  getOneSuite: function (Id) {
+    let url = 'testsuites/' + Id
     return GET(url)
   },
   deleteTestSuite: function (id) {
@@ -214,9 +217,9 @@ let Atp = {
       }
     })
   },
-  // 下载报告
-  downLoadReportApi: function (taskId) {
-    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId + '/action/download'
+  // 下载
+  downLoadCaseApi: function (Id) {
+    let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
     return axios({
       method: 'get',
       url: url,
@@ -229,7 +232,7 @@ let Atp = {
       let link = document.createElement('a')
       link.style.display = 'none'
       link.href = objectUrl
-      link.setAttribute('download', taskId + '.yaml')
+      link.setAttribute('download', Id + '.yaml')
       document.body.appendChild(link)
       link.click()
     })

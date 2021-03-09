@@ -146,7 +146,17 @@ const en = {
     addCase: 'Add Case',
     editCase: 'Edit Case',
     import: 'Case Import',
-    sample: 'Sample Download'
+    sample: 'Sample Download',
+    description: 'Description',
+    testSuiteList: 'Test Suite',
+    nameCn: 'Chinese Name',
+    nameEn: 'English Name',
+    descriptionCn: 'Chinese Description',
+    descriptionEn: 'English Description',
+    expecteCn: 'Chinese Expected',
+    expecteEn: 'English Expected',
+    stepCn: 'Chinese Steps',
+    stepEn: 'English Steps'
   },
   home: {
     bannerTitle: 'Application testing and certification platform',
