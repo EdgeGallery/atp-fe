@@ -67,9 +67,9 @@ let ModelMgmt = {
     return GET(url, params)
   },
 
-  deleteTestSuite: function (params) {
-    let url = 'testsuites'
-    return DELETE(url, params)
+  deleteTestSuite: function (id) {
+    let url = 'testsuites/' + id
+    return DELETE(url)
   },
   createTestSuiteApi: function (params) {
     let url = 'testsuites'
