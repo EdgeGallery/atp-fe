@@ -442,6 +442,7 @@ export default {
       this.$message({
         duration: 2000,
         showClose: true,
+        type: 'success',
         message: this.$t('promptMessage.manualTip')
       })
       // this.clearInterval()

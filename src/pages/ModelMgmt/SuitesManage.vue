@@ -69,6 +69,7 @@
           </el-form>
           <div class="addBtn">
             <el-button
+              v-if="userName==='admin'"
               type="primary"
               size="small"
               @click="addTestSuiteBtn"
@@ -95,7 +96,10 @@
               <el-form-item :label="$t('modelmgmt.scene')">
                 {{ item.scenarioIdList }}
               </el-form-item>
-              <el-form-item class="rt">
+              <el-form-item
+                class="rt"
+                v-if="userName==='admin'"
+              >
                 <el-button
                   type="warning"
                   size="small"
@@ -294,6 +298,7 @@ export default {
   components: { Navcomp },
   data () {
     return {
+      userName: sessionStorage.getItem('userName'),
       addTestSuiteVisible: false,
       editTestSuiteVisible: false,
       confirmBtnApi: '',

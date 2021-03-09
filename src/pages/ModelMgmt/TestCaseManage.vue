@@ -112,6 +112,7 @@
           class="addbtn"
         >
           <el-button
+            v-if="userName==='admin'"
             type="primary"
             size="small"
             @click="addTestBtn"
@@ -154,6 +155,7 @@
             />
             <el-table-column
               :label="$t('testCase.operation')"
+              v-if="userName==='admin'"
             >
               <template slot-scope="scope">
                 <el-button
@@ -407,6 +409,7 @@ export default {
   data () {
     return {
       currUrl: window.location.href,
+      userName: sessionStorage.getItem('userName'),
       taskId: '',
       dialogVisible: false,
       caseDataTable: [],

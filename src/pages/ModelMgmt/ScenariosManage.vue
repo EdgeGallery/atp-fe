@@ -54,6 +54,7 @@
             <el-button
               type="primary"
               size="small"
+              v-if="userName==='admin'"
             >
               {{ $t('testCase.add') }}
             </el-button>
@@ -72,7 +73,10 @@
               <el-form-item :label="$t('modelmgmt.description')">
                 {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
               </el-form-item>
-              <el-form-item class="rt">
+              <el-form-item
+                class="rt"
+                v-if="userName==='admin'"
+              >
                 <el-button
                   type="warning"
                   size="small"
@@ -104,6 +108,7 @@ export default {
   components: { Navcomp },
   data () {
     return {
+      userName: sessionStorage.getItem('userName'),
       language: localStorage.getItem('language'),
       form: {
         name: '',
