@@ -199,6 +199,89 @@
             </el-button>
           </div>
         </el-dialog>
+        <el-dialog
+          :visible.sync="editTestSuiteVisible"
+          title="编辑测试套"
+          :close-on-click-modal="false"
+          width="30%"
+        >
+          <el-form
+            :model="editTestSuiteForm"
+            label-width="110px"
+          >
+            <el-form-item
+              label="测试套中文名"
+              prop="nameCh"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="editTestSuiteForm.nameCh"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试套英文名"
+              prop="name"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="editTestSuiteForm.nameEn"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试套描述中文"
+              prop="name"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="editTestSuiteForm.descriptionCh"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试套描述英文"
+              prop="name"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="editTestSuiteForm.descriptionEn"
+              />
+            </el-form-item>
+            <el-form-item :label="$t('modelmgmt.scene')">
+              <el-select
+                v-model="editTestSuiteForm.scenarioList"
+                :placeholder="$t('userpage.selectScene')"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.nameCh"
+                  :label="language == 'cn' ? item.nameCh : item.nameEn"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button
+              @click="handleClose"
+              size="small"
+            >
+              {{ $t('common.cancel') }}
+            </el-button>
+            <el-button
+              type="primary"
+              size="small"
+              @click="editAddTestSuite"
+            >
+              {{ $t('common.confirm') }}
+            </el-button>
+          </div>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -212,11 +295,19 @@ export default {
   data () {
     return {
       addTestSuiteVisible: false,
+      editTestSuiteVisible: false,
       confirmBtnApi: '',
       dialogTitle: '',
       editid: '',
       cannotEdit: false,
       addTestSuiteForm: {
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
+        scenarioList: []
+      },
+      editTestSuiteForm: {
         nameCh: '',
         nameEn: '',
         descriptionCh: '',
@@ -234,7 +325,8 @@ export default {
       options: [],
       testScenes: [],
       testSuites: [],
-      value: ''
+      value: '',
+      editId: ''
     }
   },
   methods: {
@@ -263,11 +355,14 @@ export default {
     },
     handleClose () {
       this.addTestSuiteVisible = false
+      this.editTestSuiteVisible = false
     },
     addTestSuiteBtn () {
-      this.confirmBtnApi = 'add'
       this.dialogTitle = '新增测试套'
       this.addTestSuiteVisible = true
+    },
+    editTestSuiteBtn () {
+      this.editTestSuiteVisible = true
     },
     async fillOptions () {
       let cacheArray = []
@@ -292,10 +387,13 @@ export default {
       this.options = cacheArray
     },
     confirmAddTestSuite () {
-      let tempList = []
-      tempList.push(this.addTestSuiteForm.scenarioList)
-      this.addTestSuiteForm.scenarioList = tempList
-      ModelMgmt.createTestSuiteApi(this.addTestSuiteForm).then(res => {
+      let fd = new FormData()
+      fd.append('nameCh', this.addTestSuiteForm.nameCh)
+      fd.append('nameCh', this.addTestSuiteForm.nameEn)
+      fd.append('nameCh', this.addTestSuiteForm.descriptionCh)
+      fd.append('nameCh', this.addTestSuiteForm.descriptionEn)
+      fd.append('nameCh', this.addTestSuiteForm.scenarioList)
+      ModelMgmt.createTestSuiteApi(fd).then(res => {
         this.addTestSuiteVisible = false
         this.getAllSuites()
       }).catch(() => {
@@ -307,9 +405,25 @@ export default {
         this.addCaseVisible = false
       })
     },
+    editAddTestSuite () {
+      console.log('fortest')
+    },
     editCase (id) {
-      console.log(id)
+      this.editId = id
+      this.editTestSuiteVisible = true
+    },
+    deleteTestSuite (id) {
+      ModelMgmt.deleteTestSuite(id).then(res => {
+        console.log('Test suite got deleted')
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: '删除失败',
+          type: 'warning'
+        })
+      })
     }
+
   },
   mounted () {
     this.getAllSuites()
