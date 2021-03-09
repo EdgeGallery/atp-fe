@@ -147,7 +147,8 @@ const en = {
     editCase: 'Edit Case',
     import: 'Case Import',
     sample: 'Sample Download',
-    description: 'Description'
+    description: 'Description',
+    testSuiteList: 'Test Suite'
   },
   home: {
     bannerTitle: 'Application testing and certification platform',
