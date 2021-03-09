@@ -147,7 +147,8 @@ const cn = {
     sample: '样例下载',
     testSuiteList: '测试套',
     testStep: '测试步骤',
-    testLanguage: '测试语言'
+    testLanguage: '测试语言',
+    description: '描述'
   },
   home: {
     bannerTitle: '应用测试认证平台',

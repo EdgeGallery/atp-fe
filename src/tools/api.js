@@ -208,8 +208,8 @@ let Atp = {
     })
   },
   // 下载报告
-  downLoadReportApi: function (taskId) {
-    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId + '/action/download'
+  downLoadCaseApi: function (Id) {
+    let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
     return axios({
       method: 'get',
       url: url,
@@ -222,7 +222,7 @@ let Atp = {
       let link = document.createElement('a')
       link.style.display = 'none'
       link.href = objectUrl
-      link.setAttribute('download', taskId + '.yaml')
+      link.setAttribute('download', Id + '.yaml')
       document.body.appendChild(link)
       link.click()
     })
