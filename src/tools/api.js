@@ -68,6 +68,8 @@ let ModelMgmt = {
   },
   getTestSuiteApi: function (id) {
     let url = 'testsuites/' + id
+    return GET(url)
+  },
   // 查询一个测试套
   getOneSuite: function (Id) {
     let url = 'testsuites/' + Id
