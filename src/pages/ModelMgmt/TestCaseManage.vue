@@ -164,7 +164,7 @@
             />
             <el-table-column
               prop="testStepCh"
-              :label="$t('testCase.testStep')"
+              :label="$t('testCase.step')"
             >
               <template slot-scope="scope">
                 {{ language==='cn'?scope.row.testStepCh :scope.row.testStepEn }}
@@ -372,6 +372,7 @@
 import { Atp, ModelMgmt } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
+import axios from 'axios'
 export default {
   components: { pagination, Navcomp },
   name: 'TestCase',
@@ -507,9 +508,28 @@ export default {
     },
     downLoadCase (row) {
       let Id = row.id
-      Atp.downLoadCaseApi(Id).then(res => {
-        console.log(res.data)
+      // Atp.downLoadCaseApi(Id).then(res => {
+      //   console.log(res.data)
+      // })
+      let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
+      return axios({
+        method: 'get',
+        url: url,
+        responseType: 'blob'
+      }).then(res => {
+        this.downloadFile(res.data)
+      }).catch(res => {
+        this.downloadFile(res.data)
       })
+    },
+    downloadFile (data) {
+      let blob = new Blob([data], { type: 'application/zip' })
+      let url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `导出${new Date()}`
+      link.click()
+      URL.revokeObjectURL(url)
     },
     // 新增用例弹框
     handleClose () {

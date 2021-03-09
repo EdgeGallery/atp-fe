@@ -207,25 +207,46 @@ let Atp = {
       }
     })
   },
-  // 下载报告
-  downLoadCaseApi: function (Id) {
+  // 下载
+  // downLoadCaseApi: function (Id) {
+  //   let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
+  //   return axios({
+  //     method: 'get',
+  //     url: url,
+  //     responseType: 'blob'
+  //   }).then((res) => {
+  //     if (!res) {
+  //       return
+  //     }
+  //     let objectUrl = window.URL.createObjectURL(res.data)
+  //     let link = document.createElement('a')
+  //     link.style.display = 'none'
+  //     link.href = objectUrl
+  //     link.setAttribute('download', Id + '.yaml')
+  //     document.body.appendChild(link)
+  //     link.click()
+  //   })
+  // },
+  downLoadCaseApi (Id) {
     let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
     return axios({
       method: 'get',
       url: url,
       responseType: 'blob'
-    }).then((res) => {
-      if (!res) {
-        return
-      }
-      let objectUrl = window.URL.createObjectURL(res.data)
-      let link = document.createElement('a')
-      link.style.display = 'none'
-      link.href = objectUrl
-      link.setAttribute('download', Id + '.yaml')
-      document.body.appendChild(link)
-      link.click()
+    }).then(res => {
+      this.downloadFile(res.data)
+    }).catch(res => {
+      this.downloadFile(res.data)
     })
+  },
+  downloadFile (data) {
+    let blob = new Blob([data], { type: 'application/zip' })
+    let url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `导出${new Date()}`
+    link.click()
+    URL.revokeObjectURL(url)
   }
 }
 
