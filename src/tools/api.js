@@ -66,7 +66,10 @@ let ModelMgmt = {
     let url = 'testsuites'
     return GET(url, params)
   },
-
+  getTestSuiteApi: function (id) {
+    let url = 'testsuites/' + id
+    return GET(url)
+  },
   deleteTestSuite: function (id) {
     let url = 'testsuites/' + id
     return DELETE(url)
@@ -77,7 +80,7 @@ let ModelMgmt = {
   },
   editTestSuiteApit: function (params, id) {
     let url = 'testsuites/' + id
-    return POST(url, params)
+    return PUT(url, params)
   }
 }
 

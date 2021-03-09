@@ -401,6 +401,7 @@ export default {
       ModelMgmt.createTestSuiteApi(fd).then(res => {
         this.addTestSuiteVisible = false
         this.getAllSuites()
+        this.clearFormData(this.editTestSuiteForm)
       }).catch(() => {
         this.$message({
           duration: 2000,
@@ -420,6 +421,7 @@ export default {
       ModelMgmt.editTestSuiteApit(fd, this.editId).then(res => {
         this.editTestSuiteVisible = false
         this.getAllSuites()
+        this.clearFormData(this.editTestSuiteForm)
       }).catch(() => {
         this.$message({
           duration: 2000,
@@ -432,6 +434,7 @@ export default {
     editTestSuite (id) {
       this.editId = id
       this.editTestSuiteVisible = true
+      this.fetchFormData(id)
     },
     deleteTestSuite (id) {
       ModelMgmt.deleteTestSuite(id).then(res => {
@@ -444,6 +447,28 @@ export default {
         })
       })
       this.getAllSuites()
+    },
+    clearFormData (form) {
+      form.nameCh = ''
+      form.nameEn = ''
+      form.descriptionCh = ''
+      form.descriptionEn = ''
+      form.scenarioList = []
+    },
+    async fetchFormData () {
+      await ModelMgmt.getTestSuiteApi(this.editId).then(res => {
+        this.editTestSuiteForm.nameCh = res.nameCh
+        this.editTestSuiteForm.nameEn = res.nameEn
+        this.editTestSuiteForm.descriptionCh = res.descriptionCh
+        this.editTestSuiteForm.descriptionEn = res.descriptionEn
+        this.editTestSuiteForm.scenarioIdList = res.scenarioIdList
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: '获取测试套数据失败',
+          type: 'warning'
+        })
+      })
     }
 
   },
