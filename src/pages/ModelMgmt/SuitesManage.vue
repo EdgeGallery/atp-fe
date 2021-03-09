@@ -104,7 +104,7 @@
                   type="warning"
                   size="small"
                   class="button"
-                  @click="deleteTestSuite"
+                  @click="deleteTestSuite(item.id)"
                 >
                   {{ $t('common.delete') }}
                 </el-button>
@@ -173,6 +173,7 @@
             </el-form-item>
             <el-form-item :label="$t('modelmgmt.scene')">
               <el-select
+                multiple
                 v-model="addTestSuiteForm.scenarioList"
                 :placeholder="$t('userpage.selectScene')"
               >
