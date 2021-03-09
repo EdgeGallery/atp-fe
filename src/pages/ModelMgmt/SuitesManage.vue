@@ -399,7 +399,7 @@ export default {
       fd.append('nameEn', this.addTestSuiteForm.nameEn)
       fd.append('descriptionCh', this.addTestSuiteForm.descriptionCh)
       fd.append('descriptionEn', this.addTestSuiteForm.descriptionEn)
-      fd.append('scenarioList', this.addTestSuiteForm.scenarioList)
+      fd.append('scenarioIdList', this.addTestSuiteForm.scenarioList)
       ModelMgmt.createTestSuiteApi(fd).then(res => {
         this.addTestSuiteVisible = false
         this.getAllSuites()
@@ -429,6 +429,7 @@ export default {
           type: 'warning'
         })
       })
+      this.getAllSuites()
     }
 
   },
