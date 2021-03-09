@@ -56,6 +56,7 @@
                     size="small"
                     v-model="form.type"
                     class="statusSelect"
+                    :placeholder="$t('userpage.choose')"
                   >
                     <el-option
                       v-for="item in testType"
@@ -71,16 +72,16 @@
                 :offset="2"
               >
                 <el-form-item
-                  id="verificationModel"
-                  :label="$t('testCase.model')"
+                  :label="$t('testCase.testSuiteList')"
                 >
                   <el-select
                     size="small"
-                    v-model="form.verificationModel"
+                    v-model="form.testSuiteList"
                     class="statusSelect"
+                    :placeholder="$t('userpage.choose')"
                   >
                     <el-option
-                      v-for="item in models"
+                      v-for="item in testSuiteList"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
@@ -101,7 +102,7 @@
                 id="inquireBtn"
                 type="primary"
                 size="small"
-                @click="getAllcase"
+                @click="getAllcase()"
               >
                 {{ $t('myApp.inquire') }}
               </el-button>
@@ -217,7 +218,7 @@
         :visible.sync="addCaseVisible"
         :title="dialogTitle"
         :close-on-click-modal="false"
-        width="30%"
+        width="40%"
         class="addtestdialog"
       >
         <el-form
@@ -225,13 +226,24 @@
           label-width="110px"
         >
           <el-form-item
-            :label="$t('testCase.caseName')"
-            prop="name"
+            :label="$t('testCase.nameCn')"
+            prop="nameCh"
           >
             <el-input
               width="100px"
               size="small"
-              v-model="addcaseForm.name"
+              v-model="addcaseForm.nameCh"
+              :disabled="cannotEdit"
+            />
+          </el-form-item>
+          <el-form-item
+            :label="$t('testCase.nameEn')"
+            prop="nameEn"
+          >
+            <el-input
+              width="100px"
+              size="small"
+              v-model="addcaseForm.nameEn"
               :disabled="cannotEdit"
             />
           </el-form-item>
@@ -243,6 +255,7 @@
               size="small"
               v-model="addcaseForm.type"
               :disabled="cannotEdit"
+              :placeholder="$t('userpage.choose')"
             >
               <el-option
                 v-for="item in testType"
@@ -253,22 +266,43 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            :label="$t('testCase.casePurpose')"
-            prop="description"
+            :label="$t('testCase.descriptionCn')"
+            prop="descriptionCh"
           >
             <el-input
-              v-model="addcaseForm.description"
+              v-model="addcaseForm.descriptionCh"
               type="textarea"
               autosize
             />
           </el-form-item>
           <el-form-item
-            :label="$t('testCase.expectedResult')"
-            prop="expectResult"
+            :label="$t('testCase.descriptionEn')"
+            prop="descriptionEn"
+          >
+            <el-input
+              v-model="addcaseForm.descriptionEn"
+              type="textarea"
+              autosize
+            />
+          </el-form-item>
+          <el-form-item
+            :label="$t('testCase.expecteCn')"
+            prop="expectResultCh"
           >
             <el-input
               size="small"
-              v-model="addcaseForm.expectResult"
+              type="textarea"
+              v-model="addcaseForm.expectResultCh"
+            />
+          </el-form-item>
+          <el-form-item
+            :label="$t('testCase.expecteEn')"
+            prop="expectResultEn"
+          >
+            <el-input
+              size="small"
+              type="textarea"
+              v-model="addcaseForm.expectResultEn"
             />
           </el-form-item>
           <el-form-item
@@ -279,6 +313,7 @@
               size="small"
               v-model="addcaseForm.codeLanguage"
               @change="languageChange"
+              :placeholder="$t('userpage.choose')"
             >
               <el-option
                 v-for="item in codeLanguages"
@@ -289,21 +324,42 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            :label="$t('testCase.verificationModel')"
-            prop="verificationModel"
+            :label="$t('testCase.testSuiteList')"
+            prop="testSuiteIdList"
           >
             <el-select
               size="small"
-              v-model="addcaseForm.verificationModel"
-              multiple
+              v-model="addcaseForm.testSuiteIdList"
+              @change="languageChange"
+              :placeholder="$t('userpage.choose')"
             >
               <el-option
-                v-for="item in models"
+                v-for="item in codeLanguages"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value"
+                :value="item.label"
               />
             </el-select>
+          </el-form-item>
+          <el-form-item
+            :label="$t('testCase.stepCn')"
+            prop="testStepCh"
+          >
+            <el-input
+              size="small"
+              type="textarea"
+              v-model="addcaseForm.testStepCh"
+            />
+          </el-form-item>
+          <el-form-item
+            :label="$t('testCase.stepEn')"
+            prop="testStepEn"
+          >
+            <el-input
+              size="small"
+              type="textarea"
+              v-model="addcaseForm.testStepEn"
+            />
           </el-form-item>
           <el-form-item
             :label="$t('testCase.import')"
@@ -372,7 +428,6 @@
 import { Atp, ModelMgmt } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
-import axios from 'axios'
 export default {
   components: { pagination, Navcomp },
   name: 'TestCase',
@@ -384,24 +439,11 @@ export default {
       taskId: '',
       caseDataTable: [],
       dependencyData: [],
-      TestNumber: [
-        {
-          name: '安全测试',
-          number: ''
-        },
-        {
-          name: '遵从性测试',
-          number: ''
-        },
-        {
-          name: '沙箱测试',
-          number: ''
-        }
-      ],
       form: {
+        testSuiteList: [],
         name: '',
         type: '',
-        verificationModel: ''
+        locale: ''
       },
       models: [
         {
@@ -439,16 +481,14 @@ export default {
       ],
       testType: [
         {
-          value: 'securityTest',
-          label: '安全测试'
+          value: 'manual',
+          label: '手动类型'
         }, {
-          value: 'complianceTest',
-          label: '遵从性测试'
-        }, {
-          value: 'sandboxTest',
-          label: '沙箱测试'
+          value: 'automatic',
+          label: '自动化类型'
         }
       ],
+      testSuiteList: [],
       allcaseData: [],
       currentData: [],
       addCaseVisible: false,
@@ -457,12 +497,17 @@ export default {
       editid: '',
       cannotEdit: false,
       addcaseForm: {
-        name: '',
-        type: '',
-        description: '',
-        expectResult: '',
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
         codeLanguage: '',
-        verificationModel: [],
+        expectResultCh: '',
+        expectResultEn: '',
+        testSuiteIdList: [],
+        testStepCh: '',
+        testStepEn: '',
+        type: '',
         file: []
       },
       editfile: false,
@@ -470,7 +515,6 @@ export default {
     }
   },
   mounted () {
-    // this.getTaskId()
     this.getAllcase()
   },
   methods: {
@@ -479,57 +523,79 @@ export default {
     },
     resetForm () {
       this.form = {
+        testSuiteList: [],
         name: '',
         type: '',
-        verificationModel: ''
+        locale: ''
       }
       this.getAllcase()
     },
     // 获取所有测试用例
     getAllcase () {
       this.allcaseData = []
-      Atp.getAllCaseApi(this.form).then(res => {
-        this.allcaseData = res.data
-        this.allcaseData.forEach(item => {
+      this.form.locale = this.language === 'cn' ? 'ch' : 'en'
+      // Atp.getAllCaseApi(this.form).then(res => {
+      //   this.allcaseData = res.data
+      this.allcaseData = [
+        {
+          codeLanguage: 'java',
+          descriptionCh: '根目录下必须包含APPD文件目录',
+          descriptionEn: 'Root directory must contain APPD file dir',
+          expectResultCh: '根目录下存在APPD文件目录',
+          expectResultEn: 'Root directory contains APPD file dir',
+          hashCode: '',
+          id: '4d203173-9999-4f62-aabb-8ebcec357f87',
+          nameCh: 'APPD文件目录校验',
+          nameEn: 'APPD File Dir Validation',
+          testStepCh: '1.打开csar包 2.校验根目录下存在APPD目录',
+          testStepEn: '1.open csar package 2.validate root directory contains APPD directory',
+          testSuiteIdList: ['522684bd-d6df-4b47-aab8-b43f1b4c19c0'],
+          type: 'automatic'
+        }, {
+          codeLanguage: 'jar',
+          descriptionCh: '将应用包部署到边缘节点',
+          descriptionEn: 'Instantiate application and its dependency application on one edge host',
+          expectResultCh: '应用包可以成功部署',
+          expectResultEn: 'app can instantiate successfully.',
+          hashCode: '',
+          id: '4d203173-5555-4f62-aabb-8ebcec357f87',
+          nameCh: '应用实例化',
+          nameEn: 'Application Instantiation',
+          testStepCh: '部署应用包到对应的边缘节点',
+          testStepEn: 'Deploy application package to edge node',
+          testSuiteIdList: ['6d04da1b-1f36-4295-920a-8074f7f9d942,6d04da1b-1f36-4295-920a-8074f7f9d942'],
+          type: 'automatic'
+        }
+      ]
+      this.allcaseData.forEach(item => {
         // 测试套
-          let testSuiteList = []
-          item.testSuiteIdList.forEach(testSuiteId => {
-            testSuiteList.push(ModelMgmt.getTestSuite(testSuiteId).nameCh)
+        let testSuiteListCh = []
+        let testSuiteListEn = []
+        item.testSuiteIdList.forEach(testSuiteId => {
+          ModelMgmt.getOneSuite(testSuiteId).then(res => {
+            testSuiteListCh.push(res.nameCh)
+            testSuiteListEn.push(res.nameEn)
           })
-          item.testSuiteIdList = testSuiteList
         })
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: this.$t('promptMessage.gettestcaseFail'),
-          type: 'warning'
-        })
+        if (this.language === 'cn') {
+          item.testSuiteIdList = testSuiteListCh
+        } else {
+          item.testSuiteIdList = testSuiteListEn
+        }
       })
+      // }).catch(() => {
+      //   this.$message({
+      //     duration: 2000,
+      //     message: this.$t('promptMessage.gettestcaseFail'),
+      //     type: 'warning'
+      //   })
+      // })
     },
     downLoadCase (row) {
       let Id = row.id
-      // Atp.downLoadCaseApi(Id).then(res => {
-      //   console.log(res.data)
-      // })
-      let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
-      return axios({
-        method: 'get',
-        url: url,
-        responseType: 'blob'
-      }).then(res => {
-        this.downloadFile(res.data)
-      }).catch(res => {
-        this.downloadFile(res.data)
+      Atp.downLoadCaseApi(Id).then(res => {
+        console.log(res.data)
       })
-    },
-    downloadFile (data) {
-      let blob = new Blob([data], { type: 'application/zip' })
-      let url = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `导出${new Date()}`
-      link.click()
-      URL.revokeObjectURL(url)
     },
     // 新增用例弹框
     handleClose () {
@@ -541,24 +607,34 @@ export default {
       this.cannotEdit = false
       this.addCaseVisible = true
       this.addcaseForm = {
-        name: '',
-        type: '',
-        description: '',
-        expectResult: '',
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
         codeLanguage: '',
-        verificationModel: [],
+        expectResultCh: '',
+        expectResultEn: '',
+        testSuiteIdList: [],
+        testStepCh: '',
+        testStepEn: '',
+        type: '',
         file: []
       }
     },
     confirmAddCase () {
       let fd = new FormData()
       let addcaseForm = this.addcaseForm
-      fd.append('name', addcaseForm.name)
+      fd.append('nameCh', addcaseForm.nameCh)
+      fd.append('nameEn', addcaseForm.nameEn)
       fd.append('type', addcaseForm.type)
-      fd.append('description', addcaseForm.description)
+      fd.append('descriptionCh', addcaseForm.descriptionCh)
+      fd.append('descriptionEn', addcaseForm.descriptionEn)
       fd.append('codeLanguage', addcaseForm.codeLanguage)
-      fd.append('expectResult', addcaseForm.expectResult)
-      fd.append('verificationModel', addcaseForm.verificationModel)
+      fd.append('expectResultCh', addcaseForm.expectResultCh)
+      fd.append('expectResultEn', addcaseForm.expectResultEn)
+      fd.append('testSuiteIdList', addcaseForm.testSuiteIdList)
+      fd.append('testStepCh', addcaseForm.testStepCh)
+      fd.append('testStepEn', addcaseForm.testStepEn)
       if (this.confirmBtnApi === 'add') {
         fd.append('file', addcaseForm.file[0])
         Atp.createCaseApi(fd).then(res => {
@@ -660,16 +736,6 @@ export default {
       }).catch(() => {
       })
     },
-    // 获取iframe的taskid
-    getTaskId () {
-      if (this.currUrl.indexOf('?') !== -1) {
-        this.taskId = this.currUrl.split('?')[1].split('=')[1]
-        sessionStorage.setItem('taskId', this.taskId)
-      } else {
-        let params = sessionStorage.getItem('taskId')
-        this.taskId = params
-      }
-    },
     handleExceed (file, fileList) {
       if (fileList.length === 1) {
         this.$message.warning(this.$t('promptMessage.onlyOneFile'))
@@ -696,7 +762,7 @@ export default {
     '$i18n.locale': function () {
       let language = localStorage.getItem('language')
       this.language = language
-      // this.changeName()
+      this.getAllcase()
     }
   }
 }
