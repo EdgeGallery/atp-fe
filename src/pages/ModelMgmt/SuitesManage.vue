@@ -112,7 +112,7 @@
                   type="primary"
                   size="small"
                   class="button"
-                  @click="editCase(item.id)"
+                  @click="editTestSuite(item.id)"
                 >
                   {{ $t('common.edit') }}
                 </el-button>
@@ -259,6 +259,7 @@
               <el-select
                 v-model="editTestSuiteForm.scenarioList"
                 :placeholder="$t('userpage.selectScene')"
+                multiple
               >
                 <el-option
                   v-for="item in options"
@@ -282,7 +283,7 @@
             <el-button
               type="primary"
               size="small"
-              @click="editAddTestSuite"
+              @click="confirmEditTestSuite"
             >
               {{ $t('common.confirm') }}
             </el-button>
@@ -356,7 +357,7 @@ export default {
               scenarioList.push(this.mapEn.get(id))
             }
           })
-          suite.scenarioIdList = scenarioList
+          suite.scenarioIdList = scenarioList.toString()
         })
       }).catch(() => {})
     },
@@ -367,9 +368,6 @@ export default {
     addTestSuiteBtn () {
       this.dialogTitle = '新增测试套'
       this.addTestSuiteVisible = true
-    },
-    editTestSuiteBtn () {
-      this.editTestSuiteVisible = true
     },
     async fillOptions () {
       let cacheArray = []
@@ -412,10 +410,26 @@ export default {
         this.addCaseVisible = false
       })
     },
-    editAddTestSuite () {
-      console.log('fortest')
+    confirmEditTestSuite () {
+      let fd = new FormData()
+      fd.append('nameCh', this.editTestSuiteForm.nameCh)
+      fd.append('nameEn', this.editTestSuiteForm.nameEn)
+      fd.append('descriptionCh', this.editTestSuiteForm.descriptionCh)
+      fd.append('descriptionEn', this.editTestSuiteForm.descriptionEn)
+      fd.append('scenarioIdList', this.editTestSuiteForm.scenarioList)
+      ModelMgmt.editTestSuiteApit(fd, this.editId).then(res => {
+        this.editTestSuiteVisible = false
+        this.getAllSuites()
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: '编辑',
+          type: 'warning'
+        })
+        this.editTestSuiteVisible = false
+      })
     },
-    editCase (id) {
+    editTestSuite (id) {
       this.editId = id
       this.editTestSuiteVisible = true
     },
