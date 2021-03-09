@@ -74,6 +74,10 @@ let ModelMgmt = {
   createTestSuiteApi: function (params) {
     let url = 'testsuites'
     return POST(url, params)
+  },
+  editTestSuiteApit: function (params, id) {
+    let url = 'testsuites/' + id
+    return POST(url, params)
   }
 }
 
