@@ -81,7 +81,10 @@
           </div>
         </el-form>
         <div class="task-content">
-          <div class="delBtn rt">
+          <div
+            class="delBtn rt"
+            v-if="userName==='admin'"
+          >
             <el-button
               size="small"
               type="primary"
@@ -110,6 +113,7 @@
                   id="checkReportProess"
                   type="text"
                   size="small"
+                  @click="handleClickTaskNo(scope.row)"
                 >
                   {{ scope.row.id }}
                 </el-button>
@@ -200,6 +204,7 @@
                   </el-button>
                 </el-popover>
                 <el-button
+                  v-if="userName==='admin'"
                   type="text"
                   :disabled="scope.row.status==='running'?false:true"
                   size="small"
@@ -333,11 +338,12 @@ export default {
       let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId, scenarioId: scenarioId } })
       window.open(routeData.href, '_blank')
     },
-    // handleClickTaskNo (val) {
-    //   let taskId = val.id
-    //   sessionStorage.setItem('taskId', taskId)
-    //   this.$router.push('/atpprocess')
-    // },
+    handleClickTaskNo (row) {
+      let taskId = row.id
+      sessionStorage.setItem('taskId', taskId)
+      let routeData = this.$router.resolve({ name: 'atpprocess', query: { taskId: taskId } })
+      window.open(routeData.href, '_blank')
+    },
     modifyStatus (row) {
       let taskId = row.id
       let routeData = this.$router.resolve({ name: 'atpprocess', query: { taskId: taskId } })

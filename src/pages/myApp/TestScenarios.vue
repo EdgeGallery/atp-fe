@@ -95,6 +95,7 @@
       </div>
       <div class="start-button">
         <el-button
+          v-if="userName!=='guest'"
           type="primary"
           size="large"
           @click="startTest()"
@@ -279,6 +280,7 @@ export default {
   data () {
     return {
       currUrl: window.location.href,
+      userName: sessionStorage.getItem('userName'),
       sceneData: [],
       datacn: [],
       dataen: [],
