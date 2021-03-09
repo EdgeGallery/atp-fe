@@ -146,7 +146,8 @@ const en = {
     addCase: 'Add Case',
     editCase: 'Edit Case',
     import: 'Case Import',
-    sample: 'Sample Download'
+    sample: 'Sample Download',
+    description: 'Description'
   },
   home: {
     bannerTitle: 'Application testing and certification platform',

@@ -128,19 +128,36 @@
             <el-table-column
               prop="nameCh"
               :label="$t('testCase.caseName')"
-            />
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  @click="downLoadCase(scope.row)"
+                >
+                  {{ language==='cn'?scope.row.nameCh :scope.row.nameEn }}
+                </el-button>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="testSuiteIdList"
               :label="$t('testCase.testSuiteList')"
             />
             <el-table-column
               prop="descriptionCh"
-              :label="$t('testCase.casePurpose')"
-            />
+              :label="$t('testCase.description')"
+            >
+              <template slot-scope="scope">
+                {{ language==='cn'?scope.row.descriptionCh :scope.row.descriptionEn }}
+              </template>
+            </el-table-column>
             <el-table-column
               prop="expectResultCh"
               :label="$t('testCase.expectedResult')"
-            />
+            >
+              <template slot-scope="scope">
+                {{ language==='cn'?scope.row.expectResultCh :scope.row.expectResultEn }}
+              </template>
+            </el-table-column>
             <el-table-column
               prop="codeLanguage"
               :label="$t('testCase.language')"
@@ -148,11 +165,19 @@
             <el-table-column
               prop="testStepCh"
               :label="$t('testCase.testStep')"
-            />
+            >
+              <template slot-scope="scope">
+                {{ language==='cn'?scope.row.testStepCh :scope.row.testStepEn }}
+              </template>
+            </el-table-column>
             <el-table-column
               prop="type"
               :label="$t('testCase.caseType')"
-            />
+            >
+              <template slot-scope="scope">
+                {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}
+              </template>
+            </el-table-column>
             <el-table-column
               :label="$t('testCase.operation')"
               v-if="userName==='admin'"
@@ -339,68 +364,12 @@
           </el-button>
         </div>
       </el-dialog>
-      <!-- 依赖弹框 -->
-      <el-dialog
-        :visible.sync="dialogVisible"
-        :title="$t('atp.dependencyDetail')"
-        :close-on-click-modal="false"
-        class="dependency-detail"
-      >
-        <div>
-          <h3>{{ $t('atp.versionDependency') }}:</h3>
-          <el-table
-            :data="dependencyData"
-          >
-            <el-table-column
-              prop="name"
-              :label="$t('atp.packageName')"
-            />
-            <el-table-column
-              prop="version"
-              :label="$t('atp.version')"
-            />
-          </el-table>
-        </div>
-        <div style="margin-top:15px;">
-          <h3>{{ $t('atp.testTask') }}:</h3>
-          <el-table
-            :data="TestNumber"
-          >
-            <el-table-column
-              prop="name"
-              :label="$t('atp.testItems')"
-            />
-            <el-table-column
-              prop="number"
-              :label="$t('atp.caseNumber')"
-            />
-          </el-table>
-        </div>
-        <div
-          class="button-center"
-        >
-          <el-button
-            type="primary"
-            @click="cancel()"
-            plain
-          >
-            {{ $t('atp.cancel') }}
-          </el-button>
-          <el-button
-            type="primary"
-            @click="ConfirmTest()"
-          >
-            {{ $t('atp.confirm') }}
-          </el-button>
-        </div>
-      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
 import { Atp, ModelMgmt } from '../../tools/api.js'
-import { TESTNAME } from '../../tools/testdataname.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
 export default {
@@ -408,10 +377,10 @@ export default {
   name: 'TestCase',
   data () {
     return {
+      language: localStorage.getItem('language'),
       currUrl: window.location.href,
       userName: sessionStorage.getItem('userName'),
       taskId: '',
-      dialogVisible: false,
       caseDataTable: [],
       dependencyData: [],
       TestNumber: [
@@ -521,41 +490,7 @@ export default {
       Atp.getAllCaseApi(this.form).then(res => {
         this.allcaseData = res.data
         this.allcaseData.forEach(item => {
-        // 依赖页面，用例个数
-          if (item.type === 'securityTest') {
-            this.TestNumber[0].number++
-          } else if (item.type === 'complianceTest') {
-            this.TestNumber[1].number++
-          } else {
-            this.TestNumber[2].number++
-          }
-          // 中英文切换
-          if (item.verificationModel.indexOf('EdgeGallery') !== -1) {
-            item.verificationModel = item.verificationModel.replace('EdgeGallery', '社区标准')
-          }
-          if (item.verificationModel.indexOf('Mobile') !== -1) {
-            item.verificationModel = item.verificationModel.replace('Mobile', '移动企标')
-          }
-          if (item.verificationModel.indexOf('Unicom') !== -1) {
-            item.verificationModel = item.verificationModel.replace('Unicom', '联通企标')
-          }
-          if (item.verificationModel.indexOf('Telecom') !== -1) {
-            item.verificationModel = item.verificationModel.replace('Telecom', '电信企标')
-          }
-          if (item.verificationModel.indexOf('Definition') !== -1) {
-            item.verificationModel = item.verificationModel.replace('Definition', '自定义标准')
-          }
-          // 用例类型
-          if (item.type === 'securityTest') {
-            item.type = this.testType[0].label
-          }
-          if (item.type === 'complianceTest') {
-            item.type = this.testType[1].label
-          }
-          if (item.type === 'sandboxTest') {
-            item.type = this.testType[2].label
-          }
-          // 测试套
+        // 测试套
           let testSuiteList = []
           item.testSuiteIdList.forEach(testSuiteId => {
             testSuiteList.push(ModelMgmt.getTestSuite(testSuiteId).nameCh)
@@ -568,6 +503,12 @@ export default {
           message: this.$t('promptMessage.gettestcaseFail'),
           type: 'warning'
         })
+      })
+    },
+    downLoadCase (row) {
+      let Id = row.id
+      Atp.downLoadCaseApi(Id).then(res => {
+        console.log(res.data)
       })
     },
     // 新增用例弹框
@@ -709,33 +650,6 @@ export default {
         this.taskId = params
       }
     },
-    // 联调暂时注释del
-    startTest () {
-      this.getDependency()
-    },
-    getDependency () {
-      Atp.getDependencyApi(this.taskId).then(res => {
-        this.dialogVisible = true
-        let data = res.data.dependency
-        this.dependencyData = []
-        for (const key in data) {
-          let obj = {
-            name: '',
-            version: ''
-          }
-          obj.name = key
-          obj.version = data[key]
-          this.dependencyData.push(obj)
-        }
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: this.$t('promptMessage.resolveFail'),
-          type: 'warning'
-        })
-        this.dialogVisible = false
-      })
-    },
     handleExceed (file, fileList) {
       if (fileList.length === 1) {
         this.$message.warning(this.$t('promptMessage.onlyOneFile'))
@@ -756,101 +670,7 @@ export default {
       } else if (value === 'jar') {
         this.DemoDownload = './JarExample.zip'
       }
-    },
-    // 创建测试任务，联调使用，后续删除;
-    // startTest () {
-    //   let fd = new FormData()
-    //   let packageForm = this.packageForm
-    //   fd.append('file', packageForm.fileList[0])
-    //   fd.append('isRun', false)
-    //   this.dialogVisible = true
-    //   Atp.creatTaskApi(fd).then(res => {
-    //     this.dialogVisible = true
-    //     this.taskId = res.data.id
-    //     this.getDependency()
-    //     // let data = res.data.dependency
-    //     // this.dependencyData = []
-    //     // for (const key in data) {
-    //     //   let obj = {
-    //     //     name: '',
-    //     //     version: ''
-    //     //   }
-    //     //   obj.name = key
-    //     //   obj.version = data[key]
-    //     //   this.dependencyData.push(obj)
-    //     // }
-    //   })
-    // },
-    // 依赖弹框
-    ConfirmTest () {
-      Atp.runTaskApi(this.taskId).then(res => {
-        // let taskId = res.data.id
-        // sessionStorage.setItem('taskId', taskId)
-        this.dialogVisible = false
-        this.$router.push('/atpprocess')
-      }).catch(error => {
-        if (error.response.data.code === 403) {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.guestUser'),
-            type: 'warning'
-          })
-          this.dialogVisible = false
-        } else {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.creattaskFail'),
-            type: 'warning'
-          })
-          this.dialogVisible = false
-        }
-      })
-    },
-    cancel () {
-      this.dialogVisible = false
-    },
-    changeName () {
-      if (this.language === 'en') {
-        this.testCaseList[0].label = this.TestNumber[0].name = TESTNAME[0].label[1]
-        this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[1]
-        this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[1]
-      } else if (this.language === 'cn') {
-        this.testCaseList[0].label = this.TestNumber[0].name = TESTNAME[0].label[0]
-        this.testCaseList[1].label = this.TestNumber[1].name = TESTNAME[1].label[0]
-        this.testCaseList[2].label = this.TestNumber[2].name = TESTNAME[2].label[0]
-      }
     }
-    // 联调后 del
-    // handleDelteAPP (file, fileList) {
-    //   this.packageForm.file = fileList
-    // },
-    // handleChangeAPP (file, fileList) {
-    //   this.checkFileType(file, 'fileList', 'csar')
-    // },
-    // // del
-    // checkFileType (file, packageFormKey, fileType) {
-    //   let type = file.raw.name.split('.')
-    //   let fileSize = file.size / 1024 / 1024
-    //   type = type[type.length - 1]
-    //   if (type === fileType) {
-    //     this.packageForm[packageFormKey].push(file.raw)
-    //   } else {
-    //     this.packageForm[packageFormKey] = []
-    //     this.$message({
-    //       duration: 2000,
-    //       type: 'warning',
-    //       message: this.$t('promptMessage.canOnlyUpload') + fileType + this.$t('promptMessage.files')
-    //     })
-    //   }
-    //   if (fileSize > 10) {
-    //     this.packageForm[packageFormKey] = []
-    //     this.$message({
-    //       duration: 2000,
-    //       type: 'warning',
-    //       message: this.$t('store.packageSizeLimit')
-    //     })
-    //   }
-    // }
   },
   watch: {
     '$i18n.locale': function () {
