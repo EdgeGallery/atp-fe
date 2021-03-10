@@ -19,6 +19,7 @@ const cn = {
   nav: {
     logout: '注销',
     login: '登录',
+    userAccountCenter: '我的帐号',
     atp: 'ATP 测试'
   },
   myApp: {

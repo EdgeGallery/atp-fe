@@ -19,6 +19,7 @@ const en = {
   nav: {
     logout: 'Logout',
     login: 'Login',
+    userAccountCenter: 'My Account',
     atp: 'ATP'
   },
   myApp: {

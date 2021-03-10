@@ -85,6 +85,14 @@
             v-if="!ifGuest"
           >|</span>
           <span
+            v-if="!ifGuest"
+            class="curp"
+            @click="openUserAccountCenter()"
+          >{{ $t('nav.userAccountCenter') }}</span>
+          <span
+            v-if="!ifGuest"
+          >|</span>
+          <span
             class="curp"
             @click="logout()"
             v-if="ifGuest"
@@ -118,6 +126,7 @@ export default {
       language: localStorage.getItem('language') ? localStorage.getItem('language') : 'cn',
       userName: '',
       loginPage: '',
+      userCenterPage: '',
       ifGuest: true,
       navList: [
         {
@@ -231,6 +240,9 @@ export default {
         this.logout()
       }).catch(() => {
       })
+    },
+    openUserAccountCenter () {
+      window.open(this.userCenterPage)
     }
   },
   mounted () {
@@ -249,6 +261,7 @@ export default {
       sessionStorage.setItem('userName', res.data.userName)
       this.userName = res.data.userName
       this.loginPage = res.data.loginPage
+      this.userCenterPage = res.data.userCenterPage
       if (res.data.userName === 'guest') {
         this.ifGuest = true
       } else {
