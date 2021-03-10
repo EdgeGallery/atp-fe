@@ -331,7 +331,6 @@
               multiple
               size="small"
               v-model="addcaseForm.testSuiteIdList"
-              @change="languageChange"
               :placeholder="$t('userpage.choose')"
             >
               <el-option
@@ -435,11 +434,8 @@ export default {
   data () {
     return {
       language: localStorage.getItem('language'),
-      currUrl: window.location.href,
       userName: sessionStorage.getItem('userName'),
       taskId: '',
-      caseDataTable: [],
-      dependencyData: [],
       form: {
         testSuiteIdList: [],
         name: '',
@@ -527,10 +523,11 @@ export default {
               testSuiteListEn.push(data.nameEn)
             })
           })
+          item.testSuiteId = item.testSuiteIdList
           if (this.language === 'cn') {
-            item.testSuiteIdList = testSuiteListCh
+            item.testSuiteIdList = testSuiteListCh.toString()
           } else {
-            item.testSuiteIdList = testSuiteListEn
+            item.testSuiteIdList = testSuiteListEn.toString()
           }
         })
       }).catch(() => {
@@ -617,8 +614,15 @@ export default {
         Atp.createCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()
+          this.$message({
+            duration: 2000,
+            showClose: true,
+            message: '创建成功',
+            type: 'success'
+          })
         }).catch(() => {
           this.$message({
+            showClose: true,
             duration: 2000,
             message: '创建失败',
             type: 'warning'
@@ -641,6 +645,12 @@ export default {
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: '修改成功',
+            type: 'success'
+          })
         }).catch(() => {
           this.$message({
             duration: 2000,
@@ -660,6 +670,7 @@ export default {
       this.addCaseVisible = true
       this.addcaseForm = JSON.parse(JSON.stringify(row))
       this.addcaseForm.file = []
+      this.addcaseForm.testSuiteIdList = row.testSuiteId
     },
     deleteCase (row) {
       this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
