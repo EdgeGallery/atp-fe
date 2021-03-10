@@ -112,7 +112,7 @@
                   type="primary"
                   size="small"
                   class="button"
-                  @click="editTestSuite(item.id)"
+                  @click="editTestSuite(item)"
                 >
                   {{ $t('common.edit') }}
                 </el-button>
@@ -333,8 +333,7 @@ export default {
       options: [],
       testScenes: [],
       testSuites: [],
-      value: '',
-      editId: ''
+      value: ''
     }
   },
   methods: {
@@ -431,9 +430,8 @@ export default {
         this.editTestSuiteVisible = false
       })
     },
-    editTestSuite (id) {
-      this.editId = id
-      this.fetchFormData(id)
+    editTestSuite (item) {
+      this.editTestSuiteForm = item
       this.editTestSuiteVisible = true
     },
     deleteTestSuite (id) {
@@ -454,23 +452,7 @@ export default {
       form.descriptionCh = ''
       form.descriptionEn = ''
       form.scenarioList = []
-    },
-    async fetchFormData () {
-      await ModelMgmt.getTestSuiteApi(this.editId).then(res => {
-        this.editTestSuiteForm.nameCh = res.nameCh
-        this.editTestSuiteForm.nameEn = res.nameEn
-        this.editTestSuiteForm.descriptionCh = res.descriptionCh
-        this.editTestSuiteForm.descriptionEn = res.descriptionEn
-        this.editTestSuiteForm.scenarioIdList = res.scenarioIdList
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: '获取测试套数据失败',
-          type: 'warning'
-        })
-      })
     }
-
   },
   mounted () {
     this.getAllSuites()
