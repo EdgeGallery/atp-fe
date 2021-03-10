@@ -88,6 +88,12 @@ export default {
         }
         this.drawLine()
       }).catch(() => {
+        this.$message({
+          duration: 2000,
+          showClose: true,
+          type: 'warning',
+          message: this.$t('home.getFail')
+        })
       })
     },
     getLastSixMon () {

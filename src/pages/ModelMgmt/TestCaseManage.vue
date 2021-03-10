@@ -61,7 +61,7 @@
                     <el-option
                       v-for="item in testType"
                       :key="item.value"
-                      :label="item.label"
+                      :label="language==='cn'?item.label:item.value"
                       :value="item.value"
                     />
                   </el-select>
@@ -76,15 +76,15 @@
                 >
                   <el-select
                     size="small"
-                    v-model="form.testSuiteList"
+                    v-model="form.testSuiteIdList"
                     class="statusSelect"
                     :placeholder="$t('userpage.choose')"
                   >
                     <el-option
                       v-for="item in testSuiteList"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
+                      :key="item.id"
+                      :label="language==='cn'?item.nameCh:item.nameEn"
+                      :value="item.id"
                     />
                   </el-select>
                 </el-form-item>
@@ -223,7 +223,7 @@
       >
         <el-form
           :model="addcaseForm"
-          label-width="110px"
+          label-width="150px"
         >
           <el-form-item
             :label="$t('testCase.nameCn')"
@@ -260,7 +260,7 @@
               <el-option
                 v-for="item in testType"
                 :key="item.value"
-                :label="item.label"
+                :label="language==='cn'?item.label:item.value"
                 :value="item.value"
               />
             </el-select>
@@ -328,16 +328,17 @@
             prop="testSuiteIdList"
           >
             <el-select
+              multiple
               size="small"
               v-model="addcaseForm.testSuiteIdList"
               @change="languageChange"
               :placeholder="$t('userpage.choose')"
             >
               <el-option
-                v-for="item in codeLanguages"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label"
+                v-for="item in testSuiteList"
+                :key="item.id"
+                :label="language==='cn'?item.nameCh:item.nameEn"
+                :value="item.id"
               />
             </el-select>
           </el-form-item>
@@ -440,33 +441,11 @@ export default {
       caseDataTable: [],
       dependencyData: [],
       form: {
-        testSuiteList: [],
+        testSuiteIdList: [],
         name: '',
         type: '',
         locale: ''
       },
-      models: [
-        {
-          value: 'EdgeGallery',
-          label: '社区标准'
-        },
-        {
-          value: 'Mobile',
-          label: '移动企标'
-        },
-        {
-          value: 'Unicom',
-          label: '联通企标'
-        },
-        {
-          value: 'Telecom',
-          label: '电信企标'
-        },
-        {
-          value: 'Definition',
-          label: '自定义标准'
-        }
-      ],
       codeLanguages: [
         {
           value: 1,
@@ -516,6 +495,7 @@ export default {
   },
   mounted () {
     this.getAllcase()
+    this.getALlSuites()
   },
   methods: {
     getCurrentPageData (val) {
@@ -541,9 +521,10 @@ export default {
           let testSuiteListCh = []
           let testSuiteListEn = []
           item.testSuiteIdList.forEach(testSuiteId => {
-            ModelMgmt.getOneSuite(testSuiteId).then(res => {
-              testSuiteListCh.push(res.nameCh)
-              testSuiteListEn.push(res.nameEn)
+            ModelMgmt.getOneSuite(testSuiteId).then(testSuite => {
+              let data = testSuite.data
+              testSuiteListCh.push(data.nameCh)
+              testSuiteListEn.push(data.nameEn)
             })
           })
           if (this.language === 'cn') {
@@ -560,10 +541,37 @@ export default {
         })
       })
     },
+    getALlSuites () {
+      ModelMgmt.getTestSuite().then(res => {
+        let data = res.data
+        data.forEach(item => {
+          let obj = {
+            id: '',
+            nameCh: '',
+            nameEn: ''
+          }
+          obj.id = item.id
+          obj.nameCh = item.nameCh
+          obj.nameEn = item.nameEn
+          this.testSuiteList.push(obj)
+        })
+      }).catch(() => {})
+    },
     downLoadCase (row) {
-      let Id = row.id
-      Atp.downLoadCaseApi(Id).then(res => {
-        console.log(res.data)
+      Atp.downLoadCaseApi(row.id).then(res => {
+        this.$message({
+          duration: 2000,
+          showClose: true,
+          type: 'success',
+          message: this.$t('promptMessage.downloadSuccess')
+        })
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          showClose: true,
+          type: 'warning',
+          message: this.$t('promptMessage.downloadFail')
+        })
       })
     },
     // 新增用例弹框
@@ -652,35 +660,6 @@ export default {
       this.addCaseVisible = true
       this.addcaseForm = JSON.parse(JSON.stringify(row))
       this.addcaseForm.file = []
-      // 中英文切换
-      let changeModel = row.verificationModel
-      if (changeModel.indexOf('社区标准') !== -1) {
-        changeModel = changeModel.replace('社区标准', 'EdgeGallery')
-      }
-      if (changeModel.indexOf('移动企标') !== -1) {
-        changeModel = changeModel.replace('移动企标', 'Mobile')
-      }
-      if (changeModel.indexOf('联通企标') !== -1) {
-        changeModel = changeModel.replace('联通企标', 'Unicom')
-      }
-      if (changeModel.indexOf('电信企标') !== -1) {
-        changeModel = changeModel.replace('电信企标', 'Telecom')
-      }
-      if (changeModel.indexOf('自定义标准') !== -1) {
-        changeModel = changeModel.replace('自定义标准', 'Definition')
-      }
-      this.addcaseForm.verificationModel = changeModel.split(',')
-      let changeType = row.type
-      if (changeType === '安全测试') {
-        changeType = this.testType[0].value
-      }
-      if (changeType === '遵从性测试') {
-        changeType = this.testType[1].value
-      }
-      if (changeType === '沙箱测试') {
-        changeType = this.testType[2].value
-      }
-      this.addcaseForm.type = changeType
     },
     deleteCase (row) {
       this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
