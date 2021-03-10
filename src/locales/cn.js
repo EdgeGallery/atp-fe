@@ -165,7 +165,8 @@ const cn = {
     bannerText3: '测试过程可视化',
     staReport: '统计报告',
     totalNum: '扫描总数',
-    chartTitle: '过去六个月扫描统计数据'
+    chartTitle: '过去六个月扫描统计数据',
+    getFail: '获取数据失败'
   },
   process: {
     modifyStatus: '修改用例状态'

@@ -165,7 +165,8 @@ const en = {
     bannerText3: 'Visualization of the test process',
     staReport: 'Statistical Report',
     totalNum: 'Total number of scans',
-    chartTitle: 'Scan statistics for the past six months'
+    chartTitle: 'Scan statistics for the past six months',
+    getFail: 'Failed to get data'
   },
   process: {
     modifyStatus: 'Modify use case status'
