@@ -143,7 +143,7 @@
             </el-form-item>
             <el-form-item
               label="测试套英文名"
-              prop="name"
+              prop="nameEn"
             >
               <el-input
                 width="100px"
@@ -153,7 +153,7 @@
             </el-form-item>
             <el-form-item
               label="测试套描述中文"
-              prop="name"
+              prop="descriptionCh"
             >
               <el-input
                 width="100px"
@@ -163,7 +163,7 @@
             </el-form-item>
             <el-form-item
               label="测试套描述英文"
-              prop="name"
+              prop="descriptionEn"
             >
               <el-input
                 width="100px"
