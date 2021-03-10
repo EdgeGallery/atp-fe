@@ -433,8 +433,8 @@ export default {
     },
     editTestSuite (id) {
       this.editId = id
-      this.editTestSuiteVisible = true
       this.fetchFormData(id)
+      this.editTestSuiteVisible = true
     },
     deleteTestSuite (id) {
       ModelMgmt.deleteTestSuite(id).then(res => {
