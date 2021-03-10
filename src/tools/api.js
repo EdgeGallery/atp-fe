@@ -86,6 +86,10 @@ let ModelMgmt = {
   editTestSuiteApit: function (params, id) {
     let url = 'testsuites/' + id
     return PUT(url, params)
+  },
+  createTestScenarioApi: function (params) {
+    let url = 'testscenarios'
+    return POST(url, params)
   }
 }
 
