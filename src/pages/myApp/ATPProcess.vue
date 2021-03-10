@@ -440,7 +440,8 @@ export default {
       this.activeName = this.finishActiveName
       // this.$refs.carousel.setActiveItem(this.firstScene)
       this.$message({
-        duration: 2000,
+        offset: 200,
+        duration: 5000,
         showClose: true,
         type: 'success',
         message: this.$t('promptMessage.manualTip')
