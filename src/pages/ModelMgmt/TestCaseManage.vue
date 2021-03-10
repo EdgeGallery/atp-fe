@@ -525,9 +525,9 @@ export default {
           })
           item.testSuiteId = item.testSuiteIdList
           if (this.language === 'cn') {
-            item.testSuiteIdList = testSuiteListCh.toString()
+            item.testSuiteIdList = testSuiteListCh
           } else {
-            item.testSuiteIdList = testSuiteListEn.toString()
+            item.testSuiteIdList = testSuiteListEn
           }
         })
       }).catch(() => {
