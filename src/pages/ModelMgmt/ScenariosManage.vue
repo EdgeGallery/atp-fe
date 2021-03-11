@@ -607,6 +607,7 @@ export default {
         this.getAllScene()
         this.addTestScenarioVisible = false
         this.clearFormData(this.editTestScenarioForm)
+        this.editTestScenarioVisible = false
       }).catch(() => {
         this.$message({
           duration: 2000,
