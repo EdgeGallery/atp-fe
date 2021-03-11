@@ -98,6 +98,7 @@
             </el-form>
           </div>
         </div>
+        <!-- 新增弹框 -->
         <el-dialog
           :visible.sync="addTestScenarioVisible"
           :close-on-click-modal="false"
@@ -146,6 +147,51 @@
                 size="small"
                 v-model="addTestScenarioForm.descriptionEn"
               />
+            </el-form-item>
+            <el-form-item
+              label="场景图标"
+              prop="logoFileList"
+              class="icon"
+            >
+              <div class="default-icon">
+                <div
+                  class="box"
+                  v-for="(item, index) in defaultIcon"
+                  @click="chooseDefaultIcon(item, index)"
+                  :key="item"
+                >
+                  <img
+                    :src="item"
+                    alt=""
+                  >
+                  <em
+                    class="el-icon-success"
+                    :class="{ active: addTestScenarioForm.defaultActive === index }"
+                  />
+                </div>
+              </div>
+              <em
+                class="upIcon el-icon-success"
+                :class="{ active: uploadIcon }"
+                v-if="uploadIcon"
+              />
+              <el-upload
+                id="projectLogo"
+                class="upload-demo clear"
+                ref="upload"
+                action=""
+                :limit="1"
+                list-type="picture-card"
+                :file-list="logoFileList"
+                :on-change="handleChangeLogo"
+                :on-exceed="handleExceed"
+                :auto-upload="false"
+                :on-remove="removeUploadLogo"
+                accept=".jpg,.png"
+                name="file"
+              >
+                <em class="el-icon-plus" />
+              </el-upload>
             </el-form-item>
             <el-form-item label="测试场景标签">
               <el-select
@@ -230,6 +276,51 @@
                 v-model="editTestScenarioForm.descriptionEn"
               />
             </el-form-item>
+            <el-form-item
+              label="场景图标"
+              prop="logoFileList"
+              class="icon"
+            >
+              <div class="default-icon">
+                <div
+                  class="box"
+                  v-for="(item, index) in defaultIcon"
+                  @click="chooseDefaultIcon(item, index)"
+                  :key="item"
+                >
+                  <img
+                    :src="item"
+                    alt=""
+                  >
+                  <em
+                    class="el-icon-success"
+                    :class="{ active: editTestScenarioForm.defaultActive === index }"
+                  />
+                </div>
+              </div>
+              <em
+                class="upIcon el-icon-success"
+                :class="{ active: uploadIcon }"
+                v-if="uploadIcon"
+              />
+              <el-upload
+                id="projectLogo"
+                class="upload-demo clear"
+                ref="upload"
+                action=""
+                :limit="1"
+                list-type="picture-card"
+                :file-list="logoFileList"
+                :on-change="handleChangeLogo"
+                :on-exceed="handleExceed"
+                :auto-upload="false"
+                :on-remove="removeUploadLogo"
+                accept=".jpg,.png"
+                name="file"
+              >
+                <em class="el-icon-plus" />
+              </el-upload>
+            </el-form-item>
             <el-form-item label="测试场景标签">
               <el-select
                 v-model="editTestScenarioForm.label"
@@ -277,7 +368,13 @@ export default {
   data () {
     return {
       editId: '',
-      icon: [require('../../assets/images/logo.png')],
+      // icon: [require('../../assets/images/logo.png')],
+      defaultIcon: [
+        require('../../assets/images/logo.png')
+      ],
+      uploadIcon: false,
+      showErr: false,
+      logoFileList: [],
       addTestScenarioVisible: false,
       editTestScenarioVisible: false,
       addTestScenarioForm: {
@@ -286,7 +383,9 @@ export default {
         descriptionCh: '',
         descriptionEn: '',
         label: '',
-        icon: ''
+        icon: [],
+        base64Session: false,
+        defaultActive: ''
       },
       editTestScenarioForm: {
         nameCh: '',
@@ -294,7 +393,9 @@ export default {
         descriptionCh: '',
         descriptionEn: '',
         label: '',
-        icon: ''
+        icon: [],
+        base64Session: false,
+        defaultActive: ''
       },
       userName: sessionStorage.getItem('userName'),
       language: localStorage.getItem('language'),
@@ -344,7 +445,9 @@ export default {
         descriptionCh: '',
         descriptionEn: '',
         label: '',
-        icon: ''
+        icon: [],
+        base64Session: false,
+        defaultActive: ''
       }
       this.editTestScenarioForm = {
         nameCh: '',
@@ -352,16 +455,82 @@ export default {
         descriptionCh: '',
         descriptionEn: '',
         label: '',
-        icon: ''
+        icon: [],
+        base64Session: false,
+        defaultActive: ''
       }
     },
     onclickAdd () {
       this.addTestScenarioVisible = true
     },
+    handleChangeLogo (file) {
+      let listTemp = []
+      this.addTestScenarioForm.base64Session = true
+      this.editTestScenarioForm.base64Session = true
+      this.addTestScenarioForm.icon = []
+      this.editTestScenarioForm.icon = []
+      this.defaultIconFile = []
+      this.addTestScenarioForm.defaultActive = ''
+      this.editTestScenarioForm.defaultActive = ''
+      if (file) {
+        if (file.raw.name.indexOf(' ') !== -1) {
+          this.$message.warning('名称不能为空')
+          this.logoFileList = []
+        } else {
+          this.logoFileList.push(file)
+          listTemp.push(file.raw)
+          this.addTestScenarioForm.icon = listTemp
+          this.editTestScenarioForm.icon = listTemp
+          this.uploadIcon = true
+        }
+        if (file.size / 1024 / 1024 > 2) {
+          this.$message.warning(this.$t('promptMessage.moreThan2'))
+          this.logoFileList = []
+        }
+        let fileTypeArr = ['jpg', 'png']
+        this.fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
+        if (fileTypeArr.indexOf(this.fileType.toLowerCase()) === -1) {
+          this.$message.warning(this.$t('promptMessage.checkFileType'))
+          this.logoFileList = []
+        }
+      }
+      this.showErr = !this.logoFileList
+    },
+    chooseDefaultIcon (file, index) {
+      this.logoFileList = []
+      this.uploadIcon = false
+      this.addTestScenarioForm.base64Session = true
+      this.editTestScenarioForm.base64Session = true
+      this.defaultIconFile = []
+      if (this.addTestScenarioForm.defaultActive === index || this.editTestScenarioForm.defaultActive === index) {
+        this.addTestScenarioForm.defaultActive = ''
+        this.editTestScenarioForm.defaultActive = ''
+        this.addTestScenarioForm.icon = []
+        this.editTestScenarioForm.icon = []
+        this.showErr = !this.defaultIconFile.length
+      } else {
+        this.addTestScenarioForm.defaultActive = index
+        this.editTestScenarioForm.defaultActive = index
+        this.conversionIcon(file)
+      }
+    },
+    handleExceed (file, fileList) {
+      if (fileList.length === 1) {
+        this.$message.warning(this.$t('promptMessage.onlyOneFile'))
+      }
+    },
+    removeUploadLogo (file) {
+      this.uploadIcon = false
+      this.logoFileList = []
+      this.showErr = this.logoFileList
+      this.chooseDefaultIcon(this.defaultIcon[0], 0)
+    },
     editScenario (item) {
       this.editTestScenarioForm = item
       this.editId = item.id
       this.editTestScenarioVisible = true
+      this.showErr = this.logoFileList
+      this.chooseDefaultIcon(this.defaultIcon[0], 0)
     },
     conversionIcon (file) {
       let image = new Image()
@@ -371,7 +540,9 @@ export default {
         let base64 = this.getBase64Image(image)
         // base64转化为文件流
         this.defaultIconFile.push(this.base64toFile(base64))
-        this.icon = this.defaultIconFile
+        this.addTestScenarioForm.icon = this.defaultIconFile
+        this.editTestScenarioForm.icon = this.defaultIconFile
+        this.showErr = !this.defaultIconFile
       }
     },
     getBase64Image (img) {
@@ -405,8 +576,9 @@ export default {
       fd.append('descriptionCh', this.addTestScenarioForm.descriptionCh)
       fd.append('descriptionEn', this.addTestScenarioForm.descriptionEn)
       fd.append('label', this.addTestScenarioForm.label)
-      this.conversionIcon(this.icon[0])
-      fd.append('icon', this.icon[0])
+      // this.conversionIcon(this.icon[0])
+      // fd.append('icon', this.icon[0])
+      fd.append('icon', this.addTestScenarioForm.icon.length > 0 ? this.addTestScenarioForm.icon[0] : this.defaultIconFile)
       ModelMgmt.createTestScenarioApi(fd).then(res => {
         this.getAllScene()
         this.addTestScenarioVisible = false
@@ -418,6 +590,7 @@ export default {
           type: 'warning'
         })
         this.addCaseVisible = false
+        this.addTestScenarioVisible = false
       })
     },
     confirmEditTestScenario () {
@@ -427,13 +600,13 @@ export default {
       fd.append('descriptionCh', this.editTestScenarioForm.descriptionCh)
       fd.append('descriptionEn', this.editTestScenarioForm.descriptionEn)
       fd.append('label', this.editTestScenarioForm.label)
-      this.conversionIcon(this.icon[0])
-      fd.append('icon', this.icon[0])
-      console.log(this.editId)
+      // this.conversionIcon(this.icon[0])
+      // fd.append('icon', this.icon[0])
+      fd.append('icon', this.addTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile)
       ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
         this.getAllScene()
         this.addTestScenarioVisible = false
-        this.clearFormData(this.addTestScenarioForm)
+        this.clearFormData(this.editTestScenarioForm)
       }).catch(() => {
         this.$message({
           duration: 2000,
@@ -441,6 +614,7 @@ export default {
           type: 'warning'
         })
         this.addCaseVisible = false
+        this.editTestScenarioVisible = false
       })
     },
     clearFormData (form) {
@@ -476,6 +650,8 @@ export default {
   },
   mounted () {
     this.getAllScene()
+    this.showErr = this.logoFileList
+    this.chooseDefaultIcon(this.defaultIcon[0], 0)
   },
   watch: {
     '$i18n.locale': function () {
@@ -535,6 +711,82 @@ export default {
       border: 3px solid#9163cc;
       border-left: 10px solid #9163cc;
     }
+  }
+  .default-icon{
+    float: left;
+    display: flex;
+    flex-wrap: wrap;
+    .box{
+      position: relative;
+      width: 44px;
+      height: 44px;
+      margin: 0 15px 0 0;
+      img{
+        width: 40px;
+        height: 40px;
+      }
+      em{
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+      .active{
+        color: #409EFF;
+      }
+    }
+  }
+  .upload-demo{
+    float: left;
+    .el-button--primary{
+      background-color: #fff;
+      border-color: #688ef3;
+      color: #688ef3;
+      padding: 6px 20px;
+      margin-top: 8px;
+    }
+    .el-icon-warning{
+      color: #688ef3;
+      margin-right: 5px;
+      font-size: 14px;
+    }
+    .el-upload{
+      width: 34px;
+      height: 34px;
+      line-height: 34px;
+      margin: 3px 15px 0 0;
+      text-align: center;
+    }
+    .el-upload-list__item-preview{
+      opacity: 0;
+    }
+    .el-icon-plus:before {
+        content: "\e6d9";
+    }
+  }
+    .el-upload-list{
+    width: auto;
+  }
+  .el-upload-list--picture-card .el-upload-list__item{
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border: none;
+    margin: 0 15px 0 0;
+  }
+  .upIcon.el-icon-success{
+    position: absolute;
+    top: 30px;
+    left: 88px;
+    z-index: 99;
+  }
+  .upIcon.active{
+    color: #409EFF;
+  }
+  .el-form-item.icon{
+    content: '';
+    display: block;
+    clear: both;
   }
 }
 </style>
