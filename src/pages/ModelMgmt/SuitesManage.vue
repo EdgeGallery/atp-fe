@@ -45,6 +45,7 @@
                   <el-select
                     v-model="form.scenarioIdList"
                     :placeholder="$t('userpage.selectScene')"
+                    size="small"
                   >
                     <el-option
                       v-for="item in options"
@@ -56,6 +57,13 @@
                 </el-form-item>
               </el-col>
               <el-col :span="6">
+                <el-button
+                  id="resetBtn"
+                  size="small"
+                  @click="resetForm"
+                >
+                  {{ $t('myApp.reset') }}
+                </el-button>
                 <el-button
                   style="text-align:center;margin:5px 15px 0"
                   type="primary"
@@ -360,6 +368,14 @@ export default {
           suite.scenarioIdList = scenarioList.toString()
         })
       }).catch(() => {})
+    },
+    resetForm () {
+      this.form = {
+        locale: '',
+        name: '',
+        scenarioIdList: []
+      }
+      this.getAllSuites()
     },
     handleClose () {
       this.addTestSuiteVisible = false
