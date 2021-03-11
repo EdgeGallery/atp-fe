@@ -453,7 +453,7 @@ export default {
     },
     onDelete (id) {
       ModelMgmt.deleteTestScenarioApi(id).then(res => {
-        console.log('Test scenario got deleted')
+        this.getAllScene()
       }).catch(() => {
         this.$message({
           duration: 2000,
