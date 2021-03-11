@@ -417,7 +417,7 @@ export default {
       fd.append('descriptionCh', this.editTestSuiteForm.descriptionCh)
       fd.append('descriptionEn', this.editTestSuiteForm.descriptionEn)
       fd.append('scenarioIdList', this.editTestSuiteForm.scenarioList)
-      ModelMgmt.editTestSuiteApit(fd, this.editId).then(res => {
+      ModelMgmt.editTestSuiteApi(fd, this.editId).then(res => {
         this.editTestSuiteVisible = false
         this.getAllSuites()
         this.clearFormData(this.editTestSuiteForm)
@@ -432,6 +432,7 @@ export default {
     },
     editTestSuite (item) {
       this.editTestSuiteForm = item
+      this.editId = item.id
       this.editTestSuiteVisible = true
     },
     deleteTestSuite (id) {

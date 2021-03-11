@@ -79,12 +79,20 @@ let ModelMgmt = {
     let url = 'testsuites/' + id
     return DELETE(url)
   },
+  deleteTestScenarioApi: function (id) {
+    let url = 'testscenarios/' + id
+    return DELETE(url)
+  },
   createTestSuiteApi: function (params) {
     let url = 'testsuites'
     return POST(url, params)
   },
-  editTestSuiteApit: function (params, id) {
+  editTestSuiteApi: function (params, id) {
     let url = 'testsuites/' + id
+    return PUT(url, params)
+  },
+  editTestScenarioApi: function (params, id) {
+    let url = 'testscenarios/' + id
     return PUT(url, params)
   },
   createTestScenarioApi: function (params) {
