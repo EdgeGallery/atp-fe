@@ -431,7 +431,7 @@ export default {
       fd.append('label', this.editTestScenarioForm.label)
       this.conversionIcon(this.icon[0])
       fd.append('icon', this.icon[0])
-      ModelMgmt.createTestScenarioApi(fd).then(res => {
+      ModelMgmt.editTestScenarioApi(fd).then(res => {
         this.getAllScene()
         this.addTestScenarioVisible = false
         this.clearFormData(this.addTestScenarioForm)
