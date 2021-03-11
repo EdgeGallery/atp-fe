@@ -74,6 +74,9 @@
               <el-form-item :label="$t('modelmgmt.description')">
                 {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
               </el-form-item>
+              <el-form-item label="标签:">
+                {{ item.label }}
+              </el-form-item>
               <el-form-item
                 class="rt"
                 v-if="userName==='admin'"
@@ -82,6 +85,7 @@
                   type="warning"
                   size="small"
                   class="button"
+                  @click="onDelete(item.id)"
                 >
                   {{ $t('common.delete') }}
                 </el-button>
@@ -89,6 +93,7 @@
                   type="primary"
                   size="small"
                   class="button"
+                  @click="editScenario(item)"
                 >
                   {{ $t('common.edit') }}
                 </el-button>
@@ -98,13 +103,12 @@
         </div>
         <el-dialog
           :visible.sync="addTestScenarioVisible"
-          title="创建测试场景"
           :close-on-click-modal="false"
           width="30%"
         >
           <el-form
             :model="addTestScenarioForm"
-            label-width="110px"
+            label-width="130px"
           >
             <el-form-item
               label="测试场景中文名"
@@ -179,6 +183,88 @@
             </el-button>
           </div>
         </el-dialog>
+        <el-dialog
+          :visible.sync="editTestScenarioVisible"
+          :close-on-click-modal="false"
+          width="30%"
+        >
+          <el-form
+            :model="editTestScenarioForm"
+            label-width="130px"
+          >
+            <el-form-item
+              label="测试场景中文名"
+              prop="nameCh"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="editTestScenarioForm.nameCh"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试场景英文名"
+              prop="nameEn"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="editTestScenarioForm.nameEn"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试场景描述中文"
+              prop="descriptionCh"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="editTestScenarioForm.descriptionCh"
+              />
+            </el-form-item>
+            <el-form-item
+              label="测试场景描述英文"
+              prop="descriptionEn"
+            >
+              <el-input
+                width="100px"
+                size="small"
+                v-model="editTestScenarioForm.descriptionEn"
+              />
+            </el-form-item>
+            <el-form-item label="测试场景标签">
+              <el-select
+                v-model="editTestScenarioForm.label"
+                placeholder="选择标签"
+              >
+                <el-option
+                  v-for="item in label"
+                  :key="item.labelEn"
+                  :label="language == 'cn' ? item.label : item.labelEn"
+                  :value="item.labelEn"
+                />
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button
+              @click="handleClose"
+              size="small"
+            >
+              {{ $t('common.cancel') }}
+            </el-button>
+            <el-button
+              type="primary"
+              size="small"
+              @click="confirmEditTestScenario"
+            >
+              {{ $t('common.confirm') }}
+            </el-button>
+          </div>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -192,9 +278,19 @@ export default {
   components: { Navcomp },
   data () {
     return {
+      editId: '',
       icon: [require('../../assets/images/logo.png')],
       addTestScenarioVisible: false,
+      editTestScenarioVisible: false,
       addTestScenarioForm: {
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
+        label: '',
+        icon: ''
+      },
+      editTestScenarioForm: {
         nameCh: '',
         nameEn: '',
         descriptionCh: '',
@@ -243,7 +339,16 @@ export default {
     },
     handleClose () {
       this.addTestScenarioVisible = false
+      this.editTestScenarioVisible = false
       this.addTestScenarioForm = {
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
+        label: '',
+        icon: ''
+      }
+      this.editTestScenarioForm = {
         nameCh: '',
         nameEn: '',
         descriptionCh: '',
@@ -254,6 +359,11 @@ export default {
     },
     onclickAdd () {
       this.addTestScenarioVisible = true
+    },
+    editScenario (item) {
+      this.editTestScenarioForm = item
+      this.editId = item.id
+      this.editTestScenarioVisible = true
     },
     conversionIcon (file) {
       let image = new Image()
@@ -312,12 +422,46 @@ export default {
         this.addCaseVisible = false
       })
     },
+    confirmEditTestScenario () {
+      let fd = new FormData()
+      fd.append('nameCh', this.editTestScenarioForm.nameCh)
+      fd.append('nameEn', this.editTestScenarioForm.nameEn)
+      fd.append('descriptionCh', this.editTestScenarioForm.descriptionCh)
+      fd.append('descriptionEn', this.editTestScenarioForm.descriptionEn)
+      fd.append('label', this.editTestScenarioForm.label)
+      this.conversionIcon(this.icon[0])
+      fd.append('icon', this.icon[0])
+      ModelMgmt.createTestScenarioApi(fd).then(res => {
+        this.getAllScene()
+        this.addTestScenarioVisible = false
+        this.clearFormData(this.addTestScenarioForm)
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: '创建失败',
+          type: 'warning'
+        })
+        this.addCaseVisible = false
+      })
+    },
     clearFormData (form) {
       form.nameCh = ''
       form.nameEn = ''
       form.descriptionCh = ''
       form.descriptionEn = ''
       form.label = ''
+    },
+    onDelete (id) {
+      ModelMgmt.deleteTestScenarioApi(id).then(res => {
+        console.log('Test scenario got deleted')
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          message: '删除失败',
+          type: 'warning'
+        })
+      })
+      this.getAllScene()
     }
   },
   mounted () {
