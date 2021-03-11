@@ -74,9 +74,6 @@
               <el-form-item :label="$t('modelmgmt.description')">
                 {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
               </el-form-item>
-              <el-form-item label="标签:">
-                {{ item.label }}
-              </el-form-item>
               <el-form-item
                 class="rt"
                 v-if="userName==='admin'"
@@ -183,6 +180,7 @@
             </el-button>
           </div>
         </el-dialog>
+        <!-- 编辑弹框 -->
         <el-dialog
           :visible.sync="editTestScenarioVisible"
           :close-on-click-modal="false"
@@ -259,7 +257,7 @@
             <el-button
               type="primary"
               size="small"
-              @click="confirmEditTestScenario"
+              @click="confirmEditTestScenario()"
             >
               {{ $t('common.confirm') }}
             </el-button>
@@ -431,14 +429,15 @@ export default {
       fd.append('label', this.editTestScenarioForm.label)
       this.conversionIcon(this.icon[0])
       fd.append('icon', this.icon[0])
-      ModelMgmt.editTestScenarioApi(fd).then(res => {
+      console.log(this.editId)
+      ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
         this.getAllScene()
         this.addTestScenarioVisible = false
         this.clearFormData(this.addTestScenarioForm)
       }).catch(() => {
         this.$message({
           duration: 2000,
-          message: '创建失败',
+          message: '修改失败',
           type: 'warning'
         })
         this.addCaseVisible = false
@@ -452,16 +451,27 @@ export default {
       form.label = ''
     },
     onDelete (id) {
-      ModelMgmt.deleteTestScenarioApi(id).then(res => {
-        this.getAllScene()
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: '删除失败',
-          type: 'warning'
+      this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning'
+      }).then(() => {
+        ModelMgmt.deleteTestScenarioApi(id).then(res => {
+          this.getAllScene()
+          this.$message({
+            duration: 2000,
+            message: '删除成功',
+            type: 'success'
+          })
+        }).catch(() => {
+          this.$message({
+            duration: 2000,
+            message: '删除失败',
+            type: 'warning'
+          })
         })
+      }).catch(() => {
       })
-      this.getAllScene()
     }
   },
   mounted () {

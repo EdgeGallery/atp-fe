@@ -274,7 +274,7 @@
   </div>
 </template>
 <script>
-import { Userpage, URL_PREFIX } from '../../tools/api.js'
+import { getUserInfo, Userpage, URL_PREFIX } from '../../tools/api.js'
 
 export default {
   data () {
@@ -312,6 +312,11 @@ export default {
     this.getLanguage()
     this.getTaskId()
     this.getAllScene()
+    getUserInfo().then(res => {
+      sessionStorage.setItem('userId', res.data.userId)
+      sessionStorage.setItem('userName', res.data.userName)
+      this.userName = res.data.userName
+    })
   },
   methods: {
     getLanguage () {
