@@ -43,7 +43,7 @@
               <el-col :span="5">
                 <el-form-item :label="$t('modelmgmt.scene')">
                   <el-select
-                    v-model="value"
+                    v-model="form.scenarioIdList"
                     :placeholder="$t('userpage.selectScene')"
                   >
                     <el-option
@@ -328,23 +328,24 @@ export default {
       form: {
         locale: '',
         name: '',
-        scenarioList: []
+        // scenarioList: []
+        scenarioIdList: []
       },
       options: [],
       testScenes: [],
-      testSuites: [],
-      value: ''
+      testSuites: []
+      // value: ''
     }
   },
   methods: {
     async getAllSuites () {
       await this.fillOptions()
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
-      if (this.value !== '') {
-        this.form.scenarioList.push(this.value)
-      } else {
-        this.form.scenarioList = []
-      }
+      // if (this.value !== '') {
+      //   this.form.scenarioList.push(this.value)
+      // } else {
+      //   this.form.scenarioList = []
+      // }
       ModelMgmt.getTestSuite(this.form).then(res => {
         this.testSuites = res.data
         this.testSuites.forEach(suite => {
@@ -452,7 +453,7 @@ export default {
       form.nameEn = ''
       form.descriptionCh = ''
       form.descriptionEn = ''
-      form.scenarioList = []
+      form.scenarioIdList = []
     }
   },
   mounted () {

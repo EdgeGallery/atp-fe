@@ -667,6 +667,7 @@ export default {
         padding-left: 8px;
         font-size: 15px;
         height: 30px;
+        border-radius: 5px;
         background-image: linear-gradient(to right, #cad5f3 , #fff);
       }
       .hasfailed{
