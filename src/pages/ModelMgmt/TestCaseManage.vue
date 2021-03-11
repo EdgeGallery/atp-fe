@@ -362,6 +362,7 @@
             />
           </el-form-item>
           <el-form-item
+            v-if="confirmBtnApi === 'add' || editfile"
             :label="$t('testCase.import')"
             prop="file"
           >
