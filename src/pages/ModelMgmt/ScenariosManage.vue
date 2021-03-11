@@ -305,7 +305,7 @@ export default {
         locale: ''
       },
       defaultIconFile: [],
-      scenarios: [{ 'id': '4d203111-1111-4f62-aabb-8ebcec357f87', 'nameCh': '社区场景', 'nameEn': 'EdgeGallery Community Scenario', 'descriptionCh': '适用于社区场景的测试', 'descriptionEn': 'suite for EdgeGallery community test', 'label': 'EdgeGallery' }, { 'id': 'e71718a5-864a-49e5-855a-5805a5e9f97d', 'nameCh': '中国联通', 'nameEn': 'China Unicom Scenario', 'descriptionCh': '适用于中国联通场景的测试', 'descriptionEn': 'suite for China Unicom test', 'label': 'China Unicom' }, { 'id': '6fe8581c-b83f-40c2-8f5b-505478f9e30b', 'nameCh': '中国移动', 'nameEn': 'China Mobile Scenario', 'descriptionCh': '适用于中国移动场景的测试', 'descriptionEn': 'suite for China Mobile test', 'label': 'China Mobile' }, { 'id': '96a82e85-d40d-4ce5-beec-2dd1c9a3d41d', 'nameCh': '中国电信', 'nameEn': 'China Telecom Scenario', 'descriptionCh': '适用于中国电信场景的测试', 'descriptionEn': 'suite for China Telecom test', 'label': 'China Telecom' }],
+      scenarios: [],
       label: [
         {
           value: 'EdgeGallery',
