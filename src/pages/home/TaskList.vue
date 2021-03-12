@@ -173,36 +173,15 @@
               width="240"
             >
               <template slot-scope="scope">
-                <el-popover
-                  placement="right"
-                  trigger="click"
+                <el-button
+                  type="text"
+                  :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
+                  size="small"
+                  @click="jumpToReport(scope.row)"
+                  style="margin-right:10px;"
                 >
-                  <div style="text-align: center; margin: 0">
-                    <el-button
-                      type="primary"
-                      size="mini"
-                      plain
-                      v-for="(item,index) in reportData"
-                      :key="index"
-                      @click="jumpToReport(item)"
-                    >
-                      {{ language==='cn'?item.nameCh:item.nameEn }}
-                      <em
-                        v-if="item.label==='EdgeGallery'"
-                        class="el-icon-check"
-                      />
-                    </el-button>
-                  </div>
-                  <el-button
-                    slot="reference"
-                    type="text"
-                    :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
-                    size="small"
-                    @click="handleClickReport(scope.row)"
-                  >
-                    {{ $t('myApp.checkReport') }}
-                  </el-button>
-                </el-popover>
+                  {{ $t('myApp.checkReport') }}
+                </el-button>
                 <el-button
                   v-if="userName==='admin'"
                   type="text"
@@ -313,29 +292,27 @@ export default {
       clearTimeout(this.interval)
       this.interval = null
     },
-    handleClickReport (val) {
-      this.reportData = []
-      val.testScenarios.forEach(item => {
-        let reportobj = {
-          taskId: '',
-          label: '',
-          nameCh: '',
-          nameEn: '',
-          scenarioId: ''
-        }
-        reportobj.label = item.label
-        reportobj.nameCh = item.nameCh
-        reportobj.nameEn = item.nameEn
-        reportobj.scenarioId = item.id
-        reportobj.taskId = val.id
-        this.reportData.push(reportobj)
-      })
-    },
-    jumpToReport (item) {
-      this.visible = false
-      let taskId = item.taskId
-      let scenarioId = item.scenarioId
-      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId, scenarioId: scenarioId } })
+    // handleClickReport (val) {
+    //   this.reportData = []
+    //   val.testScenarios.forEach(item => {
+    //     let reportobj = {
+    //       taskId: '',
+    //       label: '',
+    //       nameCh: '',
+    //       nameEn: '',
+    //       scenarioId: ''
+    //     }
+    //     reportobj.label = item.label
+    //     reportobj.nameCh = item.nameCh
+    //     reportobj.nameEn = item.nameEn
+    //     reportobj.scenarioId = item.id
+    //     reportobj.taskId = val.id
+    //     this.reportData.push(reportobj)
+    //   })
+    // },
+    jumpToReport (val) {
+      let taskId = val.id
+      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
       window.open(routeData.href, '_blank')
     },
     handleClickTaskNo (row) {

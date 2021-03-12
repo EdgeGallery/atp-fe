@@ -97,6 +97,31 @@
           class="resulticon"
         >
       </div>
+      <div class="report-chart">
+        <div class="title">
+          {{ $t('report.reportanalysis') }}
+        </div>
+        <div class="report_analysis">
+          <div
+            class="left"
+            id="chartwidth"
+          >
+            <div
+              class="sumchart"
+              id="leftchart"
+            />
+          </div>
+          <div
+            class="right"
+            id="chartwidth"
+          >
+            <div
+              class="detailchart"
+              id="rightchart"
+            />
+          </div>
+        </div>
+      </div>
       <div class="report-detail">
         <div class="title">
           {{ $t('report.reportDetail') }}
@@ -112,33 +137,6 @@
           <el-collapse
             v-model="activeName"
           >
-            <el-collapse-item
-              :title="$t('report.reportanalysis')"
-              :name="item.nameEn"
-            >
-              <div class="report-chart">
-                <div class="report_analysis">
-                  <div
-                    class="left"
-                    id="chartwidth"
-                  >
-                    <div
-                      class="sumchart"
-                      :id="`${item.nameEn}left`"
-                    />
-                  </div>
-                  <div
-                    class="right"
-                    id="chartwidth"
-                  >
-                    <div
-                      class="detailchart"
-                      :id="`${item.nameEn}right`"
-                    />
-                  </div>
-                </div>
-              </div>
-            </el-collapse-item>
             <el-collapse-item
               v-for="(suiteItem,dex) in item.testSuites"
               :key="dex"
@@ -210,7 +208,6 @@ export default {
   mounted () {
     this.getLanguage()
     this.getTaskId()
-    this.getScenarioId()
     this.getReport()
   },
   methods: {
@@ -229,15 +226,10 @@ export default {
       }
     },
     getTaskId () {
-      if (this.currUrl.indexOf('scenarioId') !== -1 || this.currUrl.indexOf('language') !== -1) {
+      if (this.currUrl.indexOf('language') !== -1) {
         this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
       } else {
         this.taskId = this.currUrl.split('?')[1].split('=')[1]
-      }
-    },
-    getScenarioId () {
-      if (this.currUrl.indexOf('scenarioId') !== -1) {
-        this.scenarioId = this.currUrl.split('&')[1].split('=')[1]
       }
     },
     getReport () {
@@ -257,61 +249,55 @@ export default {
           item.endTime = newDateEnd
         })
         // 测试用例详情
+        this.testScenarios = data.testScenarios
         this.activeName = []
         this.finishActiveName = []
-        if (this.currUrl.indexOf('scenarioId') !== -1) {
-          data.testScenarios.forEach(element => {
-            if (element.label === 'EdgeGallery' || element.id === this.scenarioId) {
-              this.testScenarios.push(element)
-            }
-          })
-        } else {
-          this.testScenarios = data.testScenarios
+        // 获取图表数据
+        let chartobj = {
+          dataRight: [],
+          nameRightCh: [],
+          nameRightEn: [],
+          dataCh: [],
+          dataEn: []
         }
-        this.testScenarios.forEach(element => {
-          let chartobj = {
-            dataRight: [],
-            nameRightCh: [],
-            nameRightEn: [],
-            nameCh: '',
-            nameEn: '',
-            dataCh: [],
-            dataEn: []
-          }
-          chartobj.nameCh = element.nameCh
-          chartobj.nameEn = element.nameEn
-          // this.activeName.push(element.nameEn + element.testSuites[0].nameEn)
-          this.activeName.push(element.nameEn)
-          element.testSuites.forEach(ele => {
-            this.finishActiveName.push(element.nameEn + ele.nameEn)
-            this.finishActiveName.push(element.nameEn)
-            ele.successNum = 0
-            ele.failNum = 0
-            chartobj.nameRightCh.push(ele.nameCh)
-            chartobj.nameRightEn.push(ele.nameEn)
-            let objDataCh = {
-              name: '', value: 0
-            }
-            let objDataEn = {
-              name: '', value: 0
-            }
-            objDataCh.name = ele.nameCh
-            objDataEn.name = ele.nameEn
-            objDataCh.value = ele.testCases.length
-            objDataEn.value = ele.testCases.length
-            chartobj.dataCh.push(objDataCh)
-            chartobj.dataEn.push(objDataEn)
+        this.testScenarios.forEach(testScenarios => {
+        // 折叠面板打开
+          this.activeName.push(testScenarios.nameEn + testScenarios.testSuites[0].nameEn)
+          this.activeName.push(testScenarios.nameEn)
+
+          chartobj.nameRightCh.push(testScenarios.nameCh)
+          chartobj.nameRightEn.push(testScenarios.nameEn)
+          // 图标数据用例个数
+          testScenarios.totalNum = 0
+          testScenarios.successNum = 0
+          testScenarios.failNum = 0
+          testScenarios.testSuites.forEach(ele => {
+            this.finishActiveName.push(testScenarios.nameEn + ele.nameEn)
+            this.finishActiveName.push(testScenarios.nameEn)
             ele.testCases.forEach(item => {
+              testScenarios.totalNum++
               if (item.result === 'success') {
                 item.reason = '---'
-                ele.successNum++
+                testScenarios.successNum++
               } else if (item.result === 'failed') {
-                ele.failNum++
+                testScenarios.failNum++
               }
             })
-            let passRate = Number((ele.successNum / (ele.successNum + ele.failNum) * 100).toFixed(0))
-            chartobj.dataRight.push(passRate)
           })
+          let objDataCh = {
+            name: '', value: 0
+          }
+          let objDataEn = {
+            name: '', value: 0
+          }
+          objDataCh.name = testScenarios.nameCh
+          objDataEn.name = testScenarios.nameEn
+          objDataCh.value = testScenarios.totalNum
+          objDataEn.value = testScenarios.totalNum
+          chartobj.dataCh.push(objDataCh)
+          chartobj.dataEn.push(objDataEn)
+          let passRate = Number((testScenarios.successNum / testScenarios.totalNum * 100).toFixed(0))
+          chartobj.dataRight.push(passRate)
           this.ChartData.push(chartobj)
         })
         this.$nextTick(() => {
@@ -321,89 +307,89 @@ export default {
       }).catch(() => {})
     },
     drawLeftLine () {
-      this.ChartData.forEach(item => {
-        let Chart = this.$echarts.init(document.getElementById(item.nameEn + 'left'))
-        let colors = ['#89a6e6', '#deba69', '#a8d89b', '#9ed0c9', '#baa3d4']
-        let option = {
-          color: colors,
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b}: {c} ({d}%)'
-          },
-          series: [
-            {
-              name: '',
-              type: 'pie',
-              radius: ['30%', '60%'],
-              avoidLabelOverlap: false,
-              labelLine: {
-                show: false
-              },
-              data: []
-            }
-          ]
-        }
-        if (this.language === 'en') {
-          option.series[0].name = item.nameEn
-          option.series[0].data = item.dataEn
-        } else if (this.language === 'cn') {
-          option.series[0].name = item.nameCh
-          option.series[0].data = item.dataCh
-        }
-        Chart.setOption(option)
-      })
+      let Chart = this.$echarts.init(document.getElementById('leftchart'))
+      let colors = ['#89a6e6', '#deba69', '#a8d89b', '#baa3d4', '#9ed0c9']
+      let option = {
+        color: colors,
+        legend: {
+          top: '5%',
+          left: 'left'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        series: [
+          {
+            name: '测试场景',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            labelLine: {
+              show: false
+            },
+            data: []
+          }
+        ]
+      }
+      if (this.language === 'en') {
+        option.series[0].name = 'Test Scenarios'
+        option.series[0].data = this.ChartData[0].dataEn
+      } else if (this.language === 'cn') {
+        option.series[0].name = '测试场景'
+        option.series[0].data = this.ChartData[0].dataCh
+      }
+      Chart.setOption(option)
     },
     drawRightLine () {
-      this.ChartData.forEach(item => {
-        let Chart = this.$echarts.init(document.getElementById(item.nameEn + 'right'))
-        let option = {
-          title: {
-            text: '',
-            x: 'center'
-          },
-          xAxis: {
-            type: 'category',
-            data: []
-          },
-          yAxis: [
-            {
-              type: 'value',
-              axisLabel: {
-                show: true,
-                interval: 'auto',
-                formatter: '{value} %'
-              },
-              show: true
-            }
-          ],
-          series: [{
-            data: [],
-            type: 'line',
-            symbol: 'triangle',
-            symbolSize: 20,
-            lineStyle: {
-              color: '#5470C6',
-              width: 4,
-              type: 'dashed'
+      let Chart = this.$echarts.init(document.getElementById('rightchart'))
+      let option = {
+        title: {
+          text: '',
+          x: 'center'
+        },
+        xAxis: {
+          type: 'category',
+          data: []
+        },
+        yAxis: [
+          {
+            type: 'value',
+            axisLabel: {
+              show: true,
+              interval: 'auto',
+              formatter: '{value} %'
             },
-            itemStyle: {
-              borderWidth: 3,
-              borderColor: '#EE6666',
-              color: 'yellow'
-            }
-          }]
-        }
-        if (this.language === 'en') {
-          option.title.text = 'Test case success rate'
-          option.xAxis.data = item.nameRightEn
-          option.series[0].data = item.dataRight
-        } else if (this.language === 'cn') {
-          option.title.text = '测试用例成功率'
-          option.xAxis.data = item.nameRightCh
-          option.series[0].data = item.dataRight
-        }
-        Chart.setOption(option)
-      })
+            show: true
+          }
+        ],
+        series: [{
+          data: [],
+          type: 'line',
+          symbol: 'triangle',
+          symbolSize: 20,
+          lineStyle: {
+            color: '#5470C6',
+            width: 4,
+            type: 'dashed'
+          },
+          itemStyle: {
+            borderWidth: 3,
+            borderColor: '#EE6666',
+            color: 'yellow'
+          }
+        }]
+      }
+      if (this.language === 'en') {
+        option.title.text = 'Test case success rate'
+        option.xAxis.data = this.ChartData[0].nameRightEn
+        option.series[0].data = this.ChartData[0].dataRight
+      } else if (this.language === 'cn') {
+        option.title.text = '测试用例成功率'
+        option.xAxis.data = this.ChartData[0].nameRightCh
+        option.series[0].data = this.ChartData[0].dataRight
+      }
+      Chart.setOption(option)
     },
 
     dateChange (dateStr) {
@@ -505,17 +491,7 @@ export default {
       position: relative;
       top: 5px;
     }
-
-    .report-detail{
-      .detail-content{
-        .scene{
-          padding-left: 10px;
-          line-height: 40px;
-          font-size: 20px;
-          font-weight: 600;
-          color: #688ef3;
-        }
-        .report-chart{
+      .report-chart{
           span{
             padding-left: 25px;
             line-height: 40px;
@@ -525,18 +501,27 @@ export default {
             display: flex;
             justify-content: space-around;
             .left,.right{
-              width: 600px;
+              width: 100%;
               height: 300px;
             }
             .sumchart{
-              width: 500px;
+              width: 100%;
               height: 300px;
             }
             .detailchart{
-              width: 500px;
+              width: 80%;
               height: 300px;
             }
           }
+      }
+    .report-detail{
+      .detail-content{
+        .scene{
+          padding-left: 10px;
+          line-height: 40px;
+          font-size: 20px;
+          font-weight: 600;
+          color: #688ef3;
         }
           .el-collapse{
             padding: 5px 20px;

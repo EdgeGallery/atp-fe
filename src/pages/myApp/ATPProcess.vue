@@ -22,33 +22,16 @@
       <div
         class="back"
       >
-        <el-popover
-          placement="top"
-          v-model="visible"
+        <el-button
+          :disabled="report"
+          id="back_button"
+          type="primary"
+          icon="el-icon-document"
+          plain
+          @click="jumpToReport()"
         >
-          <div style="text-align: center; margin: 0">
-            <el-button
-              type="primary"
-              size="mini"
-              plain
-              v-for="(item,index) in reportData"
-              :key="index"
-              @click="jumpToReport(item)"
-            >
-              {{ language==='cn'?item.nameCh:item.nameEn }}
-              <em
-                v-if="item.label==='EdgeGallery'"
-                class="el-icon-check"
-              />
-            </el-button>
-          </div>
-          <el-button
-            slot="reference"
-            :disabled="report"
-          >
-            {{ $t('myApp.checkReport') }}
-          </el-button>
-        </el-popover>
+          {{ $t('myApp.checkReport') }}
+        </el-button>
       </div>
       <div
         class="header"
@@ -305,7 +288,6 @@ export default {
       hasFailActiveName: [],
       // activeTabsName: '',
       firstScene: '',
-      visible: false,
       reportData: [],
       form: {
         name: '',
@@ -335,11 +317,9 @@ export default {
         this.taskId = this.$route.query.taskId
       }
     },
-    jumpToReport (item) {
-      this.visible = false
+    jumpToReport () {
       let taskId = this.taskId
-      let scenarioId = item.id
-      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId, scenarioId: scenarioId } })
+      let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
       window.open(routeData.href, '_blank')
     },
     getTaskProcess () {
