@@ -18,9 +18,9 @@
     <Navcomp />
     <div class="padding56">
       <div style="margin:20px 0">
-        <span>应用测试平台</span>
+        <span>{{ $t('testCase.applicationTestPlatform') }}</span>
         <span>></span>
-        <span>测试套管理</span>
+        <span>{{ $t('testCase.testSuiteManagement') }}</span>
       </div>
       <div class="testsuites padding20">
         <div class="searchBtn">
@@ -130,7 +130,7 @@
         </div>
         <el-dialog
           :visible.sync="addTestSuiteVisible"
-          :title="dialogTitle"
+          :title="$t('testCase.addTestSuite')"
           :close-on-click-modal="false"
           width="30%"
         >
@@ -139,7 +139,7 @@
             label-width="110px"
           >
             <el-form-item
-              label="测试套中文名"
+              :label=" $t('testCase.testSuiteCn')"
               prop="nameCh"
             >
               <el-input
@@ -150,7 +150,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试套英文名"
+              :label=" $t('testCase.testSuiteEn')"
               prop="nameEn"
             >
               <el-input
@@ -160,7 +160,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试套描述中文"
+              :label=" $t('testCase.testSuiteDescriptionCn')"
               prop="descriptionCh"
             >
               <el-input
@@ -170,7 +170,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试套描述英文"
+              :label=" $t('testCase.testSuiteDescriptionEn')"
               prop="descriptionEn"
             >
               <el-input
@@ -215,7 +215,7 @@
         </el-dialog>
         <el-dialog
           :visible.sync="editTestSuiteVisible"
-          title="编辑测试套"
+          :title="$t('testCase.editTestSuite')"
           :close-on-click-modal="false"
           width="30%"
         >
@@ -224,7 +224,7 @@
             label-width="110px"
           >
             <el-form-item
-              label="测试套中文名"
+              :label="$t('testCase.testSuiteCn')"
               prop="nameCh"
             >
               <el-input
@@ -234,7 +234,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试套英文名"
+              :label="$t('testCase.testSuiteEn')"
               prop="name"
             >
               <el-input
@@ -244,7 +244,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试套描述中文"
+              :label="$t('testCase.testDescriptionCn')"
               prop="name"
             >
               <el-input
@@ -254,7 +254,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试套描述英文"
+              :label="$t('testCase.testDescriptionEn')"
               prop="name"
             >
               <el-input
