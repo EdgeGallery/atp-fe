@@ -312,8 +312,9 @@ export default {
       let option = {
         color: colors,
         legend: {
-          top: '5%',
-          left: 'left'
+          x: '80%',
+          y: '30%',
+          orient: 'vertical'
         },
         tooltip: {
           trigger: 'item',

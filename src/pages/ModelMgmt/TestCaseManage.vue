@@ -532,6 +532,7 @@ export default {
         })
       }).catch(() => {
         this.$message({
+          showClose: true,
           duration: 2000,
           message: this.$t('promptMessage.gettestcaseFail'),
           type: 'warning'
@@ -555,7 +556,7 @@ export default {
       }).catch(() => {})
     },
     downLoadCase (row) {
-      Atp.downLoadCaseApi(row.id).then(res => {
+      Atp.downLoadCaseApi(row.id, row.codeLanguage).then(res => {
         this.$message({
           duration: 2000,
           showClose: true,
@@ -653,6 +654,7 @@ export default {
           })
         }).catch(() => {
           this.$message({
+            showClose: true,
             duration: 2000,
             message: '修改失败',
             type: 'warning'
@@ -680,15 +682,17 @@ export default {
       }).then(() => {
         Atp.deleteCaseApi(row.id).then(res => {
           this.$message({
+            showClose: true,
             duration: 2000,
-            message: '删除成功',
+            message: this.$t('promptMessage.deleteSuccess'),
             type: 'success'
           })
           this.getAllcase()
         }).catch(() => {
           this.$message({
+            showClose: true,
             duration: 2000,
-            message: '删除失败',
+            message: this.$t('promptMessage.deleteFail'),
             type: 'warning'
           })
         })

@@ -232,7 +232,7 @@ let Atp = {
     })
   },
   // 下载
-  downLoadCaseApi: function (Id) {
+  downLoadCaseApi: function (Id, codeLanguage) {
     let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
     return axios({
       method: 'get',
@@ -246,7 +246,7 @@ let Atp = {
       let link = document.createElement('a')
       link.style.display = 'none'
       link.href = objectUrl
-      link.setAttribute('download', Id + '.yaml')
+      link.setAttribute('download', Id + '.' + codeLanguage)
       document.body.appendChild(link)
       link.click()
     })
