@@ -244,7 +244,7 @@
               />
             </el-form-item>
             <el-form-item
-              :label="$t('testCase.testDescriptionCn')"
+              :label="$t('testCase.testSuiteDescriptionCn')"
               prop="name"
             >
               <el-input
@@ -254,7 +254,7 @@
               />
             </el-form-item>
             <el-form-item
-              :label="$t('testCase.testDescriptionEn')"
+              :label="$t('testCase.testSuiteDescriptionEn')"
               prop="name"
             >
               <el-input
