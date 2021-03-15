@@ -18,9 +18,9 @@
     <Navcomp />
     <div class="padding56 h100">
       <div style="margin:20px 0">
-        <span>应用测试平台</span>
+        <span>{{ $t('testCase.applicationTestPlatform') }}</span>
         <span>></span>
-        <span>测试场景管理</span>
+        <span>{{ $t('testCase.testScenarioManagement') }}</span>
       </div>
       <div class="testscenarios padding20 h100">
         <div class="scenarioTop">
@@ -102,6 +102,7 @@
         <el-dialog
           :visible.sync="addTestScenarioVisible"
           :close-on-click-modal="false"
+          :title=" $t('testCase.addTestScenario')"
           width="30%"
         >
           <el-form
@@ -109,7 +110,7 @@
             label-width="130px"
           >
             <el-form-item
-              label="测试场景中文名"
+              :label=" $t('testCase.testScenarioCn')"
               prop="nameCh"
             >
               <el-input
@@ -119,7 +120,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试场景英文名"
+              :label=" $t('testCase.testScenarioEn')"
               prop="nameEn"
             >
               <el-input
@@ -129,7 +130,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试场景描述中文"
+              :label=" $t('testCase.testScenarioDescriptionCn')"
               prop="descriptionCh"
             >
               <el-input
@@ -139,7 +140,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试场景描述英文"
+              :label=" $t('testCase.testScenarioDescriptionEn')"
               prop="descriptionEn"
             >
               <el-input
@@ -149,7 +150,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="场景图标"
+              :label=" $t('testCase.testScenarioIcon')"
               prop="logoFileList"
               class="icon"
             >
@@ -193,10 +194,10 @@
                 <em class="el-icon-plus" />
               </el-upload>
             </el-form-item>
-            <el-form-item label="测试场景标签">
+            <el-form-item :label=" $t('testCase.testScenarioLabel')">
               <el-select
                 v-model="addTestScenarioForm.label"
-                placeholder="选择标签"
+                :placeholder="$t('testCase.selectTestScenario')"
               >
                 <el-option
                   v-for="item in label"
@@ -229,6 +230,7 @@
         <!-- 编辑弹框 -->
         <el-dialog
           :visible.sync="editTestScenarioVisible"
+          :title="$t('testCase.editTestScenario')"
           :close-on-click-modal="false"
           width="30%"
         >
@@ -237,7 +239,7 @@
             label-width="130px"
           >
             <el-form-item
-              label="测试场景中文名"
+              :label=" $t('testCase.testScenarioCn')"
               prop="nameCh"
             >
               <el-input
@@ -247,7 +249,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试场景英文名"
+              :label=" $t('testCase.testScenarioEn')"
               prop="nameEn"
             >
               <el-input
@@ -257,7 +259,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试场景描述中文"
+              :label=" $t('testCase.testScenarioDescriptionCn')"
               prop="descriptionCh"
             >
               <el-input
@@ -267,7 +269,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="测试场景描述英文"
+              :label=" $t('testCase.testScenarioDescriptionEn')"
               prop="descriptionEn"
             >
               <el-input
@@ -277,7 +279,7 @@
               />
             </el-form-item>
             <el-form-item
-              label="场景图标"
+              :label=" $t('testCase.testScenarioIcon')"
               prop="logoFileList"
               class="icon"
             >
@@ -321,10 +323,10 @@
                 <em class="el-icon-plus" />
               </el-upload>
             </el-form-item>
-            <el-form-item label="测试场景标签">
+            <el-form-item :label=" $t('testCase.testScenarioLabel')">
               <el-select
                 v-model="editTestScenarioForm.label"
-                placeholder="选择标签"
+                :placeholder="$t('testCase.selectTestScenario')"
               >
                 <el-option
                   v-for="item in label"

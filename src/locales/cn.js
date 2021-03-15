@@ -157,7 +157,26 @@ const cn = {
     expecteCn: '中文预期结果',
     expecteEn: '英文预期结果',
     stepCn: '中文步骤',
-    stepEn: '英文步骤'
+    stepEn: '英文步骤',
+    applicationTestPlatform: '应用测试平台',
+    testSuiteManagement: '测试套管理',
+    testSuiteCn: '测试套中文名',
+    testSuiteEn: '测试套英文名',
+    testSuiteDescriptionCn: '测试套描述中文',
+    testSuiteDescriptionEn: '测试套描述英文',
+    testScenarioManagement: '测试场景管理',
+    testScenarioCn: '测试场景中文名',
+    testScenarioEn: '测试场景英文名',
+    testScenarioDescriptionCn: '测试场景描述中文',
+    testScenarioDescriptionEn: '测试描述英文',
+    testScenarioIcon: '场景图标',
+    testScenarioLabel: '测试场景标签',
+    selectTestScenario: '选择标签',
+    addTestSuite: '新增测试套',
+    editTestSuite: '编辑测试套',
+    addTestScenario: '新增测试场景',
+    editTestScenario: '编辑测试场景'
+
   },
   home: {
     bannerTitle: '应用测试认证平台',
