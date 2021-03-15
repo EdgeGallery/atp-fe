@@ -325,8 +325,12 @@ export default {
             type: 'pie',
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
+            label: {
+              formatter: '{b}: {@2012} ({d}%)'
+            },
             labelLine: {
-              show: false
+              show: true,
+              length: 30
             },
             data: []
           }
