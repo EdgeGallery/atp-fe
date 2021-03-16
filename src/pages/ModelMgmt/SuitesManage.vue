@@ -102,7 +102,7 @@
                 {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
               </el-form-item>
               <el-form-item :label="$t('modelmgmt.scene')">
-                {{ item.scenarioList }}
+                {{ item.scenarioNameList }}
               </el-form-item>
               <el-form-item
                 class="rt"
