@@ -241,7 +241,7 @@
             </el-form-item>
             <el-form-item
               :label="$t('testCase.testSuiteEn')"
-              prop="name"
+              prop="nameEn"
             >
               <el-input
                 width="100px"
@@ -251,7 +251,7 @@
             </el-form-item>
             <el-form-item
               :label="$t('testCase.testSuiteDescriptionCn')"
-              prop="name"
+              prop="descriptionCh"
               required
             >
               <el-input
@@ -262,7 +262,7 @@
             </el-form-item>
             <el-form-item
               :label="$t('testCase.testSuiteDescriptionEn')"
-              prop="name"
+              prop="descriptionEn"
             >
               <el-input
                 width="100px"
@@ -270,7 +270,11 @@
                 v-model="editTestSuiteForm.descriptionEn"
               />
             </el-form-item>
-            <el-form-item :label="$t('modelmgmt.scene')">
+            <el-form-item
+              :label="$t('modelmgmt.scene')"
+              prop="scenarioList"
+              required
+            >
               <el-select
                 v-model="editTestSuiteForm.scenarioList"
                 :placeholder="$t('userpage.selectScene')"
@@ -367,7 +371,7 @@ export default {
               scenarioList.push(this.mapEn.get(id))
             }
           })
-          suite.scenarioList = scenarioList.toString()
+          suite.scenarioNameList = scenarioList.toString()
         })
       }).catch(() => {})
     },
