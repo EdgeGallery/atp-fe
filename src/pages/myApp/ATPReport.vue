@@ -19,7 +19,7 @@
     class="report padding20"
     id="pdfDom"
   >
-    <div class="report-content">
+    <div class="report-content padding20">
       <div class="logo">
         <img
           src="../../assets/images/logo.png"
@@ -30,6 +30,7 @@
         </div>
         <div class="download">
           <el-button
+            v-if="downloadBtn"
             size="large"
             type="primary"
             icon="el-icon-download"
@@ -171,6 +172,7 @@
                 </el-table-column>
                 <el-table-column
                   :label="$t('userpage.description')"
+                  width="500"
                 >
                   <template scope="scope">
                     {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
@@ -202,7 +204,8 @@ export default {
       scenarioId: '',
       tableData: [],
       ChartData: [],
-      finishActiveName: []
+      finishActiveName: [],
+      downloadBtn: true
     }
   },
   mounted () {
@@ -423,8 +426,10 @@ export default {
     },
     downLoadReport () {
       this.activeName = this.finishActiveName
+      this.downloadBtn = false
       setInterval(() => {
         this.getPdf('#pdfDom')
+        this.downloadBtn = true
       }, 1000)
     }
   }

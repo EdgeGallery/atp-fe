@@ -75,7 +75,7 @@
               </el-form>
               <el-button
                 type="text"
-                :disabled="item.label==='EdgeGallery'"
+                :disabled="item.nameEn==='EdgeGallery Community Scenario'"
                 @click="chooseScene(item)"
               >
                 <img
