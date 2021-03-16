@@ -479,25 +479,7 @@ export default {
     .contednt{
       width: 25%;
       padding: 0 15px 25px;
-      // .scene:hover{
-      //   transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-      // }
-      // .scene::after {
-      //   position: absolute;
-      //   top: 100%;
-      //   left: 0;
-      //   z-index: -1;
-      //   display: block;
-      //   content: '';
-      //   height: 22px;
-      //   width: 100%;
-      //   background: url(/images/hotel/hotel_index/floating-card-shadow.png?a=1) no-repeat;
-      //   background-size: 100%;
-      // }
       .scene{
-        // transform-style: preserve-3d;
-        // will-change: transform;
-        // width: 33%;
         height: 260px;
         border: 1px solid #d7dce6;
         box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
@@ -506,7 +488,6 @@ export default {
         background-color: #fafafa;
         .sceneimage{
           margin: 0 auto;
-          // width: 80%;
           height: 100px;
         }
         .choose{
@@ -533,7 +514,7 @@ export default {
           }
           .el-button--text:hover{
             color: #86a5f5;
-            border-bottom: 1px solid #688ef3;
+            // border-bottom: 1px solid #688ef3;
           }
           img{
             width: 30px;
@@ -545,9 +526,6 @@ export default {
         }
       }
     }
-    // .contednt:hover{
-    //   transform: translate3d(0,-10px,0);
-    // }
     @media screen and (max-width: 1320px) {
       .contednt{
           width: 33%;
