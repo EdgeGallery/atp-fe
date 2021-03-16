@@ -276,7 +276,7 @@
               required
             >
               <el-select
-                v-model="editTestSuiteForm.scenarioList"
+                v-model="editTestSuiteForm.scenarioIdList"
                 :placeholder="$t('userpage.selectScene')"
                 multiple
                 required
@@ -340,7 +340,7 @@ export default {
         nameEn: '',
         descriptionCh: '',
         descriptionEn: '',
-        scenarioList: []
+        scenarioIdList: []
       },
       mapCh: new Map(),
       mapEn: new Map(),
@@ -439,7 +439,7 @@ export default {
       fd.append('nameEn', this.editTestSuiteForm.nameEn)
       fd.append('descriptionCh', this.editTestSuiteForm.descriptionCh)
       fd.append('descriptionEn', this.editTestSuiteForm.descriptionEn)
-      fd.append('scenarioIdList', this.editTestSuiteForm.scenarioList)
+      fd.append('scenarioIdList', this.editTestSuiteForm.scenarioIdList)
       ModelMgmt.editTestSuiteApi(fd, this.editId).then(res => {
         this.editTestSuiteVisible = false
         this.getAllSuites()
@@ -454,7 +454,11 @@ export default {
       })
     },
     editTestSuite (item) {
-      this.editTestSuiteForm = item
+      this.editTestSuiteForm.nameCh = item.nameCh
+      this.editTestSuiteForm.nameEn = item.nameEn
+      this.editTestSuiteForm.descriptionCh = item.descriptionCh
+      this.editTestSuiteForm.descriptionEn = item.descriptionEn
+      this.editTestSuiteForm.scenarioIdList = item.scenarioIdList
       this.editId = item.id
       this.editTestSuiteVisible = true
     },
