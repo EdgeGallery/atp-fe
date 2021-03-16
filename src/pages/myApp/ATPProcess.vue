@@ -184,13 +184,18 @@
             </el-collapse>
           </el-carousel-item>
         </el-carousel>
-        <div style="text-align: center; margin: 25px;">
+        <div
+          style="text-align: center; margin: 25px;"
+          v-if="reportData.length !== 1"
+        >
           <el-button
             type="primary"
             size="mini"
             plain
             v-for="(item,index) in reportData"
             :key="index"
+            :id="item.nameEn"
+            v-focus
             @click="setActiveItem(item)"
           >
             {{ language==='cn'?item.nameCh:item.nameEn }}
@@ -307,6 +312,14 @@ export default {
       this.getTaskProcess()
     }, 1000)
   },
+  directives: {
+    focus: {
+    // 指令的定义
+      inserted: function (el, binding, vnode) {
+        document.getElementById(vnode.context.testScenarios[0].nameEn).focus()
+      }
+    }
+  },
   methods: {
     getTaskId () {
       if (this.currUrl.indexOf('?') !== -1) {
@@ -408,7 +421,7 @@ export default {
         let everyBoolan = this.alltestCase.some(function (item) {
           return (item.result === 'running' && item.type === 'automatic')
         })
-        if (!everyBoolan) {
+        if (!everyBoolan && this.percentage !== 100) {
           this.promptWait()
           this.promptWait = function () {}
         }
@@ -418,7 +431,6 @@ export default {
     // 提示手动类型
     promptWait () {
       this.activeName = this.finishActiveName
-      // this.$refs.carousel.setActiveItem(this.firstScene)
       this.$message({
         offset: 200,
         duration: 5000,
@@ -426,7 +438,6 @@ export default {
         type: 'success',
         message: this.$t('promptMessage.manualTip')
       })
-      // this.clearInterval()
     },
     // 设置用例高度
     setDivHeight () {
@@ -441,9 +452,6 @@ export default {
         }
       })
     },
-    // handleClick (tab) {
-    //   this.activeTabsName = tab.name
-    // },
     setActiveItem (item) {
       this.$refs.carousel.setActiveItem(item.nameEn)
     },
@@ -515,8 +523,6 @@ export default {
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      // background-color: #c8d1eb;
-      // border: 2px solid #688ef3;
     }
     .score{
       width: 100px;
@@ -525,7 +531,6 @@ export default {
       text-align: center;
       display: table-cell;
       vertical-align:middle;
-      // border: 2px solid #688ef3;
       em{
         display: inline-block;
         font-size: 30px;
@@ -598,11 +603,6 @@ export default {
         position: relative;
         right: -10px;
       }
-      // .sceneRunning{
-      //   border-radius: 50%;
-      //    border:2px dashed #688ef3;
-      //   animation: rotate 5s infinite linear ;
-      // }
       .testing-case-process{
           width:60px;
           height:60px;
@@ -610,7 +610,6 @@ export default {
           display: table-cell;
           vertical-align:middle;
           border-radius: 50%;
-          // animation: rotateinside 5s infinite linear ;
           span{
             font-size: 40px;
             color: #1ececa;
