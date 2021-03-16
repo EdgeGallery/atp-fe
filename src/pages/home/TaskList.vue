@@ -114,6 +114,7 @@
                   type="text"
                   size="small"
                   @click="handleClickTaskNo(scope.row)"
+                  :disabled="(scope.row.status==='success' || scope.row.status==='failed' || scope.row.status==='running')?false:true"
                 >
                   {{ scope.row.id }}
                 </el-button>
@@ -210,7 +211,7 @@
 </template>
 
 <script>
-import { Taskmgmt } from '../../tools/api.js'
+import { Taskmgmt, Userpage } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
 export default {
@@ -272,7 +273,7 @@ export default {
   mounted () {
     this.getTaskList()
     this.interval = setInterval(() => {
-      this.getTaskList()
+      this.getOneTaskStatus()
     }, 20000)
   },
   beforeDestroy () {
@@ -366,6 +367,21 @@ export default {
           message: this.$t('promptMessage.getTaskListFail')
         })
         this.clearInterval()
+      })
+    },
+    getOneTaskStatus () {
+      this.pageData.forEach((item, index) => {
+        let id = item.id
+        if (item.status !== 'success' || item.status !== 'failed') {
+          Userpage.getTaskApi(id).then(res => {
+            let data = res.data
+            let newDateBegin = this.dateChange(data.createTime)
+            data.createTime = newDateBegin
+            let newDateEnd = this.dateChange(data.endTime)
+            data.endTime = newDateEnd
+            this.pageData.splice(index, 1, data)
+          })
+        }
       })
     },
     deleteTask () {
