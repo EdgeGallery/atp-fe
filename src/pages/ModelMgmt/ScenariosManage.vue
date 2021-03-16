@@ -637,13 +637,13 @@ export default {
           this.getAllScene()
           this.$message({
             duration: 2000,
-            message: '删除成功',
+            message: this.$t('promptMessage.deleteSuccess'),
             type: 'success'
           })
         }).catch(() => {
           this.$message({
             duration: 2000,
-            message: '删除失败',
+            message: this.$t('promptMessage.deleteFail'),
             type: 'warning'
           })
         })
@@ -668,6 +668,7 @@ export default {
 .testscenarios{
   .scenarioTop {
     // height: 300px;
+    margin-left: 10px;
     display: flex;
     .searchBar {
       width: 90%;
