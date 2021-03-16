@@ -71,6 +71,8 @@ const cn = {
     downloadSuccess: '下载成功',
     downloadFail: '下载失败',
     deletePrompt: '是否要继续删除此用例？',
+    deleteSuitePrompt: '是否要继续删除此测试套？',
+    deleteSenarioPrompt: '是否要继续删除此测试场景？',
     onlyOneFile: '仅支持一个文件，请先移除已有文件！',
     deleteSuccess: '删除成功',
     deleteFail: '删除失败',
