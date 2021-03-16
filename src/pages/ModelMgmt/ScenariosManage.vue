@@ -112,6 +112,7 @@
             <el-form-item
               :label=" $t('testCase.testScenarioCn')"
               prop="nameCh"
+              required
             >
               <el-input
                 width="100px"
@@ -132,6 +133,7 @@
             <el-form-item
               :label=" $t('testCase.testScenarioDescriptionCn')"
               prop="descriptionCh"
+              required
             >
               <el-input
                 width="100px"
@@ -153,6 +155,7 @@
               :label=" $t('testCase.testScenarioIcon')"
               prop="logoFileList"
               class="icon"
+              required
             >
               <div class="default-icon">
                 <div
@@ -193,19 +196,6 @@
               >
                 <em class="el-icon-plus" />
               </el-upload>
-            </el-form-item>
-            <el-form-item :label=" $t('testCase.testScenarioLabel')">
-              <el-select
-                v-model="addTestScenarioForm.label"
-                :placeholder="$t('testCase.selectTestScenario')"
-              >
-                <el-option
-                  v-for="item in label"
-                  :key="item.labelEn"
-                  :label="language == 'cn' ? item.label : item.labelEn"
-                  :value="item.labelEn"
-                />
-              </el-select>
             </el-form-item>
           </el-form>
           <div
@@ -323,19 +313,6 @@
                 <em class="el-icon-plus" />
               </el-upload>
             </el-form-item>
-            <el-form-item :label=" $t('testCase.testScenarioLabel')">
-              <el-select
-                v-model="editTestScenarioForm.label"
-                :placeholder="$t('testCase.selectTestScenario')"
-              >
-                <el-option
-                  v-for="item in label"
-                  :key="item.labelEn"
-                  :label="language == 'cn' ? item.label : item.labelEn"
-                  :value="item.labelEn"
-                />
-              </el-select>
-            </el-form-item>
           </el-form>
           <div
             slot="footer"
@@ -384,7 +361,6 @@ export default {
         nameEn: '',
         descriptionCh: '',
         descriptionEn: '',
-        label: '',
         icon: [],
         base64Session: false,
         defaultActive: ''
@@ -394,7 +370,6 @@ export default {
         nameEn: '',
         descriptionCh: '',
         descriptionEn: '',
-        label: '',
         icon: [],
         base64Session: false,
         defaultActive: ''
@@ -406,29 +381,8 @@ export default {
         locale: ''
       },
       defaultIconFile: [],
-      scenarios: [],
-      label: [
-        {
-          value: 'EdgeGallery',
-          label: 'EdgeGallery',
-          labelEn: 'EdgeGallery'
-        },
-        {
-          value: '中国联通',
-          label: '中国联通',
-          labelEn: 'China Union'
-        },
-        {
-          value: '中国电信',
-          label: '中国电信',
-          labelEn: 'China Telecom'
-        },
-        {
-          value: '中国移动',
-          label: '中国移动',
-          labelEn: 'China Mobile'
-        }
-      ]
+      scenarios: []
+
     }
   },
   methods: {
@@ -446,7 +400,6 @@ export default {
         nameEn: '',
         descriptionCh: '',
         descriptionEn: '',
-        label: '',
         icon: [],
         base64Session: false,
         defaultActive: ''
@@ -456,7 +409,6 @@ export default {
         nameEn: '',
         descriptionCh: '',
         descriptionEn: '',
-        label: '',
         icon: [],
         base64Session: false,
         defaultActive: ''
@@ -577,9 +529,6 @@ export default {
       fd.append('nameEn', this.addTestScenarioForm.nameEn)
       fd.append('descriptionCh', this.addTestScenarioForm.descriptionCh)
       fd.append('descriptionEn', this.addTestScenarioForm.descriptionEn)
-      fd.append('label', this.addTestScenarioForm.label)
-      // this.conversionIcon(this.icon[0])
-      // fd.append('icon', this.icon[0])
       fd.append('icon', this.addTestScenarioForm.icon.length > 0 ? this.addTestScenarioForm.icon[0] : this.defaultIconFile)
       ModelMgmt.createTestScenarioApi(fd).then(res => {
         this.getAllScene()
@@ -601,9 +550,6 @@ export default {
       fd.append('nameEn', this.editTestScenarioForm.nameEn)
       fd.append('descriptionCh', this.editTestScenarioForm.descriptionCh)
       fd.append('descriptionEn', this.editTestScenarioForm.descriptionEn)
-      fd.append('label', this.editTestScenarioForm.label)
-      // this.conversionIcon(this.icon[0])
-      // fd.append('icon', this.icon[0])
       fd.append('icon', this.addTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile)
       ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
         this.getAllScene()
@@ -625,10 +571,9 @@ export default {
       form.nameEn = ''
       form.descriptionCh = ''
       form.descriptionEn = ''
-      form.label = ''
     },
     onDelete (id) {
-      this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
+      this.$confirm(this.$t('promptMessage.deleteSenarioPrompt'), this.$t('promptMessage.prompt'), {
         confirmButtonText: this.$t('common.confirm'),
         cancelButtonText: this.$t('common.cancel'),
         type: 'warning'

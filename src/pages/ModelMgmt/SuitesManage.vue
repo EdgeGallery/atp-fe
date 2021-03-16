@@ -102,7 +102,7 @@
                 {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
               </el-form-item>
               <el-form-item :label="$t('modelmgmt.scene')">
-                {{ item.scenarioIdList }}
+                {{ item.scenarioList }}
               </el-form-item>
               <el-form-item
                 class="rt"
@@ -141,6 +141,7 @@
             <el-form-item
               :label=" $t('testCase.testSuiteCn')"
               prop="nameCh"
+              required
             >
               <el-input
                 width="100px"
@@ -162,6 +163,7 @@
             <el-form-item
               :label=" $t('testCase.testSuiteDescriptionCn')"
               prop="descriptionCh"
+              required
             >
               <el-input
                 width="100px"
@@ -179,7 +181,10 @@
                 v-model="addTestSuiteForm.descriptionEn"
               />
             </el-form-item>
-            <el-form-item :label="$t('modelmgmt.scene')">
+            <el-form-item
+              :label="$t('modelmgmt.scene')"
+              required
+            >
               <el-select
                 multiple
                 v-model="addTestSuiteForm.scenarioList"
@@ -226,6 +231,7 @@
             <el-form-item
               :label="$t('testCase.testSuiteCn')"
               prop="nameCh"
+              required
             >
               <el-input
                 width="100px"
@@ -246,6 +252,7 @@
             <el-form-item
               :label="$t('testCase.testSuiteDescriptionCn')"
               prop="name"
+              required
             >
               <el-input
                 width="100px"
@@ -268,6 +275,7 @@
                 v-model="editTestSuiteForm.scenarioList"
                 :placeholder="$t('userpage.selectScene')"
                 multiple
+                required
               >
                 <el-option
                   v-for="item in options"
@@ -336,7 +344,6 @@ export default {
       form: {
         locale: '',
         name: '',
-        // scenarioList: []
         scenarioIdList: []
       },
       options: [],
@@ -349,11 +356,6 @@ export default {
     async getAllSuites () {
       await this.fillOptions()
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
-      // if (this.value !== '') {
-      //   this.form.scenarioList.push(this.value)
-      // } else {
-      //   this.form.scenarioList = []
-      // }
       ModelMgmt.getTestSuite(this.form).then(res => {
         this.testSuites = res.data
         this.testSuites.forEach(suite => {
@@ -365,7 +367,7 @@ export default {
               scenarioList.push(this.mapEn.get(id))
             }
           })
-          suite.scenarioIdList = scenarioList.toString()
+          suite.scenarioList = scenarioList.toString()
         })
       }).catch(() => {})
     },
@@ -453,7 +455,7 @@ export default {
       this.editTestSuiteVisible = true
     },
     deleteTestSuite (id) {
-      this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
+      this.$confirm(this.$t('promptMessage.deleteSuitePrompt'), this.$t('promptMessage.prompt'), {
         confirmButtonText: this.$t('common.confirm'),
         cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
