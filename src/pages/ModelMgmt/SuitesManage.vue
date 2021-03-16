@@ -453,16 +453,25 @@ export default {
       this.editTestSuiteVisible = true
     },
     deleteTestSuite (id) {
-      ModelMgmt.deleteTestSuite(id).then(res => {
-        console.log('Test suite got deleted')
-      }).catch(() => {
+      this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning'
+      }).then(() => {
+        ModelMgmt.deleteTestSuite(id).then(res => {
+        }).catch(() => {
+          this.$message({
+            duration: 2000,
+            message: this.$t('promptMessage.deleteFail'),
+            type: 'warning'
+          })
+        })
+        this.getAllSuites()
         this.$message({
-          duration: 2000,
-          message: '删除失败',
-          type: 'warning'
+          type: 'success',
+          message: this.$t('promptMessage.deleteSuccess')
         })
       })
-      this.getAllSuites()
     },
     clearFormData (form) {
       form.nameCh = ''
@@ -487,6 +496,7 @@ export default {
 .testsuites{
   background-color: white;
   .searchBtn{
+    margin-left: -40px;
     display: flex;
     .el-form{
       width: 90%;
