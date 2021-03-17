@@ -138,12 +138,20 @@
               :label="$t('testCase.caseName')"
             >
               <template slot-scope="scope">
-                <el-button
-                  type="text"
-                  @click="downLoadCase(scope.row)"
+                <el-tooltip
+                  effect="light"
+                  :content="$t('userpage.clickDownloadCase')"
+                  placement="right"
+                  v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
                 >
-                  {{ language==='cn'?scope.row.nameCh :scope.row.nameEn }}
-                </el-button>
+                  <el-button
+                    type="text"
+                    @click="downLoadCase(scope.row)"
+                  >
+                    {{ language==='cn'?scope.row.nameCh :scope.row.nameEn }}
+                  </el-button>
+                </el-tooltip>
+                <span v-else>{{ language==='cn'?scope.row.nameCh :scope.row.nameEn }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -235,6 +243,9 @@
           <el-form-item
             :label="$t('testCase.nameCn')"
             prop="nameCh"
+            :rules="confirmBtnApi === 'add'?[
+              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
+            ]:rules"
           >
             <el-input
               width="100px"
@@ -257,6 +268,9 @@
           <el-form-item
             :label="$t('testCase.caseType')"
             prop="type"
+            :rules="confirmBtnApi === 'add'?[
+              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
+            ]:rules"
           >
             <el-select
               size="small"
@@ -275,6 +289,9 @@
           <el-form-item
             :label="$t('testCase.descriptionCn')"
             prop="descriptionCh"
+            :rules="confirmBtnApi === 'add'?[
+              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
+            ]:rules"
           >
             <el-input
               v-model="addcaseForm.descriptionCh"
@@ -295,6 +312,9 @@
           <el-form-item
             :label="$t('testCase.expecteCn')"
             prop="expectResultCh"
+            :rules="confirmBtnApi === 'add'?[
+              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
+            ]:rules"
           >
             <el-input
               size="small"
@@ -315,6 +335,9 @@
           <el-form-item
             :label="$t('testCase.language')"
             prop="codeLanguage"
+            :rules="confirmBtnApi === 'add'?[
+              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
+            ]:rules"
           >
             <el-select
               size="small"
@@ -333,6 +356,9 @@
           <el-form-item
             :label="$t('testCase.testSuiteList')"
             prop="testSuiteIdList"
+            :rules="confirmBtnApi === 'add'?[
+              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
+            ]:rules"
           >
             <el-select
               multiple
@@ -351,6 +377,9 @@
           <el-form-item
             :label="$t('testCase.stepCn')"
             prop="testStepCh"
+            :rules="confirmBtnApi === 'add'?[
+              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
+            ]:rules"
           >
             <el-input
               size="small"
@@ -371,6 +400,7 @@
           <el-form-item
             :label="$t('testCase.import')"
             prop="file"
+            :required="confirmBtnApi === 'add'? true: false"
           >
             <el-upload
               action=""
@@ -494,7 +524,8 @@ export default {
         file: []
       },
       editfile: false,
-      DemoDownload: './javaExample.java'
+      DemoDownload: './javaExample.java',
+      rules: {}
     }
   },
   mounted () {
@@ -531,6 +562,8 @@ export default {
               testSuiteListEn.push(data.nameEn)
             })
           })
+          testSuiteListCh.join(',')
+          testSuiteListEn.join(',')
           item.testSuiteId = item.testSuiteIdList
           if (this.language === 'cn') {
             item.testSuiteIdList = testSuiteListCh
@@ -793,21 +826,15 @@ export default {
       color: #688EF3;
     }
   }
-  .el-dialog__header{
-    background-color: #688ef3 ;
-    .el-dialog__title {
-      color: #fff;
-    }
-    .el-dialog__close {
-      color: #fff;
-    }
+  .el-dialog__body{
+    padding: 0;
   }
   .addtestdialog{
     .el-form{
       width: 80%;
     }
   .dialog-footer{
-      text-align: center;
+      text-align: right;
     }
   }
 

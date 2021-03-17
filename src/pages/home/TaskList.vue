@@ -275,7 +275,7 @@ export default {
     this.getTaskList()
     this.interval = setInterval(() => {
       this.getOneTaskStatus()
-    }, 2000)
+    }, 20000)
   },
   beforeDestroy () {
     this.clearInterval()

@@ -88,6 +88,7 @@
               <el-button
                 id="checkReportProess"
                 @click="handleClickTaskNo(scope.row)"
+                :disabled="(scope.row.status==='success' || scope.row.status==='failed' || scope.row.status==='running')?false:true"
                 type="text"
                 size="small"
               >
@@ -131,6 +132,7 @@
                 type="text"
                 size="small"
                 @click="handleClickTaskNo(scope.row)"
+                :disabled="(scope.row.status==='success' || scope.row.status==='failed' || scope.row.status==='running')?false:true"
               >
                 {{ scope.row.status }}
               </el-button>

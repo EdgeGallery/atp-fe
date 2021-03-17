@@ -180,7 +180,8 @@ const en = {
     editTestScenario: 'Modify Test Scenario',
     testScenarioIntro: 'The test scenario is the largest unit set of the test, a test scenario can contain multiple test suites.',
     testSuiteIntro: 'A test suite is a classification of test types. A test suite can belong to one or more test scenarios, and a test suite can contain multiple test cases.',
-    testCaseIntro: 'A test case is the smallest execution unit of a test. A test case can belong to one or more test suites.'
+    testCaseIntro: 'A test case is the smallest execution unit of a test. A test case can belong to one or more test suites.',
+    pleaseInput: 'Please Input'
 
   },
   home: {
@@ -215,7 +216,8 @@ const en = {
     hover: 'Successful / Total',
     clickContribution: 'Click to contribute use case',
     choose: 'Please choose',
-    failReason: 'Reasons for failure'
+    failReason: 'Reasons for failure',
+    clickDownloadCase: 'Click to Download the Case'
   },
   modelmgmt: {
     name: 'Name:',
