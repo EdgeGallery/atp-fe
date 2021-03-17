@@ -274,7 +274,7 @@ export default {
     this.getTaskList()
     this.interval = setInterval(() => {
       this.getOneTaskStatus()
-    }, 20000)
+    }, 2000)
   },
   beforeDestroy () {
     this.clearInterval()
@@ -372,7 +372,7 @@ export default {
     getOneTaskStatus () {
       this.pageData.forEach((item, index) => {
         let id = item.id
-        if (item.status !== 'success' || item.status !== 'failed') {
+        if (item.status === 'running' || item.status === 'waiting' || item.status === 'created' || item.status === 'create failed') {
           Userpage.getTaskApi(id).then(res => {
             let data = res.data
             let newDateBegin = this.dateChange(data.createTime)
