@@ -46,6 +46,13 @@
                   >
                     {{ $t('common.search') }}
                   </el-button>
+                  <el-tooltip
+                    class="questionIcon"
+                    :content="this.$t('testCase.testScenarioIntro')"
+                    placement="right"
+                  >
+                    <em class="el-icon-question" />
+                  </el-tooltip>
                 </el-form-item>
               </div>
             </el-form>
@@ -618,6 +625,11 @@ export default {
     display: flex;
     .searchBar {
       width: 90%;
+    }
+    .questionIcon {
+      font-size: 18px;
+    margin-left: 10px;
+    color: #688EF3;
     }
     .addBtn{
       padding: 5px 55px;

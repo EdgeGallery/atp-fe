@@ -72,6 +72,13 @@
                 >
                   {{ $t('common.search') }}
                 </el-button>
+                <el-tooltip
+                  :content="this.$t('testCase.testSuiteIntro')"
+                  placement="right"
+                  class="questionIcon"
+                >
+                  <em class="el-icon-question" />
+                </el-tooltip>
               </el-col>
             </el-row>
           </el-form>
@@ -514,6 +521,10 @@ export default {
     }
     .addBtn{
       padding: 5px 55px;
+    }
+    .questionIcon {
+      font-size: 18px;
+      color: #688EF3;
     }
   }
   .allsuite{
