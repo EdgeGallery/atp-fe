@@ -315,6 +315,7 @@ export default {
     getUserInfo().then(res => {
       sessionStorage.setItem('userId', res.data.userId)
       sessionStorage.setItem('userName', res.data.userName)
+      sessionStorage.setItem('authorities', res.data.authorities)
       this.userName = res.data.userName
     })
   },

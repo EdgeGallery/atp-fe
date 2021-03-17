@@ -165,7 +165,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column
-                    v-if="userName==='admin'"
+                    v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
                     :label="$t('myApp.operation')"
                     width="100"
                   >
@@ -301,6 +301,7 @@ export default {
       },
       dialogVisible: false,
       userName: sessionStorage.getItem('userName'),
+      authorities: sessionStorage.getItem('authorities'),
       carouselHeight: '',
       alltestCase: []
     }

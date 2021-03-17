@@ -83,7 +83,7 @@
         <div class="task-content">
           <div
             class="delBtn rt"
-            v-if="userName==='admin'"
+            v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
           >
             <el-button
               size="small"
@@ -184,7 +184,7 @@
                   {{ $t('myApp.checkReport') }}
                 </el-button>
                 <el-button
-                  v-if="userName==='admin'"
+                  v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
                   type="text"
                   :disabled="scope.row.status==='running'?false:true"
                   size="small"
@@ -265,6 +265,7 @@ export default {
       taskIds: [],
       userId: sessionStorage.getItem('userId'),
       userName: sessionStorage.getItem('userName'),
+      authorities: sessionStorage.getItem('authorities'),
       reportData: [],
       language: localStorage.getItem('language'),
       visible: false

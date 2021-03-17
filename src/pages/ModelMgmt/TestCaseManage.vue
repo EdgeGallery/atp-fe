@@ -113,7 +113,7 @@
           class="addbtn"
         >
           <el-button
-            v-if="userName==='admin'"
+            v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
             type="primary"
             size="small"
             @click="addTestBtn"
@@ -181,7 +181,7 @@
             </el-table-column>
             <el-table-column
               :label="$t('testCase.operation')"
-              v-if="userName==='admin'"
+              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
             >
               <template slot-scope="scope">
                 <el-button
@@ -435,6 +435,7 @@ export default {
     return {
       language: localStorage.getItem('language'),
       userName: sessionStorage.getItem('userName'),
+      authorities: sessionStorage.getItem('authorities'),
       taskId: '',
       form: {
         testSuiteIdList: [],

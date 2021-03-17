@@ -77,7 +77,7 @@
           </el-form>
           <div class="addBtn">
             <el-button
-              v-if="userName==='admin'"
+              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               type="primary"
               size="small"
               @click="addTestSuiteBtn"
@@ -106,7 +106,7 @@
               </el-form-item>
               <el-form-item
                 class="rt"
-                v-if="userName==='admin'"
+                v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               >
                 <el-button
                   type="warning"
@@ -322,6 +322,7 @@ export default {
   data () {
     return {
       userName: sessionStorage.getItem('userName'),
+      authorities: sessionStorage.getItem('authorities'),
       addTestSuiteVisible: false,
       editTestSuiteVisible: false,
       confirmBtnApi: '',
