@@ -272,7 +272,7 @@
             </el-form-item>
             <el-form-item
               :label="$t('modelmgmt.scene')"
-              prop="scenarioList"
+              prop="scenarioIdList"
               required
             >
               <el-select
