@@ -27,7 +27,7 @@
         class="testcase-content padding20"
         style="margin-top: 10px;"
       >
-        <div style="text-align:center">
+        <div>
           <el-form
             ref="form"
             :model="form"
@@ -47,7 +47,6 @@
               </el-col>
               <el-col
                 :span="6"
-                :offset="2"
               >
                 <el-form-item
                   :label="$t('testCase.caseType')"
@@ -69,7 +68,6 @@
               </el-col>
               <el-col
                 :span="6"
-                :offset="2"
               >
                 <el-form-item
                   :label="$t('testCase.testSuiteList')"
@@ -89,31 +87,33 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :span="6">
+                <div class="search-btn">
+                  <el-button
+                    id="resetBtn"
+                    size="small"
+                    @click="resetForm"
+                  >
+                    {{ $t('myApp.reset') }}
+                  </el-button>
+                  <el-button
+                    id="inquireBtn"
+                    type="primary"
+                    size="small"
+                    @click="getAllcase()"
+                  >
+                    {{ $t('myApp.inquire') }}
+                  </el-button>
+                  <el-tooltip
+                    :content="this.$t('testCase.testCaseIntro')"
+                    placement="right"
+                    class="questionIcon"
+                  >
+                    <em class="el-icon-question" />
+                  </el-tooltip>
+                </div>
+              </el-col>
             </el-row>
-            <div class="search-btn">
-              <el-button
-                id="resetBtn"
-                size="small"
-                @click="resetForm"
-              >
-                {{ $t('myApp.reset') }}
-              </el-button>
-              <el-button
-                id="inquireBtn"
-                type="primary"
-                size="small"
-                @click="getAllcase()"
-              >
-                {{ $t('myApp.inquire') }}
-              </el-button>
-              <el-tooltip
-                :content="this.$t('testCase.testCaseIntro')"
-                placement="right"
-                class="questionIcon"
-              >
-                <em class="el-icon-question" />
-              </el-tooltip>
-            </div>
           </el-form>
         </div>
         <div
@@ -776,6 +776,11 @@ export default {
 .testcase {
   .testcase-content {
     background: white;
+    .search-btn{
+      height: 40px;
+      line-height: 40px;
+      margin-left: 20px;
+    }
     .el-table thead {
       color: #686a6f;
       font-weight: 800;
