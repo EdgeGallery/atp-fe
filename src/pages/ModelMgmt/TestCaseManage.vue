@@ -106,6 +106,13 @@
               >
                 {{ $t('myApp.inquire') }}
               </el-button>
+              <el-tooltip
+                :content="this.$t('testCase.testCaseIntro')"
+                placement="right"
+                class="questionIcon"
+              >
+                <em class="el-icon-question" />
+              </el-tooltip>
             </div>
           </el-form>
         </div>
@@ -775,6 +782,11 @@ export default {
       height: 20px;
       position: relative;
       top: 5px;
+    }
+    .questionIcon {
+      margin-left: 10px;
+      font-size: 18px;
+      color: #688EF3;
     }
   }
   .el-dialog__header{

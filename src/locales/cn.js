@@ -177,7 +177,10 @@ const cn = {
     addTestSuite: '新增测试套',
     editTestSuite: '编辑测试套',
     addTestScenario: '新增测试场景',
-    editTestScenario: '编辑测试场景'
+    editTestScenario: '编辑测试场景',
+    testScenarioIntro: '测试场景是测试的最大单元集，一个测试场景可以包含多个测试套。',
+    testSuiteIntro: '测试套是测试类型的分类，一个测试套可以属于一个或者多个测试场景，一个测试套可以包含多个测试用例。',
+    testCaseIntro: '测试用例是测试的最小执行单元，一个测试用例可以属于一个或者多个测试套。'
 
   },
   home: {
