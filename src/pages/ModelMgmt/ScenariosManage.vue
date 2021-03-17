@@ -54,7 +54,7 @@
             <el-button
               type="primary"
               size="small"
-              v-if="userName==='admin'"
+              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               @click="onclickAdd"
             >
               {{ $t('testCase.add') }}
@@ -76,7 +76,7 @@
               </el-form-item>
               <el-form-item
                 class="rt"
-                v-if="userName==='admin'"
+                v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               >
                 <el-button
                   type="warning"
@@ -376,6 +376,7 @@ export default {
       },
       userName: sessionStorage.getItem('userName'),
       language: localStorage.getItem('language'),
+      authorities: sessionStorage.getItem('authorities'),
       form: {
         name: '',
         locale: ''
