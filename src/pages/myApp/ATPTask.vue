@@ -25,7 +25,6 @@
         <el-row>
           <el-col
             :span="6"
-            :offset="6"
           >
             <el-form-item :label="$t('atp.applicationName')">
               <el-input
@@ -54,31 +53,35 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col
+            :span="6"
+          >
+            <div class="search-btn">
+              <el-button
+                id="resetBtn"
+                size="small"
+                @click="resetForm"
+              >
+                {{ $t('myApp.reset') }}
+              </el-button>
+              <el-button
+                id="inquireBtn"
+                type="primary"
+                size="small"
+                @click="getTaskList"
+              >
+                {{ $t('myApp.inquire') }}
+              </el-button>
+            </div>
+          </el-col>
         </el-row>
-        <div class="search-btn">
-          <el-button
-            id="resetBtn"
-            size="small"
-            @click="resetForm"
-          >
-            {{ $t('myApp.reset') }}
-          </el-button>
-          <el-button
-            id="inquireBtn"
-            type="primary"
-            size="small"
-            @click="getTaskList"
-          >
-            {{ $t('myApp.inquire') }}
-          </el-button>
-        </div>
       </el-form>
       <div class="task-content">
         <el-table
           v-loading="dataLoading"
           :data="currentData"
           style="width: 100%;"
-          border
+          header-cell-class-name="headerStyle"
         >
           <el-table-column
             prop="id"
@@ -309,6 +312,7 @@ export default {
         () => {
           this.dataLoading = false
           this.$message({
+            showClose: true,
             duration: 2000,
             type: 'warning',
             message: this.$t('promptMessage.getTaskListFail')
@@ -372,6 +376,8 @@ export default {
   }
   .search-btn {
     text-align: center;
+    height: 40px;
+    line-height: 40px;
     .el-button {
       padding: 6px 20px;
     }
@@ -394,6 +400,20 @@ export default {
   }
   .task-content {
     margin-top: 25px;
+    .headerStyle{
+        background: #e1e7f5;
+        color: #575d6c;
+        border-right: 2px solid #fff;
+        padding: 0;
+        height: 40px;
+        line-height: 40px;
+      }
+      .el-table td{
+        padding: 0;
+        height: 60px;
+        max-height: 60px;
+        line-height: 60px;
+      }
     .success{
       color: #67c23a;
     }
