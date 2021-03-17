@@ -180,8 +180,8 @@ const cn = {
     editTestScenario: '编辑测试场景',
     testScenarioIntro: '测试场景是测试的最大单元集，一个测试场景可以包含多个测试套。',
     testSuiteIntro: '测试套是测试类型的分类，一个测试套可以属于一个或者多个测试场景，一个测试套可以包含多个测试用例。',
-    testCaseIntro: '测试用例是测试的最小执行单元，一个测试用例可以属于一个或者多个测试套。'
-
+    testCaseIntro: '测试用例是测试的最小执行单元，一个测试用例可以属于一个或者多个测试套。',
+    pleaseInput: '请输入'
   },
   home: {
     bannerTitle: '应用测试认证平台',
@@ -215,7 +215,8 @@ const cn = {
     hover: '成功用例/总用例',
     clickContribution: '点击贡献用例',
     choose: '请选择',
-    failReason: '失败理由'
+    failReason: '失败理由',
+    clickDownloadCase: '点击下载用例'
   },
   modelmgmt: {
     name: '名称:',
