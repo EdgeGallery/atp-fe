@@ -112,6 +112,7 @@
             <el-collapse
               v-model="activeName"
               class="collapseHeight"
+              @change="handleChange"
             >
               <el-collapse-item
                 v-for="(suiteItem,dex) in item.testSuites"
@@ -335,6 +336,9 @@ export default {
       let taskId = this.taskId
       let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
       window.open(routeData.href, '_blank')
+    },
+    handleChange (val) {
+      console.log('change')
     },
     getTaskProcess () {
       Userpage.getTaskApi(this.taskId).then(res => {

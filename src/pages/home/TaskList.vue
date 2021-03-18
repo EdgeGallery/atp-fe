@@ -32,7 +32,6 @@
           <el-row>
             <el-col
               :span="6"
-              :offset="6"
             >
               <el-form-item :label="$t('atp.applicationName')">
                 <el-input
@@ -61,24 +60,26 @@
                 </el-select>
               </el-form-item>
             </el-col>
+            <el-col :span="6">
+              <div class="search-btn">
+                <el-button
+                  id="resetBtn"
+                  size="small"
+                  @click="resetForm"
+                >
+                  {{ $t('myApp.reset') }}
+                </el-button>
+                <el-button
+                  id="inquireBtn"
+                  type="primary"
+                  size="small"
+                  @click="getTaskList"
+                >
+                  {{ $t('myApp.inquire') }}
+                </el-button>
+              </div>
+            </el-col>
           </el-row>
-          <div class="search-btn">
-            <el-button
-              id="resetBtn"
-              size="small"
-              @click="resetForm"
-            >
-              {{ $t('myApp.reset') }}
-            </el-button>
-            <el-button
-              id="inquireBtn"
-              type="primary"
-              size="small"
-              @click="getTaskList"
-            >
-              {{ $t('myApp.inquire') }}
-            </el-button>
-          </div>
         </el-form>
         <div class="task-content">
           <div
@@ -466,6 +467,9 @@ export default {
   }
   .search-btn {
     text-align: center;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 20px;
     .el-button {
       padding: 6px 20px;
     }

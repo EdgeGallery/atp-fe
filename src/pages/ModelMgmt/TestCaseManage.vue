@@ -155,7 +155,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="testSuiteIdList"
+              prop="testSuiteNameList"
               :label="$t('testCase.testSuiteList')"
             />
             <el-table-column
@@ -239,13 +239,12 @@
         <el-form
           :model="addcaseForm"
           label-width="150px"
+          ref="addcaseForm"
         >
           <el-form-item
             :label="$t('testCase.nameCn')"
             prop="nameCh"
-            :rules="confirmBtnApi === 'add'?[
-              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
-            ]:rules"
+            :rules="confirmBtnApi === 'add'?rules.nameCh:kongrules"
           >
             <el-input
               width="100px"
@@ -268,9 +267,7 @@
           <el-form-item
             :label="$t('testCase.caseType')"
             prop="type"
-            :rules="confirmBtnApi === 'add'?[
-              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
-            ]:rules"
+            :rules="confirmBtnApi === 'add'?rules.type:kongrules"
           >
             <el-select
               size="small"
@@ -289,9 +286,7 @@
           <el-form-item
             :label="$t('testCase.descriptionCn')"
             prop="descriptionCh"
-            :rules="confirmBtnApi === 'add'?[
-              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
-            ]:rules"
+            :rules="confirmBtnApi === 'add'?rules.descriptionCh:kongrules"
           >
             <el-input
               v-model="addcaseForm.descriptionCh"
@@ -312,9 +307,7 @@
           <el-form-item
             :label="$t('testCase.expecteCn')"
             prop="expectResultCh"
-            :rules="confirmBtnApi === 'add'?[
-              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
-            ]:rules"
+            :rules="confirmBtnApi === 'add'?rules.expectResultCh:kongrules"
           >
             <el-input
               size="small"
@@ -335,9 +328,7 @@
           <el-form-item
             :label="$t('testCase.language')"
             prop="codeLanguage"
-            :rules="confirmBtnApi === 'add'?[
-              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
-            ]:rules"
+            :rules="confirmBtnApi === 'add'?rules.codeLanguage:kongrules"
           >
             <el-select
               size="small"
@@ -356,9 +347,6 @@
           <el-form-item
             :label="$t('testCase.testSuiteList')"
             prop="testSuiteIdList"
-            :rules="confirmBtnApi === 'add'?[
-              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
-            ]:rules"
           >
             <el-select
               multiple
@@ -377,9 +365,7 @@
           <el-form-item
             :label="$t('testCase.stepCn')"
             prop="testStepCh"
-            :rules="confirmBtnApi === 'add'?[
-              { required: true, message: this.$t('testCase.pleaseInput'),trigger: 'blur' }
-            ]:rules"
+            :rules="confirmBtnApi === 'add'?rules.testStepCh:kongrules"
           >
             <el-input
               size="small"
@@ -525,12 +511,40 @@ export default {
       },
       editfile: false,
       DemoDownload: './javaExample.java',
-      rules: {}
+      mapCh: new Map(),
+      mapEn: new Map(),
+      kongrules: {},
+      rules: {
+        nameCh: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        descriptionCh: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        codeLanguage: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        expectResultCh: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        // testSuiteIdList: [
+        //   { type: 'number', required: true, message: '请输入' }
+        //   // { validator: checkSuite, trigger: 'blur' }
+        // ],
+        testStepCh: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        file: [
+          { required: true, message: '请输入', trigger: 'change' }
+        ]
+      }
     }
   },
   mounted () {
     this.getAllcase()
-    this.getALlSuites()
   },
   methods: {
     getCurrentPageData (val) {
@@ -547,28 +561,23 @@ export default {
     },
     // 获取所有测试用例
     getAllcase () {
+      this.getALlSuites()
       this.allcaseData = []
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       Atp.getAllCaseApi(this.form).then(res => {
         this.allcaseData = res.data
         this.allcaseData.forEach(item => {
+        // item.testSuiteId = item.testSuiteIdList
         // 测试套
-          let testSuiteListCh = []
-          let testSuiteListEn = []
-          item.testSuiteIdList.forEach(testSuiteId => {
-            ModelMgmt.getOneSuite(testSuiteId).then(testSuite => {
-              let data = testSuite.data
-              testSuiteListCh.push(data.nameCh)
-              testSuiteListEn.push(data.nameEn)
-            })
+          let testSuiteList = []
+          item.testSuiteIdList.forEach(Id => {
+            if (this.language === 'cn') {
+              testSuiteList.push(this.mapCh.get(Id))
+            } else {
+              testSuiteList.push(this.mapEn.get(Id))
+            }
           })
-          item.testSuiteId = item.testSuiteIdList
-          if (this.language === 'cn') {
-            item.testSuiteIdList = testSuiteListCh
-          } else {
-            item.testSuiteIdList = testSuiteListEn
-          }
-          item.testSuiteIdList = item.testSuiteIdList.join(',')
+          item.testSuiteNameList = testSuiteList.toString()
         })
       }).catch(() => {
         this.$message({
@@ -592,6 +601,8 @@ export default {
           obj.nameCh = item.nameCh
           obj.nameEn = item.nameEn
           this.testSuiteList.push(obj)
+          this.mapCh.set(obj.id, obj.nameCh)
+          this.mapEn.set(obj.id, obj.nameEn)
         })
       }).catch(() => {})
     },
@@ -626,14 +637,19 @@ export default {
         nameEn: '',
         descriptionCh: '',
         descriptionEn: '',
-        codeLanguage: '',
+        codeLanguage: this.codeLanguages[0].label,
         expectResultCh: '',
         expectResultEn: '',
-        testSuiteIdList: [],
+        // testSuiteIdList: [],
         testStepCh: '',
         testStepEn: '',
         type: '',
         file: []
+      }
+      if (this.language === 'cn') {
+        this.addcaseForm.testSuiteIdList = this.testSuiteList[0].nameCh
+      } else {
+        this.addcaseForm.testSuiteIdList = this.testSuiteList[0].nameEn
       }
     },
     confirmAddCase () {
@@ -652,24 +668,68 @@ export default {
       fd.append('testStepEn', addcaseForm.testStepEn)
       if (this.confirmBtnApi === 'add') {
         fd.append('file', addcaseForm.file[0])
-        Atp.createCaseApi(fd).then(res => {
-          this.addCaseVisible = false
-          this.getAllcase()
-          this.$message({
-            duration: 2000,
-            showClose: true,
-            message: '创建成功',
-            type: 'success'
-          })
-        }).catch(() => {
+        if (!addcaseForm.nameCh) {
           this.$message({
             showClose: true,
             duration: 2000,
-            message: '创建失败',
-            type: 'warning'
+            type: 'warning',
+            message: '请输入名称'
           })
-          this.addCaseVisible = false
-        })
+        } else if (!addcaseForm.type) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请输入类型'
+          })
+        } else if (!addcaseForm.descriptionCh) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请输入描述'
+          })
+        } else if (!addcaseForm.expectResultCh) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请输入预期'
+          })
+        } else if (!addcaseForm.testStepCh) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请输入步骤'
+          })
+        } else if (addcaseForm.file.length === 0) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请添加文件'
+          })
+        } else {
+          Atp.createCaseApi(fd).then(res => {
+            this.addCaseVisible = false
+            this.getAllcase()
+            this.$message({
+              duration: 2000,
+              showClose: true,
+              message: '创建成功',
+              type: 'success'
+            })
+          }).catch(() => {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: '创建失败',
+              type: 'warning'
+            })
+            this.addCaseVisible = false
+          })
+        }
       } else if (this.confirmBtnApi === 'edit') {
         fd.append('id', this.editid)
         if (this.editfile) {
@@ -689,14 +749,14 @@ export default {
           this.$message({
             showClose: true,
             duration: 2000,
-            message: '修改成功',
+            message: this.$t('promptMessage.modifySuccess'),
             type: 'success'
           })
         }).catch(() => {
           this.$message({
             showClose: true,
             duration: 2000,
-            message: '修改失败',
+            message: this.$t('promptMessage.modifyFail'),
             type: 'warning'
           })
           this.addCaseVisible = false
@@ -712,7 +772,7 @@ export default {
       this.addCaseVisible = true
       this.addcaseForm = JSON.parse(JSON.stringify(row))
       this.addcaseForm.file = []
-      this.addcaseForm.testSuiteIdList = row.testSuiteId
+      // this.addcaseForm.testSuiteIdList = row.testSuiteId
     },
     deleteCase (row) {
       this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {

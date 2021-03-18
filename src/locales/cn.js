@@ -79,6 +79,7 @@ const cn = {
     runFailed: '运行失败',
     getSceneFail: '获取场景失败',
     modifySuccess: '修改成功',
+    modifyFail: '修改成功',
     submitSuccess: '提交成功',
     manualTip: '自动化用例已完成，还有手动用例，需等待管理员手工完成'
   },
