@@ -562,14 +562,13 @@ export default {
               testSuiteListEn.push(data.nameEn)
             })
           })
-          testSuiteListCh = testSuiteListCh.join(',')
-          testSuiteListEn = testSuiteListEn.join(',')
           item.testSuiteId = item.testSuiteIdList
           if (this.language === 'cn') {
             item.testSuiteIdList = testSuiteListCh
           } else {
             item.testSuiteIdList = testSuiteListEn
           }
+          item.testSuiteIdList = item.testSuiteIdList.join(',')
         })
       }).catch(() => {
         this.$message({
