@@ -640,17 +640,13 @@ export default {
         codeLanguage: this.codeLanguages[0].label,
         expectResultCh: '',
         expectResultEn: '',
-        // testSuiteIdList: [],
+        testSuiteIdList: [],
         testStepCh: '',
         testStepEn: '',
         type: '',
         file: []
       }
-      if (this.language === 'cn') {
-        this.addcaseForm.testSuiteIdList.push(this.testSuiteList[0].nameCh)
-      } else {
-        this.addcaseForm.testSuiteIdList.push(this.testSuiteList[0].nameEn)
-      }
+      this.addcaseForm.testSuiteIdList.push(this.testSuiteList[0].id)
     },
     confirmAddCase () {
       let fd = new FormData()

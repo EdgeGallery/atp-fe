@@ -339,6 +339,7 @@ export default {
     },
     handleChange (val) {
       console.log(val)
+      this.activeName = val
     },
     getTaskProcess () {
       Userpage.getTaskApi(this.taskId).then(res => {
