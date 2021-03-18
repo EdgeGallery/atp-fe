@@ -81,6 +81,7 @@ const en = {
     runFailed: 'Run Failed',
     getSceneFail: 'Failed to get scene',
     modifySuccess: 'Successfully modified',
+    modifyFail: 'Fail to edit',
     submitSuccess: 'Submitted successfully',
     manualTip: 'There are also manual use cases, which need to be completed manually by the administrator'
   },
