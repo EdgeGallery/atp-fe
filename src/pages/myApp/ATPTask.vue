@@ -279,8 +279,7 @@ export default {
     },
     handleClickTaskNo (val) {
       let taskId = val.id
-      sessionStorage.setItem('taskId', taskId)
-      this.$router.push({ name: 'atpprocess', query: { taskId: this.taskId } })
+      this.$router.push({ name: 'atpprocess', query: { taskId: taskId } })
     },
     contrastTime () {
       if (this.form.endTime && this.form.createTime > this.form.endTime) {

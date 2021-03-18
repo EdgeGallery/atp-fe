@@ -562,8 +562,8 @@ export default {
               testSuiteListEn.push(data.nameEn)
             })
           })
-          testSuiteListCh.join(',')
-          testSuiteListEn.join(',')
+          testSuiteListCh = testSuiteListCh.join(',')
+          testSuiteListEn = testSuiteListEn.join(',')
           item.testSuiteId = item.testSuiteIdList
           if (this.language === 'cn') {
             item.testSuiteIdList = testSuiteListCh
