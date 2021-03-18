@@ -543,8 +543,21 @@ export default {
             height: 45px;
             line-height: 45px;
           }
+          .el-table tr{
+            background-color: none;
+          }
+          .el-table {
+            background-color: none;
+          }
           table th,table td{
             border-bottom: none !important;
+            background-color: none;
+          }
+          .el-collapse-item__wrap {
+            background-color: none;
+           }
+           .el-table, .el-table__expanded-cell {
+          background-color: none;
           }
         }
     }
