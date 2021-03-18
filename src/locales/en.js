@@ -128,7 +128,8 @@ const en = {
     appPackage: 'App Package',
     uploadApp: 'Upload App',
     onlyCsar: 'Can Only Upload .csar Files.',
-    packageSizeLimit: 'No More than 10M'
+    packageSizeLimit: 'No More than 10M',
+    taskManage: 'Task Management'
   },
   testCase: {
     management: 'Testcase Management',

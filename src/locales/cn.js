@@ -126,7 +126,8 @@ const cn = {
     appPackage: '应用包',
     uploadApp: '上传应用',
     onlyCsar: '只能上传 .csar 文件.',
-    packageSizeLimit: '文件大小不超过10M'
+    packageSizeLimit: '文件大小不超过10M',
+    taskManage: '任务管理'
   },
   testCase: {
     management: '测试用例管理',

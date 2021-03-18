@@ -18,10 +18,10 @@
   <div>
     <Navcomp />
     <div class="task padding56">
-      <div style="margin:20px 0">
-        <span>应用测试平台</span>
+      <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
+        <span>{{ $t('testCase.applicationTestPlatform') }}</span>
         <span>></span>
-        <span>任务管理</span>
+        <span>{{ $t('atp.taskManage') }}</span>
       </div>
       <div class="task-search">
         <el-form
