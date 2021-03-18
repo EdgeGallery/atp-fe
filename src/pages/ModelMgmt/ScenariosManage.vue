@@ -17,7 +17,7 @@
   <div>
     <Navcomp />
     <div class="padding56 h100">
-      <div style="margin:20px 0">
+      <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
         <span>{{ $t('testCase.applicationTestPlatform') }}</span>
         <span>></span>
         <span>{{ $t('testCase.testScenarioManagement') }}</span>
