@@ -647,9 +647,9 @@ export default {
         file: []
       }
       if (this.language === 'cn') {
-        this.addcaseForm.testSuiteIdList = this.testSuiteList[0].nameCh
+        this.addcaseForm.testSuiteIdList.push(this.testSuiteList[0].nameCh)
       } else {
-        this.addcaseForm.testSuiteIdList = this.testSuiteList[0].nameEn
+        this.addcaseForm.testSuiteIdList.push(this.testSuiteList[0].nameEn)
       }
     },
     confirmAddCase () {

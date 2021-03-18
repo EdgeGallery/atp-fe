@@ -338,7 +338,7 @@ export default {
       window.open(routeData.href, '_blank')
     },
     handleChange (val) {
-      console.log('change')
+      console.log(val)
     },
     getTaskProcess () {
       Userpage.getTaskApi(this.taskId).then(res => {
