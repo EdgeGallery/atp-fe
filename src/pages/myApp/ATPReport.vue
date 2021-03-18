@@ -554,20 +554,20 @@ export default {
             line-height: 45px;
           }
           .el-table tr{
-            background-color: none;
+            background-color: transparent;
           }
           .el-table {
-            background-color: none;
+            background-color: transparent;
           }
           table th,table td{
             border-bottom: none !important;
-            background-color: none;
+            background-color: transparent;
           }
           .el-collapse-item__wrap {
-            background-color: none;
+            background-color: transparent;
            }
            .el-table, .el-table__expanded-cell {
-          background-color: none;
+          background-color: transparent;
           }
         }
     }
