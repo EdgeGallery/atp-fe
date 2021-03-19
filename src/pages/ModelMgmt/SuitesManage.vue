@@ -477,6 +477,10 @@ export default {
         type: 'warning'
       }).then(() => {
         ModelMgmt.deleteTestSuite(id).then(res => {
+          this.$message({
+            type: 'success',
+            message: this.$t('promptMessage.deleteSuccess')
+          })
         }).catch(() => {
           this.$message({
             duration: 2000,
@@ -485,10 +489,6 @@ export default {
           })
         })
         this.getAllSuites()
-        this.$message({
-          type: 'success',
-          message: this.$t('promptMessage.deleteSuccess')
-        })
       })
     },
     clearFormData (form) {
