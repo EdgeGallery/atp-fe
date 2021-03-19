@@ -271,7 +271,7 @@
   </div>
 </template>
 <script>
-import { Userpage } from '../../tools/api.js'
+import { getUserInfo, Userpage } from '../../tools/api.js'
 export default {
   data () {
     return {
@@ -308,6 +308,12 @@ export default {
     }
   },
   mounted () {
+    getUserInfo().then(res => {
+      sessionStorage.setItem('userId', res.data.userId)
+      sessionStorage.setItem('userName', res.data.userName)
+      this.userName = res.data.userName
+      this.authorities = res.data.authorities
+    })
     this.getTaskId()
     this.getTaskProcess()
     this.interval = setInterval(() => {
