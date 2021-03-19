@@ -275,9 +275,6 @@ export default {
   },
   mounted () {
     this.getTaskList()
-    // this.interval = setInterval(() => {
-    //   this.getOneTaskStatus()
-    // }, 20000)
   },
   beforeDestroy () {
     this.clearInterval()
