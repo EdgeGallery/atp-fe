@@ -275,9 +275,9 @@ export default {
   },
   mounted () {
     this.getTaskList()
-    this.interval = setInterval(() => {
-      this.getOneTaskStatus()
-    }, 20000)
+    // this.interval = setInterval(() => {
+    //   this.getOneTaskStatus()
+    // }, 20000)
   },
   beforeDestroy () {
     this.clearInterval()
@@ -355,12 +355,13 @@ export default {
           let newDateEnd = this.dateChange(item.endTime)
           item.endTime = newDateEnd
         })
-        this.updateData = this.pageData = data
+        this.pageData = data
         this.totalNum = this.pageData.length
         this.dataLoading = false
-        if (this.pageData.length === 0) {
-          this.clearInterval()
-        }
+        // if (this.pageData.length === 0) {
+        //   this.clearInterval()
+        // }
+        this.getOneTaskStatus()
       }).catch(() => {
         this.dataLoading = false
         this.$message({
@@ -369,11 +370,11 @@ export default {
           type: 'warning',
           message: this.$t('promptMessage.getTaskListFail')
         })
-        this.clearInterval()
+        // this.clearInterval()
       })
     },
     getOneTaskStatus () {
-      this.updateData.forEach((item, index) => {
+      this.pageData.forEach((item, index) => {
         let id = item.id
         if (item.status === 'running' || item.status === 'waiting' || item.status === 'created' || item.status === 'create failed') {
           Userpage.getTaskApi(id).then(res => {
@@ -382,7 +383,7 @@ export default {
             data.createTime = newDateBegin
             let newDateEnd = this.dateChange(data.endTime)
             data.endTime = newDateEnd
-            this.updateData.splice(index, 1, data)
+            this.pageData.splice(index, 1, data)
           })
         }
       })
