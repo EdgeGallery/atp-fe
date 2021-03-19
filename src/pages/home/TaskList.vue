@@ -291,6 +291,7 @@ export default {
   methods: {
     getCurrentPageData (val) {
       this.currentData = val
+      this.getOneTaskStatus()
     },
     clearInterval () {
       clearTimeout(this.interval)
@@ -358,12 +359,13 @@ export default {
         this.pageData = data
         this.totalNum = this.pageData.length
         this.dataLoading = false
-        if (this.pageData.length === 0) {
-          this.clearInterval()
-        }
-        this.interval = setInterval(() => {
-          this.getOneTaskStatus()
-        }, 10000)
+        // if (this.pageData.length === 0) {
+        //   this.clearInterval()
+        // }
+        this.getOneTaskStatus()
+        // this.interval = setInterval(() => {
+        //   this.getOneTaskStatus()
+        // }, 10000)
       }).catch(() => {
         this.dataLoading = false
         this.$message({
@@ -372,11 +374,11 @@ export default {
           type: 'warning',
           message: this.$t('promptMessage.getTaskListFail')
         })
-        this.clearInterval()
+        // this.clearInterval()
       })
     },
     getOneTaskStatus () {
-      this.pageData.forEach((item, index) => {
+      this.currentData.forEach((item, index) => {
         let id = item.id
         if (item.status === 'running' || item.status === 'waiting' || item.status === 'created' || item.status === 'create failed') {
           Userpage.getTaskApi(id).then(res => {
@@ -385,7 +387,7 @@ export default {
             data.createTime = newDateBegin
             let newDateEnd = this.dateChange(data.endTime)
             data.endTime = newDateEnd
-            this.pageData.splice(index, 1, data)
+            this.currentData.splice(index, 1, data)
           })
         }
       })
