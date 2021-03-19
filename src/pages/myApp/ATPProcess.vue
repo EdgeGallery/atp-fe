@@ -338,7 +338,6 @@ export default {
       window.open(routeData.href, '_blank')
     },
     handleChange (val) {
-      console.log(val)
       this.activeName = val
     },
     getTaskProcess () {

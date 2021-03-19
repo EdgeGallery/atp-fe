@@ -358,10 +358,12 @@ export default {
         this.pageData = data
         this.totalNum = this.pageData.length
         this.dataLoading = false
-        // if (this.pageData.length === 0) {
-        //   this.clearInterval()
-        // }
-        this.getOneTaskStatus()
+        if (this.pageData.length === 0) {
+          this.clearInterval()
+        }
+        this.interval = setInterval(() => {
+          this.getOneTaskStatus()
+        }, 10000)
       }).catch(() => {
         this.dataLoading = false
         this.$message({
@@ -370,7 +372,7 @@ export default {
           type: 'warning',
           message: this.$t('promptMessage.getTaskListFail')
         })
-        // this.clearInterval()
+        this.clearInterval()
       })
     },
     getOneTaskStatus () {
