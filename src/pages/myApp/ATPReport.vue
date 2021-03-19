@@ -427,10 +427,10 @@ export default {
     downLoadReport () {
       this.activeName = this.finishActiveName
       this.downloadBtn = false
-      setInterval(() => {
+      this.$nextTick(() => {
         this.getPdf('#pdfDom')
         this.downloadBtn = true
-      }, 1000)
+      })
     }
   }
 }
