@@ -205,7 +205,8 @@ export default {
       tableData: [],
       ChartData: [],
       finishActiveName: [],
-      downloadBtn: true
+      downloadBtn: true,
+      interval: ''
     }
   },
   mounted () {
@@ -427,10 +428,14 @@ export default {
     downLoadReport () {
       this.activeName = this.finishActiveName
       this.downloadBtn = false
-      this.$nextTick(() => {
+      // this.$nextTick(() => {
+      //   this.getPdf('#pdfDom')
+      //   this.downloadBtn = true
+      // })
+      setTimeout(() => {
         this.getPdf('#pdfDom')
         this.downloadBtn = true
-      })
+      }, 1000)
     }
   }
 }
