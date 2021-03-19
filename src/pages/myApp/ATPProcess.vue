@@ -302,7 +302,7 @@ export default {
       },
       dialogVisible: false,
       userName: sessionStorage.getItem('userName'),
-      authorities: sessionStorage.getItem('authorities'),
+      authorities: [],
       carouselHeight: '',
       alltestCase: []
     }
