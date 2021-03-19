@@ -230,6 +230,7 @@ export default {
         status: ''
       },
       pageData: [],
+      updateData: [],
       caseList: [],
       options: [
         {
@@ -354,7 +355,7 @@ export default {
           let newDateEnd = this.dateChange(item.endTime)
           item.endTime = newDateEnd
         })
-        this.pageData = data
+        this.updateData = this.pageData = data
         this.totalNum = this.pageData.length
         this.dataLoading = false
         if (this.pageData.length === 0) {
@@ -372,7 +373,7 @@ export default {
       })
     },
     getOneTaskStatus () {
-      this.pageData.forEach((item, index) => {
+      this.updateData.forEach((item, index) => {
         let id = item.id
         if (item.status === 'running' || item.status === 'waiting' || item.status === 'created' || item.status === 'create failed') {
           Userpage.getTaskApi(id).then(res => {
@@ -381,7 +382,7 @@ export default {
             data.createTime = newDateBegin
             let newDateEnd = this.dateChange(data.endTime)
             data.endTime = newDateEnd
-            this.pageData.splice(index, 1, data)
+            this.updateData.splice(index, 1, data)
           })
         }
       })
