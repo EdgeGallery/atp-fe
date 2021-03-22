@@ -34,7 +34,6 @@
         class="navList"
       >
         <el-menu
-          @select="handleSelect"
           mode="horizontal"
           :unique-opened="true"
           router
@@ -42,6 +41,7 @@
           background-color="#282b33"
           active-text-color="#6c92fa"
           :default-active="activeIndex"
+          @select="handleSelect"
         >
           <template
             v-for="item in navList"
@@ -118,7 +118,6 @@
 import {
   getUserInfo,
   logoutApi } from '../../tools/api.js'
-// import axios from 'axios'
 export default {
   name: 'HeaderComp',
   data () {
@@ -171,7 +170,7 @@ export default {
           pageId: '3'
         }
       ],
-      activeIndex: '',
+      activeIndex: '/',
       fromPath: ''
     }
   },
@@ -184,24 +183,15 @@ export default {
   },
   watch: {
     $route (to, from) {
-      console.log(to.path)
-      console.log(from.path)
       this.activeIndex = to.path
-      this.fromPath = from.path
-      // let path = this.$route.path
-      // if (path === '/index') {
-      //   this.isActive = 0
-      // } else if (path === '/docs') {
-      //   this.isActive = 1
-      // } else if (path === '/myapp' || path === '/app/test/task' || path === '/atpreport' || path === '/myappdetail' || path === '/atpprocess' || path === '/atptestcase') {
-      //   this.isActive = 2
-      // } else if (path === '/about') {
-      //   this.isActive = 0
-      // } else if (path === '/apppromote' || path === '/apppromotion' || path === '/msgCenter' || path === '/right_panel' || path === 'app/prom/task') {
-      //   this.isActive = 4
-      // } else {
-      //   this.isActive = 0
-      // }
+      let path = this.$route.path
+      if (path === '/index') {
+        this.activeIndex = '/index'
+      } else if (path === '/tasklist') {
+        this.activeIndex = '/tasklist'
+      } else if (path === '/scenarios' || path === '/suites' || path === '/testcasemanage') {
+        this.activeIndex = '/scenarios'
+      }
     }
   },
   methods: {
@@ -221,7 +211,7 @@ export default {
     handleSelect (index, path, item) {
       if (index) {
         this.activeIndex = index
-        this.$router.push(this.activeIndex)
+        // this.$router.push(this.activeIndex)
       }
     },
     logout () {
@@ -238,7 +228,6 @@ export default {
         type: 'warning'
       }).then(() => {
         this.logout()
-      }).catch(() => {
       })
     },
     openUserAccountCenter () {
@@ -246,16 +235,7 @@ export default {
     }
   },
   mounted () {
-    // console.log('mounted')
-    // localStorage.setItem('language', 'cn')
-    // let path = this.$route.path
-    // if (path === '/index') {
-    //   this.currentUrl = '/index'
-    // } else if (path === '/testcasemanage') {
-    //   this.currentUrl = '/testcasemanage'
-    // } else if (path === '/tasklist') {
-    //   this.currentUrl = '/tasklist'
-    // }
+    this.activeIndex = this.$route.fullPath
     getUserInfo().then(res => {
       sessionStorage.setItem('userId', res.data.userId)
       sessionStorage.setItem('userName', res.data.userName)
@@ -311,13 +291,13 @@ export default {
         font-size: 18px;
         font-weight: 700;
         margin-right: 0px;
-        font-family: Microsoft YaHei;
+        font-family: Microsoft YaHei,sans-serif;
         vertical-align: bottom;
       }
       .el-submenu__title {
         font-size: 18px;
         font-weight: 700;
-        font-family: Microsoft YaHei;
+        font-family: Microsoft YaHei,sans-serif;
       }
       .el-menu--horizontal>.el-submenu .el-submenu__title {
         height: 65px;
