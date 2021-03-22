@@ -100,7 +100,7 @@ export default {
       let date = new Date()
       let year = date.getFullYear()
       let mon = date.getMonth() + 1
-      let arr = []
+      this.monthData = []
       for (let i = 0; i < 6; i++) {
         if (mon <= 0) {
           year = year - 1
@@ -109,10 +109,10 @@ export default {
         if (mon < 10) {
           mon = '0' + mon
         }
-        arr[i] = year + '-' + mon
+        this.monthData[i] = year + '-' + mon
         mon = mon - 1
       }
-      this.monthData = arr.reverse()
+      this.monthData.reverse()
     },
     drawLine () {
       let myChart = this.$echarts.init(document.getElementById('main'))

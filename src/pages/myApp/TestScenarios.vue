@@ -376,7 +376,14 @@ export default {
       Userpage.getSceneCaseApi(fd).then(res => {
         let data = res.data
         this.testSuiteData = data[0].testSuites
-      }).catch(() => {})
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('home.getFail'),
+          type: 'warning'
+        })
+      })
     },
     startTest () {
       this.scenarioIdList = []

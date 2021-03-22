@@ -381,7 +381,14 @@ export default {
           })
           suite.scenarioNameList = scenarioList.toString()
         })
-      }).catch(() => {})
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('home.getFail'),
+          type: 'warning'
+        })
+      })
     },
     resetForm () {
       this.form = {
@@ -405,7 +412,7 @@ export default {
       para.locale = this.language === 'cn' ? 'ch' : 'en'
       await Userpage.getAllSceneApi(para).then(res => {
         this.testScenes = res.data // 获取所有测试场景
-      }).catch(() => {})
+      })
       this.testScenes.forEach(item => {
         let obj = {
           id: '',

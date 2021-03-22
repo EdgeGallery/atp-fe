@@ -348,13 +348,11 @@
 import Navcomp from '../../components/layout/Nav'
 import { Userpage, ModelMgmt } from '../../tools/api.js'
 
-// import pagination from '../../components/common/Pagination.vue'
 export default {
   components: { Navcomp },
   data () {
     return {
       editId: '',
-      // icon: [require('../../assets/images/logo.png')],
       defaultIcon: [
         require('../../assets/images/logo.png')
       ],
@@ -398,7 +396,14 @@ export default {
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       Userpage.getAllSceneApi(this.form).then(res => {
         this.scenarios = res.data
-      }).catch(() => {})
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('promptMessage.getSceneFail'),
+          type: 'warning'
+        })
+      })
     },
     handleClose () {
       this.addTestScenarioVisible = false
@@ -514,8 +519,7 @@ export default {
       let ctx = canvas.getContext('2d')
       ctx.drawImage(img, 0, 0, img.width, img.height)
       let ext = img.src.substring(img.src.lastIndexOf('.') + 1).toLowerCase()
-      let dataURL = canvas.toDataURL('image/' + ext)
-      return dataURL
+      return canvas.toDataURL('image/' + ext)
     },
     base64toFile (dataurl, filename = 'file') {
       let arr = dataurl.split(',')
@@ -600,7 +604,6 @@ export default {
             type: 'warning'
           })
         })
-      }).catch(() => {
       })
     }
   },

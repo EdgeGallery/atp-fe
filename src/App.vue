@@ -21,19 +21,12 @@
 </template>
 
 <script>
-// import Navcomp from './components/layout/Nav.vue'
 export default {
   name: 'App',
-  components: {
-    // Navcomp
-  },
   data () {
     return {
     }
-  },
-  mounted () {
-  },
-  methods: {}
+  }
 }
 </script>
 

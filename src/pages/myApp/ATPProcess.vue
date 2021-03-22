@@ -348,8 +348,6 @@ export default {
       if (this.currUrl.indexOf('language') !== -1) {
         this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
       } else {
-        // let params = sessionStorage.getItem('taskId')
-        // this.taskId = params
         this.taskId = this.$route.query.taskId
       }
     },
@@ -370,7 +368,6 @@ export default {
         this.hasFailActiveName = []
         this.finishActiveName = []
         this.firstScene = data[0].nameEn
-        // this.activeTabsName = ''
         this.alltestCase = []
         let allsuccessNum = 0
         let allfailNum = 0
@@ -414,7 +411,6 @@ export default {
                   this.testingCase = [item.nameCh, item.nameEn]
                   this.testingScene = [element.nameCh, element.nameEn]
                   // 判断显示哪一页
-                  // this.activeTabsName = element.nameEn
                   this.$refs.carousel.setActiveItem(element.nameEn)
                 }
               }
@@ -425,24 +421,9 @@ export default {
         this.score = Number((allsuccessNum / allNum * 100).toFixed(0))
         this.percentage = Number(((allsuccessNum + allfailNum) / allNum * 100).toFixed(0))
         this.allfailNum = allfailNum
-        if (this.percentage === 100) {
-          this.report = false
-          this.isTest = 'finished'
-          this.activeName = this.finishActiveName
-          this.clearInterval()
-        } else {
-          this.statusTitle = ['正在测试...', 'Testing...']
-          this.isTest = 'running'
-        }
-        if (taskStatus === 'success') {
-          this.statusTitle = ['测试成功', 'Test Successful']
-          // this.activeTabsName = data[0].nameEn
-          this.$refs.carousel.setActiveItem(data[0].nameEn)
-        } else if (taskStatus === 'failed') {
-          this.statusTitle = ['测试失败', 'Test Failed']
-          // this.activeTabsName = data[0].nameEn
-          this.$refs.carousel.setActiveItem(data[0].nameEn)
-        }
+        // 页面标题显示和class
+        this.IsFinish()
+        this.setTitle(taskStatus, data)
         // 判断是否只剩下手动类型
         let everyBoolan = this.alltestCase.some(function (item) {
           return (item.result === 'running' && item.type === 'automatic')
@@ -452,7 +433,34 @@ export default {
           this.promptWait = function () {}
         }
         this.setDivHeight()
-      }).catch(() => {})
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          showClose: true,
+          type: 'warning',
+          message: this.$t('promptMessage.getprocessFail')
+        })
+      })
+    },
+    IsFinish () {
+      if (this.percentage === 100) {
+        this.report = false
+        this.isTest = 'finished'
+        this.activeName = this.finishActiveName
+        this.clearInterval()
+      } else {
+        this.statusTitle = ['正在测试...', 'Testing...']
+        this.isTest = 'running'
+      }
+    },
+    setTitle (taskStatus, data) {
+      if (taskStatus === 'success') {
+        this.statusTitle = ['测试成功', 'Test Successful']
+        this.$refs.carousel.setActiveItem(data[0].nameEn)
+      } else if (taskStatus === 'failed') {
+        this.statusTitle = ['测试失败', 'Test Failed']
+        this.$refs.carousel.setActiveItem(data[0].nameEn)
+      }
     },
     // 提示手动类型
     promptWait () {
@@ -473,8 +481,8 @@ export default {
         const appDiv = document.getElementById('app')
         processcDiv.style.minHeight = appDiv.clientHeight + 'px'
         this.carouselHeight = appDiv.clientHeight - 250 + 'px'
-        for (let index = 0; index < collapseDiv.length; index++) {
-          collapseDiv[index].style.maxHeight = appDiv.clientHeight - 310 + 'px'
+        for (let value of collapseDiv) {
+          value.style.maxHeight = appDiv.clientHeight - 310 + 'px'
         }
       })
     },

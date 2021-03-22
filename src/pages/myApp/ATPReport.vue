@@ -308,7 +308,14 @@ export default {
           this.drawLeftLine()
           this.drawRightLine()
         })
-      }).catch(() => {})
+      }).catch(() => {
+        this.$message({
+          duration: 2000,
+          showClose: true,
+          type: 'warning',
+          message: this.$t('promptMessage.getTaskListFail')
+        })
+      })
     },
     drawLeftLine () {
       let Chart = this.$echarts.init(document.getElementById('leftchart'))
@@ -411,8 +418,7 @@ export default {
         let H = date.getHours()
         let m = date.getMinutes()
         let s = date.getSeconds()
-        let changeDate =
-          Y +
+        return Y +
           '-' +
           (M > 9 ? M : '0' + M) +
           '-' +
@@ -423,16 +429,11 @@ export default {
           (m > 9 ? m : '0' + m) +
           ':' +
           (s > 9 ? s : '0' + s)
-        return changeDate
       }
     },
     downLoadReport () {
       this.activeName = this.finishActiveName
       this.downloadBtn = false
-      // this.$nextTick(() => {
-      //   this.getPdf('#pdfDom')
-      //   this.downloadBtn = true
-      // })
       setTimeout(() => {
         this.getPdf('#pdfDom')
         this.downloadBtn = true

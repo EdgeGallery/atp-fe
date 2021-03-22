@@ -294,24 +294,6 @@ export default {
       clearTimeout(this.interval)
       this.interval = null
     },
-    // handleClickReport (val) {
-    //   this.reportData = []
-    //   val.testScenarios.forEach(item => {
-    //     let reportobj = {
-    //       taskId: '',
-    //       label: '',
-    //       nameCh: '',
-    //       nameEn: '',
-    //       scenarioId: ''
-    //     }
-    //     reportobj.label = item.label
-    //     reportobj.nameCh = item.nameCh
-    //     reportobj.nameEn = item.nameEn
-    //     reportobj.scenarioId = item.id
-    //     reportobj.taskId = val.id
-    //     this.reportData.push(reportobj)
-    //   })
-    // },
     jumpToReport (val) {
       let taskId = val.id
       let routeData = this.$router.resolve({ name: 'atpreport', query: { taskId: taskId } })
@@ -356,13 +338,7 @@ export default {
         this.pageData = data
         this.totalNum = this.pageData.length
         this.dataLoading = false
-        // if (this.pageData.length === 0) {
-        //   this.clearInterval()
-        // }
         this.getOneTaskStatus()
-        // this.interval = setInterval(() => {
-        //   this.getOneTaskStatus()
-        // }, 10000)
       }).catch(() => {
         this.dataLoading = false
         this.$message({
@@ -371,7 +347,6 @@ export default {
           type: 'warning',
           message: this.$t('promptMessage.getTaskListFail')
         })
-        // this.clearInterval()
       })
     },
     getOneTaskStatus () {
@@ -414,7 +389,6 @@ export default {
             message: this.$t('promptMessage.deleteFail')
           })
         })
-      }).catch(() => {
       })
     },
     resetForm () {
@@ -424,7 +398,6 @@ export default {
       }
       this.getTaskList()
     },
-    expandChange (row, expandedRows) {},
     dateChange (dateStr) {
       if (dateStr) {
         let date = new Date(Date.parse(dateStr))
@@ -434,9 +407,7 @@ export default {
         let H = date.getHours()
         let m = date.getMinutes()
         let s = date.getSeconds()
-        let changeDate =
-          Y +
-          '-' +
+        return Y + '-' +
           (M > 9 ? M : '0' + M) +
           '-' +
           (D > 9 ? D : '0' + D) +
@@ -446,7 +417,6 @@ export default {
           (m > 9 ? m : '0' + m) +
           ':' +
           (s > 9 ? s : '0' + s)
-        return changeDate
       }
     }
   }

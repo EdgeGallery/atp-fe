@@ -79,7 +79,7 @@ const en = {
     deleteSuccess: 'Delete Success',
     deleteFail: 'Delete Fail',
     runFailed: 'Run Failed',
-    getSceneFail: 'Failed to get scene',
+    getSceneFail: 'Failed to get scenario',
     modifySuccess: 'Successfully modified',
     modifyFail: 'Fail to edit',
     submitSuccess: 'Submitted successfully',
@@ -203,7 +203,7 @@ const en = {
     name: 'Name'
   },
   userpage: {
-    selectScene: 'Select Scene',
+    selectScene: 'Select Scenario',
     contribution: 'Testcase Contribution',
     seeDetail: 'See Details',
     caseDetail: 'Testcase Detail',
@@ -224,7 +224,7 @@ const en = {
   modelmgmt: {
     name: 'Name:',
     description: 'Description:',
-    scene: 'Scene'
+    scene: 'Scenario'
   },
   about: {
   },

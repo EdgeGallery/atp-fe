@@ -324,12 +324,9 @@ export default {
       this.form = {
         appName: '',
         status: ''
-        // createTime: '',
-        // endTime: ''
       }
       this.getTaskList()
     },
-    expandChange (row, expandedRows) {},
     dateChange (dateStr) {
       if (dateStr) {
         let date = new Date(Date.parse(dateStr))
@@ -339,8 +336,7 @@ export default {
         let H = date.getHours()
         let m = date.getMinutes()
         let s = date.getSeconds()
-        let changeDate =
-          Y +
+        return Y +
           '-' +
           (M > 9 ? M : '0' + M) +
           '-' +
@@ -351,7 +347,6 @@ export default {
           (m > 9 ? m : '0' + m) +
           ':' +
           (s > 9 ? s : '0' + s)
-        return changeDate
       }
     }
   }
