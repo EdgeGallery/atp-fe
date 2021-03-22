@@ -385,7 +385,8 @@ export default {
           itemStyle: {
             borderWidth: 3,
             borderColor: '#EE6666',
-            color: 'yellow'
+            color: 'yellow',
+            label: { show: true }
           }
         }]
       }
