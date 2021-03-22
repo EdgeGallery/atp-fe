@@ -70,10 +70,6 @@ export default new Router({
           component: () => import('./pages/myApp/ATPProcess.vue')
         },
         {
-          path: 'atptestcase',
-          name: 'atptestcase',
-          component: () => import('./pages/myApp/ATPTestCase.vue')
-        }, {
           path: 'selectscene',
           name: 'selectscene',
           component: () => import('./pages/myApp/TestScenarios.vue')

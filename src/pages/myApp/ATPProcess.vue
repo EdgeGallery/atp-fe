@@ -440,6 +440,7 @@ export default {
           type: 'warning',
           message: this.$t('promptMessage.getprocessFail')
         })
+        this.clearInterval()
       })
     },
     IsFinish () {
