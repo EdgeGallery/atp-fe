@@ -276,7 +276,7 @@ export default {
   data () {
     return {
       currUrl: window.location.href,
-      language: localStorage.getItem('language'),
+      language: '',
       report: true,
       isTest: '',
       score: 0,
@@ -314,6 +314,7 @@ export default {
       this.userName = res.data.userName
       this.authorities = res.data.authorities
     })
+    this.getLanguage()
     this.getTaskId()
     this.getTaskProcess()
     this.interval = setInterval(() => {
@@ -329,9 +330,23 @@ export default {
     }
   },
   methods: {
+    getLanguage () {
+      if (this.currUrl.indexOf('language') !== -1) {
+        let language = this.currUrl.split('language')[1].split('=')[1]
+        this.language = language
+        localStorage.setItem('language', language)
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      } else {
+        let language = localStorage.getItem('language')
+        this.language = language
+        this.$i18n.locale = language
+        this.$store.commit('changeLaguage', { language: language })
+      }
+    },
     getTaskId () {
-      if (this.currUrl.indexOf('?') !== -1) {
-        this.taskId = this.currUrl.split('?')[1].split('=')[1]
+      if (this.currUrl.indexOf('language') !== -1) {
+        this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
       } else {
         // let params = sessionStorage.getItem('taskId')
         // this.taskId = params
