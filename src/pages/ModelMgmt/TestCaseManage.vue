@@ -567,7 +567,6 @@ export default {
       Atp.getAllCaseApi(this.form).then(res => {
         this.allcaseData = res.data
         this.allcaseData.forEach(item => {
-        // item.testSuiteId = item.testSuiteIdList
         // 测试套
           let testSuiteList = []
           item.testSuiteIdList.forEach(Id => {
@@ -604,7 +603,7 @@ export default {
           this.mapCh.set(obj.id, obj.nameCh)
           this.mapEn.set(obj.id, obj.nameEn)
         })
-      }).catch(() => {})
+      })
     },
     downLoadCase (row) {
       Atp.downLoadCaseApi(row.id, row.codeLanguage).then(res => {
@@ -728,17 +727,7 @@ export default {
         }
       } else if (this.confirmBtnApi === 'edit') {
         fd.append('id', this.editid)
-        if (this.editfile) {
-          fd.append('file', addcaseForm.file[0])
-        } else {
-          if (addcaseForm.file.length > 0) {
-            fd.append('file', addcaseForm.file[0])
-          } else {
-            let objFile = new File([], 'kong.java')
-            addcaseForm.file.push(objFile)
-            fd.append('file', addcaseForm.file[0])
-          }
-        }
+        this.confirmedit(fd, addcaseForm)
         Atp.editCaseApi(fd).then(res => {
           this.addCaseVisible = false
           this.getAllcase()
@@ -759,6 +748,20 @@ export default {
         })
       }
       this.editfile = false
+    },
+    // sonarqube重构
+    confirmedit (fd, addcaseForm) {
+      if (this.editfile) {
+        fd.append('file', addcaseForm.file[0])
+      } else {
+        if (addcaseForm.file.length > 0) {
+          fd.append('file', addcaseForm.file[0])
+        } else {
+          let objFile = new File([], 'kong.java')
+          addcaseForm.file.push(objFile)
+          fd.append('file', addcaseForm.file[0])
+        }
+      }
     },
     editCase (row) {
       this.editid = row.id
@@ -792,7 +795,6 @@ export default {
             type: 'warning'
           })
         })
-      }).catch(() => {
       })
     },
     handleExceed (file, fileList) {
