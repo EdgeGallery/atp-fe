@@ -251,6 +251,7 @@
               size="small"
               v-model="addcaseForm.nameCh"
               :disabled="cannotEdit"
+              maxlength="64"
             />
           </el-form-item>
           <el-form-item
@@ -262,6 +263,7 @@
               size="small"
               v-model="addcaseForm.nameEn"
               :disabled="cannotEdit"
+              maxlength="64"
             />
           </el-form-item>
           <el-form-item
@@ -292,6 +294,7 @@
               v-model="addcaseForm.descriptionCh"
               type="textarea"
               autosize
+              maxlength="255"
             />
           </el-form-item>
           <el-form-item
@@ -302,6 +305,7 @@
               v-model="addcaseForm.descriptionEn"
               type="textarea"
               autosize
+              maxlength="255"
             />
           </el-form-item>
           <el-form-item
@@ -313,6 +317,7 @@
               size="small"
               type="textarea"
               v-model="addcaseForm.expectResultCh"
+              maxlength="255"
             />
           </el-form-item>
           <el-form-item
@@ -323,6 +328,7 @@
               size="small"
               type="textarea"
               v-model="addcaseForm.expectResultEn"
+              maxlength="255"
             />
           </el-form-item>
           <el-form-item
@@ -371,6 +377,7 @@
               size="small"
               type="textarea"
               v-model="addcaseForm.testStepCh"
+              maxlength="255"
             />
           </el-form-item>
           <el-form-item
@@ -381,6 +388,7 @@
               size="small"
               type="textarea"
               v-model="addcaseForm.testStepEn"
+              maxlength="255"
             />
           </el-form-item>
           <el-form-item
