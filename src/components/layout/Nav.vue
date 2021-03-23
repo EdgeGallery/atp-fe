@@ -122,7 +122,7 @@ export default {
   name: 'HeaderComp',
   data () {
     return {
-      language: localStorage.getItem('language') ? localStorage.getItem('language') : 'cn',
+      language: 'cn',
       userName: '',
       loginPage: '',
       userCenterPage: '',
@@ -235,6 +235,7 @@ export default {
     }
   },
   mounted () {
+    localStorage.setItem('language', 'cn')
     this.activeIndex = this.$route.fullPath
     getUserInfo().then(res => {
       sessionStorage.setItem('userId', res.data.userId)
