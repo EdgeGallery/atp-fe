@@ -155,6 +155,7 @@
                 size="small"
                 v-model="addTestSuiteForm.nameCh"
                 :disabled="cannotEdit"
+                maxlength="64"
               />
             </el-form-item>
             <el-form-item
@@ -165,6 +166,7 @@
                 width="100px"
                 size="small"
                 v-model="addTestSuiteForm.nameEn"
+                maxlength="64"
               />
             </el-form-item>
             <el-form-item
@@ -176,6 +178,7 @@
                 width="100px"
                 size="small"
                 v-model="addTestSuiteForm.descriptionCh"
+                maxlength="255"
               />
             </el-form-item>
             <el-form-item
@@ -186,6 +189,7 @@
                 width="100px"
                 size="small"
                 v-model="addTestSuiteForm.descriptionEn"
+                maxlength="255"
               />
             </el-form-item>
             <el-form-item
@@ -244,6 +248,7 @@
                 width="100px"
                 size="small"
                 v-model="editTestSuiteForm.nameCh"
+                maxlength="64"
               />
             </el-form-item>
             <el-form-item
@@ -254,6 +259,7 @@
                 width="100px"
                 size="small"
                 v-model="editTestSuiteForm.nameEn"
+                maxlength="64"
               />
             </el-form-item>
             <el-form-item
@@ -265,6 +271,7 @@
                 width="100px"
                 size="small"
                 v-model="editTestSuiteForm.descriptionCh"
+                maxlength="255"
               />
             </el-form-item>
             <el-form-item
@@ -275,6 +282,7 @@
                 width="100px"
                 size="small"
                 v-model="editTestSuiteForm.descriptionEn"
+                maxlength="255"
               />
             </el-form-item>
             <el-form-item

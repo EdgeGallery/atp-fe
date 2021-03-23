@@ -125,6 +125,7 @@
                 width="100px"
                 size="small"
                 v-model="addTestScenarioForm.nameCh"
+                maxlength="64"
               />
             </el-form-item>
             <el-form-item
@@ -135,6 +136,7 @@
                 width="100px"
                 size="small"
                 v-model="addTestScenarioForm.nameEn"
+                maxlength="64"
               />
             </el-form-item>
             <el-form-item
@@ -146,6 +148,7 @@
                 width="100px"
                 size="small"
                 v-model="addTestScenarioForm.descriptionCh"
+                maxlength="255"
               />
             </el-form-item>
             <el-form-item
@@ -156,6 +159,7 @@
                 width="100px"
                 size="small"
                 v-model="addTestScenarioForm.descriptionEn"
+                maxlength="255"
               />
             </el-form-item>
             <el-form-item
@@ -243,6 +247,7 @@
                 width="100px"
                 size="small"
                 v-model="editTestScenarioForm.nameCh"
+                maxlength="64"
               />
             </el-form-item>
             <el-form-item
@@ -253,6 +258,7 @@
                 width="100px"
                 size="small"
                 v-model="editTestScenarioForm.nameEn"
+                maxlength="64"
               />
             </el-form-item>
             <el-form-item
@@ -263,6 +269,7 @@
                 width="100px"
                 size="small"
                 v-model="editTestScenarioForm.descriptionCh"
+                maxlength="255"
               />
             </el-form-item>
             <el-form-item
@@ -273,6 +280,7 @@
                 width="100px"
                 size="small"
                 v-model="editTestScenarioForm.descriptionEn"
+                maxlength="255"
               />
             </el-form-item>
             <el-form-item
