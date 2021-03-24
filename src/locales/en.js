@@ -178,6 +178,9 @@ const en = {
     editTestSuite: 'Modify Test Suite',
     addTestScenario: 'Add Test Scenario',
     editTestScenario: 'Modify Test Scenario',
+    provideNameCn: 'Please provide Chinese name',
+    provideDescriptionCn: 'Please provide Chinese description',
+    provideTestScenario: 'Please select Test Scenarios',
     testScenarioIntro: 'The test scenario is the largest unit set of the test, a test scenario can contain multiple test suites.',
     testSuiteIntro: 'A test suite is a classification of test types. A test suite can belong to one or more test scenarios, and a test suite can contain multiple test cases.',
     testCaseIntro: 'A test case is the smallest execution unit of a test. A test case can belong to one or more test suites.'
