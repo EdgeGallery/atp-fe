@@ -596,6 +596,7 @@ export default {
       })
     },
     getALlSuites () {
+      this.testSuiteList = []
       ModelMgmt.getTestSuite().then(res => {
         let data = res.data
         data.forEach(item => {
