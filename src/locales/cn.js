@@ -81,7 +81,8 @@ const cn = {
     modifySuccess: '修改成功',
     modifyFail: '修改成功',
     submitSuccess: '提交成功',
-    manualTip: '自动化用例已完成，还有手动用例，需等待管理员手工完成'
+    manualTip: '自动化用例已完成，还有手动用例，需等待管理员手工完成',
+    noCase: '此场景没有用例'
   },
   common: {
     cancel: '取消',
