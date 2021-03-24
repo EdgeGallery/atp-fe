@@ -339,7 +339,11 @@ export default {
       Userpage.getAllSceneApi().then(res => {
         let data = res.data
         data.forEach(item => {
-          item.selected = true
+          if (item.nameEn === 'EdgeGallery Community Scenario') {
+            item.selected = true
+          } else {
+            item.selected = false
+          }
         })
         this.sceneData = data
       }).catch(() => {
@@ -353,8 +357,27 @@ export default {
       this.setDivHeight()
     },
     chooseScene (item) {
-      this.scenarioIdList.push(item.id)
-      item.selected = !item.selected
+      let scenarioIds = []
+      scenarioIds.push(item.id)
+      let fd = new FormData()
+      fd.append('scenarioIds', scenarioIds)
+      Userpage.getSceneCaseApi(fd).then(res => {
+        let data = res.data[0].testSuites
+        let IsHaveCase = data.some(function (element) {
+          return (element.testCases.length !== 0)
+        })
+        if (IsHaveCase) {
+          this.scenarioIdList.push(item.id)
+          item.selected = !item.selected
+        } else {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: this.$t('promptMessage.noCase'),
+            type: 'warning'
+          })
+        }
+      })
     },
     getAppIcon (item) {
       return URL_PREFIX + 'file/' + item.id
@@ -363,6 +386,7 @@ export default {
       this.CaseVisible = false
     },
     getDetail (item) {
+      this.CaseVisible = true
       if (this.language === 'cn') {
         this.sceneTitle = item.nameCh
       } else {
@@ -370,7 +394,6 @@ export default {
       }
       let scenarioIds = []
       scenarioIds.push(item.id)
-      this.CaseVisible = true
       let fd = new FormData()
       fd.append('scenarioIds', scenarioIds)
       Userpage.getSceneCaseApi(fd).then(res => {

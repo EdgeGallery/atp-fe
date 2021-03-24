@@ -83,7 +83,8 @@ const en = {
     modifySuccess: 'Successfully modified',
     modifyFail: 'Fail to edit',
     submitSuccess: 'Submitted successfully',
-    manualTip: 'There are also manual use cases, which need to be completed manually by the administrator'
+    manualTip: 'There are also manual use cases, which need to be completed manually by the administrator',
+    noCase: 'There is no use case for this scenario'
   },
   common: {
     cancel: 'Cancel',
