@@ -144,11 +144,11 @@
           <el-form
             :model="addTestSuiteForm"
             label-width="110px"
+            :rules="rules"
           >
             <el-form-item
               :label=" $t('testCase.testSuiteCn')"
               prop="nameCh"
-              required
             >
               <el-input
                 width="100px"
@@ -172,7 +172,6 @@
             <el-form-item
               :label=" $t('testCase.testSuiteDescriptionCn')"
               prop="descriptionCh"
-              required
             >
               <el-input
                 width="100px"
@@ -194,7 +193,7 @@
             </el-form-item>
             <el-form-item
               :label="$t('modelmgmt.scene')"
-              required
+              prop="scenarioIdList"
             >
               <el-select
                 multiple
@@ -238,11 +237,11 @@
           <el-form
             :model="editTestSuiteForm"
             label-width="110px"
+            :rules="rules"
           >
             <el-form-item
               :label="$t('testCase.testSuiteCn')"
               prop="nameCh"
-              required
             >
               <el-input
                 width="100px"
@@ -265,7 +264,6 @@
             <el-form-item
               :label="$t('testCase.testSuiteDescriptionCn')"
               prop="descriptionCh"
-              required
             >
               <el-input
                 width="100px"
@@ -288,7 +286,6 @@
             <el-form-item
               :label="$t('modelmgmt.scene')"
               prop="scenarioIdList"
-              required
             >
               <el-select
                 v-model="editTestSuiteForm.scenarioIdList"
@@ -368,8 +365,18 @@ export default {
       },
       options: [],
       testScenes: [],
-      testSuites: []
-      // value: ''
+      testSuites: [],
+      rules: {
+        nameCh: [
+          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+        ],
+        descriptionCh: [
+          { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
+        ],
+        scenarioList: [
+          { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {

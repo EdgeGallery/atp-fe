@@ -115,11 +115,11 @@
           <el-form
             :model="addTestScenarioForm"
             label-width="130px"
+            :rule="rules"
           >
             <el-form-item
               :label=" $t('testCase.testScenarioCn')"
               prop="nameCh"
-              required
             >
               <el-input
                 width="100px"
@@ -142,7 +142,6 @@
             <el-form-item
               :label=" $t('testCase.testScenarioDescriptionCn')"
               prop="descriptionCh"
-              required
             >
               <el-input
                 width="100px"
@@ -166,7 +165,6 @@
               :label=" $t('testCase.testScenarioIcon')"
               prop="logoFileList"
               class="icon"
-              required
             >
               <div class="default-icon">
                 <div
@@ -238,6 +236,7 @@
           <el-form
             :model="editTestScenarioForm"
             label-width="130px"
+            :rule="rules"
           >
             <el-form-item
               :label=" $t('testCase.testScenarioCn')"
@@ -395,7 +394,15 @@ export default {
         locale: ''
       },
       defaultIconFile: [],
-      scenarios: []
+      scenarios: [],
+      rules: {
+        nameCh: [
+          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+        ],
+        descriptionCh: [
+          { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
+        ]
+      }
 
     }
   },
