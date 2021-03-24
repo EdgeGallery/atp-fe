@@ -290,8 +290,8 @@
               <div class="default-icon">
                 <div
                   class="box"
-                  v-for="(item, index) in defaultIcon"
-                  @click="chooseDefaultIcon(item, index)"
+                  v-for="(item, index) in scenarioIcon"
+                  @click="chooseScenarioIcon(item, index)"
                   :key="item"
                 >
                   <img
@@ -353,7 +353,7 @@
 </template>
 <script>
 import Navcomp from '../../components/layout/Nav'
-import { Userpage, ModelMgmt } from '../../tools/api.js'
+import { Userpage, ModelMgmt, URL_PREFIX } from '../../tools/api.js'
 
 export default {
   components: { Navcomp },
@@ -363,11 +363,13 @@ export default {
       defaultIcon: [
         require('../../assets/images/logo.png')
       ],
+      scenarioIcon: [],
       uploadIcon: false,
       showErr: false,
       logoFileList: [],
       addTestScenarioVisible: false,
       editTestScenarioVisible: false,
+      defaultIconFile: [],
       addTestScenarioForm: {
         nameCh: '',
         nameEn: '',
@@ -393,7 +395,6 @@ export default {
         name: '',
         locale: ''
       },
-      defaultIconFile: [],
       scenarios: [],
       rules: {
         nameCh: [
@@ -444,6 +445,7 @@ export default {
     },
     onclickAdd () {
       this.addTestScenarioVisible = true
+      this.chooseDefaultIcon(this.defaultIcon[0], 0)
     },
     handleChangeLogo (file) {
       let listTemp = []
@@ -482,16 +484,26 @@ export default {
       this.logoFileList = []
       this.uploadIcon = false
       this.addTestScenarioForm.base64Session = true
-      this.editTestScenarioForm.base64Session = true
       this.defaultIconFile = []
-      if (this.addTestScenarioForm.defaultActive === index || this.editTestScenarioForm.defaultActive === index) {
+      if (this.addTestScenarioForm.defaultActive === index) {
         this.addTestScenarioForm.defaultActive = ''
-        this.editTestScenarioForm.defaultActive = ''
         this.addTestScenarioForm.icon = []
-        this.editTestScenarioForm.icon = []
         this.showErr = !this.defaultIconFile.length
       } else {
         this.addTestScenarioForm.defaultActive = index
+        this.conversionIcon(file)
+      }
+    },
+    chooseScenarioIcon (file, index) {
+      this.logoFileList = []
+      this.uploadIcon = false
+      this.editTestScenarioForm.base64Session = true
+      this.defaultIconFile = []
+      if (this.editTestScenarioForm.defaultActive === index) {
+        this.editTestScenarioForm.defaultActive = ''
+        this.editTestScenarioForm.icon = []
+        this.showErr = !this.defaultIconFile.length
+      } else {
         this.editTestScenarioForm.defaultActive = index
         this.conversionIcon(file)
       }
@@ -506,13 +518,17 @@ export default {
       this.logoFileList = []
       this.showErr = this.logoFileList
       this.chooseDefaultIcon(this.defaultIcon[0], 0)
+      this.chooseScenarioIcon(this.scenarioIcon[0], 0)
     },
     editScenario (item) {
-      this.editTestScenarioForm = item
+      this.scenarioIcon = []
+      this.editTestScenarioForm = JSON.parse(JSON.stringify(item))
       this.editId = item.id
       this.editTestScenarioVisible = true
       this.showErr = this.logoFileList
-      this.chooseDefaultIcon(this.defaultIcon[0], 0)
+      this.scenarioIcon.push(require(URL_PREFIX + 'file/' + item.id))
+      // this.scenarioIcon.push(require('../../assets/images/fail.png'))
+      this.chooseScenarioIcon(this.scenarioIcon[0], 0)
     },
     conversionIcon (file) {
       let image = new Image()
@@ -570,6 +586,7 @@ export default {
         this.addCaseVisible = false
         this.addTestScenarioVisible = false
       })
+      this.chooseDefaultIcon(this.defaultIcon[0], 0)
     },
     confirmEditTestScenario () {
       let fd = new FormData()
@@ -577,21 +594,30 @@ export default {
       fd.append('nameEn', this.editTestScenarioForm.nameEn)
       fd.append('descriptionCh', this.editTestScenarioForm.descriptionCh)
       fd.append('descriptionEn', this.editTestScenarioForm.descriptionEn)
-      fd.append('icon', this.addTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile)
-      ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
-        this.getAllScene()
-        this.addTestScenarioVisible = false
-        this.clearFormData(this.editTestScenarioForm)
-        this.editTestScenarioVisible = false
-      }).catch(() => {
+      fd.append('icon', this.editTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile)
+      if (!fd.icon) {
         this.$message({
+          showClose: true,
           duration: 2000,
-          message: '修改失败',
-          type: 'warning'
+          type: 'warning',
+          message: '请选择图标'
         })
-        this.addCaseVisible = false
-        this.editTestScenarioVisible = false
-      })
+      } else {
+        ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
+          this.getAllScene()
+          this.addTestScenarioVisible = false
+          this.clearFormData(this.editTestScenarioForm)
+          this.editTestScenarioVisible = false
+        }).catch(() => {
+          this.$message({
+            duration: 2000,
+            message: '修改失败',
+            type: 'warning'
+          })
+          this.addCaseVisible = false
+          this.editTestScenarioVisible = false
+        })
+      }
     },
     clearFormData (form) {
       form.nameCh = ''
@@ -625,7 +651,6 @@ export default {
   mounted () {
     this.getAllScene()
     this.showErr = this.logoFileList
-    this.chooseDefaultIcon(this.defaultIcon[0], 0)
   },
   watch: {
     '$i18n.locale': function () {
