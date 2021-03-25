@@ -420,6 +420,13 @@ export default {
     addTestSuiteBtn () {
       this.dialogTitle = '新增测试套'
       this.addTestSuiteVisible = true
+      this.addTestSuiteForm = {
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
+        scenarioList: []
+      }
     },
     async fillOptions () {
       let cacheArray = []

@@ -527,7 +527,6 @@ export default {
       this.editTestScenarioVisible = true
       this.showErr = this.logoFileList
       this.scenarioIcon.push(URL_PREFIX + 'file/' + item.id)
-      // this.scenarioIcon.push(require('../../assets/images/complianceTest_icon.png'))
       this.chooseScenarioIcon(this.scenarioIcon[0], 0)
     },
     conversionIcon (file) {
@@ -583,7 +582,6 @@ export default {
           message: '创建失败',
           type: 'warning'
         })
-        this.addCaseVisible = false
         this.addTestScenarioVisible = false
       })
       this.chooseDefaultIcon(this.defaultIcon[0], 0)
@@ -598,7 +596,7 @@ export default {
       fd.append('descriptionEn', editTestScenarioForm.descriptionEn)
       fd.append('icon', editTestScenarioForm.icon)
       // fd.append('icon', this.editTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile)
-      if (!editTestScenarioForm.icon) {
+      if (editTestScenarioForm.icon.length === 0) {
         this.$message({
           showClose: true,
           duration: 2000,
@@ -608,16 +606,15 @@ export default {
       } else {
         ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
           this.getAllScene()
-          this.addTestScenarioVisible = false
           this.clearFormData(this.editTestScenarioForm)
           this.editTestScenarioVisible = false
+          this.scenarioIcon = []
         }).catch(() => {
           this.$message({
             duration: 2000,
             message: '修改失败',
             type: 'warning'
           })
-          this.addCaseVisible = false
           this.editTestScenarioVisible = false
         })
       }
