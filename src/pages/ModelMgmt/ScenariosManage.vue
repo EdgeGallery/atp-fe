@@ -115,7 +115,7 @@
           <el-form
             :model="addTestScenarioForm"
             label-width="130px"
-            :rule="rules"
+            :rules="rules"
           >
             <el-form-item
               :label=" $t('testCase.testScenarioCn')"
@@ -236,7 +236,7 @@
           <el-form
             :model="editTestScenarioForm"
             label-width="130px"
-            :rule="rules"
+            :rules="rules"
           >
             <el-form-item
               :label=" $t('testCase.testScenarioCn')"
@@ -526,8 +526,8 @@ export default {
       this.editId = item.id
       this.editTestScenarioVisible = true
       this.showErr = this.logoFileList
-      this.scenarioIcon.push(require(URL_PREFIX + 'file/' + item.id))
-      // this.scenarioIcon.push(require('../../assets/images/fail.png'))
+      this.scenarioIcon.push(URL_PREFIX + 'file/' + item.id)
+      // this.scenarioIcon.push(require('../../assets/images/complianceTest_icon.png'))
       this.chooseScenarioIcon(this.scenarioIcon[0], 0)
     },
     conversionIcon (file) {
@@ -589,13 +589,16 @@ export default {
       this.chooseDefaultIcon(this.defaultIcon[0], 0)
     },
     confirmEditTestScenario () {
+      let editTestScenarioForm = this.editTestScenarioForm
+      editTestScenarioForm.icon = this.editTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile
       let fd = new FormData()
-      fd.append('nameCh', this.editTestScenarioForm.nameCh)
-      fd.append('nameEn', this.editTestScenarioForm.nameEn)
-      fd.append('descriptionCh', this.editTestScenarioForm.descriptionCh)
-      fd.append('descriptionEn', this.editTestScenarioForm.descriptionEn)
-      fd.append('icon', this.editTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile)
-      if (!fd.icon) {
+      fd.append('nameCh', editTestScenarioForm.nameCh)
+      fd.append('nameEn', editTestScenarioForm.nameEn)
+      fd.append('descriptionCh', editTestScenarioForm.descriptionCh)
+      fd.append('descriptionEn', editTestScenarioForm.descriptionEn)
+      fd.append('icon', editTestScenarioForm.icon)
+      // fd.append('icon', this.editTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile)
+      if (!editTestScenarioForm.icon) {
         this.$message({
           showClose: true,
           duration: 2000,
