@@ -114,7 +114,8 @@
         >
           <el-form
             :model="addTestScenarioForm"
-            label-width="130px"
+            ref="addTestScenarioForm"
+            label-width="150px"
             :rules="rules"
           >
             <el-form-item
@@ -130,7 +131,6 @@
             </el-form-item>
             <el-form-item
               :label=" $t('testCase.testScenarioEn')"
-              prop="nameEn"
             >
               <el-input
                 width="100px"
@@ -152,7 +152,6 @@
             </el-form-item>
             <el-form-item
               :label=" $t('testCase.testScenarioDescriptionEn')"
-              prop="descriptionEn"
             >
               <el-input
                 width="100px"
@@ -235,7 +234,7 @@
         >
           <el-form
             :model="editTestScenarioForm"
-            label-width="130px"
+            label-width="150px"
             :rules="rules"
           >
             <el-form-item
@@ -566,25 +565,31 @@ export default {
       })
     },
     confirmAddTestScenario () {
-      let fd = new FormData()
-      fd.append('nameCh', this.addTestScenarioForm.nameCh)
-      fd.append('nameEn', this.addTestScenarioForm.nameEn)
-      fd.append('descriptionCh', this.addTestScenarioForm.descriptionCh)
-      fd.append('descriptionEn', this.addTestScenarioForm.descriptionEn)
-      fd.append('icon', this.addTestScenarioForm.icon.length > 0 ? this.addTestScenarioForm.icon[0] : this.defaultIconFile)
-      ModelMgmt.createTestScenarioApi(fd).then(res => {
-        this.getAllScene()
-        this.addTestScenarioVisible = false
-        this.clearFormData(this.addTestScenarioForm)
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: '创建失败',
-          type: 'warning'
-        })
-        this.addTestScenarioVisible = false
+      this.$refs['addTestScenarioForm'].validate((valid) => {
+        if (valid) {
+          let fd = new FormData()
+          fd.append('nameCh', this.addTestScenarioForm.nameCh)
+          fd.append('nameEn', this.addTestScenarioForm.nameEn)
+          fd.append('descriptionCh', this.addTestScenarioForm.descriptionCh)
+          fd.append('descriptionEn', this.addTestScenarioForm.descriptionEn)
+          fd.append('icon', this.addTestScenarioForm.icon.length > 0 ? this.addTestScenarioForm.icon[0] : this.defaultIconFile)
+          ModelMgmt.createTestScenarioApi(fd).then(res => {
+            this.getAllScene()
+            this.addTestScenarioVisible = false
+            this.clearFormData(this.addTestScenarioForm)
+          }).catch(() => {
+            this.$message({
+              duration: 2000,
+              message: '创建失败',
+              type: 'warning'
+            })
+            this.addTestScenarioVisible = false
+          })
+          this.chooseDefaultIcon(this.defaultIcon[0], 0)
+        } else {
+          return false
+        }
       })
-      this.chooseDefaultIcon(this.defaultIcon[0], 0)
     },
     confirmEditTestScenario () {
       let editTestScenarioForm = this.editTestScenarioForm

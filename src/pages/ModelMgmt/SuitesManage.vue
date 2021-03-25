@@ -143,7 +143,8 @@
         >
           <el-form
             :model="addTestSuiteForm"
-            label-width="110px"
+            ref="addTestSuiteForm"
+            label-width="150px"
             :rules="rules"
           >
             <el-form-item
@@ -160,7 +161,6 @@
             </el-form-item>
             <el-form-item
               :label=" $t('testCase.testSuiteEn')"
-              prop="nameEn"
             >
               <el-input
                 width="100px"
@@ -182,7 +182,6 @@
             </el-form-item>
             <el-form-item
               :label=" $t('testCase.testSuiteDescriptionEn')"
-              prop="descriptionEn"
             >
               <el-input
                 width="100px"
@@ -193,7 +192,7 @@
             </el-form-item>
             <el-form-item
               :label="$t('modelmgmt.scene')"
-              prop="scenarioIdList"
+              prop="scenarioList"
             >
               <el-select
                 multiple
@@ -236,7 +235,7 @@
         >
           <el-form
             :model="editTestSuiteForm"
-            label-width="110px"
+            label-width="150px"
             :rules="rules"
           >
             <el-form-item
@@ -252,7 +251,6 @@
             </el-form-item>
             <el-form-item
               :label="$t('testCase.testSuiteEn')"
-              prop="nameEn"
             >
               <el-input
                 width="100px"
@@ -274,7 +272,6 @@
             </el-form-item>
             <el-form-item
               :label="$t('testCase.testSuiteDescriptionEn')"
-              prop="descriptionEn"
             >
               <el-input
                 width="100px"
@@ -285,7 +282,7 @@
             </el-form-item>
             <el-form-item
               :label="$t('modelmgmt.scene')"
-              prop="scenarioIdList"
+              prop="scenarioList"
             >
               <el-select
                 v-model="editTestSuiteForm.scenarioIdList"
@@ -338,7 +335,6 @@ export default {
       addTestSuiteVisible: false,
       editTestSuiteVisible: false,
       confirmBtnApi: '',
-      dialogTitle: '',
       editid: '',
       cannotEdit: false,
       addTestSuiteForm: {
@@ -374,7 +370,7 @@ export default {
           { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
         ],
         scenarioList: [
-          { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'blur' }
+          { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
         ]
       }
     }
@@ -418,7 +414,6 @@ export default {
       this.editTestSuiteVisible = false
     },
     addTestSuiteBtn () {
-      this.dialogTitle = '新增测试套'
       this.addTestSuiteVisible = true
       this.addTestSuiteForm = {
         nameCh: '',
@@ -451,23 +446,29 @@ export default {
       this.options = cacheArray
     },
     confirmAddTestSuite () {
-      let fd = new FormData()
-      fd.append('nameCh', this.addTestSuiteForm.nameCh)
-      fd.append('nameEn', this.addTestSuiteForm.nameEn)
-      fd.append('descriptionCh', this.addTestSuiteForm.descriptionCh)
-      fd.append('descriptionEn', this.addTestSuiteForm.descriptionEn)
-      fd.append('scenarioIdList', this.addTestSuiteForm.scenarioList)
-      ModelMgmt.createTestSuiteApi(fd).then(res => {
-        this.addTestSuiteVisible = false
-        this.getAllSuites()
-        this.clearFormData(this.editTestSuiteForm)
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: '创建失败',
-          type: 'warning'
-        })
-        this.addCaseVisible = false
+      this.$refs['addTestSuiteForm'].validate((valid) => {
+        if (valid) {
+          let fd = new FormData()
+          fd.append('nameCh', this.addTestSuiteForm.nameCh)
+          fd.append('nameEn', this.addTestSuiteForm.nameEn)
+          fd.append('descriptionCh', this.addTestSuiteForm.descriptionCh)
+          fd.append('descriptionEn', this.addTestSuiteForm.descriptionEn)
+          fd.append('scenarioIdList', this.addTestSuiteForm.scenarioList)
+          ModelMgmt.createTestSuiteApi(fd).then(res => {
+            this.addTestSuiteVisible = false
+            this.getAllSuites()
+            this.clearFormData(this.editTestSuiteForm)
+          }).catch(() => {
+            this.$message({
+              duration: 2000,
+              message: '创建失败',
+              type: 'warning'
+            })
+            this.addTestSuiteVisible = false
+          })
+        } else {
+          return false
+        }
       })
     },
     confirmEditTestSuite () {
