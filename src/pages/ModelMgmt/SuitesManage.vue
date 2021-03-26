@@ -235,6 +235,7 @@
         >
           <el-form
             :model="editTestSuiteForm"
+            ref="editTestSuiteForm"
             label-width="150px"
             :rules="rules"
           >
@@ -288,7 +289,6 @@
                 v-model="editTestSuiteForm.scenarioIdList"
                 :placeholder="$t('userpage.selectScene')"
                 multiple
-                required
               >
                 <el-option
                   v-for="item in options"
@@ -370,7 +370,7 @@ export default {
           { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
         ],
         scenarioList: [
-          { type: 'array', required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
+          { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
         ]
       }
     }
@@ -472,23 +472,30 @@ export default {
       })
     },
     confirmEditTestSuite () {
-      let fd = new FormData()
-      fd.append('nameCh', this.editTestSuiteForm.nameCh)
-      fd.append('nameEn', this.editTestSuiteForm.nameEn)
-      fd.append('descriptionCh', this.editTestSuiteForm.descriptionCh)
-      fd.append('descriptionEn', this.editTestSuiteForm.descriptionEn)
-      fd.append('scenarioIdList', this.editTestSuiteForm.scenarioIdList)
-      ModelMgmt.editTestSuiteApi(fd, this.editId).then(res => {
-        this.editTestSuiteVisible = false
-        this.getAllSuites()
-        this.clearFormData(this.editTestSuiteForm)
-      }).catch(() => {
-        this.$message({
-          duration: 2000,
-          message: '编辑',
-          type: 'warning'
-        })
-        this.editTestSuiteVisible = false
+      this.$refs['editTestSuiteForm'].validate((valid) => {
+        if (valid) {
+          let fd = new FormData()
+          fd.append('nameCh', this.editTestSuiteForm.nameCh)
+          fd.append('nameEn', this.editTestSuiteForm.nameEn)
+          fd.append('descriptionCh', this.editTestSuiteForm.descriptionCh)
+          fd.append('descriptionEn', this.editTestSuiteForm.descriptionEn)
+          fd.append('scenarioIdList', this.editTestSuiteForm.scenarioIdList)
+          ModelMgmt.editTestSuiteApi(fd, this.editId).then(res => {
+            this.editTestSuiteVisible = false
+            this.getAllSuites()
+            this.clearFormData(this.editTestSuiteForm)
+          }).catch(() => {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: this.$t('promptMessage.modifyFail'),
+              type: 'warning'
+            })
+            this.editTestSuiteVisible = false
+          })
+        } else {
+          return false
+        }
       })
     },
     editTestSuite (item) {
