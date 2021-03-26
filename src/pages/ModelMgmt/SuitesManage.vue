@@ -370,7 +370,7 @@ export default {
           { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
         ],
         scenarioList: [
-          { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
+          { type: 'array', required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
         ]
       }
     }
