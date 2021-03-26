@@ -443,6 +443,15 @@ export default {
       }
     },
     onclickAdd () {
+      this.addTestScenarioForm = {
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
+        icon: [],
+        base64Session: false,
+        defaultActive: ''
+      }
       this.addTestScenarioVisible = true
       this.chooseDefaultIcon(this.defaultIcon[0], 0)
     },
@@ -567,24 +576,36 @@ export default {
     confirmAddTestScenario () {
       this.$refs['addTestScenarioForm'].validate((valid) => {
         if (valid) {
+          let addTestScenarioForm = this.addTestScenarioForm
+          addTestScenarioForm.icon = this.addTestScenarioForm.icon.length > 0 ? this.addTestScenarioForm.icon[0] : this.defaultIconFile
           let fd = new FormData()
-          fd.append('nameCh', this.addTestScenarioForm.nameCh)
-          fd.append('nameEn', this.addTestScenarioForm.nameEn)
-          fd.append('descriptionCh', this.addTestScenarioForm.descriptionCh)
-          fd.append('descriptionEn', this.addTestScenarioForm.descriptionEn)
-          fd.append('icon', this.addTestScenarioForm.icon.length > 0 ? this.addTestScenarioForm.icon[0] : this.defaultIconFile)
-          ModelMgmt.createTestScenarioApi(fd).then(res => {
-            this.getAllScene()
-            this.addTestScenarioVisible = false
-            this.clearFormData(this.addTestScenarioForm)
-          }).catch(() => {
+          fd.append('nameCh', addTestScenarioForm.nameCh)
+          fd.append('nameEn', addTestScenarioForm.nameEn)
+          fd.append('descriptionCh', addTestScenarioForm.descriptionCh)
+          fd.append('descriptionEn', addTestScenarioForm.descriptionEn)
+          fd.append('icon', addTestScenarioForm.icon)
+          if (addTestScenarioForm.icon.length === 0) {
             this.$message({
+              showClose: true,
               duration: 2000,
-              message: '创建失败',
-              type: 'warning'
+              type: 'warning',
+              message: '请选择图标'
             })
-            this.addTestScenarioVisible = false
-          })
+          } else {
+            ModelMgmt.createTestScenarioApi(fd).then(res => {
+              this.getAllScene()
+              this.addTestScenarioVisible = false
+              this.clearFormData(this.addTestScenarioForm)
+            }).catch(() => {
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                message: '创建失败',
+                type: 'warning'
+              })
+              this.addTestScenarioVisible = false
+            })
+          }
           this.chooseDefaultIcon(this.defaultIcon[0], 0)
         } else {
           return false
@@ -637,18 +658,28 @@ export default {
         type: 'warning'
       }).then(() => {
         ModelMgmt.deleteTestScenarioApi(id).then(res => {
-          this.getAllScene()
           this.$message({
             duration: 2000,
             message: this.$t('promptMessage.deleteSuccess'),
             type: 'success'
           })
-        }).catch(() => {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.deleteFail'),
-            type: 'warning'
-          })
+          this.getAllScene()
+        }).catch(error => {
+          if (error.response.data.message === 'this scenario is used by some test suites, so can not be delete.') {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: this.$t('promptMessage.cannotDeleteScenario'),
+              type: 'warning'
+            })
+          } else {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: this.$t('promptMessage.deleteFail'),
+              type: 'warning'
+            })
+          }
         })
       })
     }
