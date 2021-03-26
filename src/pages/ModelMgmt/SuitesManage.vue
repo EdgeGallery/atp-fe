@@ -511,14 +511,24 @@ export default {
             type: 'success',
             message: this.$t('promptMessage.deleteSuccess')
           })
-        }).catch(() => {
-          this.$message({
-            duration: 2000,
-            message: this.$t('promptMessage.deleteFail'),
-            type: 'warning'
-          })
+          this.getAllSuites()
+        }).catch(error => {
+          if (error.response.data.message === 'this test suite is used by some test cases, can not be deleted..') {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: this.$t('promptMessage.cannotDeleteSuite'),
+              type: 'warning'
+            })
+          } else {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: this.$t('promptMessage.deleteFail'),
+              type: 'warning'
+            })
+          }
         })
-        this.getAllSuites()
       })
     },
     clearFormData (form) {

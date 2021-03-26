@@ -84,7 +84,9 @@ const en = {
     modifyFail: 'Fail to edit',
     submitSuccess: 'Submitted successfully',
     manualTip: 'There are also manual use cases, which need to be completed manually by the administrator',
-    noCase: 'There is no use case for this scenario'
+    noCase: 'There is no use case for this scenario',
+    cannotDeleteSuite: 'This test suite is used by some test cases, can not be deleted.',
+    cannotDeleteScenario: 'This scenario is used by some test suites, so can not be delete.'
   },
   common: {
     cancel: 'Cancel',
