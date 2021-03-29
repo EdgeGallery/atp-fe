@@ -209,7 +209,7 @@ const cn = {
   },
   userpage: {
     selectScene: '选择用例场景',
-    contribution: '测试用例贡献',
+    contribution: '贡献测试用例',
     seeDetail: '查看用例详情',
     caseDetail: '用例详情',
     name: '用例名称',
