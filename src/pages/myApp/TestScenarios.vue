@@ -280,7 +280,7 @@ export default {
   data () {
     return {
       currUrl: window.location.href,
-      userName: sessionStorage.getItem('userName'),
+      userName: '',
       sceneData: [],
       datacn: [],
       dataen: [],
@@ -308,16 +308,18 @@ export default {
       })
     }
   },
-  mounted () {
-    this.getLanguage()
-    this.getTaskId()
-    this.getAllScene()
+  beforeMount () {
     getUserInfo().then(res => {
       sessionStorage.setItem('userId', res.data.userId)
       sessionStorage.setItem('userName', res.data.userName)
       sessionStorage.setItem('authorities', res.data.authorities)
       this.userName = res.data.userName
     })
+  },
+  mounted () {
+    this.getLanguage()
+    this.getTaskId()
+    this.getAllScene()
   },
   methods: {
     getLanguage () {

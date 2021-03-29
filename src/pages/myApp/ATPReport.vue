@@ -212,7 +212,7 @@ export default {
   mounted () {
     this.getLanguage()
     this.getTaskId()
-    this.getReport()
+    // this.getReport()
   },
   methods: {
     getLanguage () {
@@ -235,6 +235,7 @@ export default {
       } else {
         this.taskId = this.currUrl.split('?')[1].split('=')[1]
       }
+      this.getReport()
     },
     getReport () {
       Userpage.getTaskApi(this.taskId).then(res => {

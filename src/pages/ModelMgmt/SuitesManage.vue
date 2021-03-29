@@ -237,7 +237,7 @@
             :model="editTestSuiteForm"
             ref="editTestSuiteForm"
             label-width="150px"
-            :rules="rules"
+            :rules="modifyrules"
           >
             <el-form-item
               :label="$t('testCase.testSuiteCn')"
@@ -363,6 +363,17 @@ export default {
       testScenes: [],
       testSuites: [],
       rules: {
+        nameCh: [
+          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+        ],
+        descriptionCh: [
+          { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
+        ],
+        scenarioList: [
+          { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
+        ]
+      },
+      modifyrules: {
         nameCh: [
           { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
         ],
