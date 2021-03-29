@@ -74,6 +74,11 @@ export default new Router({
           component: () => import('./pages/myApp/ATPProcess.vue')
         },
         {
+          path: 'testprocess',
+          name: 'testprocess',
+          component: () => import('./pages/myApp/testProcess.vue')
+        },
+        {
           path: 'selectscene',
           name: 'selectscene',
           component: () => import('./pages/myApp/TestScenarios.vue')

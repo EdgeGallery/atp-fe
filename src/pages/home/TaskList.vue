@@ -302,12 +302,14 @@ export default {
     handleClickTaskNo (row) {
       let taskId = row.id
       sessionStorage.setItem('taskId', taskId)
-      let routeData = this.$router.resolve({ name: 'atpprocess', query: { taskId: taskId } })
+      // let routeData = this.$router.resolve({ name: 'atpprocess', query: { taskId: taskId } })
+      let routeData = this.$router.resolve({ name: 'testprocess', query: { taskId: taskId } })
       window.open(routeData.href, '_blank')
     },
     modifyStatus (row) {
       let taskId = row.id
-      let routeData = this.$router.resolve({ name: 'atpprocess', query: { taskId: taskId } })
+      // let routeData = this.$router.resolve({ name: 'atpprocess', query: { taskId: taskId } })
+      let routeData = this.$router.resolve({ name: 'testprocess', query: { taskId: taskId } })
       window.open(routeData.href, '_blank')
     },
     handleSelectionChange (val) {

@@ -165,6 +165,21 @@
                       {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
                     </template>
                   </el-table-column>
+                  <el-table-column
+                    v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+                    :label="$t('myApp.operation')"
+                    width="100"
+                  >
+                    <template scope="scope">
+                      <el-button
+                        :disabled="scope.row.type==='automatic' || scope.row.result!=='running'"
+                        type="text"
+                        style="font-size:xx-large;"
+                        class="el-icon-edit"
+                        @click="modify(scope.row,item.id,suiteItem.id)"
+                      />
+                    </template>
+                  </el-table-column>
                 </el-table>
               </el-collapse-item>
             </el-collapse>

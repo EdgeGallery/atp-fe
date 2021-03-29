@@ -279,7 +279,8 @@ export default {
     },
     handleClickTaskNo (val) {
       let taskId = val.id
-      this.$router.push({ name: 'atpprocess', query: { taskId: taskId } })
+      // this.$router.push({ name: 'atpprocess', query: { taskId: taskId } })
+      this.$router.push({ name: 'testprocess', query: { taskId: taskId } })
     },
     contrastTime () {
       if (this.form.endTime && this.form.createTime > this.form.endTime) {
