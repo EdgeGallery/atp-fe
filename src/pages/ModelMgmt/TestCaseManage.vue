@@ -714,6 +714,13 @@ export default {
             type: 'warning',
             message: '请添加文件'
           })
+        } else if (addcaseForm.testSuiteIdList.length === 0) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请选择测试套'
+          })
         } else {
           Atp.createCaseApi(fd).then(res => {
             this.addCaseVisible = false
@@ -735,26 +742,77 @@ export default {
           })
         }
       } else if (this.confirmBtnApi === 'edit') {
-        fd.append('id', this.editid)
-        this.confirmedit(fd, addcaseForm)
-        Atp.editCaseApi(fd).then(res => {
-          this.addCaseVisible = false
-          this.getAllcase()
+        if (!addcaseForm.descriptionCh) {
           this.$message({
             showClose: true,
             duration: 2000,
-            message: this.$t('promptMessage.modifySuccess'),
-            type: 'success'
+            type: 'warning',
+            message: '请输入中文描述'
           })
-        }).catch(() => {
+        } else if (!addcaseForm.descriptionEn) {
           this.$message({
             showClose: true,
             duration: 2000,
-            message: this.$t('promptMessage.modifyFail'),
-            type: 'warning'
+            type: 'warning',
+            message: '请输入英文描述'
           })
-          this.addCaseVisible = false
-        })
+        } else if (!addcaseForm.expectResultCh) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请输入中文预期'
+          })
+        } else if (!addcaseForm.expectResultEn) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请输入英文预期'
+          })
+        } else if (!addcaseForm.testStepCh) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请输入中文步骤'
+          })
+        } else if (!addcaseForm.testStepEn) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请输入英文步骤'
+          })
+        } else if (addcaseForm.testSuiteIdList.length === 0) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '请选择测试套'
+          })
+        } else {
+          fd.append('id', this.editid)
+          this.confirmedit(fd, addcaseForm)
+          Atp.editCaseApi(fd).then(res => {
+            this.addCaseVisible = false
+            this.getAllcase()
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: this.$t('promptMessage.modifySuccess'),
+              type: 'success'
+            })
+          }).catch(() => {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: this.$t('promptMessage.modifyFail'),
+              type: 'warning'
+            })
+            this.addCaseVisible = false
+          })
+        }
       }
       this.editfile = false
     },
