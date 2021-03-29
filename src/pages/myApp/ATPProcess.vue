@@ -301,25 +301,28 @@ export default {
         reason: ''
       },
       dialogVisible: false,
-      userName: sessionStorage.getItem('userName'),
+      userName: '',
       authorities: [],
       carouselHeight: '',
       alltestCase: []
     }
   },
-  mounted () {
+  beforeMount () {
     getUserInfo().then(res => {
       sessionStorage.setItem('userId', res.data.userId)
       sessionStorage.setItem('userName', res.data.userName)
       this.userName = res.data.userName
       this.authorities = res.data.authorities
     })
+  },
+  mounted () {
     this.getLanguage()
     this.getTaskId()
     this.getTaskProcess()
     this.interval = setInterval(() => {
       this.getTaskProcess()
     }, 1000)
+    this.setCollaspe()
   },
   directives: {
     focus: {
@@ -364,7 +367,7 @@ export default {
         let data = res.data.testScenarios
         let taskStatus = res.data.status
         this.testScenarios = data
-        this.activeName = []
+        // this.activeName = []
         this.hasFailActiveName = []
         this.finishActiveName = []
         this.firstScene = data[0].nameEn
@@ -391,8 +394,13 @@ export default {
           element.successNum = 0
           element.failNum = 0
           element.testSuites.forEach(ele => {
+          // 一个测试套测试完成后收起
+          // let putBoolen = ele.testCases.every(caseFinish => {
+          //   return caseFinish.result === 'success' || caseFinish.result === 'failed'
+          // })
           // 完成后打开的页签
             this.finishActiveName.push(element.nameEn + ele.nameEn)
+            // 测试过程
             ele.testCases.forEach(item => {
               this.alltestCase.push(item)
               element.totalNum++
@@ -406,7 +414,7 @@ export default {
                 this.casefailclass = 'casefail'
                 this.hasFailActiveName.push(element.nameEn + ele.nameEn)
               } else if (item.result === 'running') {
-                this.activeName.push(element.nameEn + ele.nameEn)
+              // this.activeName.push(element.nameEn + ele.nameEn)
                 if (item.type === 'automatic') {
                   this.testingCase = [item.nameCh, item.nameEn]
                   this.testingScene = [element.nameCh, element.nameEn]
@@ -472,6 +480,14 @@ export default {
         showClose: true,
         type: 'success',
         message: this.$t('promptMessage.manualTip')
+      })
+    },
+    // 设置所有面板打开
+    setCollaspe () {
+      this.testScenarios.forEach(element => {
+        element.testSuites.forEach(ele => {
+          this.activeName.push(element.nameEn + ele.nameEn)
+        })
       })
     },
     // 设置用例高度
@@ -593,6 +609,8 @@ export default {
       }
       .percenprocess{
         margin-top: 8px;
+        border: 2px solid #8c98b9;
+        border-radius: 15px;
         .el-progress-bar__inner{
           background-color: #688ef3;
         }
