@@ -114,6 +114,7 @@
       </div>
       <el-collapse
         :value="opened"
+        v-if="!testSuitesNocase"
       >
         <el-collapse-item
           v-for="(item,index) in testSuiteData"
@@ -148,6 +149,10 @@
           </el-table>
         </el-collapse-item>
       </el-collapse>
+      <span
+        v-else
+        style="font-size:18px; padding-left: 8px;"
+      >{{ this.$t('promptMessage.noCase') }}</span>
       <div style="text-align:right;margin-top:15px;">
         <el-button
           type="primary"
@@ -298,7 +303,8 @@ export default {
         expectResult: '',
         type: '',
         file: []
-      }
+      },
+      testSuitesNocase: false
     }
   },
   computed: {
@@ -399,8 +405,10 @@ export default {
       let fd = new FormData()
       fd.append('scenarioIds', scenarioIds)
       Userpage.getSceneCaseApi(fd).then(res => {
-        let data = res.data
-        this.testSuiteData = data[0].testSuites
+        this.testSuiteData = res.data[0].testSuites
+        this.testSuitesNocase = this.testSuiteData.every(function (element) {
+          return (element.testCases.length === 0)
+        })
       }).catch(() => {
         this.$message({
           showClose: true,
@@ -495,6 +503,7 @@ export default {
       display: flex;
       flex-direction: column;
       margin-right: 20px;
+      cursor: pointer;
       img{
         width: 30px;
         height: 30px;
