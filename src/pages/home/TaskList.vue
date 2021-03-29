@@ -338,7 +338,6 @@ export default {
         this.pageData = data
         this.totalNum = this.pageData.length
         this.dataLoading = false
-        this.getOneTaskStatus()
       }).catch(() => {
         this.dataLoading = false
         this.$message({
