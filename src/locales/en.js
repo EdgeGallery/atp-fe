@@ -96,7 +96,8 @@ const en = {
     expectResultEmpty: 'Expected result cannot be empty!',
     testStepEmpty: 'Step cannot be empty!',
     testSuiteEmpty: 'Test suite cannot be empty!',
-    fileEmpty: 'File cannot be empty!'
+    fileEmpty: 'File cannot be empty!',
+    nameLength: '1-16 digits in length'
   },
   common: {
     cancel: 'Cancel',
@@ -213,7 +214,7 @@ const en = {
     getFail: 'Failed to Get Data'
   },
   process: {
-    modifyStatus: 'Modify Use Case Status'
+    modifyStatus: 'Modify Case Status'
   },
   Scenes: {
     name: 'Name'

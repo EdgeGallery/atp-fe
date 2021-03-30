@@ -397,7 +397,8 @@ export default {
       scenarios: [],
       rules: {
         nameCh: [
-          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' },
+          { pattern: /^[\da-zA-Z_\u4e00-\u9f5a]{1,16}$/, message: this.$t('promptMessage.nameLength') }
         ],
         descriptionCh: [
           { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
@@ -749,6 +750,11 @@ export default {
       background-color: #fff;
       border: 3px solid#9163cc;
       border-left: 10px solid #9163cc;
+    }
+    @media screen and (max-width: 1180px) {
+      .list{
+          width: 30%;
+      }
     }
   }
   .default-icon{

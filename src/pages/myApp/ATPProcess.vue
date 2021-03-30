@@ -307,7 +307,6 @@ export default {
     this.interval = setInterval(() => {
       this.getTaskProcess()
     }, 1000)
-    // this.setCollaspe()
   },
   directives: {
     focus: {
@@ -352,7 +351,8 @@ export default {
         let data = res.data.testScenarios
         let taskStatus = res.data.status
         this.testScenarios = data
-        this.activeName = []
+        this.setCollaspe()
+        this.setCollaspe = function () {}
         this.hasFailActiveName = []
         this.finishActiveName = []
         this.firstScene = data[0].nameEn
@@ -380,11 +380,7 @@ export default {
           element.failNum = 0
           element.testSuites.forEach(ele => {
           // 一个测试套测试完成后收起
-          // let putBoolen = ele.testCases.every(caseFinish => {
-          //   return caseFinish.result === 'success' || caseFinish.result === 'failed'
-          // })
           // 完成后打开的页签
-            this.activeName.push(element.nameEn + ele.nameEn)
             this.finishActiveName.push(element.nameEn + ele.nameEn)
             // 测试过程
             ele.testCases.forEach(item => {
@@ -595,8 +591,10 @@ export default {
       }
       .percenprocess{
         margin-top: 8px;
-        border: 2px solid #8c98b9;
-        border-radius: 15px;
+        .el-progress-bar{
+          border: 2px solid #8c98b9;
+          border-radius: 15px;
+        }
         .el-progress-bar__inner{
           background-color: #688ef3;
         }

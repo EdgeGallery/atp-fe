@@ -94,7 +94,8 @@ const cn = {
     expectResultEmpty: '预期结果不能为空!',
     testStepEmpty: '步骤不能为空!',
     testSuiteEmpty: '测试套不能为空!',
-    fileEmpty: '文件不能为空!'
+    fileEmpty: '文件不能为空!',
+    nameLength: '长度为1-16位'
   },
   common: {
     cancel: '取消',

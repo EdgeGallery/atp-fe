@@ -324,9 +324,8 @@ export default {
       let option = {
         color: colors,
         legend: {
-          x: '80%',
-          y: '30%',
-          orient: 'vertical'
+          top: '5%',
+          left: 'right'
         },
         tooltip: {
           trigger: 'item',
@@ -352,7 +351,7 @@ export default {
       if (this.language === 'en') {
         option.series[0].name = 'Test Scenarios'
         option.series[0].data = this.ChartData[0].dataEn
-        option.series[0].label.formatter = '{b} Number of use cases: {@2012} ({d}%)'
+        option.series[0].label.formatter = '{b} Cases: {@2012} ({d}%)'
       } else if (this.language === 'cn') {
         option.series[0].name = '测试场景'
         option.series[0].data = this.ChartData[0].dataCh
