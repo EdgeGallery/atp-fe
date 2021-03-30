@@ -472,7 +472,7 @@ export default {
           }).catch(() => {
             this.$message({
               duration: 2000,
-              message: '创建失败',
+              message: this.$t('promptMessage.addFail'),
               type: 'warning'
             })
             this.addTestSuiteVisible = false

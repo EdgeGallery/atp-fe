@@ -589,7 +589,7 @@ export default {
               showClose: true,
               duration: 2000,
               type: 'warning',
-              message: '请选择图标'
+              message: this.$t('promptMessage.selectIcon')
             })
           } else {
             ModelMgmt.createTestScenarioApi(fd).then(res => {
@@ -600,7 +600,7 @@ export default {
               this.$message({
                 showClose: true,
                 duration: 2000,
-                message: '创建失败',
+                message: this.$t('promptMessage.addFail'),
                 type: 'warning'
               })
               this.addTestScenarioVisible = false
@@ -621,13 +621,12 @@ export default {
       fd.append('descriptionCh', editTestScenarioForm.descriptionCh)
       fd.append('descriptionEn', editTestScenarioForm.descriptionEn)
       fd.append('icon', editTestScenarioForm.icon)
-      // fd.append('icon', this.editTestScenarioForm.icon.length > 0 ? this.editTestScenarioForm.icon[0] : this.defaultIconFile)
       if (editTestScenarioForm.icon.length === 0) {
         this.$message({
           showClose: true,
           duration: 2000,
           type: 'warning',
-          message: '请选择图标'
+          message: this.$t('promptMessage.selectIcon')
         })
       } else {
         ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
@@ -638,7 +637,7 @@ export default {
         }).catch(() => {
           this.$message({
             duration: 2000,
-            message: '修改失败',
+            message: this.$t('promptMessage.modifyFail'),
             type: 'warning'
           })
           this.editTestScenarioVisible = false
@@ -699,7 +698,6 @@ export default {
 <style lang="less">
 .testscenarios{
   .scenarioTop {
-    // height: 300px;
     margin-left: 10px;
     display: flex;
     .searchBar {

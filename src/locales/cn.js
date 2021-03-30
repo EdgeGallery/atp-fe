@@ -79,12 +79,22 @@ const cn = {
     runFailed: '运行失败',
     getSceneFail: '获取场景失败',
     modifySuccess: '修改成功',
+    addFail: '添加失败',
+    addSuccess: '添加成功',
     modifyFail: '修改失败',
     submitSuccess: '提交成功',
     manualTip: '自动化用例已完成，还有手动用例，需等待管理员手工完成',
     noCase: '此场景没有用例',
     cannotDeleteSuite: '该测试套被某些测试用例所使用，无法删除!',
-    cannotDeleteScenario: '该测试场景被某些测试套所使用，无法删除!'
+    cannotDeleteScenario: '该测试场景被某些测试套所使用，无法删除!',
+    selectIcon: '请选择图标',
+    nameEmpty: '名称不能为空!',
+    typeEmpty: '类型不能为空!',
+    descriptionEmpty: '描述不能为空!',
+    expectResultEmpty: '预期结果不能为空!',
+    testStepEmpty: '步骤不能为空!',
+    testSuiteEmpty: '测试套不能为空!',
+    fileEmpty: '文件不能为空!'
   },
   common: {
     cancel: '取消',

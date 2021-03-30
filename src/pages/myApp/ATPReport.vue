@@ -339,7 +339,7 @@ export default {
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
             label: {
-              formatter: '{b}: {@2012} ({d}%)'
+              formatter: '{b} 用例数量: {@2012} ({d}%)'
             },
             labelLine: {
               show: true,
@@ -352,6 +352,7 @@ export default {
       if (this.language === 'en') {
         option.series[0].name = 'Test Scenarios'
         option.series[0].data = this.ChartData[0].dataEn
+        option.series[0].label.formatter = '{b} Number of use cases: {@2012} ({d}%)'
       } else if (this.language === 'cn') {
         option.series[0].name = '测试场景'
         option.series[0].data = this.ChartData[0].dataCh
@@ -365,12 +366,19 @@ export default {
           text: '',
           x: 'center'
         },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            animation: false
+          }
+        },
         xAxis: {
           type: 'category',
           data: []
         },
         yAxis: [
           {
+            name: '成功率',
             type: 'value',
             axisLabel: {
               show: true,
@@ -400,6 +408,7 @@ export default {
       }
       if (this.language === 'en') {
         option.title.text = 'Test case success rate'
+        option.yAxis[0].name = 'Success rate'
         option.xAxis.data = this.ChartData[0].nameRightEn
         option.series[0].data = this.ChartData[0].dataRight
       } else if (this.language === 'cn') {
