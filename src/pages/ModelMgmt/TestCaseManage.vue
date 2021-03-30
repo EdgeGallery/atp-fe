@@ -677,49 +677,49 @@ export default {
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请输入名称'
+            message: this.$t('promptMessage.nameEmpty')
           })
         } else if (!addcaseForm.type) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请输入类型'
+            message: this.$t('promptMessage.typeEmpty')
           })
         } else if (!addcaseForm.descriptionCh) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请输入描述'
+            message: this.$t('promptMessage.descriptionEmpty')
           })
         } else if (!addcaseForm.expectResultCh) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请输入预期'
+            message: this.$t('promptMessage.expectResultEmpty')
           })
         } else if (!addcaseForm.testStepCh) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请输入步骤'
+            message: this.$t('promptMessage.testStepEmpty')
           })
         } else if (addcaseForm.file.length === 0) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请添加文件'
+            message: this.$t('promptMessage.fileEmpty')
           })
         } else if (addcaseForm.testSuiteIdList.length === 0) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请选择测试套'
+            message: this.$t('promptMessage.testSuiteEmpty')
           })
         } else {
           Atp.createCaseApi(fd).then(res => {
@@ -728,68 +728,47 @@ export default {
             this.$message({
               duration: 2000,
               showClose: true,
-              message: '创建成功',
+              message: this.$t('promptMessage.addSuccess'),
               type: 'success'
             })
           }).catch(() => {
             this.$message({
               showClose: true,
               duration: 2000,
-              message: '创建失败',
+              message: this.$t('promptMessage.addFail'),
               type: 'warning'
             })
             this.addCaseVisible = false
           })
         }
       } else if (this.confirmBtnApi === 'edit') {
-        if (!addcaseForm.descriptionCh) {
+        if (!addcaseForm.descriptionCh || !addcaseForm.descriptionEn) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请输入中文描述'
+            message: this.$t('promptMessage.descriptionEmpty')
           })
-        } else if (!addcaseForm.descriptionEn) {
+        } else if (!addcaseForm.expectResultCh || !addcaseForm.expectResultEn) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请输入英文描述'
+            message: this.$t('promptMessage.expectResultEmpty')
           })
-        } else if (!addcaseForm.expectResultCh) {
+        } else if (!addcaseForm.testStepCh || !addcaseForm.testStepEn) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请输入中文预期'
-          })
-        } else if (!addcaseForm.expectResultEn) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: '请输入英文预期'
-          })
-        } else if (!addcaseForm.testStepCh) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: '请输入中文步骤'
-          })
-        } else if (!addcaseForm.testStepEn) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: '请输入英文步骤'
+            message: this.$t('promptMessage.testStepEmpty')
           })
         } else if (addcaseForm.testSuiteIdList.length === 0) {
           this.$message({
             showClose: true,
             duration: 2000,
             type: 'warning',
-            message: '请选择测试套'
+            message: this.$t('promptMessage.testSuiteEmpty')
           })
         } else {
           fd.append('id', this.editid)
