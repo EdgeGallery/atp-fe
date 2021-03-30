@@ -283,7 +283,7 @@
             </el-form-item>
             <el-form-item
               :label="$t('modelmgmt.scene')"
-              prop="scenarioList"
+              prop="scenarioIdList"
             >
               <el-select
                 v-model="editTestSuiteForm.scenarioIdList"
@@ -380,7 +380,7 @@ export default {
         descriptionCh: [
           { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
         ],
-        scenarioList: [
+        scenarioIdList: [
           { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
         ]
       }
