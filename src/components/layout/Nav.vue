@@ -30,7 +30,7 @@
         </div>
       </el-col>
       <el-col
-        :span="12"
+        :span="11"
         class="navList"
       >
         <el-menu
@@ -75,7 +75,7 @@
         </el-menu>
       </el-col>
       <el-col
-        :span="6"
+        :span="7"
       >
         <div class="nav-tabs rt">
           <span
