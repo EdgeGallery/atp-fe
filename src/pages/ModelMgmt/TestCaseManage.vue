@@ -197,6 +197,7 @@
             <el-table-column
               :label="$t('testCase.operation')"
               v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+              width="150"
             >
               <template slot-scope="scope">
                 <el-button
