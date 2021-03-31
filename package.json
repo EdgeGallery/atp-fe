@@ -27,7 +27,7 @@
     "less-loader": "^5.0.0",
     "mavon-editor": "^2.8.2",
     "postcss-import": "^11.0.0",
-    "postcss-loader": "^2.0.10",
+    "postcss-loader": "^3.0.0",
     "postcss-url": "^7.2.1",
     "showdown": "^1.9.1",
     "v-charts": "^1.19.0",
