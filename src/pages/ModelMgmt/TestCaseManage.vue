@@ -568,8 +568,8 @@ export default {
       this.getAllcase()
     },
     // 获取所有测试用例
-    getAllcase () {
-      this.getALlSuites()
+    async getAllcase () {
+      await this.getALlSuites()
       this.allcaseData = []
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       Atp.getAllCaseApi(this.form).then(res => {
@@ -595,9 +595,9 @@ export default {
         })
       })
     },
-    getALlSuites () {
+    async getALlSuites () {
       this.testSuiteList = []
-      ModelMgmt.getTestSuite().then(res => {
+      await ModelMgmt.getTestSuite().then(res => {
         let data = res.data
         data.forEach(item => {
           let obj = {
