@@ -228,7 +228,7 @@ const en = {
     status: 'Status',
     type: 'Type',
     description: 'Description',
-    score: 'Score',
+    score: 'pts',
     result: 'Result',
     find: '',
     issue: 'Issues were found in all scenarios',

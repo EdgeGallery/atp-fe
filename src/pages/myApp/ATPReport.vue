@@ -324,7 +324,7 @@ export default {
       let option = {
         color: colors,
         legend: {
-          top: '5%',
+          top: '0%',
           left: 'right'
         },
         tooltip: {
