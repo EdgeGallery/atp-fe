@@ -379,7 +379,6 @@ export default {
           element.successNum = 0
           element.failNum = 0
           element.testSuites.forEach(ele => {
-          // 一个测试套测试完成后收起
           // 完成后打开的页签
             this.finishActiveName.push(element.nameEn + ele.nameEn)
             // 测试过程
@@ -566,7 +565,7 @@ export default {
       vertical-align:middle;
       em{
         display: inline-block;
-        font-size: 30px;
+        font-size: 28px;
         color: #688ef3;
         font-weight: 600;
       }
