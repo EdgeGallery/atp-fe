@@ -419,14 +419,7 @@ export default {
               }
             })
             // 一个测试套测试完成后收起
-            let testSuiteFinishBoolan = ele.testCases.every(caseFinish => {
-              return (caseFinish.result === 'success' || caseFinish.result === 'failed')
-            })
-            if (testSuiteFinishBoolan && this.activeName.indexOf(element.nameEn + ele.nameEn) !== -1) {
-              let index = this.activeName.indexOf(element.nameEn + ele.nameEn)
-              this.activeName.splice(index, 1)
-              console.log(this.activeName)
-            }
+            this.setactiveName(ele, element)
           })
         })
         // 分数和进度百分比
@@ -473,6 +466,15 @@ export default {
       } else if (taskStatus === 'failed') {
         this.statusTitle = ['测试失败', 'Test Failed']
         this.$refs.carousel.setActiveItem(data[0].nameEn)
+      }
+    },
+    setactiveName (ele, element) {
+      let testSuiteFinishBoolan = ele.testCases.every(caseFinish => {
+        return (caseFinish.result === 'success' || caseFinish.result === 'failed')
+      })
+      if (testSuiteFinishBoolan && this.activeName.indexOf(element.nameEn + ele.nameEn) !== -1) {
+        let index = this.activeName.indexOf(element.nameEn + ele.nameEn)
+        this.activeName.splice(index, 1)
       }
     },
     // 提示手动类型
