@@ -567,6 +567,11 @@ export default {
           }
         }
       }
+      @media screen and (max-width: 1152px) {
+      .scene{
+          height: 300px;
+      }
+    }
     }
     @media screen and (max-width: 1320px) {
       .contednt{

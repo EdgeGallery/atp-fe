@@ -377,7 +377,7 @@ export default {
         let allNum = 0
         this.reportData = []
         data.forEach(element => {
-        // 查看报告遍历
+        // 场景翻页遍历
           let reportobj = {
             label: '',
             nameCh: '',
@@ -394,14 +394,6 @@ export default {
           element.successNum = 0
           element.failNum = 0
           element.testSuites.forEach(ele => {
-            // 一个测试套测试完成后收起
-            let testSuiteFinishBoolan = ele.testCases.every(caseFinish => {
-              return (caseFinish.result === 'success' || caseFinish.result === 'failed')
-            })
-            if (testSuiteFinishBoolan) {
-              let index = this.activeName.indexOf(element.nameEn + ele.nameEn)
-              this.activeName.splice(index, 1)
-            }
             // 完成后打开的页签
             this.finishActiveName.push(element.nameEn + ele.nameEn)
             // 测试过程
@@ -426,6 +418,15 @@ export default {
                 }
               }
             })
+            // 一个测试套测试完成后收起
+            let testSuiteFinishBoolan = ele.testCases.every(caseFinish => {
+              return (caseFinish.result === 'success' || caseFinish.result === 'failed')
+            })
+            if (testSuiteFinishBoolan && this.activeName.indexOf(element.nameEn + ele.nameEn) !== -1) {
+              let index = this.activeName.indexOf(element.nameEn + ele.nameEn)
+              this.activeName.splice(index, 1)
+              console.log(this.activeName)
+            }
           })
         })
         // 分数和进度百分比
