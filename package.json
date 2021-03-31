@@ -29,7 +29,6 @@
     "postcss-import": "^11.0.0",
     "postcss-loader": "^4.1.0",
     "postcss-url": "^7.2.1",
-    "showdown": "^1.9.1",
     "v-charts": "^1.19.0",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.0",
