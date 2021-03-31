@@ -379,7 +379,15 @@ export default {
           element.successNum = 0
           element.failNum = 0
           element.testSuites.forEach(ele => {
-          // 完成后打开的页签
+          // 一个测试套测试完成后收起
+            let testSuiteFinishBoolan = ele.testCases.every(caseFinish => {
+              return (caseFinish.result === 'success' || caseFinish.result === 'failed')
+            })
+            if (testSuiteFinishBoolan) {
+              let index = this.activeName.indexOf(element.nameEn + ele.nameEn)
+              this.activeName.splice(index, 1)
+            }
+            // 完成后打开的页签
             this.finishActiveName.push(element.nameEn + ele.nameEn)
             // 测试过程
             ele.testCases.forEach(item => {
@@ -395,7 +403,6 @@ export default {
                 this.casefailclass = 'casefail'
                 this.hasFailActiveName.push(element.nameEn + ele.nameEn)
               } else if (item.result === 'running') {
-              // this.activeName.push(element.nameEn + ele.nameEn)
                 if (item.type === 'automatic') {
                   this.testingCase = [item.nameCh, item.nameEn]
                   this.testingScene = [element.nameCh, element.nameEn]
