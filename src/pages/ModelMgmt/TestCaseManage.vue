@@ -530,28 +530,28 @@ export default {
       },
       rules: {
         nameCh: [
-          { required: true, message: '请输入', trigger: 'blur' }
+          { required: true, message: this.$t('testCase.pleaseInput'), trigger: 'blur' }
         ],
         descriptionCh: [
-          { required: true, message: '请输入', trigger: 'blur' }
+          { required: true, message: this.$t('testCase.pleaseInput'), trigger: 'blur' }
         ],
         codeLanguage: [
-          { required: true, message: '请输入', trigger: 'blur' }
+          { required: true, message: this.$t('userpage.choose'), trigger: 'blur' }
         ],
         expectResultCh: [
-          { required: true, message: '请输入', trigger: 'blur' }
+          { required: true, message: this.$t('testCase.pleaseInput'), trigger: 'blur' }
         ],
         testSuiteIdList: [
-          { required: true, message: '请输入' }
+          { required: true, message: this.$t('userpage.choose') }
         ],
         testStepCh: [
-          { required: true, message: '请输入', trigger: 'blur' }
+          { required: true, message: this.$t('testCase.pleaseInput'), trigger: 'blur' }
         ],
         type: [
-          { required: true, message: '请输入', trigger: 'blur' }
+          { required: true, message: this.$t('userpage.choose'), trigger: 'blur' }
         ],
         file: [
-          { required: true, message: '请输入', trigger: 'change' }
+          { required: true, message: this.$t('userpage.choose'), trigger: 'change' }
         ]
       }
     }
