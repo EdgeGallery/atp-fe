@@ -388,7 +388,7 @@ export default {
       })
     },
     getAppIcon (item) {
-      return URL_PREFIX + 'file/' + item.id
+      return URL_PREFIX + 'files/' + item.id
     },
     handleClose () {
       this.CaseVisible = false
