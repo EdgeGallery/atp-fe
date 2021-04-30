@@ -145,7 +145,7 @@ let Userpage = {
     return PUT(url, params)
   },
   contributionApi: function (params) {
-    let url = 'contribution'
+    let url = 'contributions'
     return POST(url, params)
   }
 }

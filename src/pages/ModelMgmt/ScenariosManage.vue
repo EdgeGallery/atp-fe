@@ -535,7 +535,7 @@ export default {
       this.editId = item.id
       this.editTestScenarioVisible = true
       this.showErr = this.logoFileList
-      this.scenarioIcon.push(URL_PREFIX + 'file/' + item.id)
+      this.scenarioIcon.push(URL_PREFIX + 'files/' + item.id)
       this.chooseScenarioIcon(this.scenarioIcon[0], 0)
     },
     conversionIcon (file) {
