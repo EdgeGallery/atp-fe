@@ -100,6 +100,10 @@ a{
   padding: 0 56px;
   box-sizing: border-box;
 }
+.padding240{
+  padding: 0 240px;
+  box-sizing: border-box;
+}
 .padding20{
   padding: 20px;
   box-sizing: border-box;

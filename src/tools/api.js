@@ -98,6 +98,11 @@ let ModelMgmt = {
   createTestScenarioApi: function (params) {
     let url = 'testscenarios'
     return POST(url, params)
+  },
+  // 批量导入
+  importTestModelApi: function (params) {
+    let url = 'testmodels/action/import'
+    return POST(url, params)
   }
 }
 
@@ -111,6 +116,34 @@ let Taskmgmt = {
   deleteTaskApi: function (params) {
     let url = 'tasks/batch_delete'
     return POST(url, params)
+  },
+  // 查询贡献用例
+  contributionsApi: function () {
+    let url = 'contributions'
+    return GET(url)
+  },
+  deleteCaseApi: function (params) {
+    let url = 'contributions/batch_delete'
+    return DELETE(url)
+  },
+  downLoadCaseApi: function (Id) {
+    let url = 'mec-atp/edgegallery/atp/v1/contributions/' + Id + '/action/download'
+    return axios({
+      method: 'get',
+      url: url,
+      responseType: 'blob'
+    }).then((res) => {
+      if (!res) {
+        return
+      }
+      let objectUrl = window.URL.createObjectURL(res.data)
+      let link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = objectUrl
+      link.setAttribute('download', Id + '.' + 'yaml')
+      document.body.appendChild(link)
+      link.click()
+    })
   }
 }
 // 用户面所有接口
