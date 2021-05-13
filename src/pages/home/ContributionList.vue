@@ -40,9 +40,7 @@
               搜索
             </el-button>
           </div>
-          <div
-            style="margin-right:10px"
-          >
+          <div>
             <el-button
               class="dark-button"
               @click="deleteCase"
@@ -230,6 +228,10 @@ export default {
   width: 300px;
   margin-right: 20px;
 }
+.el-input__inner:focus {
+    outline: none;
+    border-color: #380879;
+}
 .dark-button{
       background: #380879;
       color: #fff;
@@ -243,12 +245,26 @@ export default {
 .el-button{
   padding: 9px 20px;
 }
+.el-button:active {
+    border-color: #380879;
+    outline: none;
+}
+.el-button:hover, .el-button:focus {
+    color: #FFF;
+    border-color: #380879;
+    background-color: #380879;
+}
+.el-button.is-disabled, .el-button.is-disabled:hover, .el-button.is-disabled:focus {
+    color: #fff;
+    background-image: none;
+    background-color: #886baf;
+    border-color: #886baf;
+}
 .content{
   padding: 20px 0;
   .headerStyle{
       background: #ebe6f1;
       color: #666666;
-      // border-right: 2px solid #fff;
       padding: 0;
       height: 60px;
       line-height: 60px;
@@ -260,6 +276,17 @@ export default {
       height: 80px;
       line-height: 80px;
       border-bottom: 2px solid #f5eeff;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner {
+      background-color: #380879;
+      border-color: #380879;
+    }
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+      background-color: #380879;
+      border-color: #380879;
+    }
+    .el-checkbox__inner:hover {
+      border-color: #380879;
     }
 }
   .prompt-dialog{

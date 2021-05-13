@@ -91,8 +91,52 @@
         </ul>
       </div>
     </div>
-    <div class="friendlink" />
-    <div class="footer" />
+    <div>
+      <div class="friendlink">
+        <div class="linktext">
+          <ul>
+            <li>
+              <p>关于Edge-Gallery</p>
+              <p>能力访问</p>
+            </li>
+            <li>
+              <p>交流与咨询</p>
+              <p>论坛</p>
+              <p>博客</p>
+              <p>新闻资讯</p>
+            </li>
+            <li>
+              <p>友情链接</p>
+              <p>华为官网</p>
+              <p>华为计算</p>
+              <p>华为云</p>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="followus">
+            关注我们
+          </p>
+          <p>
+            <img
+              src="../../assets/images/wechaticon.png"
+              alt=""
+            >
+            <img
+              src="../../assets/images/QQicon.png"
+              alt=""
+            >
+            <img
+              src="../../assets/images/weiboicon.png"
+              alt=""
+            >
+          </p>
+        </div>
+      </div>
+      <div class="footer">
+        <span />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -274,6 +318,7 @@ export default {
   .banner{
     img{
       width: 100%;
+      display: block;
     }
   }
   .statisticdata{
@@ -353,11 +398,39 @@ export default {
     }
   }
   .friendlink{
+    display: flex;
+    justify-content: space-around;
     height: 224px;
     background-color: #380879;
+    padding-top: 45px;
+    .linktext{
+      color: #fff;
+      font-size: 12px;
+      ul{
+        display: flex;
+        p:first-child{
+          font-size: 16px;
+          padding: 0 50px 10px;
+        }
+        p:not(:first-child) {
+          padding: 10px 50px;
+        }
+      }
+    }
+    .followus{
+      color: #fff;
+      font-size: 16px;
+      padding-left: 15px;
+    }
+    img{
+      margin: 15px 15px 0;
+    }
   }
   .footer{
     height: 80px;
     background-color: #fff;
+    span{
+      font-size: 13.72px ;
+    }
   }
 </style>
