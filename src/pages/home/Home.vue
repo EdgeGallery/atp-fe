@@ -17,37 +17,124 @@
 <template>
   <div>
     <Navcomp />
-    <div class="topImage">
-      <div class="bannerLeft">
-        <h2>{{ $t('home.bannerTitle') }}</h2>
-        <p>{{ $t('home.bannerText1') }}</p>
-        <p>{{ $t('home.bannerText2') }}</p>
-        <p>{{ $t('home.bannerText3') }}</p>
-      </div>
-      <div class="bannerRight">
-        <img
-          src="../../assets/images/atpindex.png"
-          alt=""
-        >
-      </div>
+    <div class="banner">
+      <img
+        v-if="language==='cn'"
+        src="../../assets/images/bannercn.png"
+        alt=""
+      >
+      <img
+        v-else
+        src="../../assets/images/banneren.png"
+        alt=""
+      >
     </div>
-    <div class="mainreport">
-      <div class="title">
-        <span>{{ $t('home.staReport') }}</span>
-      </div>
-      <div class="statisticdata">
-        <div class="left">
-          <p>{{ $t('home.totalNum') }}</p>
-          <p style="margin-top:5px;">
-            {{ total }}
+    <div class="statisticdata">
+      <div class="left">
+        <div class="lefttext">
+          <p class="lefttitle">
+            数据统计
+          </p>
+          <p
+            class="leftdetail"
+          >
+            近六个月扫描统计数据
           </p>
         </div>
-        <div class="right">
-          <span>{{ $t('home.chartTitle') }}</span>
-          <div
-            id="main"
-          />
+      </div>
+      <div class="right">
+        <div
+          id="main"
+        />
+      </div>
+    </div>
+    <div class="modelmanage">
+      <span class="modeltitle">测试模型管理</span>
+      <div class="modeldetail">
+        <ul class="modelcontent">
+          <li>
+            <img
+              src="../../assets/images/ScenarioManage.png"
+              alt=""
+            >
+            <p class="keyword">
+              测试场景管理
+            </p>
+            <p class="font">
+              测试场景是测试的最大单元集，一个测试场景可以包含多个测试套
+            </p>
+          </li>
+          <li>
+            <img
+              src="../../assets/images/SuiteManage.png"
+              alt=""
+            >
+            <p class="keyword">
+              测试套管理
+            </p>
+            <p class="font">
+              测试套是测试类型的分类，一个测试套可以属于一个或者多个测试场景，一个测试套可以包含多个测试用例
+            </p>
+          </li>
+          <li>
+            <img
+              src="../../assets/images/TestCaseManage.png"
+              alt=""
+            >
+            <p class="keyword">
+              测试用例管理
+            </p>
+            <p class="font">
+              测试用例是测试的最小执行单元，一个测试用例可以属于一个或者多个测试套
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="friendlink">
+        <div class="linktext">
+          <ul>
+            <li>
+              <p>关于Edge-Gallery</p>
+              <p>能力访问</p>
+            </li>
+            <li>
+              <p>交流与咨询</p>
+              <p>论坛</p>
+              <p>博客</p>
+              <p>新闻资讯</p>
+            </li>
+            <li>
+              <p>友情链接</p>
+              <p>华为官网</p>
+              <p>华为计算</p>
+              <p>华为云</p>
+            </li>
+          </ul>
         </div>
+        <div>
+          <p class="followus">
+            关注我们
+          </p>
+          <p>
+            <img
+              src="../../assets/images/wechaticon.png"
+              alt=""
+            >
+            <img
+              src="../../assets/images/QQicon.png"
+              alt=""
+            >
+            <img
+              src="../../assets/images/weiboicon.png"
+              alt=""
+            >
+          </p>
+        </div>
+      </div>
+      <div class="footer">
+        <span />
       </div>
     </div>
   </div>
@@ -63,7 +150,8 @@ export default {
     return {
       chartData: [],
       monthData: [],
-      total: ''
+      total: '',
+      language: localStorage.getItem('language')
     }
   },
   methods: {
@@ -117,50 +205,97 @@ export default {
     drawLine () {
       let myChart = this.$echarts.init(document.getElementById('main'))
       let option = {
-        color: ['#3398DB'],
+        // textStyle: {
+        //   fontStyle: 'light'
+        // },
+        grid: {
+          x: 50,
+          y: 20,
+          x2: 10,
+          y2: 50
+        },
         tooltip: {
           trigger: 'axis',
+          padding: 10,
+          backgroundColor: '#ffffff',
           axisPointer: {
-            type: 'shadow'
-          }
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: [
-          {
-            type: 'category',
-            // data: ['2020-08', '2020-09', '2020-10', '2020-11', '2020-12', '2021-01'],
-            data: this.monthData,
-            axisTick: {
-              alignWithLabel: true
+            type: 'line',
+            lineStyle: {
+              color: '#ffffff',
+              width: 4,
+              type: 'dotted',
+              opacity: 0.2
             }
+          },
+          textStyle: {
+            color: '#684399',
+            fontSize: 24
+          },
+          shadowBlur: 5,
+          shadowOffsetY: 5,
+          shadowOffsetX: 2,
+          shadowColor: '#ffffff',
+          shadowStyle: {
+            opacity: 0.3
           }
-        ],
-        yAxis: [
-          {
-            type: 'value'
+        },
+        xAxis: {
+          type: 'category',
+          data: this.monthData,
+          axisLine: {
+            show: false
+          },
+          offset: 10,
+          axisLabel: {
+            fontSize: 24,
+            color: '#ffffff',
+            fontWeight: 'lighter'
           }
-        ],
+        },
+        yAxis: {
+          type: 'value',
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#ffffff',
+              type: 'dotted'
+            }
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#ffffff',
+              width: 2,
+              type: 'dashed'
+            }
+          },
+          axisLabel: {
+            fontSize: 24,
+            fontWeight: 'lighter'
+          }
+        },
         series: [{
-          type: 'bar',
-          barWidth: '30%',
-          // data: [75, 81, 70, 82, 99, 19]
           data: this.chartData,
-          itemStyle: {
-            normal: {
-              label: {
-                show: true,
-                position: 'top',
-                textStyle: {
-                  color: 'black',
-                  fontSize: 16
-                }
-              }
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 20,
+          showSymbol: false,
+          lineStyle: {
+            color: '#ffffff',
+            width: 5,
+            type: 'solid',
+            opacity: 0.6
+          },
+          emphasis: {
+            lineStyle: {
+              opacity: 1
             }
+          },
+          itemStyle: {
+            borderWidth: 4,
+            borderColor: '#543b94',
+            color: '#ffffff'
           }
         }]
       }
@@ -170,82 +305,132 @@ export default {
   mounted () {
     this.getLastSixMon()
     this.getStatisticData()
+  },
+  watch: {
+    '$i18n.locale': function () {
+      this.language = localStorage.getItem('language')
+    }
   }
 }
 </script>
 
 <style lang='less'>
-.topImage{
-  background-color: #262F47;
-  display: flex;
-  justify-content: space-around;
-  height: 300px;
-  .bannerLeft{
-    margin-left: -100px;
-    color: #fff;
-    h2{
-      font-size: 30px;
-      margin-top: 50px;
-      margin-bottom: 30px;
-      font-weight: 500;
-    }
-    p{
-      font-size: 14px;
-      margin: 10px 15px;
-    }
-  }
-  .bannerRight{
-    margin:-20px -100px 0 -20px;
+  .banner{
     img{
-      height: 300px;
+      width: 100%;
+      display: block;
     }
-  }
-}
-.mainreport{
-  background-color: white;
-  .title{
-    font-size: 22px;
-    font-weight: 500;
-    padding: 15px 10px;
   }
   .statisticdata{
+    background-color: #380879;
+    height: 720px;
     display: flex;
-    justify-content: space-between;
-    height: 500px;
-    margin:10px 30px;
-    border-radius: 10px;
-    border: 1px solid #cccccc;
+    // justify-content: space-between;
+    padding: 60px 240px;
     .left{
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-color: #50abe6;
-      position: relative;
-      top: 100px;
-      left: 50px;
-      p{
+      width: 20%;
+      .lefttext{
         position: relative;
-        top: 50px;
-        text-align: center;
-        font-size: 18px;
-        color: #fff;
+        top: 180px;
       }
-      .leftnum{
-        text-align: center;
+      .lefttitle{
+        font-size: 60px;
         color: #fff;
-        position: relative;
-        top: 80px;
+        width: 100%;
+      }
+      .leftdetail{
+        margin-top: 30px;
+        font-size: 24px;
+        color: #fff;
+        width: 100%;
+        height: 36px;
+        line-height: 36px;
+        font-weight: lighter;
       }
     }
     .right{
-      margin-top: 10px;
+      padding-left: 60px;
       width: 80%;
     }
     #main{
-      height: 400px;
+      height: 600px;
     }
   }
-}
+  .modelmanage{
+    width: 100%;
+    height: 400px;
+    display: flex;
+    .modeltitle{
+      font-size: 60px;
+      color: #9963ed;
+      opacity: 0.2;
+      writing-mode: vertical-lr;
+      padding: 0 40px;
+      text-align: center;
+    }
+    .modeldetail{
+      width: 85%;
+      text-align: center;
+      .modelcontent{
+        display: flex;
+        justify-content: space-around;
+        // justify-content: center;
+        padding-top: 50px;
+        li{
+          // float: left;
+          text-align: center;
+          .keyword{
+            font-size: 30px;
+            color: #333333;
+            padding: 40px 0 20px 0;
+          }
+          .font{
+            font-size: 18px;
+            color: #666666;
+            font-weight: lighter;
+            word-wrap: break-word;
+            height: 30px;
+            line-height: 30px;
+            width: 240px;
+          }
+        }
+      }
+    }
+  }
+  .friendlink{
+    display: flex;
+    justify-content: space-around;
+    height: 224px;
+    background-color: #380879;
+    padding-top: 45px;
+    .linktext{
+      color: #fff;
+      font-size: 12px;
+      ul{
+        display: flex;
+        p:first-child{
+          font-size: 16px;
+          padding: 0 50px 10px;
+        }
+        p:not(:first-child) {
+          padding: 10px 50px;
+        }
+      }
+    }
+    .followus{
+      color: #fff;
+      font-size: 16px;
+      padding-left: 15px;
+    }
+    img{
+      margin: 15px 15px 0;
+    }
+  }
+  .footer{
+    height: 80px;
+    background-color: #fff;
+    span{
+      font-size: 13.72px ;
+    }
+  }
 </style>

@@ -38,8 +38,8 @@
           :unique-opened="true"
           router
           text-color="#fff"
-          background-color="#282b33"
-          active-text-color="#6c92fa"
+          background-color="#280b4e"
+          active-text-color="#fff"
           :default-active="activeIndex"
           @select="handleSelect"
         >
@@ -168,6 +168,13 @@ export default {
           route: '/tasklist',
           display: true,
           pageId: '3'
+        },
+        {
+          labelEn: 'Contribution Management',
+          labelCn: '贡献管理',
+          route: '/contributionlist',
+          display: true,
+          pageId: '4'
         }
       ],
       activeIndex: '/',
@@ -265,8 +272,8 @@ export default {
 <style lang='less' >
 #headerComp {
   height: 65px;
-  color: white;
-  background: #282b33;
+  color: #fff;
+  background: #280b4e;
   padding-left: 25px;
   top: 0px;
   width: 100%;

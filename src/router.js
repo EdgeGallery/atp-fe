@@ -59,6 +59,11 @@ export default new Router({
           component: () => import('./pages/home/TaskList.vue')
         },
         {
+          path: 'contributionList',
+          name: 'contributionList',
+          component: () => import('./pages/home/ContributionList.vue')
+        },
+        {
           path: 'app/test/task',
           name: 'apttask',
           component: () => import('./pages/myApp/ATPTask.vue')

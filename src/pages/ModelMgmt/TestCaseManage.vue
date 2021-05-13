@@ -127,6 +127,13 @@
           >
             {{ $t('testCase.add') }}
           </el-button>
+          <el-button
+            type="primary"
+            size="small"
+            @click="excelBringBtn"
+          >
+            导入
+          </el-button>
         </div>
         <div>
           <el-table
@@ -453,6 +460,57 @@
           </el-button>
         </div>
       </el-dialog>
+      <el-dialog
+        :visible.sync="addExcelVisible"
+        :close-on-click-modal="false"
+        width="30%"
+      >
+        <el-form
+          :model="excelForm"
+          label-width="100px"
+        >
+          <el-form-item label="表格导入">
+            <el-upload
+              action=""
+              :limit="1"
+              :on-exceed="handleExceed"
+              :on-change="excelChange"
+              :on-remove="excelDelte"
+              :file-list="excelForm.excelFile"
+              :auto-upload="false"
+              accept=".xlsx,.zip"
+            >
+              <el-button
+                slot="trigger"
+                size="small"
+                plain
+              >
+                {{ $t('testCase.import') }}
+              </el-button>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+        <div
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button
+            id="upload_package_close"
+            @click="handleClose"
+            size="small"
+          >
+            {{ $t('common.cancel') }}
+          </el-button>
+          <el-button
+            id="upload_package_ipload"
+            type="primary"
+            size="small"
+            @click="BatchImport"
+          >
+            {{ $t('common.confirm') }}
+          </el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -518,6 +576,10 @@ export default {
         testStepEn: '',
         type: '',
         file: []
+      },
+      addExcelVisible: false,
+      excelForm: {
+        excelFile: []
       },
       editfile: false,
       DemoDownload: './javaExample.java',
@@ -639,6 +701,16 @@ export default {
     // 新增用例弹框
     handleClose () {
       this.addCaseVisible = false
+      this.addExcelVisible = false
+    },
+    excelBringBtn () {
+      this.addExcelVisible = true
+    },
+    BatchImport () {
+      this.addExcelVisible = false
+      ModelMgmt.importTestModelApi().then(res => {
+
+      })
     },
     addTestBtn () {
       this.confirmBtnApi = 'add'
@@ -857,6 +929,13 @@ export default {
     },
     handleDelte (file, fileList) {
       this.addcaseForm.file = fileList
+      this.excelForm.file = fileList
+    },
+    excelChange (file, fileList) {
+      this.excelForm.file.push(file.raw)
+    },
+    excelDelte (file, fileList) {
+      this.excelForm.file = fileList
     },
     languageChange (value) {
       this.editfile = true

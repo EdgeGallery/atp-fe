@@ -89,3 +89,25 @@ export default {
 }
 
 </script>
+<style lang="less">
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #f7f3ff;
+    color: #9f6dee;
+    border-radius: 50%;
+  }
+  .el-pagination.is-background .el-pager li {
+    background-color: #fff;
+    color: #4e4e4e;
+  }
+  .el-pagination.is-background .btn-prev, .el-pagination.is-background .btn-next{
+    background-color: #f7f3ff;
+    color: #4d4d4e;
+    border-radius: 50%;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled):hover {
+    color: #9f6dee;
+  }
+  .el-pagination.is-background .btn-prev:disabled, .el-pagination.is-background .btn-next:disabled {
+    display: none;
+  }
+</style>
