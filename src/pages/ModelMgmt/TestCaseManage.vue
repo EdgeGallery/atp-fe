@@ -478,7 +478,7 @@
               :on-remove="excelDelte"
               :file-list="excelForm.excelFile"
               :auto-upload="false"
-              accept=".xlsx"
+              accept=".xlsx,.zip"
             >
               <el-button
                 slot="trigger"
