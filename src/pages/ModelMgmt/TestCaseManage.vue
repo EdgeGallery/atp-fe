@@ -128,6 +128,7 @@
             {{ $t('testCase.add') }}
           </el-button>
           <el-button
+            v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
             type="primary"
             size="small"
             @click="excelBringBtn"
@@ -466,19 +467,19 @@
         width="30%"
       >
         <el-form
-          :model="excelForm"
+          :model="batchForm"
           label-width="100px"
         >
-          <el-form-item label="表格导入">
+          <el-form-item label="批量导入">
             <el-upload
               action=""
               :limit="1"
               :on-exceed="handleExceed"
               :on-change="excelChange"
               :on-remove="excelDelte"
-              :file-list="excelForm.excelFile"
+              :file-list="batchForm.batchFile"
               :auto-upload="false"
-              accept=".xlsx,.zip"
+              accept=".zip"
             >
               <el-button
                 slot="trigger"
@@ -487,6 +488,20 @@
               >
                 {{ $t('testCase.import') }}
               </el-button>
+              <a
+                :href="batchDemo"
+                download
+                style="padding-left:10px;"
+              >
+                <el-button
+                  slot="trigger"
+                  size="small"
+                  type="primary"
+                  plain
+                >
+                  {{ $t('testCase.sample') }}
+                </el-button>
+              </a>
             </el-upload>
           </el-form-item>
         </el-form>
@@ -578,11 +593,12 @@ export default {
         file: []
       },
       addExcelVisible: false,
-      excelForm: {
-        excelFile: []
+      batchForm: {
+        batchFile: []
       },
       editfile: false,
       DemoDownload: './javaExample.java',
+      batchDemo: './batch_import.zip',
       mapCh: new Map(),
       mapEn: new Map(),
       kongrules: {
@@ -707,9 +723,19 @@ export default {
       this.addExcelVisible = true
     },
     BatchImport () {
-      this.addExcelVisible = false
-      ModelMgmt.importTestModelApi().then(res => {
-
+      let fd = new FormData()
+      fd.append('file', this.batchForm.batchFile[0])
+      ModelMgmt.importTestModelApi(fd).then(res => {
+        this.addExcelVisible = false
+        this.getAllcase()
+        this.batchForm = {
+          batchFile: []
+        }
+      }).catch(() => {
+        this.addExcelVisible = false
+        this.batchForm = {
+          batchFile: []
+        }
       })
     },
     addTestBtn () {
@@ -929,13 +955,13 @@ export default {
     },
     handleDelte (file, fileList) {
       this.addcaseForm.file = fileList
-      this.excelForm.file = fileList
+      this.batchForm.batchFile = fileList
     },
     excelChange (file, fileList) {
-      this.excelForm.file.push(file.raw)
+      this.batchForm.batchFile.push(file.raw)
     },
     excelDelte (file, fileList) {
-      this.excelForm.file = fileList
+      this.batchForm.batchFile = fileList
     },
     languageChange (value) {
       this.editfile = true

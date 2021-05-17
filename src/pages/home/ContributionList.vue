@@ -182,6 +182,8 @@ export default {
       Taskmgmt.contributionsApi(this.namequery).then(res => {
         this.pageData = res.data
         this.dataLoading = false
+      }).catch(() => {
+        this.dataLoading = false
       })
     },
     handleSelectionChange (val) {

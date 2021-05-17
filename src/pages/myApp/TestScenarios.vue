@@ -243,7 +243,7 @@
             :on-remove="handleDelte"
             :file-list="addcaseForm.file"
             :auto-upload="false"
-            accept=".java,.py,.jar"
+            accept=".zip"
           >
             <el-button
               slot="trigger"
@@ -261,7 +261,7 @@
       >
         <el-button
           id="upload_package_close"
-          @click="addCaseVisible=false"
+          @click="cancelClose"
           size="small"
         >
           {{ $t('common.cancel') }}
@@ -470,7 +470,36 @@ export default {
           type: 'success'
         })
         this.addCaseVisible = false
+        this.addcaseForm = {
+          name: '',
+          objective: '',
+          step: '',
+          expectResult: '',
+          type: '',
+          file: []
+        }
+      }).catch(() => {
+        this.addCaseVisible = false
+        this.addcaseForm = {
+          name: '',
+          objective: '',
+          step: '',
+          expectResult: '',
+          type: '',
+          file: []
+        }
       })
+    },
+    cancelClose () {
+      this.addCaseVisible = false
+      this.addcaseForm = {
+        name: '',
+        objective: '',
+        step: '',
+        expectResult: '',
+        type: '',
+        file: []
+      }
     },
     handleExceed (file, fileList) {
       if (fileList.length === 1) {

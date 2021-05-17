@@ -201,7 +201,7 @@ let Atp = {
   },
   deleteCaseApi: function (Id) {
     let url = 'testcases/' + Id
-    return DELETE(url)
+    return POST(url)
   },
   // 获取测试用例列表
   getTestCaseApi: function () {
