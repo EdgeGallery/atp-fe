@@ -14,6 +14,12 @@
  *  limitations under the License.
  */
 
+ @font-face {  
+  font-family: 'fzltqh';
+  src: url('../fonts/方正兰亭纤黑.ttf');
+  font-weight: normal;  
+  font-style: normal;  
+}
 html, body, #app{
   height: 100%;
 }

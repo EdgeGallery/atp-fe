@@ -134,7 +134,19 @@
         </div>
       </div>
       <div class="footer">
-        <span />
+        <div>
+          <p style="font-size:14px;">
+            @2021 Huaweicloud.com 版权所有苏ICP备17040376号-32苏B2-20130048号 代理域名注册服务机构:新网
+          </p>
+          <p style="font-size:12px;">
+            苏公网安备012011010101号
+          </p>
+        </div>
+        <div>
+          <span>法律声明</span>
+          <span>|</span>
+          <span>隐私政策</span>
+        </div>
       </div>
     </div>
   </div>
@@ -360,6 +372,7 @@ export default {
     width: 100%;
     height: 400px;
     display: flex;
+    background-color: #fff;
     .modeltitle{
       font-size: 60px;
       color: #9963ed;
@@ -429,8 +442,15 @@ export default {
   .footer{
     height: 80px;
     background-color: #fff;
+    display: flex;
+    justify-content: space-around;
+    p{
+      color: #000000;
+      padding: 5px 0;
+    }
     span{
-      font-size: 13.72px ;
+      font-size: 14px ;
+      padding: 0 5px;
     }
   }
 </style>
