@@ -118,13 +118,13 @@ let Taskmgmt = {
     return POST(url, params)
   },
   // 查询贡献用例
-  contributionsApi: function () {
+  contributionsApi: function (params) {
     let url = 'contributions'
-    return GET(url)
+    return GET(url, params)
   },
   deleteCaseApi: function (params) {
     let url = 'contributions/batch_delete'
-    return DELETE(url)
+    return POST(url)
   },
   downLoadCaseApi: function (Id) {
     let url = 'mec-atp/edgegallery/atp/v1/contributions/' + Id + '/action/download'
@@ -140,7 +140,7 @@ let Taskmgmt = {
       let link = document.createElement('a')
       link.style.display = 'none'
       link.href = objectUrl
-      link.setAttribute('download', Id + '.' + 'yaml')
+      link.setAttribute('download', Id + '.' + 'zip')
       document.body.appendChild(link)
       link.click()
     })
@@ -201,7 +201,7 @@ let Atp = {
   },
   deleteCaseApi: function (Id) {
     let url = 'testcases/' + Id
-    return POST(url)
+    return DELETE(url)
   },
   // 获取测试用例列表
   getTestCaseApi: function () {

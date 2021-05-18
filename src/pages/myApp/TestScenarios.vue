@@ -252,6 +252,13 @@
             >
               {{ $t('testCase.import') }}
             </el-button>
+            <el-tooltip
+              style="margin-left:10px;"
+              content="用例脚本打包成zip包格式上传"
+              placement="right"
+            >
+              <em class="el-icon-question" />
+            </el-tooltip>
           </el-upload>
         </el-form-item>
       </el-form>
