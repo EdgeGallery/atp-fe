@@ -124,7 +124,7 @@ let Taskmgmt = {
   },
   deleteCaseApi: function (params) {
     let url = 'contributions/batch_delete'
-    return POST(url)
+    return POST(url, params)
   },
   downLoadCaseApi: function (Id) {
     let url = 'mec-atp/edgegallery/atp/v1/contributions/' + Id + '/action/download'
