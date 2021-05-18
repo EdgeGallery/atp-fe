@@ -27,7 +27,7 @@
         <div style="display: flex;">
           <div style="display: flex;width:90%;">
             <el-input
-              v-model="namequery"
+              v-model="form.name"
               prefix-icon="el-icon-search"
               placeholder="请输入名称进行搜索"
               size="small"
@@ -68,7 +68,11 @@
             <el-table-column
               prop="type"
               label="贡献类型"
-            />
+            >
+              <template slot-scope="scope">
+                {{ scope.row.type==='script' ? '脚本' : '文本' }}
+              </template>
+            </el-table-column>
             <el-table-column
               prop="objective"
               label="测试目的"
@@ -168,7 +172,9 @@ export default {
       dataLoading: true,
       deleteVisible: false,
       ids: [],
-      namequery: ''
+      form: {
+        name: ''
+      }
     }
   },
   mounted () {
@@ -179,7 +185,7 @@ export default {
       this.currentData = val
     },
     getAllcontribution () {
-      Taskmgmt.contributionsApi(this.namequery).then(res => {
+      Taskmgmt.contributionsApi(this.form).then(res => {
         this.pageData = res.data
         this.dataLoading = false
       }).catch(() => {
