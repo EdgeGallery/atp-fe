@@ -243,6 +243,29 @@ const en = {
     description: 'Description:',
     scene: 'Scenario'
   },
+  footer: {
+    about: 'About',
+    website: 'Official website',
+    videoResource: 'Video',
+    trainingMaterials: 'Training material',
+    communication: 'Communication',
+    softwareDownload: 'Software Download',
+    community: 'Community',
+    project: 'Project',
+    membership: 'Membership',
+    contactUs: 'Contact Us',
+    followUs: 'Follow Us',
+    WeChatPublic: 'WeChat public account',
+    codeWarehouse: 'Code warehouse',
+    followWeibo: 'Follow the Weibo',
+    mailingList: 'Mailing list',
+    copyright: 'Copyright © EdgeGallery 2019 - 2021. All rights reserved. For details, see the Legal Statement',
+    legalNotice: 'Legal Notice',
+    privacyPolicy: 'Privacy Policy',
+    containerResource: 'Resource',
+    developer: 'Developer',
+    docs: 'Docs'
+  },
   about: {
   },
   ...enLocale

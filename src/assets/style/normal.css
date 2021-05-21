@@ -106,14 +106,30 @@ a{
   padding: 0 56px;
   box-sizing: border-box;
 }
-.padding240{
-  padding: 0 240px;
+.padding200{
+  padding: 0 12%;
   box-sizing: border-box;
 }
 .padding20{
   padding: 20px;
   box-sizing: border-box;
 }
+
+.clear:after{
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.padding_default{
+  padding: 0 10%;
+}
+@media screen and (max-width:1380px){
+  .padding_default{
+    padding: 0 56px;
+  }
+}
+
 /* 弹框 */
 .el-dialog__title {
   color: #000 !important;
@@ -142,3 +158,89 @@ a{
 .el-icon-arrow-right:before {
   color: #000;
 }
+
+/* 按钮 */
+.dark-button{
+  background: #380879!important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+}
+.light-button{
+  border-color:#380879 !important;
+  color: #380879 !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+}
+
+/* 表格 */
+.headerStyle{
+  background: #ebe6f1 !important;
+  color: #666666 !important;
+  padding: 0 !important;
+  height: 60px !important;
+  line-height: 60px !important;
+}
+.el-table th:first-child{
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.el-table th:nth-child(8){
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.el-table td{
+  font-size: 16px;
+  color: #333;
+  padding: 0;
+  height: 80px;
+  max-height: 80px;
+  line-height: 80px;
+  border-bottom: 2px solid #f5eeff;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: #380879 !important;
+  border-color: #380879 !important;
+}
+.el-checkbox__inner{
+  width: 18px !important;
+  height: 18px !important;
+}
+.el-checkbox__inner::after{
+  border: 2px solid #ffffff !important;
+  border-left: 0 !important;
+  border-top: 0 !important;
+  height: 10px !important;
+  left: 7px !important;
+}
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #380879 !important;
+  border-color: #380879 !important;
+}
+.el-checkbox__inner:hover {
+  border-color: #380879 !important;
+}
+
+
+/* 弹框确认 */
+  .el-dialog__header{
+    border: 1px solid #c9c9c9;
+  }
+  .el-dialog__title{
+    font-size: 20px !important;
+    color: #333333 !important;
+  }
+  .el-dialog__body{
+    padding: 20px 20px !important;
+  }
+  .prompt-text{
+    font-size: 18px;
+    color: #666666;
+    padding-top: 10px;
+  }
+  .el-dialog__footer{
+    text-align: center !important;
+  }
+  .el-dialog__headerbtn{
+    font-size: 22px !important;
+  }

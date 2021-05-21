@@ -110,4 +110,7 @@ export default {
   .el-pagination.is-background .btn-prev:disabled, .el-pagination.is-background .btn-next:disabled {
     display: none;
   }
+  // .el-input, .el-select{
+  //   margin-right: 0px !important;
+  // }
 </style>
