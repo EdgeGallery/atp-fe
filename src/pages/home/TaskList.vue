@@ -17,88 +17,66 @@
 <template>
   <div>
     <Navcomp />
-    <div class="task padding56">
+    <div class="task padding200">
       <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
         <span>{{ $t('testCase.applicationTestPlatform') }}</span>
         <span>></span>
         <span>{{ $t('atp.taskManage') }}</span>
       </div>
-      <div class="task-search">
-        <el-form
-          ref="form"
-          :model="form"
-          label-width="150px"
-        >
-          <el-row>
-            <el-col
-              :span="6"
+      <div class="task-main">
+        <div class="flex enter-search">
+          <div class="flex">
+            <el-input
+              v-model="form.appName"
+              prefix-icon="el-icon-search"
+              placeholder="请输入名称进行搜索"
+              size="small"
+            />
+            <el-select
+              size="small"
+              v-model="form.status"
+              :placeholder="$t('myApp.testStatus')"
             >
-              <el-form-item :label="$t('atp.applicationName')">
-                <el-input
-                  id="appName"
-                  v-model="form.appName"
-                  :placeholder="$t('atp.applicationName')"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item
-                id="testStatus"
-                :label="$t('myApp.testStatus')"
-              >
-                <el-select
-                  v-model="form.status"
-                  :placeholder="$t('myApp.testStatus')"
-                  class="statusSelect"
-                >
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.label"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <div class="search-btn">
-                <el-button
-                  id="resetBtn"
-                  size="small"
-                  @click="resetForm"
-                >
-                  {{ $t('myApp.reset') }}
-                </el-button>
-                <el-button
-                  id="inquireBtn"
-                  type="primary"
-                  size="small"
-                  @click="getTaskList"
-                >
-                  {{ $t('myApp.inquire') }}
-                </el-button>
-              </div>
-            </el-col>
-          </el-row>
-        </el-form>
-        <div class="task-content">
-          <div
-            class="delBtn rt"
-            v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
-          >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label"
+              />
+            </el-select>
             <el-button
               size="small"
-              type="primary"
+              class="light-button"
+              @click="resetForm"
+            >
+              {{ $t('myApp.reset') }}
+            </el-button>
+            <el-button
+              size="small"
+              class="dark-button"
+              @click="getTaskList"
+            >
+              {{ $t('myApp.inquire') }}
+            </el-button>
+          </div>
+          <div>
+            <el-button
+              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+              size="small"
+              class="dark-button"
               @click="deleteTask"
               :disabled="taskIds.length===0?true:false"
             >
               {{ $t('common.delete') }}
             </el-button>
           </div>
+        </div>
+        <div class="task-content">
           <el-table
             v-loading="dataLoading"
             :data="currentData"
             style="width: 100%;"
+            header-cell-class-name="headerStyle"
             @selection-change="handleSelectionChange"
           >
             <el-table-column
@@ -131,34 +109,37 @@
             />
             <el-table-column :label="$t('myApp.testStatus')">
               <template slot-scope="scope">
-                <span
+                <img
                   v-if="scope.row.status=='success'"
-                  class="el-icon-success success"
-                  title="success"
-                />
-                <span
-                  v-else-if="scope.row.status=='failed'"
-                  class="el-icon-error error"
-                  title="failed"
-                />
-                <span
-                  v-else-if="scope.row.status=='running'"
-                  class="el-icon-loading primary"
-                  title="running"
-                />
-                <span
-                  v-else
-                  class="el-icon-finished primary"
-                  title="success"
-                />
-                <el-button
-                  id="statusBtn"
-                  style="margin-left:20px;"
-                  type="text"
-                  size="small"
+                  src="../../assets/images/successful.png"
+                  alt=""
                 >
-                  {{ scope.row.status }}
-                </el-button>
+                <img
+                  v-else-if="scope.row.status=='failed'"
+                  src="../../assets/images/failed.png"
+                  alt=""
+                >
+                <img
+                  v-if="scope.row.status=='running'"
+                  src="../../assets/images/running.png"
+                  alt=""
+                >
+                <img
+                  v-if="scope.row.status=='waiting'"
+                  src="../../assets/images/waiting.png"
+                  alt=""
+                >
+                <img
+                  v-if="scope.row.status=='created'"
+                  src="../../assets/images/created.png"
+                  alt=""
+                >
+                <img
+                  v-if="scope.row.status=='create failed'"
+                  src="../../assets/images/create failed.png"
+                  alt=""
+                >
+                <span> {{ scope.row.status }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -207,6 +188,41 @@
           </div>
         </div>
       </div>
+      <el-dialog
+        :visible.sync="deleteVisible"
+        :close-on-click-modal="false"
+        title="提示"
+        width="25%"
+        class="prompt-dialog"
+      >
+        <div style="text-align: center;">
+          <img
+            src="../../assets/images/deleteicon.png"
+            alt=""
+          >
+          <p class="prompt-text">
+            是否要继续删除测试任务?
+          </p>
+        </div>
+        <div
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button
+            style="margin-right:40px;"
+            class="light-button"
+            @click="handleClose"
+          >
+            {{ $t('common.cancel') }}
+          </el-button>
+          <el-button
+            class="dark-button"
+            @click="confirmDeleteTask"
+          >
+            {{ $t('common.confirm') }}
+          </el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -270,7 +286,8 @@ export default {
       authorities: sessionStorage.getItem('authorities'),
       reportData: [],
       language: localStorage.getItem('language'),
-      visible: false
+      visible: false,
+      deleteVisible: false
     }
   },
   mounted () {
@@ -279,12 +296,12 @@ export default {
   beforeDestroy () {
     this.clearInterval()
   },
-  beforeRouteEnter (to, from, next) {
-    if (from.path.indexOf('/test/report') === -1) {
-      sessionStorage.removeItem('currentPage')
-    }
-    next()
-  },
+  // beforeRouteEnter (to, from, next) {
+  //   if (from.path.indexOf('/test/report') === -1) {
+  //     sessionStorage.removeItem('currentPage')
+  //   }
+  //   next()
+  // },
   methods: {
     getCurrentPageData (val) {
       this.currentData = val
@@ -363,30 +380,31 @@ export default {
         }
       })
     },
+    handleClose () {
+      this.deleteVisible = false
+    },
     deleteTask () {
-      this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
-        confirmButtonText: this.$t('common.confirm'),
-        cancelButtonText: this.$t('common.cancel'),
-        type: 'warning'
-      }).then(() => {
-        let param = {
-          taskIds: this.taskIds
-        }
-        Taskmgmt.deleteTaskApi(param).then(res => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'success',
-            message: this.$t('promptMessage.deleteSuccess')
-          })
-          this.getTaskList()
-        }).catch(() => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.deleteFail')
-          })
+      this.deleteVisible = true
+    },
+    confirmDeleteTask () {
+      this.deleteVisible = false
+      let param = {
+        taskIds: this.taskIds
+      }
+      Taskmgmt.deleteTaskApi(param).then(res => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          type: 'success',
+          message: this.$t('promptMessage.deleteSuccess')
+        })
+        this.getTaskList()
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          type: 'warning',
+          message: this.$t('promptMessage.deleteFail')
         })
       })
     },
@@ -424,66 +442,60 @@ export default {
 
 <style lang='less'>
 .task {
-  .el-input--suffix .el-input__inner {
-    padding-right: 20px;
-  }
-  .task-search {
-    background-color: white;
-    padding: 40px;
-    .el-form {
-      .el-input__inner {
-        height: 30px;
-        line-height: 30px;
+  .task-main {
+    background-color: #fff;
+    padding: 15px 10px 35px;
+    .enter-search{
+      justify-content: space-between;
+      .el-input, .el-select{
+        margin-right: 20px !important;
+      }
+      .el-input__inner{
+        border: 1px solid #380879 !important;
+      }
+      .el-input__inner:focus {
+        outline: none !important;
+        border-color: #380879 !important;
+      }
+      .el-button:active {
+          border-color: #380879;
+          outline: none;
+      }
+      .el-button.is-disabled, .el-button.is-disabled:hover, .el-button.is-disabled:focus {
+        color: #fff;
+        background-image: none;
+        background-color: #886baf !important;
+        border-color: #886baf;
+      }
+    }
+  .task-content {
+    padding: 20px 0;
+      img{
+        vertical-align: middle;
+      }
+      span{
+        color: #380879;
+        font-size: 16px;
+      }
+      .el-button--text{
+        color: #380879;
+        font-size: 16px;
+        span{
+          border-bottom: 1px solid #5d3692;
+        }
+      }
+      .el-button--text.is-disabled{
+        span{
+          color: #999999;
+          border-bottom: none;
+        }
       }
     }
   }
-  .search-btn {
-    text-align: center;
-    height: 40px;
-    line-height: 40px;
-    margin-left: 20px;
-    .el-button {
-      padding: 6px 20px;
-    }
-    .el-button.el-button--default {
-      background-color: none;
-      color: #688ef3;
-      border: 1px solid #688ef3;
-    }
-    .el-button.el-button--primary {
-      background-color: #688ef3;
-      color: #fff;
-    }
-  }
-  .el-form--inline .el-form-item {
-    width: 100%;
-  }
-  .el-date-editor.el-input,
-  .el-date-editor.el-input__inner {
-    width: 100%;
-  }
-  .task-content {
-    // margin-top: 25px;
-    .delBtn{
-      margin-bottom: 10px;
-    }
-    .success{
-      color: #67c23a;
-    }
-    .error{
-      color: #f56c6c;
-    }
-    .primary{
-      color: #2c3fe9 ;
-    }
-  }
-  .task-content:after {
-    content: "";
-    display: block;
-    clear: both;
-  }
-  .statusSelect {
-    width: 100%;
-  }
+  // .task-content:after {
+  //   content: "";
+  //   display: block;
+  //   clear: both;
+  // }
 }
 </style>

@@ -17,129 +17,99 @@
 <template>
   <div>
     <Navcomp />
-    <div class="testcase padding56">
+    <div class="testcase padding100">
       <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
         <span>{{ $t('testCase.applicationTestPlatform') }}</span>
         <span>></span>
         <span>{{ $t('atp.testCaseManagement') }}</span>
       </div>
       <div
-        class="testcase-content padding20"
-        style="margin-top: 10px;"
+        class="testcase-main"
       >
-        <div>
-          <el-form
-            ref="form"
-            :model="form"
-            label-width="150px"
-          >
-            <el-row>
-              <el-col
-                :span="6"
-              >
-                <el-form-item :label="$t('testCase.caseName')">
-                  <el-input
-                    size="small"
-                    id="name"
-                    v-model="form.name"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col
-                :span="6"
-              >
-                <el-form-item
-                  :label="$t('testCase.caseType')"
+        <div class="flex enter-search">
+          <div class="flex">
+            <el-input
+              v-model="form.name"
+              prefix-icon="el-icon-search"
+              placeholder="请输入名称进行搜索"
+              size="small"
+            />
+            <el-select
+              size="small"
+              v-model="form.type"
+              :placeholder="$t('userpage.choose')"
+            >
+              <el-option
+                v-for="item in testType"
+                :key="item.value"
+                :label="language==='cn'?item.label:item.value"
+                :value="item.value"
+              />
+            </el-select>
+            <el-select
+              size="small"
+              v-model="form.testSuiteIdList"
+              class="statusSelect"
+              :placeholder="$t('userpage.choose')"
+            >
+              <el-option
+                v-for="item in testSuiteList"
+                :key="item.id"
+                :label="language==='cn'?item.nameCh:item.nameEn"
+                :value="item.id"
+              />
+            </el-select>
+            <el-button
+              class="light-button"
+              size="small"
+              @click="resetForm"
+            >
+              {{ $t('myApp.reset') }}
+            </el-button>
+            <el-button
+              class="dark-button"
+              size="small"
+              @click="getAllcase()"
+            >
+              {{ $t('myApp.inquire') }}
+            </el-button>
+            <el-tooltip
+              :content="this.$t('testCase.testCaseIntro')"
+              placement="right"
+              class="questionIcon"
+              effect="light"
+            >
+              <div>
+                <img
+                  src="../../assets/images/icon-question.png"
+                  alt=""
                 >
-                  <el-select
-                    size="small"
-                    v-model="form.type"
-                    class="statusSelect"
-                    :placeholder="$t('userpage.choose')"
-                  >
-                    <el-option
-                      v-for="item in testType"
-                      :key="item.value"
-                      :label="language==='cn'?item.label:item.value"
-                      :value="item.value"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col
-                :span="6"
-              >
-                <el-form-item
-                  :label="$t('testCase.testSuiteList')"
-                >
-                  <el-select
-                    size="small"
-                    v-model="form.testSuiteIdList"
-                    class="statusSelect"
-                    :placeholder="$t('userpage.choose')"
-                  >
-                    <el-option
-                      v-for="item in testSuiteList"
-                      :key="item.id"
-                      :label="language==='cn'?item.nameCh:item.nameEn"
-                      :value="item.id"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <div class="search-btn">
-                  <el-button
-                    id="resetBtn"
-                    size="small"
-                    @click="resetForm"
-                  >
-                    {{ $t('myApp.reset') }}
-                  </el-button>
-                  <el-button
-                    id="inquireBtn"
-                    type="primary"
-                    size="small"
-                    @click="getAllcase()"
-                  >
-                    {{ $t('myApp.inquire') }}
-                  </el-button>
-                  <el-tooltip
-                    :content="this.$t('testCase.testCaseIntro')"
-                    placement="right"
-                    class="questionIcon"
-                  >
-                    <em class="el-icon-question" />
-                  </el-tooltip>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form>
+              </div>
+            </el-tooltip>
+          </div>
+          <div>
+            <el-button
+              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+              class="light-button"
+              size="small"
+              @click="excelBringBtn"
+            >
+              批量导入
+            </el-button>
+            <el-button
+              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+              class="dark-button"
+              size="small"
+              @click="addTestBtn"
+            >
+              {{ $t('testCase.add') }}
+            </el-button>
+          </div>
         </div>
-        <div
-          class="addbtn"
-        >
-          <el-button
-            v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
-            type="primary"
-            size="small"
-            @click="addTestBtn"
-          >
-            {{ $t('testCase.add') }}
-          </el-button>
-          <el-button
-            v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
-            type="primary"
-            size="small"
-            @click="excelBringBtn"
-          >
-            导入
-          </el-button>
-        </div>
-        <div>
+        <div class="testcase-content">
           <el-table
             :data="currentData"
-            style="width: 100%"
+            header-cell-class-name="headerStyle"
           >
             <el-table-column
               prop="nameCh"
@@ -185,6 +155,7 @@
             <el-table-column
               prop="codeLanguage"
               :label="$t('testCase.language')"
+              width="110"
             />
             <el-table-column
               prop="testStepCh"
@@ -204,22 +175,20 @@
             </el-table-column>
             <el-table-column
               :label="$t('testCase.operation')"
+              width="180"
               v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
-              width="150"
             >
               <template slot-scope="scope">
                 <el-button
-                  size="medium"
-                  type="text"
-                  class="deleteBtn"
+                  class="light-button"
+                  size="small"
                   @click="deleteCase(scope.row)"
                 >
                   {{ $t('testCase.delete') }}
                 </el-button>
                 <el-button
-                  size="medium"
-                  type="text"
-                  class="editBtn"
+                  class="dark-button"
+                  size="small"
                   @click="editCase(scope.row)"
                 >
                   {{ $t('testCase.edit') }}
@@ -228,7 +197,7 @@
             </el-table-column>
           </el-table>
           <div
-            style="padding: 55px 0;"
+            style="margin-top: 20px"
           >
             <pagination
               :table-data="allcaseData"
@@ -242,7 +211,7 @@
         :visible.sync="addCaseVisible"
         :title="dialogTitle"
         :close-on-click-modal="false"
-        width="40%"
+        width="35%"
         class="addtestdialog"
       >
         <el-form
@@ -419,7 +388,7 @@
               <el-button
                 slot="trigger"
                 size="small"
-                plain
+                class="form-button"
               >
                 {{ $t('testCase.import') }}
               </el-button>
@@ -429,10 +398,9 @@
                 style="padding-left:10px;"
               >
                 <el-button
+                  class="form-button"
                   slot="trigger"
                   size="small"
-                  type="primary"
-                  plain
                 >
                   {{ $t('testCase.sample') }}
                 </el-button>
@@ -442,19 +410,18 @@
         </el-form>
         <div
           slot="footer"
-          class="dialog-footer"
         >
           <el-button
             id="upload_package_close"
             @click="handleClose"
-            size="small"
+            style="margin-right:40px;"
+            class="light-button"
           >
             {{ $t('common.cancel') }}
           </el-button>
           <el-button
             id="upload_package_ipload"
-            type="primary"
-            size="small"
+            class="dark-button"
             @click="confirmAddCase"
           >
             {{ $t('common.confirm') }}
@@ -465,6 +432,8 @@
         :visible.sync="addExcelVisible"
         :close-on-click-modal="false"
         width="30%"
+        title="导入测试用例"
+        class="addtestdialog"
       >
         <el-form
           :model="batchForm"
@@ -484,7 +453,7 @@
               <el-button
                 slot="trigger"
                 size="small"
-                plain
+                class="form-button"
               >
                 {{ $t('testCase.import') }}
               </el-button>
@@ -496,8 +465,7 @@
                 <el-button
                   slot="trigger"
                   size="small"
-                  type="primary"
-                  plain
+                  class="form-button"
                 >
                   {{ $t('testCase.sample') }}
                 </el-button>
@@ -507,20 +475,21 @@
         </el-form>
         <div
           slot="footer"
-          class="dialog-footer"
         >
           <el-button
             id="upload_package_close"
             @click="handleClose"
+            class="light-button"
             size="small"
+            style="margin-right:40px;"
           >
             {{ $t('common.cancel') }}
           </el-button>
           <el-button
             id="upload_package_ipload"
-            type="primary"
             size="small"
             @click="BatchImport"
+            class="dark-button"
           >
             {{ $t('common.confirm') }}
           </el-button>
@@ -727,11 +696,32 @@ export default {
       fd.append('file', this.batchForm.batchFile[0])
       ModelMgmt.importTestModelApi(fd).then(res => {
         this.addExcelVisible = false
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          type: 'warning',
+          message: '上传成功'
+        })
         this.getAllcase()
         this.batchForm = {
           batchFile: []
         }
-      }).catch(() => {
+      }).catch((error) => {
+        if (error.response.status === 206) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '部分上传成功'
+          })
+        } else {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '上传失败'
+          })
+        }
         this.addExcelVisible = false
         this.batchForm = {
           batchFile: []
@@ -985,83 +975,69 @@ export default {
 </script>
 
 <style lang='less'>
-.testcase {
-  .testcase-content {
-    background: white;
-    .search-btn{
-      height: 40px;
-      line-height: 40px;
-      margin-left: 20px;
-    }
-    .el-table thead {
-      color: #686a6f;
-      font-weight: 800;
-      th{
-        background: #d6e3f1;
-      }
-    }
-    .addbtn{
-      text-align:right;
-      margin-right:20px;
-      margin-bottom:5px;
-    }
-    .deleteBtn{
-      color: #fff;
-      background-color: #e4905e;
-      padding: 5px 10px;
-    }
-    .editBtn{
-      background-color: #4d9aea;
-      padding: 5px 10px;
-      color: #fff;
-      // color: #7597f4;
-    }
-    .start-button{
-        text-align: center;
-        margin: 55px 0;
-        #start_test_button{
-          transform:translateX(-49px);
-        }
-      }
-    .title {
-      margin: 15px 0;
-      font-size: 16px;
-      color: #616367e3;
-    }
-    .title::before {
-      content: "";
-      display: inline-block;
-      width: 3px;
-      background: #3399ff;
-      height: 20px;
-      position: relative;
-      top: 5px;
-    }
-    .questionIcon {
-      margin-left: 10px;
-      font-size: 18px;
-      color: #688EF3;
-    }
+  .padding100{
+    padding: 0 100px;
   }
-  .el-dialog__body{
-    padding: 0;
+.testcase {
+  .testcase-main {
+    background: #fff;
+    padding: 15px 15px 35px;
+    .enter-search{
+      justify-content: space-between;
+      height: 34px;
+      .el-select{
+        width: auto!important;
+      }
+      .el-input{
+        margin-right: 20px;
+        width: auto!important;
+      }
+      .el-input__inner{
+        border: 1px solid #380879;
+      }
+      .el-input__inner:focus {
+        outline: none;
+        border-color: #380879;
+      }
+      .questionIcon {
+        margin-left: 10px;
+          img{
+            padding-top: 5px;
+          }
+      }
+    }
+    .testcase-content{
+      padding: 20px 0;
+      .el-button--text{
+        color: #380879;
+        font-size: 16px;
+      }
+    }
   }
   .addtestdialog{
     .el-form{
-      width: 80%;
-    }
-  .dialog-footer{
-      text-align: right;
-    }
-  }
-
-  .dependency-detail{
-    .button-center{
-      text-align:center;
-      margin-top: 10px;
-    }
-    h3{
-      margin-bottom: 15px;
+      width: 90%;
+      .el-form-item {
+         margin-bottom: 15px;
+      }
+      .el-form-item__label{
+        line-height: 30px;
+        padding-bottom: 10px;
+      }
+      .el-form-item__content{
+        line-height: 15px;
+      }
+      .el-textarea__inner{
+        height: 15px;
+      }
+      .form-button{
+        background-color: #f7f2ff;
+        border: 1px solid #380879;
+        color: #380879;
+        // font-size: 14px;
+        border-radius: 5px;
+        box-shadow: 0 5px 5px #deccf9;
+      }
     }
   }
 }

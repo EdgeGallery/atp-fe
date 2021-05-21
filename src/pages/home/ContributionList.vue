@@ -17,23 +17,24 @@
 <template>
   <div>
     <Navcomp />
-    <div class="task padding240">
+    <div class="contribution padding200">
       <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
         <span>{{ $t('testCase.applicationTestPlatform') }}</span>
         <span>></span>
         <span>贡献管理</span>
       </div>
-      <div style="background: #fff; padding: 15px 30px 55px;">
-        <div style="display: flex;">
-          <div style="display: flex;width:90%;">
+      <div class="main">
+        <div class="header flex">
+          <div class="search flex">
             <el-input
               v-model="form.name"
               prefix-icon="el-icon-search"
               placeholder="请输入名称进行搜索"
               size="small"
-              class="search_input"
+              @change="getAllcontribution"
             />
             <el-button
+              size="small"
               class="dark-button"
               @click="getAllcontribution"
             >
@@ -42,11 +43,12 @@
           </div>
           <div>
             <el-button
+              size="small"
               class="dark-button"
               @click="deleteCase"
               :disabled="ids.length===0?true:false"
             >
-              批量删除
+              删除
             </el-button>
           </div>
         </div>
@@ -108,15 +110,15 @@
               </template>
             </el-table-column>
           </el-table>
-        </div>
-        <div
-          class="pagebar"
-          style="margin-top: 20px"
-        >
-          <pagination
-            :table-data="pageData"
-            @getCurrentPageData="getCurrentPageData"
-          />
+          <div
+            class="pagebar"
+            style="margin-top: 20px"
+          >
+            <pagination
+              :table-data="pageData"
+              @getCurrentPageData="getCurrentPageData"
+            />
+          </div>
         </div>
       </div>
       <el-dialog
@@ -137,7 +139,6 @@
         </div>
         <div
           slot="footer"
-          class="dialog-footer"
         >
           <el-button
             style="margin-right:40px;"
@@ -187,10 +188,28 @@ export default {
     getAllcontribution () {
       Taskmgmt.contributionsApi(this.form).then(res => {
         this.pageData = res.data
+        let data = res.data
         this.dataLoading = false
+        data.forEach((item, index) => {
+          let newDateBegin = this.dateChange(item.createTime)
+          item.createTime = newDateBegin
+        })
+        this.pageData = data
       }).catch(() => {
         this.dataLoading = false
       })
+    },
+    dateChange (dateStr) {
+      if (dateStr) {
+        let date = new Date(Date.parse(dateStr))
+        let Y = date.getFullYear()
+        let M = date.getMonth() + 1
+        let D = date.getDate()
+        return Y + '-' +
+          (M > 9 ? M : '0' + M) +
+          '-' +
+          (D > 9 ? D : '0' + D)
+      }
     },
     handleSelectionChange (val) {
       this.ids = []
@@ -217,6 +236,13 @@ export default {
           message: this.$t('promptMessage.deleteSuccess')
         })
         this.getAllcontribution()
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          type: 'warning',
+          message: this.$t('promptMessage.deleteFail')
+        })
       })
     },
     downloadScript (row) {
@@ -229,92 +255,41 @@ export default {
 </script>
 
 <style lang='less'>
-.el-input__inner{
-  border: 1px solid #380879;
-}
-.el-input{
-  width: 300px;
-  margin-right: 20px;
-}
-.el-input__inner:focus {
-    outline: none;
-    border-color: #380879;
-}
-.dark-button{
-      background: #380879;
-      color: #fff;
-      border-radius: 10px;
-}
-.light-button{
-      border-color:#380879 ;
-      color: #380879;
-      border-radius: 10px;
-}
-.el-button{
-  padding: 9px 20px;
-}
-.el-button:active {
-    border-color: #380879;
-    outline: none;
-}
-.el-button:hover, .el-button:focus {
-    color: #FFF;
-    border-color: #380879;
-    background-color: #380879;
-}
-.el-button.is-disabled, .el-button.is-disabled:hover, .el-button.is-disabled:focus {
-    color: #fff;
-    background-image: none;
-    background-color: #886baf;
-    border-color: #886baf;
-}
-.content{
-  padding: 20px 0;
-  .headerStyle{
-      background: #ebe6f1;
-      color: #666666;
-      padding: 0;
-      height: 60px;
-      line-height: 60px;
+.contribution{
+  .main{
+    background: #fff;
+    padding: 15px 10px 35px;
+    .header{
+      justify-content: space-between;
+      .el-input__inner{
+        border: 1px solid #380879 !important;
       }
-    .el-table td{
-      font-size: 16px;
-      color: #333;
-      padding: 0;
-      height: 80px;
-      line-height: 80px;
-      border-bottom: 2px solid #f5eeff;
+      .el-input__inner:focus {
+        outline: none !important;
+        border-color: #380879 !important;
+      }
+      .el-input{
+        margin-right: 20px !important;
+      }
     }
-    .el-checkbox__input.is-checked .el-checkbox__inner {
-      background-color: #380879;
-      border-color: #380879;
-    }
-    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-      background-color: #380879;
-      border-color: #380879;
-    }
-    .el-checkbox__inner:hover {
-      border-color: #380879;
-    }
-}
-  .prompt-dialog{
-    .el-dialog__header{
-      border: 1px solid #c9c9c9;
-    }
-    .el-dialog__title{
-      font-size: 20px;
-      color: #333333;
-    }
-    .el-dialog__body{
-      padding: 20px 20px;
-    }
-    .prompt-text{
-      font-size: 18px;
-      color: #666666;
-      padding-top: 10px;
-    }
-    .dialog-footer{
-      text-align: center;
+    .content{
+      padding: 20px 0;
     }
   }
+    .el-button:active {
+        border-color: #380879;
+        outline: none;
+    }
+    .el-button:hover, .el-button:focus {
+        color: #fff;
+        border-color: #380879;
+        background-color: #380879;
+    }
+    .el-button.is-disabled, .el-button.is-disabled:hover, .el-button.is-disabled:focus {
+        color: #fff;
+        background-image: none;
+        background-color: #886baf !important;
+        border-color: #886baf;
+    }
+}
 </style>
