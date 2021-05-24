@@ -31,83 +31,106 @@
       </el-col>
       <el-col
         :span="11"
-        class="navList"
       >
-        <el-menu
-          mode="horizontal"
-          :unique-opened="true"
-          router
-          text-color="#fff"
-          background-color="#280b4e"
-          active-text-color="#fff"
-          :default-active="activeIndex"
-          @select="handleSelect"
-        >
-          <template
-            v-for="item in navList"
+        <div class="navList">
+          <el-menu
+            mode="horizontal"
+            :unique-opened="true"
+            router
+            text-color="#fff"
+            background-color="#280b4e"
+            active-text-color="#fff"
+            :default-active="activeIndex"
+            @select="handleSelect"
           >
-            <el-submenu
-              v-if="item.children && item.children.length"
-              :index="item.route+ ''"
-              :key="item.pageId"
+            <template
+              v-for="item in navList"
             >
-              <template
-                slot="title"
+              <el-submenu
+                v-if="item.children && item.children.length"
+                :index="item.route+ ''"
+                :key="item.pageId"
+              >
+                <template
+                  slot="title"
+                >
+                  {{ language === 'cn' ? item.labelCn : item.labelEn }}
+                </template>
+                <el-menu-item
+                  v-for="itemChild in item.children"
+                  :index="itemChild.route+ ''"
+                  :key="itemChild.pageId"
+                >
+                  {{ language === 'cn' ? itemChild.labelCn : itemChild.labelEn }}
+                </el-menu-item>
+              </el-submenu>
+              <el-menu-item
+                v-else
+                :index="item.route"
+                :key="item.pageId"
               >
                 {{ language === 'cn' ? item.labelCn : item.labelEn }}
-              </template>
-              <el-menu-item
-                v-for="itemChild in item.children"
-                :index="itemChild.route+ ''"
-                :key="itemChild.pageId"
-              >
-                {{ language === 'cn' ? itemChild.labelCn : itemChild.labelEn }}
               </el-menu-item>
-            </el-submenu>
-            <el-menu-item
-              v-else
-              :index="item.route"
-              :key="item.pageId"
-            >
-              {{ language === 'cn' ? item.labelCn : item.labelEn }}
-            </el-menu-item>
-          </template>
-        </el-menu>
+            </template>
+          </el-menu>
+        </div>
       </el-col>
       <el-col
         :span="7"
       >
-        <div class="nav-tabs rt">
-          <span
-            v-if="!ifGuest"
-          >{{ userName }}</span>
-          <span
-            v-if="!ifGuest"
-          >|</span>
-          <span
-            v-if="!ifGuest"
-            class="curp"
-            @click="openUserAccountCenter()"
-          >{{ $t('nav.userAccountCenter') }}</span>
-          <span
-            v-if="!ifGuest"
-          >|</span>
-          <span
-            class="curp"
-            @click="logout()"
+        <div class="user_right flex">
+          <div
+            class="user_icon"
             v-if="ifGuest"
-          >{{ $t('nav.login') }}</span>
-          <span
-            class="curp"
-            @click="beforeLogout"
-            v-else
-          >{{ $t('nav.logout') }}</span>
-          <span
-            @click="changeLanguage"
-            class="curp"
           >
-            {{ getLanguage }}
-          </span>
+            <img
+              src="../../assets/images/nav_user.png"
+              alt=""
+              title="登录"
+              @click="logout()"
+            >
+          </div>
+          <div
+            class="nav-tabs"
+            v-if="!ifGuest"
+          >
+            <div
+              class="userName"
+              @mouseenter="showUserInfo=true"
+              @mouseleave="showUserInfo=false"
+            >
+              {{ userName }}
+              <el-collapse-transition>
+                <div
+                  class="user_info"
+                  v-show="showUserInfo"
+                >
+                  <span
+                    class="userAccountCenter"
+                    @click="openUserAccountCenter()"
+                  >{{ $t('nav.userAccountCenter') }}</span>
+                  <span
+                    @click="beforeLogout()"
+                  >{{ $t('nav.logout') }}</span>
+                </div>
+              </el-collapse-transition>
+            </div>
+          </div>
+          <div
+            class="curp"
+            @click="changeLanguage"
+          >
+            <img
+              src="../../assets/images/nav_en.png"
+              alt=""
+              v-if="language==='cn'"
+            >
+            <img
+              src="../../assets/images/nav_cn.png"
+              alt=""
+              v-else
+            >
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -178,7 +201,8 @@ export default {
         }
       ],
       activeIndex: '/',
-      fromPath: ''
+      fromPath: '',
+      showUserInfo: false
     }
   },
   computed: {
@@ -256,6 +280,9 @@ export default {
       } else {
         this.ifGuest = false
       }
+      if (res.data.authorities.indexOf('ROLE_ATP_ADMIN') === -1) {
+        this.navList.splice(3, 1)
+      }
     })
     let historyRoute = sessionStorage.getItem('historyRoute')
     if (historyRoute) {
@@ -281,6 +308,7 @@ export default {
   .logo {
     height: 65px;
     line-height: 65px;
+    text-align: center;
     img {
       height: 65px;
     }
@@ -290,55 +318,67 @@ export default {
     }
   }
     .navList {
+      text-align: center;
       .el-menu--horizontal {
         border: none;
       }
       .el-menu--horizontal>.el-menu-item {
         height: 65px;
         line-height: 65px;
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 700;
         margin-right: 0px;
-        font-family: Microsoft YaHei,sans-serif;
         vertical-align: bottom;
       }
       .el-submenu__title {
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 700;
-        font-family: Microsoft YaHei,sans-serif;
       }
       .el-menu--horizontal>.el-submenu .el-submenu__title {
         height: 65px;
         line-height: 65px;
       }
     }
-  // .navList{
-  //   span {
-  //     font-size: 18px;
-  //     font-weight: 700;
-  //     line-height: 65px;
-  //     margin: 0 20px;
-  //     padding-bottom: 17px;
-  //     vertical-align: bottom;
-  //   }
-  //   span:hover {
-  //     color: #6c92fa;
-  //     border-bottom: 2px solid #6c92fa;
-  //   }
-  //   .active {
-  //     color: #6c92fa;
-  //     border-bottom: 2px solid #6c92fa;
-  //   }
-  // }
-  .nav-tabs {
-    padding-right: 20px;
-    height: 65px;
-    line-height: 65px;
-    float: right;
-    box-sizing: border-box;
-    span{
-      padding: 0 10px;
-    }
+    .user_right{
+      text-align: center;
+      color: #fff;
+      height: 26px;
+      line-height: 26px;
+      margin-top: 20px;
+      padding: 0 35%;
+      .user_icon{
+        margin: 0 20px;
+        cursor: pointer;
+      }
+      .userName{
+        position: relative;
+        cursor: pointer;
+        margin:0 20px;
+      }
+      .user_info{
+        background: #6319c2;
+        position: absolute;
+        width: 90px;
+        padding-bottom: 2px;
+        border-radius: 6px;
+        top: 30px;
+        span{
+          display: inline-block;
+          width: 100%;
+          height: 44px;
+          line-height: 44px;
+          font-size: 14px;
+          background: #3b0b7a;
+          border-radius: 6px;
+          margin-top: 2px;
+          text-align: center;
+          color: #acacac;
+        }
+        span:hover{
+          background: #2b0064;
+          color: #fff;
+        }
+      }
   }
   @media only screen and (max-width: 991px){
     .logo{
