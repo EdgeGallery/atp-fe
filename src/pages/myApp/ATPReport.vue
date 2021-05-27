@@ -146,7 +146,7 @@
             >
               <el-table
                 :data="suiteItem.testCases"
-                header-cell-class-name="headerStyle"
+                header-cell-class-name="tableheaderStyle"
               >
                 <el-table-column
                   :label="$t('userpage.name')"
@@ -555,7 +555,7 @@ export default {
               font-size: 16px !important;
             }
           }
-          .headerStyle{
+          .tableheaderStyle{
             padding: 0;
             height: 40px;
             line-height: 40px;

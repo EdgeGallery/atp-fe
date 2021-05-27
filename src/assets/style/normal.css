@@ -244,3 +244,14 @@ a{
   .el-dialog__headerbtn{
     font-size: 22px !important;
   }
+
+  /* 提示框 */
+  .el-tooltip__popper.is-dark {
+    background: #ebe0fb !important;
+    color: #280b4e !important;
+    font-size: 16px !important;
+}
+.el-tooltip__popper .popper__arrow, .el-tooltip__popper .popper__arrow::after{
+  /* border-color:#ebe0fb !important; */
+  border-color: transparent;
+}
