@@ -354,7 +354,7 @@ export default {
   methods: {
     getPlatformUrl () {
       let currUrl = window.location.origin
-      if (currUrl.indexOf('30092') !== -1) {
+      if (currUrl.indexOf('30094') !== -1) {
         this.appStoreUrl = currUrl.replace('30094', '30091')
         this.developerUrl = currUrl.replace('30094', '30092')
         this.mecmUrl = currUrl.replace('30094', '30093')

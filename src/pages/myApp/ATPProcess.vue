@@ -123,7 +123,7 @@
               >
                 <el-table
                   :data="suiteItem.testCases"
-                  header-cell-class-name="headerStyle"
+                  header-cell-class-name="tableheaderStyle"
                 >
                   <el-table-column
                     :label="$t('userpage.name')"
@@ -708,7 +708,7 @@ export default {
       margin-bottom: 10px;
       display: none;
     }
-    .headerStyle{
+    .tableheaderStyle{
       padding: 0;
       height: 30px;
       line-height: 30px;

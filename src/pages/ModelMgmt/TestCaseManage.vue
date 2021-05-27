@@ -77,7 +77,6 @@
               :content="this.$t('testCase.testCaseIntro')"
               placement="right"
               class="questionIcon"
-              effect="light"
             >
               <div>
                 <img
@@ -443,7 +442,6 @@
             <el-upload
               action=""
               :limit="1"
-              :on-exceed="handleExceed"
               :on-change="excelChange"
               :on-remove="excelDelte"
               :file-list="batchForm.batchFile"
@@ -490,6 +488,40 @@
             size="small"
             @click="BatchImport"
             class="dark-button"
+          >
+            {{ $t('common.confirm') }}
+          </el-button>
+        </div>
+      </el-dialog>
+      <el-dialog
+        :visible.sync="deleteVisible"
+        :close-on-click-modal="false"
+        title="提示"
+        width="25%"
+        class="prompt-dialog"
+      >
+        <div style="text-align: center;">
+          <img
+            src="../../assets/images/deleteicon.png"
+            alt=""
+          >
+          <p class="prompt-text">
+            {{ this.$t('promptMessage.deleteSenarioPrompt') }}
+          </p>
+        </div>
+        <div
+          slot="footer"
+        >
+          <el-button
+            style="margin-right:40px;"
+            class="light-button"
+            @click="deleteVisibleClose"
+          >
+            {{ $t('common.cancel') }}
+          </el-button>
+          <el-button
+            class="dark-button"
+            @click="confirmdeleteCase"
           >
             {{ $t('common.confirm') }}
           </el-button>
@@ -543,6 +575,8 @@ export default {
       allcaseData: [],
       currentData: [],
       addCaseVisible: false,
+      deleteVisible: false,
+      deleteId: '',
       confirmBtnApi: '',
       dialogTitle: '',
       editid: '',
@@ -911,27 +945,30 @@ export default {
       this.addcaseForm.file = []
       // this.addcaseForm.testSuiteIdList = row.testSuiteId
     },
+    deleteVisibleClose () {
+      this.deleteVisible = false
+    },
     deleteCase (row) {
-      this.$confirm(this.$t('promptMessage.deletePrompt'), this.$t('promptMessage.prompt'), {
-        confirmButtonText: this.$t('common.confirm'),
-        cancelButtonText: this.$t('common.cancel'),
-        type: 'warning'
-      }).then(() => {
-        Atp.deleteCaseApi(row.id).then(res => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            message: this.$t('promptMessage.deleteSuccess'),
-            type: 'success'
-          })
-          this.getAllcase()
-        }).catch(() => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            message: this.$t('promptMessage.deleteFail'),
-            type: 'warning'
-          })
+      this.deleteVisible = true
+      this.deleteId = row.id
+    },
+    confirmdeleteCase () {
+      this.deleteVisible = false
+      let id = this.deleteId
+      Atp.deleteCaseApi(id).then(res => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('promptMessage.deleteSuccess'),
+          type: 'success'
+        })
+        this.getAllcase()
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: this.$t('promptMessage.deleteFail'),
+          type: 'warning'
         })
       })
     },

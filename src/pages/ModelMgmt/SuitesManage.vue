@@ -16,76 +16,74 @@
 <template>
   <div>
     <Navcomp />
-    <div class="padding56">
+    <div class="padding200">
       <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
         <span>{{ $t('testCase.applicationTestPlatform') }}</span>
         <span>></span>
         <span>{{ $t('testCase.testSuiteManagement') }}</span>
       </div>
-      <div class="testsuites padding20">
-        <div class="searchBtn">
-          <el-form
-            ref="form"
-            :model="form"
-            label-width="100px"
-          >
-            <el-row>
-              <el-col :span="4">
-                <el-form-item :label="$t('modelmgmt.name')">
-                  <el-input
-                    class="searchInput"
-                    size="small"
-                    id="name"
-                    v-model="form.name"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col :span="5">
-                <el-form-item :label="$t('modelmgmt.scene')">
-                  <el-select
-                    v-model="form.scenarioIdList"
-                    :placeholder="$t('userpage.selectScene')"
-                    size="small"
-                  >
-                    <el-option
-                      v-for="item in options"
-                      :key="item.nameCh"
-                      :label="language == 'cn' ? item.nameCh : item.nameEn"
-                      :value="item.id"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-button
-                  id="resetBtn"
-                  size="small"
-                  @click="resetForm"
+      <div class="testsuites-main padding20">
+        <div class="flex enter-search">
+          <div class="flex">
+            <el-input
+              v-model="form.name"
+              prefix-icon="el-icon-search"
+              placeholder="请输入名称进行搜索"
+              size="small"
+              @change="getAllSuites"
+            />
+            <el-select
+              v-model="form.scenarioIdList"
+              :placeholder="$t('userpage.selectScene')"
+              size="small"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.nameCh"
+                :label="language == 'cn' ? item.nameCh : item.nameEn"
+                :value="item.id"
+              />
+            </el-select>
+            <el-button
+              class="light-button"
+              size="small"
+              @click="resetForm"
+            >
+              {{ $t('myApp.reset') }}
+            </el-button>
+            <el-button
+              class="dark-button"
+              size="small"
+              @click="getAllSuites"
+            >
+              {{ $t('common.search') }}
+            </el-button>
+            <el-tooltip
+              :content="this.$t('testCase.testSuiteIntro')"
+              placement="right"
+              class="questionIcon"
+              visible-arrow="false"
+            >
+              <div>
+                <img
+                  src="../../assets/images/icon-question.png"
+                  alt=""
                 >
-                  {{ $t('myApp.reset') }}
-                </el-button>
-                <el-button
-                  style="text-align:center;margin:5px 15px 0"
-                  type="primary"
-                  size="small"
-                  @click="getAllSuites"
-                >
-                  {{ $t('common.search') }}
-                </el-button>
-                <el-tooltip
-                  :content="this.$t('testCase.testSuiteIntro')"
-                  placement="right"
-                  class="questionIcon"
-                >
-                  <em class="el-icon-question" />
-                </el-tooltip>
-              </el-col>
-            </el-row>
-          </el-form>
-          <div class="addBtn">
+              </div>
+            </el-tooltip>
+          </div>
+          <div>
             <el-button
               v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
-              type="primary"
+              class="light-button"
+              size="small"
+              @click="excelBringBtn"
+            >
+              批量导入
+            </el-button>
+            <el-button
+              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+              class="dark-button"
               size="small"
               @click="addTestSuiteBtn"
             >
@@ -101,38 +99,39 @@
             v-for="item in testSuites"
             :key="item.id"
           >
-            <el-form label-width="auto">
-              <el-form-item :label="$t('modelmgmt.name')">
-                {{ language === 'cn' ? item.nameCh :item.nameEn }}
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.description')">
-                {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
-              </el-form-item>
-              <el-form-item :label="$t('modelmgmt.scene')">
-                {{ item.scenarioNameList }}
-              </el-form-item>
-              <el-form-item
-                class="rt"
-                v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+            <div class="content">
+              <el-form
+                label-width="auto"
+                :class="language === 'cn' ?'form-content-cn' :'form-content-en'"
               >
-                <el-button
-                  type="warning"
-                  size="small"
-                  class="button"
-                  @click="deleteTestSuite(item.id)"
-                >
-                  {{ $t('common.delete') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="button"
-                  @click="editTestSuite(item)"
-                >
-                  {{ $t('common.edit') }}
-                </el-button>
-              </el-form-item>
-            </el-form>
+                <el-form-item :label="$t('modelmgmt.name')">
+                  {{ language === 'cn' ? item.nameCh :item.nameEn }}
+                </el-form-item>
+                <el-form-item :label="$t('modelmgmt.description')">
+                  {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
+                </el-form-item>
+                <el-form-item :label="$t('modelmgmt.scene')">
+                  {{ item.scenarioNameList }}
+                </el-form-item>
+                <el-form-item v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1">
+                  <el-button
+                    class="light-button"
+                    size="small"
+                    style="margin-right:10px;"
+                    @click="deleteTestSuite(item.id)"
+                  >
+                    {{ $t('common.delete') }}
+                  </el-button>
+                  <el-button
+                    size="small"
+                    class="dark-button"
+                    @click="editTestSuite(item)"
+                  >
+                    {{ $t('common.edit') }}
+                  </el-button>
+                </el-form-item>
+              </el-form>
+            </div>
           </div>
         </div>
         <el-dialog
@@ -319,6 +318,106 @@
           </div>
         </el-dialog>
       </div>
+      <el-dialog
+        :visible.sync="deleteVisible"
+        :close-on-click-modal="false"
+        title="提示"
+        width="25%"
+        class="prompt-dialog"
+      >
+        <div style="text-align: center;">
+          <img
+            src="../../assets/images/deleteicon.png"
+            alt=""
+          >
+          <p class="prompt-text">
+            {{ this.$t('promptMessage.deleteSuitePrompt') }}
+          </p>
+        </div>
+        <div
+          slot="footer"
+        >
+          <el-button
+            style="margin-right:40px;"
+            class="light-button"
+            @click="deleteVisibleClose"
+          >
+            {{ $t('common.cancel') }}
+          </el-button>
+          <el-button
+            class="dark-button"
+            @click="confirmdeleteTestSuite"
+          >
+            {{ $t('common.confirm') }}
+          </el-button>
+        </div>
+      </el-dialog>
+      <el-dialog
+        :visible.sync="addExcelVisible"
+        :close-on-click-modal="false"
+        width="30%"
+        title="导入测试用例"
+        class="addtestdialog"
+      >
+        <el-form
+          :model="batchForm"
+          label-width="100px"
+        >
+          <el-form-item label="批量导入">
+            <el-upload
+              action=""
+              :limit="1"
+              :on-change="excelChange"
+              :on-remove="excelDelte"
+              :file-list="batchForm.batchFile"
+              :auto-upload="false"
+              accept=".zip"
+            >
+              <el-button
+                size="small"
+                slot="trigger"
+                class="form-button"
+              >
+                {{ $t('testCase.import') }}
+              </el-button>
+              <a
+                :href="batchDemo"
+                download
+                style="padding-left:10px;"
+              >
+                <el-button
+                  size="small"
+                  slot="trigger"
+                  class="form-button"
+                >
+                  {{ $t('testCase.sample') }}
+                </el-button>
+              </a>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+        <div
+          slot="footer"
+        >
+          <el-button
+            id="upload_package_close"
+            @click="BatchImportClose"
+            class="light-button"
+            size="small"
+            style="margin-right:40px;"
+          >
+            {{ $t('common.cancel') }}
+          </el-button>
+          <el-button
+            id="upload_package_ipload"
+            size="small"
+            @click="BatchImport"
+            class="dark-button"
+          >
+            {{ $t('common.confirm') }}
+          </el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -334,9 +433,15 @@ export default {
       authorities: sessionStorage.getItem('authorities'),
       addTestSuiteVisible: false,
       editTestSuiteVisible: false,
+      deleteVisible: false,
+      addExcelVisible: false,
       confirmBtnApi: '',
       editid: '',
       cannotEdit: false,
+      batchForm: {
+        batchFile: []
+      },
+      batchDemo: './batch_import.zip',
       addTestSuiteForm: {
         nameCh: '',
         nameEn: '',
@@ -362,6 +467,7 @@ export default {
       options: [],
       testScenes: [],
       testSuites: [],
+      deleteId: '',
       rules: {
         nameCh: [
           { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' },
@@ -520,35 +626,88 @@ export default {
       this.editId = item.id
       this.editTestSuiteVisible = true
     },
+    deleteVisibleClose () {
+      this.deleteVisible = false
+    },
     deleteTestSuite (id) {
-      this.$confirm(this.$t('promptMessage.deleteSuitePrompt'), this.$t('promptMessage.prompt'), {
-        confirmButtonText: this.$t('common.confirm'),
-        cancelButtonText: this.$t('common.cancel'),
-        type: 'warning'
-      }).then(() => {
-        ModelMgmt.deleteTestSuite(id).then(res => {
-          this.$message({
-            type: 'success',
-            message: this.$t('promptMessage.deleteSuccess')
-          })
-          this.getAllSuites()
-        }).catch(error => {
-          if (error.response.data.message === 'this test suite is used by some test cases, can not be deleted..') {
-            this.$message({
-              showClose: true,
-              duration: 2000,
-              message: this.$t('promptMessage.cannotDeleteSuite'),
-              type: 'warning'
-            })
-          } else {
-            this.$message({
-              showClose: true,
-              duration: 2000,
-              message: this.$t('promptMessage.deleteFail'),
-              type: 'warning'
-            })
-          }
+      this.deleteVisible = true
+      this.deleteId = id
+    },
+    confirmdeleteTestSuite () {
+      this.deleteVisible = false
+      let id = this.deleteId
+      ModelMgmt.deleteTestSuite(id).then(res => {
+        this.$message({
+          type: 'success',
+          message: this.$t('promptMessage.deleteSuccess')
         })
+        this.getAllSuites()
+      }).catch(error => {
+        if (error.response.data.message === 'this test suite is used by some test cases, can not be deleted..') {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: this.$t('promptMessage.cannotDeleteSuite'),
+            type: 'warning'
+          })
+        } else {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: this.$t('promptMessage.deleteFail'),
+            type: 'warning'
+          })
+        }
+      })
+    },
+    BatchImportClose () {
+      this.addExcelVisible = false
+    },
+    excelBringBtn () {
+      this.addExcelVisible = true
+    },
+    excelChange (file, fileList) {
+      console.log('ee')
+      this.batchForm.batchFile.push(file.raw)
+    },
+    excelDelte (file, fileList) {
+      this.batchForm.batchFile = fileList
+    },
+    BatchImport () {
+      let fd = new FormData()
+      fd.append('file', this.batchForm.batchFile[0])
+      ModelMgmt.importTestModelApi(fd).then(res => {
+        this.addExcelVisible = false
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          type: 'warning',
+          message: '上传成功'
+        })
+        this.getAllcase()
+        this.batchForm = {
+          batchFile: []
+        }
+      }).catch((error) => {
+        if (error.response.status === 206) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '部分上传成功'
+          })
+        } else {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            type: 'warning',
+            message: '上传失败'
+          })
+        }
+        this.addExcelVisible = false
+        this.batchForm = {
+          batchFile: []
+        }
       })
     },
     clearFormData (form) {
@@ -571,59 +730,113 @@ export default {
 }
 </script>
 <style lang="less">
-.testsuites{
-  background-color: white;
-  .searchBtn{
-    margin-left: -40px;
-    display: flex;
-    .el-form{
-      width: 90%;
+.testsuites-main{
+  background-color: #fff;
+    .enter-search{
+      justify-content: space-between;
+      height: 34px;
+        .el-select{
+          width: auto!important;
+        }
+        .el-input{
+          margin-right: 20px;
+          width: auto!important;
+        }
+        .el-input__inner{
+          border: 1px solid #380879;
+        }
+        .el-input__inner:focus {
+          outline: none;
+          border-color: #380879;
+        }
+        .questionIcon {
+          margin-left: 10px;
+            img{
+              padding-top: 5px;
+            }
+        }
     }
-    .addBtn{
-      padding: 5px 55px;
-    }
-    .questionIcon {
-      font-size: 18px;
-      color: #688EF3;
-    }
-  }
   .allsuite{
+    padding-top: 15px;
     display: flex;
     flex-wrap: wrap;
     .list {
-      width: 23%;
-      margin: 0 10px 10px;
-      padding:15px 0 15px 15px;
-      border: 3px solid#1ececa;
-      border-left: 10px solid #1ececa;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      transition: transform 0.3s ease-in;
-      background-color: #f8f8f8;
-      .el-form{
-      width:100%;
-      .el-form-item{
-        margin-bottom: 8px;
-          .button:nth-child(2){
-            margin-right:15px;
+      background-color: #fff;
+      box-sizing: border-box;
+      width: 25%;
+      padding: 0 10px;
+      margin-bottom: 20px;
+      .content{
+        box-shadow: 0 0 10px 2px #e8e6f1;
+        border-radius: 8px;
+        padding: 10px;
+        .el-form{
+          .el-form-item{
+            margin-bottom: 8px;
+          }
+          .el-form-item__label{
+            color:#666666;
           }
         }
+          .form-content-cn{
+            .el-form-item:first-child{
+              .el-form-item__content{
+                font-size: 24px;
+                color: #333333;
+              }
+            }
+            .el-form-item:nth-child(2),.el-form-item:nth-child(3){
+              .el-form-item__content{
+                font-size: 20px;
+                color: #666666;
+              }
+            }
+            .el-form-item:nth-child(4){
+              .el-form-item__content{
+                padding-left: 5%;
+              }
+            }
+          }
+          .form-content-en{
+            // .el-form-item__content{
+            //    line-height: 24px;
+            //  }
+            .el-form-item:first-child{
+              .el-form-item__content{
+                font-size: 16px;
+                color: #333333;
+              }
+            }
+            .el-form-item:nth-child(2),.el-form-item:nth-child(3){
+              .el-form-item__content{
+                font-size: 14px;
+                color: #666666;
+              }
+            }
+            .el-form-item:nth-child(4){
+              .el-form-item__content{
+                padding-left: 5%;
+              }
+            }
+          }
       }
-    }
-    .list:hover{
-      transform: translate3d(0,-10px,0);
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      background-color: #fff;
-      border: 3px solid#9163cc;
-      border-left: 10px solid #9163cc;
     }
     @media screen and (max-width: 1180px) {
       .list{
-          width: 30%;
+          width: 33%;
       }
     }
   }
 }
+.addtestdialog{
+  .form-button{
+        background-color: #f7f2ff;
+        border: 1px solid #380879;
+        color: #380879;
+        // font-size: 14px;
+        border-radius: 5px;
+        box-shadow: 0 5px 5px #deccf9;
+      }
+}
+
 </style>
