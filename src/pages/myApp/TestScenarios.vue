@@ -14,7 +14,7 @@
   -  limitations under the License.
   -->
 <template>
-  <div>
+  <div class="padding200">
     <div
       class="selectscene padding20"
       id="selectscene"
@@ -32,11 +32,7 @@
             class="right"
             @click="addCaseVisible = true"
           >
-            <img
-              src="../../assets/images/gongxian.png"
-              alt=""
-            >
-            <span> {{ $t('userpage.contribution') }}</span>
+            {{ $t('userpage.contribution') }}
           </div>
         </el-tooltip>
       </div>
@@ -47,33 +43,14 @@
           :key="index"
         >
           <div class="scene">
-            <div style="text-align:center;background-color: #fff;">
+            <div class="scenariosLogo">
               <img
                 :src="getAppIcon(item)"
                 alt=""
                 class="sceneimage"
               >
-            </div>
-            <div class="choose">
-              <el-form label-width="auto">
-                <el-form-item :label="$t('modelmgmt.name')">
-                  {{ language==='cn'?item.nameCh:item.nameEn }}
-                </el-form-item>
-                <el-form-item :label="$t('modelmgmt.description')">
-                  {{ language==='cn'?item.descriptionCh:item.descriptionEn }}
-                </el-form-item>
-                <el-form-item>
-                  <el-button
-                    type="text"
-                    size="small"
-                    class="button"
-                    @click="getDetail(item)"
-                  >
-                    {{ $t('userpage.seeDetail') }}
-                  </el-button>
-                </el-form-item>
-              </el-form>
               <el-button
+                class="select-button"
                 type="text"
                 :disabled="item.nameEn==='EdgeGallery Community Scenario'"
                 @click="chooseScene(item)"
@@ -90,17 +67,38 @@
                 >
               </el-button>
             </div>
+            <div class="choose">
+              <el-form label-width="auto">
+                <el-form-item :label="$t('modelmgmt.name')">
+                  {{ language==='cn'?item.nameCh:item.nameEn }}
+                </el-form-item>
+                <el-form-item :label="$t('modelmgmt.description')">
+                  {{ language==='cn'?item.descriptionCh:item.descriptionEn }}
+                </el-form-item>
+              </el-form>
+            </div>
+            <div class="choose-button">
+              <span
+                class="curp"
+                @click="getDetail(item)"
+              >{{ $t('userpage.seeDetail') }}</span>
+              <span
+                class="curp"
+                :disabled="item.nameEn==='EdgeGallery Community Scenario'"
+                @click="chooseScene(item)"
+              >选择场景</span>
+            </div>
           </div>
         </div>
       </div>
       <div class="start-button">
         <el-button
           v-if="userName!=='guest'"
-          type="primary"
+          class="dark-button"
           size="large"
           @click="startTest()"
         >
-          {{ $t('common.confirm') }}
+          {{ $t('atp.startTest') }}
         </el-button>
       </div>
     </div>
@@ -524,49 +522,52 @@ export default {
 </script>
 <style lang="less">
 .selectscene{
-  background-color: white;
+  background-color: #fff;
   .toptitle{
-    color: #688ef3;
-    // background-color: #e1e7f5;
+    color: #380879;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
+    padding: 0 15px;
+    // margin-bottom: 15px;
     .left{
-      line-height: 50px;
+      font-size: 24px;
+      // line-height: 50px;
       font-weight: 600;
     }
     .right{
-      display: flex;
-      flex-direction: column;
-      margin-right: 20px;
+      font-size: 20px;
+      // margin-right: 20px;
       cursor: pointer;
-      img{
-        width: 30px;
-        height: 30px;
-        margin-left: 30px;
-      }
-      span{
-        font-size: 16px;
-      }
+      border-bottom: 1px solid #380879;
     }
   }
   .scene-main{
     display: flex;
-    padding: 10px;
+    padding: 30px 0;
     flex-wrap: wrap;
     .contednt{
       width: 25%;
       padding: 0 15px 25px;
       .scene{
-        height: 260px;
-        border: 1px solid #d7dce6;
-        box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
-        border-radius: 8px;
+        // height: 260px;
+        box-shadow: 0 0 10px 2px #e8e6f1;
+        border-radius: 20px;
         position: relative;
-        background-color: #fafafa;
-        .sceneimage{
-          margin: 0 auto;
-          height: 100px;
+        background-color: #fcf9ff;
+        .scenariosLogo{
+          text-align:center;
+          background-color: #fff;
+          .sceneimage{
+            margin: 0 auto;
+            height: 100px;
+          }
+          .select-button{
+            img{
+              position: absolute;
+              right: -10px;
+              top: -10px;
+            }
+          }
         }
         .choose{
           display: flex;
@@ -575,9 +576,17 @@ export default {
             // width:100%;
             .el-form-item__label{
               padding-left: 8px;
+              color: #666666;
             }
+
             .el-form-item{
               margin-bottom: 0;
+            }
+            .el-form-item:first-child{
+              .el-form-item__content{
+                font-size: 20px;
+                color: #333333;
+              }
             }
             .el-form-item:nth-child(3){
               .el-form-item__content{
@@ -600,6 +609,22 @@ export default {
             position: absolute;
             right: 10px;
             bottom: 15px;
+          }
+        }
+        .choose-button{
+          background-color: #deccfa;
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 10px;
+          height: 48px;
+          line-height: 48px;
+          text-align: center;
+          color: #000000;
+          span{
+            font-size: 20px;
+            padding: 5px 20px;
+          }
+          span:first-child {
+            border-right: 2px solid #c9acf6;
           }
         }
       }

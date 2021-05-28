@@ -506,7 +506,7 @@
             alt=""
           >
           <p class="prompt-text">
-            {{ this.$t('promptMessage.deleteSenarioPrompt') }}
+            {{ this.$t('promptMessage.deletePrompt') }}
           </p>
         </div>
         <div
