@@ -240,8 +240,8 @@ export default {
           lineStyle: {
             color: '#ffffff',
             width: 5,
-            type: 'solid',
-            opacity: 0.6
+            type: 'solid'
+            // opacity: 0.6
           },
           emphasis: {
             lineStyle: {
@@ -256,6 +256,12 @@ export default {
         }]
       }
       myChart.setOption(option)
+      // 根据窗口的大小变动图表
+      window.addEventListener('resize', () => {
+        if (myChart) {
+          myChart.resize()
+        }
+      })
     }
   },
   mounted () {
