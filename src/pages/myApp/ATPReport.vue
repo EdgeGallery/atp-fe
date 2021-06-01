@@ -238,8 +238,8 @@ export default {
       this.getReport()
     },
     getReport () {
-      Userpage.getTaskApi(this.taskId).then(res => {
-        let data = res.data
+      Userpage.getTaskApiV2(this.taskId).then(res => {
+        let data = res.data.data
         // 基本信息显示
         this.tableData.push(data)
         if (this.tableData[0].status === 'success') {

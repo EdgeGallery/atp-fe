@@ -14,7 +14,7 @@
   -  limitations under the License.
   -->
 <template>
-  <div class="padding200">
+  <div>
     <div
       class="selectscene padding20"
       id="selectscene"
@@ -24,7 +24,6 @@
           {{ $t('userpage.selectScene') }}
         </div>
         <el-tooltip
-          effect="light"
           :content="$t('userpage.clickContribution')"
           placement="left"
         >
@@ -68,7 +67,10 @@
               </el-button>
             </div>
             <div class="choose">
-              <el-form label-width="auto">
+              <el-form
+                label-width="auto"
+                :class="language === 'cn' ?'form-content-cn' :'form-content-en'"
+              >
                 <el-form-item :label="$t('modelmgmt.name')">
                   {{ language==='cn'?item.nameCh:item.nameEn }}
                 </el-form-item>
@@ -78,15 +80,21 @@
               </el-form>
             </div>
             <div class="choose-button">
-              <span
+              <el-button
+                type="text"
                 class="curp"
                 @click="getDetail(item)"
-              >{{ $t('userpage.seeDetail') }}</span>
-              <span
-                class="curp"
+              >
+                查看用例
+              </el-button>
+              <el-button
+                type="text"
                 :disabled="item.nameEn==='EdgeGallery Community Scenario'"
+                class="curp"
                 @click="chooseScene(item)"
-              >选择场景</span>
+              >
+                选择场景
+              </el-button>
             </div>
           </div>
         </div>
@@ -107,9 +115,6 @@
       :visible.sync="CaseVisible"
       :title="$t('userpage.caseDetail')"
     >
-      <div class="detailtitle">
-        <span>{{ this.sceneTitle }}</span>
-      </div>
       <el-collapse
         :value="opened"
         v-if="!testSuitesNocase"
@@ -151,10 +156,11 @@
         v-else
         style="font-size:18px; padding-left: 8px;"
       >{{ this.$t('promptMessage.noCase') }}</span>
-      <div style="text-align:right;margin-top:15px;">
+      <div
+        slot="footer"
+      >
         <el-button
-          type="primary"
-          size="small"
+          class="dark-button"
           @click="handleClose()"
         >
           {{ $t('common.close') }}
@@ -166,6 +172,7 @@
       :title="$t('userpage.contribution')"
       :close-on-click-modal="false"
       width="30%"
+      class="addCasedialog"
     >
       <el-form
         :model="addcaseForm"
@@ -246,7 +253,7 @@
             <el-button
               slot="trigger"
               size="small"
-              plain
+              class="form-button"
             >
               {{ $t('testCase.import') }}
             </el-button>
@@ -267,14 +274,14 @@
         <el-button
           id="upload_package_close"
           @click="cancelClose"
-          size="small"
+          class="light-button"
+          style="margin-right:20px;"
         >
           {{ $t('common.cancel') }}
         </el-button>
         <el-button
           id="upload_package_ipload"
-          type="primary"
-          size="small"
+          class="dark-button"
           @click="confirmAddCase()"
         >
           {{ $t('common.confirm') }}
@@ -297,7 +304,7 @@ export default {
       scenarioIdList: [],
       CaseVisible: false,
       taskId: '',
-      sceneTitle: '',
+      // sceneTitle: '',
       testSuiteData: [],
       language: '',
       addCaseVisible: false,
@@ -400,11 +407,6 @@ export default {
     },
     getDetail (item) {
       this.CaseVisible = true
-      if (this.language === 'cn') {
-        this.sceneTitle = item.nameCh
-      } else {
-        this.sceneTitle = item.nameEn
-      }
       let scenarioIds = []
       scenarioIds.push(item.id)
       let fd = new FormData()
@@ -573,19 +575,35 @@ export default {
           display: flex;
           justify-content: space-between;
           .el-form{
-            // width:100%;
+            width: 100%;
             .el-form-item__label{
               padding-left: 8px;
               color: #666666;
             }
-
             .el-form-item{
-              margin-bottom: 0;
+                margin-bottom: 0;
+                .el-form-item__content{
+                  max-width: calc(100% - 100px);
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+
             }
-            .el-form-item:first-child{
-              .el-form-item__content{
-                font-size: 20px;
-                color: #333333;
+            .form-content-cn{
+              .el-form-item:first-child{
+                .el-form-item__content{
+                  font-size: 20px;
+                  color: #333333;
+                }
+              }
+            }
+            .form-content-en{
+              .el-form-item:first-child{
+                .el-form-item__content{
+                  font-size: 16px;
+                  color: #333333;
+                }
               }
             }
             .el-form-item:nth-child(3){
@@ -593,15 +611,6 @@ export default {
                 margin-left: 0 !important;
               }
             }
-          }
-          .el-button--text{
-            font-size: 14px;
-            padding: 3px 8px;
-            color: #688ef3;
-          }
-          .el-button--text:hover{
-            color: #86a5f5;
-            // border-bottom: 1px solid #688ef3;
           }
           img{
             width: 30px;
@@ -618,21 +627,21 @@ export default {
           height: 48px;
           line-height: 48px;
           text-align: center;
-          color: #000000;
-          span{
+          .el-button--text {
             font-size: 20px;
-            padding: 5px 20px;
+            color: #000000;
+            padding: 2% 5%;
           }
-          span:first-child {
+          .el-button--text:first-child {
             border-right: 2px solid #c9acf6;
           }
         }
       }
-      @media screen and (max-width: 1152px) {
-      .scene{
-          height: 300px;
-      }
-    }
+    //   @media screen and (max-width: 1152px) {
+    //   .scene{
+    //       height: 300px;
+    //   }
+    // }
     }
     @media screen and (max-width: 1320px) {
       .contednt{
@@ -646,35 +655,36 @@ export default {
   }
 }
 .el-dialog__body{
-  padding: 10px 30px;
-  .el-collapse{
-    margin-left: 8px;
-  }
-  .el-collapse-item__header{
-    padding-left: 8px;
-    font-size: 15px;
-    color: #fff;
-    height: 30px;
-    background-image: linear-gradient(to right, #688ef3 , #fff);
+  .el-collapse {
+     padding: 0;
+      .el-collapse-item__header{
+        border-radius: 5px;
+        padding-left: 8px;
+        font-size: 18px;
+        color: #111111;
+        height: 30px;
+        background-image: linear-gradient(to right, rgba(124,156,250,0.6) , rgba(249,195,255,0.2));
+      }
   }
   .el-icon-arrow-right:before {
     color: #000;
-  }
-  .detailtitle{
-    height: 50px;
-    line-height: 50px;
-    padding-left: 8px;
-    span{
-      font-size: 18px;
-      font-weight: 600;
-      color: #688ef3;
-    }
   }
   .el-table::before {
       width: 0;
   }
   table th,table td{
     border-bottom: none !important;
+    height: 30px;
   }
 }
+.addCasedialog{
+  .form-button{
+        background-color: #f7f2ff;
+        border: 1px solid #380879;
+        color: #380879;
+        border-radius: 5px;
+        box-shadow: 0 5px 5px #deccf9;
+      }
+}
+
 </style>
