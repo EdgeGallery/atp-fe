@@ -173,6 +173,16 @@ let Userpage = {
     let url = 'tasks/' + taskId
     return GET(url)
   },
+  getTaskApiV2: function (taskId) {
+    let url = 'mec-atp/edgegallery/atp/v2/tasks/' + taskId
+    return axios.get(url, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
+    })
+  },
   modifyStatusApi: function (taskId, params) {
     let url = 'tasks/' + taskId + '/testcase'
     return PUT(url, params)
@@ -213,11 +223,6 @@ let Atp = {
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
       }
     })
-  },
-  // 预检查接口（返回依赖）
-  getDependencyApi: function (taskId) {
-    let url = 'tasks/' + taskId + '/action/pre-check'
-    return GET(url)
   },
   // 创建测试任务
   creatTaskApi: function (params) {
