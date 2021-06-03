@@ -53,7 +53,7 @@ function logoutApi () {
   })
 }
 let Home = {
-  // 获取首页图表数据
+  // Get homepage chart data
   getStatisticApi: function () {
     let url = 'tasks/action/analysize'
     return GET(url)
@@ -61,7 +61,7 @@ let Home = {
 }
 
 let ModelMgmt = {
-  // 查询测试套
+  // Query test suite
   getTestSuite: function (params) {
     let url = 'testsuites'
     return GET(url, params)
@@ -70,7 +70,7 @@ let ModelMgmt = {
     let url = 'testsuites/' + id
     return GET(url)
   },
-  // 查询一个测试套
+  // Query a test suite
   getOneSuite: function (Id) {
     let url = 'testsuites/' + Id
     return GET(url)
@@ -99,7 +99,7 @@ let ModelMgmt = {
     let url = 'testscenarios'
     return POST(url, params)
   },
-  // 批量导入
+  // Batch Import
   importTestModelApi: function (params) {
     let url = 'testmodels/action/import'
     return POST(url, params)
@@ -107,17 +107,17 @@ let ModelMgmt = {
 }
 
 let Taskmgmt = {
-  // 获取任务列表
+  // Get task list
   taskListApi: function (params) {
     let url = 'tasks'
     return GET(url, params)
   },
-  // 批量删除任务
+  // Batch delete tasks
   deleteTaskApi: function (params) {
     let url = 'tasks/batch_delete'
     return POST(url, params)
   },
-  // 查询贡献用例
+  // Query contribution use cases
   contributionsApi: function (params) {
     let url = 'contributions'
     return GET(url, params)
@@ -146,29 +146,29 @@ let Taskmgmt = {
     })
   }
 }
-// 用户面所有接口
+// All interfaces on the user plane
 let Userpage = {
-  // 获取所有场景
+  // Get all scenes
   getAllSceneApi: function (params) {
     let url = 'testscenarios'
     return GET(url, params)
   },
-  // 获取场景图标
+  // Get scene icon
   getSceneIconApi: function (appId) {
     let url = 'apps/' + appId
     return GET(url)
   },
-  // 获取场景下的用例
+  // Get the use case in the scenario
   getSceneCaseApi: function (params) {
     let url = 'testscenarios/testcases'
     return POST(url, params)
   },
-  // 运行任务
+  // Run task
   runTaskApi: function (taskId, params) {
     let url = 'tasks/' + taskId + '/action/run'
     return POST(url, params)
   },
-  // 获取任务
+  // Get task
   getTaskApi: function (taskId) {
     let url = 'tasks/' + taskId
     return GET(url)
@@ -193,14 +193,14 @@ let Userpage = {
   }
 }
 
-// 以前的接口
+// Previous interface
 let Atp = {
-  // new 获取所有用例
+  // new Get all use cases
   getAllCaseApi: function (params) {
     let url = 'testcases'
     return GET(url, params)
   },
-  // 创建测试用例
+  // Create test cases
   createCaseApi: function (params) {
     let url = 'testcases'
     return POST(url, params)
@@ -213,7 +213,7 @@ let Atp = {
     let url = 'testcases/' + Id
     return DELETE(url)
   },
-  // 获取测试用例列表
+  // Get a list of test cases
   getTestCaseApi: function () {
     let url = 'mec-atp/edgegallery/atp/v1/testcases'
     return axios.get(url, {
@@ -224,7 +224,7 @@ let Atp = {
       }
     })
   },
-  // 创建测试任务
+  // Create test task
   creatTaskApi: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
     return axios.post(url, params, {
@@ -235,7 +235,7 @@ let Atp = {
       }
     })
   },
-  // 运行任务
+  // Run task
   runTaskApi: function (taskId) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId + '/action/run'
     return axios.post(url, {
@@ -246,7 +246,7 @@ let Atp = {
       }
     })
   },
-  // 获取进展
+  // Get progress
   processApi: function (taskId) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId
     return axios.get(url, {
@@ -257,7 +257,7 @@ let Atp = {
       }
     })
   },
-  // 获取任务列表
+  // Get task list
   taskListApi: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
     return axios.get(url, {
@@ -269,7 +269,7 @@ let Atp = {
       }
     })
   },
-  // 下载
+  // download
   downLoadCaseApi: function (Id, codeLanguage) {
     let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
     return axios({
