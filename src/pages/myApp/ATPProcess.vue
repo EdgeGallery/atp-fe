@@ -14,9 +14,9 @@
   -  limitations under the License.
   -->
 <template>
-  <div>
+  <div class="testing-main">
     <div
-      class="process padding56"
+      class="process"
       id="process"
     >
       <div
@@ -25,30 +25,49 @@
         <el-button
           :disabled="report"
           id="back_button"
-          type="primary"
+          class="dark-button"
           icon="el-icon-document"
-          plain
           @click="jumpToReport()"
         >
           {{ $t('myApp.checkReport') }}
         </el-button>
       </div>
-      <div
-        class="header"
-        :class="isTest"
-      >
-        <div class="testing-score">
-          <div class="score">
-            <em class="scoreem">{{ score }}{{ $t('userpage.score') }}</em>
+      <!-- 顶部 -->
+      <div class="header">
+        <div class="padding20">
+          <div class="title">
+            <span v-if=" isTest === 'running'">
+              {{ language==='cn'? '正在测试...':'Testing' }}
+            </span>
+            <span v-else>
+              {{ language==='cn'? '测试结果':'Test Result' }}
+            </span>
           </div>
-        </div>
-        <div class="status-title">
-          <p>{{ language==='cn'?statusTitle[0]:statusTitle[1] }}</p>
-          <span v-if=" isTest === 'running'">{{ language==='cn'?testingScene[0]:testingScene[1] }}:{{ language==='cn'?testingCase[0]:testingCase[1] }}</span>
-          <span
-            v-if="allfailNum!==0"
-            class="findproblem"
-          >{{ $t('userpage.find') }}{{ allfailNum }}{{ $t('userpage.issue') }}</span>
+          <div class="backColor" />
+          <div class="score">
+            <div
+              class="score-center"
+              :class="scoreColor"
+            >
+              <span class="score-num">{{ score }}</span>
+              <span class="score-text">{{ $t('userpage.score') }}</span>
+            </div>
+            <img
+              v-if=" isTest === 'running'"
+              src="../../assets/images/testwaiting.png"
+              alt=""
+            >
+            <img
+              v-else-if="statusTitle[0]==='测试成功'"
+              src="../../assets/images/testSuccessful.png"
+              alt=""
+            >
+            <img
+              v-else-if="statusTitle[0]==='测试失败'"
+              src="../../assets/images/testFailed.png"
+              alt=""
+            >
+          </div>
           <el-progress
             :text-inside="true"
             :stroke-width="16"
@@ -56,6 +75,23 @@
             class="percenprocess"
             :class="casefailclass"
           />
+          <span
+            class="testing-case"
+            v-if=" isTest === 'running'"
+          >{{ language==='cn'?testingScene[0]:testingScene[1] }}:{{ language==='cn'?testingCase[0]:testingCase[1] }}</span>
+          <span
+            v-else
+            class="test-result"
+          >
+            {{ language==='cn'?statusTitle[0]:statusTitle[1] }}
+          </span>
+          <span
+            v-if="allfailNum!==0"
+            class="findproblem"
+          >{{ $t('userpage.find') }}
+            <em>
+              {{ allfailNum }}
+            </em>{{ $t('userpage.issue') }}</span>
         </div>
       </div>
       <div
@@ -70,7 +106,7 @@
           :loop="false"
           arrow="always"
           ref="carousel"
-          style="box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);"
+          style="box-shadow: 0 0 10px 2px #e8e6f1;"
         >
           <el-carousel-item
             v-for="(item,index) in testScenarios"
@@ -82,7 +118,6 @@
             <div class="content-title">
               <div class="sceneRunning">
                 <el-tooltip
-                  effect="light"
                   :content="$t('userpage.hover')"
                   placement="right"
                 >
@@ -94,20 +129,6 @@
                 </el-tooltip>
               </div>
               <span class="scene">{{ language==='cn'?item.nameCh:item.nameEn }}</span>
-              <img
-                src="../../assets/images/chenggong.png"
-                alt=""
-                class="ishasFailIcon"
-                v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum===item.totalNum"
-                style="height:50px;margin-top:5px;"
-              >
-              <img
-                v-if="(item.failNum+item.successNum===item.totalNum) && item.successNum!==item.totalNum"
-                src="../../assets/images/shibai.png"
-                alt=""
-                class="ishasFailIcon"
-                style="height:50px;margin-top:5px;"
-              >
             </div>
             <el-collapse
               v-model="activeName"
@@ -129,25 +150,27 @@
                     :label="$t('userpage.name')"
                   >
                     <template scope="scope">
-                      <span
+                      <img
                         v-if="scope.row.result=='success'"
-                        class="el-icon-success success"
-                        title="success"
-                      />
-                      <span
+                        src="../../assets/images/successicon.png"
+                        alt=""
+                      >
+                      <img
                         v-else-if="scope.row.result=='failed'"
-                        class="el-icon-error error"
-                        title="failed"
-                      />
-                      <span
+                        src="../../assets/images/failicon.png"
+                        alt=""
+                      >
+                      <img
                         v-else-if="scope.row.result=='running'"
-                        class="el-icon-loading primary"
-                        title="running"
-                      />
-                      <span
+                        src="../../assets/images/testingicon.png"
+                        alt=""
+                        class="icon-loading"
+                      >
+                      <img
                         v-else
-                        class="el-icon-refresh-left primary"
-                      />
+                        src="../../assets/images/waiticon.png"
+                        alt=""
+                      >
                       {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
                     </template>
                   </el-table-column>
@@ -175,9 +198,6 @@
           v-if="reportData.length !== 1"
         >
           <el-button
-            type="primary"
-            size="mini"
-            plain
             v-for="(item,index) in reportData"
             :key="index"
             :id="item.nameEn"
@@ -289,7 +309,8 @@ export default {
       userName: '',
       authorities: [],
       carouselHeight: '',
-      alltestCase: []
+      alltestCase: [],
+      scoreColor: ''
     }
   },
   beforeMount () {
@@ -446,9 +467,11 @@ export default {
     },
     setTitle (taskStatus, data) {
       if (taskStatus === 'success') {
+        this.scoreColor = 'successScoreColor'
         this.statusTitle = ['测试成功', 'Test Successful']
         this.$refs.carousel.setActiveItem(data[0].nameEn)
       } else if (taskStatus === 'failed') {
+        this.scoreColor = 'failScoreColor'
         this.statusTitle = ['测试失败', 'Test Failed']
         this.$refs.carousel.setActiveItem(data[0].nameEn)
       }
@@ -538,82 +561,119 @@ export default {
 }
 </script>
 <style lang="less">
+.testing-main{
+  padding: 0 20%;
+}
 .process{
-  background-color: white;
+  background-color: #fff;
   .back{
-    padding: 10px 50px 0;
+    padding: 10px 0  5px;
     text-align: right;
   }
-    .running{
-      .testing-score{
-        border: 2px dashed #688ef3;
-        animation: rotate 8s infinite linear ;
-      }
-      .scoreem{
-        animation: rotateinside 8s infinite linear ;
-      }
-    }
-    .finished{
-      .testing-score{
-        border: 2px solid #688ef3;
-      }
-    }
+  .icon-loading{
+     animation: rotate 2s infinite linear ;
+  }
+    // .running{
+    //   .testing-score{
+    //     border: 2px dashed #688ef3;
+    //     animation: rotate 8s infinite linear ;
+    //   }
+    //   .scoreem{
+    //     animation: rotateinside 8s infinite linear ;
+    //   }
+    // }
+    // .finished{
+    //   .testing-score{
+    //     border: 2px solid #688ef3;
+    //   }
+    // }
   .header{
-    display: flex;
-    .testing-score{
-      margin: 0 20px;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
+    box-shadow: 0 0 10px 2px #e8e6f1;
+    margin-bottom: 30px;
+    .title{
+      position: relative;
+      z-index: 100;
+      span{
+        color: #333333;
+        font-size: 28px;
+        font-weight: bolder;
+      }
+    }
+    .backColor{
+      width: 125px;
+      height: 15px;
+      border-radius: 10px;
+      background-color: #d3b6ff;
+      position: relative;
+      top: -10px;
+      left: 8px;
     }
     .score{
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      text-align: center;
-      display: table-cell;
-      vertical-align:middle;
-      em{
-        display: inline-block;
-        font-size: 28px;
-        color: #688ef3;
-        font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 15px 10px;
+      .score-center{
+        padding-top: 10px;
+        color: #333333;
+      }
+      .failScoreColor{
+        color: #ed395f;
+      }
+      .successScoreColor{
+        color: #8097f7;
+      }
+      .score-num{
+        font-size: 40px;
+        font-weight: 900;
+      }
+      .score-text{
+        font-size: 30px;
+        font-weight: 900;
       }
     }
-    .status-title{
-      width: 50%;
-      p{
-        font-size: 22px;
-        color: #000;
-        margin-bottom: 8px;
-        font-weight: bold;
-      }
-      span{
-        display: inline-block;
-        font-size: 14px;
-        color: #909399;
-      }
-      .findproblem{
-        padding-left: 5px;
-        font-size: 20px;
-        color: #000;
-      }
-      .percenprocess{
-        margin-top: 8px;
+    .percenprocess{
+        margin-bottom: 10px;
         .el-progress-bar{
-          border: 2px solid #8c98b9;
+          border: 2px solid #e6eafd;
           border-radius: 15px;
         }
         .el-progress-bar__inner{
-          background-color: #688ef3;
+          background-color: #8097f7;
+        }
+        .el-progress-bar__outer{
+          background-color: #e6eafd;
         }
       }
       .casefail{
+        .el-progress-bar{
+          border: 2px solid #ffeaee;
+          border-radius: 15px;
+        }
         .el-progress-bar__inner{
-          background-color: #f67878;
+          background-color: #ec748d;
+        }
+        .el-progress-bar__outer{
+          background-color: #ffeaee;
         }
       }
-    }
+      .testing-case{
+        color: #666;
+        font-size: 14px;
+        padding: 0 15px 0 5px;
+      }
+      .test-result{
+        font-size: 28px;
+        color: #333333;
+        font-weight: 600;
+      }
+      .findproblem{
+        font-size: 18px;
+        color: #111;
+        em{
+          color: #ff2222;
+          font-size: 20px;
+        }
+      }
   }
       @keyframes rotate {
         from {
@@ -632,10 +692,10 @@ export default {
         }
     }
   .content{
-    padding: 20px 60px;
-    .el-tabs--border-card {
-      border: none;
-    }
+    // padding: 20px 60px;
+    // .el-tabs--border-card {
+    //   border: none;
+    // }
     .content-title{
       display: flex;
       .scene{
@@ -644,10 +704,6 @@ export default {
         font-size: 18px;
         font-weight: 600;
         color: #688ef3;
-      }
-      .ishasFailIcon{
-        position: relative;
-        right: -10px;
       }
       .testing-case-process{
           width:60px;
@@ -668,36 +724,24 @@ export default {
       }
     }
     .el-collapse{
-      padding: 10px 50px;
+      padding: 10px 20px;
       border: none!important;
       font-size: large;
       overflow-y: scroll;
-      .success,.error,.primary{
-        padding-right: 5px;
-        font-size: large;
-      }
-      .success{
-        color: #67c23a;
-      }
-      .error{
-        color: #f56c6c;
-      }
-      .primary{
-        color: #2c3fe9 ;
-      }
       .el-collapse-item{
         padding: 3px 0;
       }
       .el-collapse-item__header{
         padding-left: 8px;
-        font-size: 15px;
+        font-size: 18px;
+        color: #111;
         height: 30px;
         border-radius: 5px;
-        background-image: linear-gradient(to right, #cad5f3 , #fff);
+        background-image: linear-gradient(to right, rgba(124,156,250,.5) , rgba(249,195,255,.2));
       }
       .hasfailed{
         .el-collapse-item__header{
-          background-image: linear-gradient(to right, #f67878 , #fff);
+          background-image: linear-gradient(to right, rgba(251,123,119,.5) , rgba(249,195,255,.2));
         }
       }
       .el-icon-arrow-right:before {
@@ -716,6 +760,15 @@ export default {
     }
     .el-table::before {
        width: 0;
+    }
+    .el-table{
+      .cell{
+        display: table-cell;
+        img{
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+      }
     }
     .el-table td{
       padding: 0;

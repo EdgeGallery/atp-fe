@@ -166,7 +166,7 @@ export default {
         // },
         grid: {
           x: 50,
-          y: 20,
+          y: 50,
           x2: 10,
           y2: 50
         },
@@ -199,7 +199,12 @@ export default {
           type: 'category',
           data: this.monthData,
           axisLine: {
-            show: false
+            show: true,
+            lineStyle: {
+              color: '#ffffff',
+              width: 2,
+              type: 'solid'
+            }
           },
           offset: 10,
           axisLabel: {
@@ -209,6 +214,7 @@ export default {
           }
         },
         yAxis: {
+          // name: '测试数量',
           type: 'value',
           splitLine: {
             show: true,
@@ -222,7 +228,7 @@ export default {
             lineStyle: {
               color: '#ffffff',
               width: 2,
-              type: 'dashed'
+              type: 'solid'
             }
           },
           axisLabel: {
@@ -243,11 +249,11 @@ export default {
             type: 'solid'
             // opacity: 0.6
           },
-          emphasis: {
-            lineStyle: {
-              opacity: 1
-            }
-          },
+          // emphasis: {
+          //   lineStyle: {
+          //     opacity: 1
+          //   }
+          // },
           itemStyle: {
             borderWidth: 4,
             borderColor: '#543b94',
