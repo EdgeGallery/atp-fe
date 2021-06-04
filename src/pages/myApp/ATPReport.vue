@@ -16,7 +16,7 @@
 
 <template>
   <div
-    class="report padding20"
+    class="report padding200"
     id="pdfDom"
   >
     <div class="report-content padding20">
@@ -25,14 +25,11 @@
           src="../../assets/images/logo.png"
           alt=""
         >
-        <div class="report-tap">
-          <h3> {{ $t('report.testReport') }}</h3>
-        </div>
-        <div class="download">
+        <h3> {{ $t('report.testReport') }}</h3>
+        <div>
           <el-button
             v-if="downloadBtn"
-            size="large"
-            type="primary"
+            class="dark-button"
             icon="el-icon-download"
             plain
             @click="downLoadReport()"
@@ -41,98 +38,124 @@
           </el-button>
         </div>
       </div>
-      <div class="title">
-        {{ $t('atp.baseInfo') }}
-      </div>
-      <div class="report-app-info">
-        <el-row :gutter="20">
-          <el-col
-            :span="23"
-            class="app-table"
+      <div class="baseInfo padding20">
+        <div class="title">
+          <div class="title-text">
+            <span class="titleTextWidth">
+              {{ $t('atp.baseInfo') }}
+            </span>
+          </div>
+          <div
+            class="backColor"
+          />
+        </div>
+        <div class="report-app-info">
+          <el-table
+            :data="tableData"
+            style="width: 100%"
           >
-            <el-table
-              :data="tableData"
-              style="width: 100%"
+            <el-table-column
+              fixed
+              prop="appName"
+              :label="$t('atp.applicationName')"
+            />
+            <el-table-column
+              prop="appVersion"
+              :label="$t('atp.version')"
+            />
+            <el-table-column
+              prop="providerId"
+              :label="$t('myApp.provider')"
+            />
+            <el-table-column
+              prop="user.userName"
+              :label="$t('report.uploadUser')"
+            />
+            <el-table-column
+              prop="createTime"
+              :label="$t('atp.startTime')"
+            />
+            <el-table-column
+              prop="endTime"
+              :label="$t('atp.endTime')"
+            />
+            <el-table-column
+              :label="$t('atp.result')"
+              width="180"
             >
-              <el-table-column
-                fixed
-                prop="appName"
-                :label="$t('atp.applicationName')"
-              />
-              <el-table-column
-                prop="appVersion"
-                :label="$t('atp.version')"
-              />
-              <el-table-column
-                prop="providerId"
-                :label="$t('myApp.provider')"
-              />
-              <el-table-column
-                prop="user.userName"
-                :label="$t('report.uploadUser')"
-              />
-              <el-table-column
-                prop="createTime"
-                :label="$t('atp.startTime')"
-              />
-              <el-table-column
-                prop="endTime"
-                :label="$t('atp.endTime')"
-              />
-              <el-table-column
-                :label="$t('atp.result')"
-                width="180"
-              >
-                <template slot-scope="scope">
-                  <span
-                    :class="scope.row.status==='success'?'success':'failed'"
-                  >{{ scope.row.status }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-col>
-        </el-row>
-        <img
-          :src="resulticon"
-          alt=""
-          class="resulticon"
-        >
+              <template slot-scope="scope">
+                <span
+                  :class="scope.row.status==='success'?'success':'failed'"
+                >{{ scope.row.status }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <img
+            :src="resulticon"
+            alt=""
+            class="resulticon"
+          >
+        </div>
       </div>
       <div class="report-chart">
-        <div class="title">
-          {{ $t('report.reportanalysis') }}
+        <div
+          class="left"
+          id="chartwidth"
+        >
+          <div class="title padding20">
+            <div class="title-text">
+              <span class="titleTextWidth">
+                {{ $t('report.caseDistribution') }}
+              </span>
+            </div>
+            <div
+              class="backColor"
+            />
+          </div>
+          <div
+            class="sumchart"
+            id="leftchart"
+          />
         </div>
-        <div class="report_analysis">
-          <div
-            class="left"
-            id="chartwidth"
-          >
+        <div
+          class="right"
+          id="chartwidth"
+        >
+          <div class="title padding20">
+            <div class="title-text">
+              <span class="titleTextWidth">
+                {{ $t('report.successfulRate') }}
+              </span>
+            </div>
             <div
-              class="sumchart"
-              id="leftchart"
+              class="backColor"
             />
           </div>
           <div
-            class="right"
-            id="chartwidth"
-          >
-            <div
-              class="detailchart"
-              id="rightchart"
-            />
-          </div>
+            class="detailchart"
+            id="rightchart"
+          />
         </div>
       </div>
-      <div class="report-detail">
+      <div class="report-detail padding20">
         <div class="title">
-          {{ $t('report.reportDetail') }}
+          <div class="title-text">
+            <span
+              class="titleTextWidth"
+            >
+              {{ $t('report.reportDetail') }}
+            </span>
+          </div>
+          <div
+            class="backColor"
+          />
         </div>
         <div
           v-for="(item,index) in testScenarios"
           :key="index"
           class="detail-content"
         >
-          <div>
+          <div style="padding:10px 0 0;">
             <span class="scene">{{ language==='cn'?item.nameCh:item.nameEn }}</span>
           </div>
           <el-collapse
@@ -212,7 +235,6 @@ export default {
   mounted () {
     this.getLanguage()
     this.getTaskId()
-    // this.getReport()
   },
   methods: {
     getLanguage () {
@@ -236,6 +258,13 @@ export default {
         this.taskId = this.currUrl.split('?')[1].split('=')[1]
       }
       this.getReport()
+    },
+    setBackColorWidth () {
+      const titleWidth = document.getElementsByClassName('titleTextWidth')
+      const backColorWidth = document.getElementsByClassName('backColor')
+      for (let index = 0; index < titleWidth.length; index++) {
+        backColorWidth[index].style.width = titleWidth[index].offsetWidth + 'px'
+      }
     },
     getReport () {
       Userpage.getTaskApiV2(this.taskId).then(res => {
@@ -308,6 +337,7 @@ export default {
         this.$nextTick(() => {
           this.drawLeftLine()
           this.drawRightLine()
+          this.setBackColorWidth()
         })
       }).catch(() => {
         this.$message({
@@ -320,11 +350,12 @@ export default {
     },
     drawLeftLine () {
       let Chart = this.$echarts.init(document.getElementById('leftchart'))
-      let colors = ['#89a6e6', '#deba69', '#a8d89b', '#baa3d4', '#9ed0c9']
+      let colors = ['#a000ff', '#ffd65e', '#616cf7', '#ff509f', '#9ed0c9']
       let option = {
         color: colors,
         legend: {
           top: '0%',
+          orient: 'vertical',
           left: 'right'
         },
         tooltip: {
@@ -335,10 +366,13 @@ export default {
           {
             name: '测试场景',
             type: 'pie',
-            radius: ['40%', '70%'],
-            avoidLabelOverlap: false,
+            radius: ['30%', '60%'],
+            // avoidLabelOverlap: false,
             label: {
-              formatter: '{b} 用例数量: {@2012} ({d}%)'
+              formatter: '{b} \n用例数量: {@2012} ({d}%)',
+              minMargin: 10,
+              edgeDistance: 10,
+              lineHeight: 20
             },
             labelLine: {
               show: true,
@@ -357,65 +391,109 @@ export default {
         option.series[0].data = this.ChartData[0].dataCh
       }
       Chart.setOption(option)
+      window.addEventListener('resize', () => {
+        if (Chart) {
+          Chart.resize()
+        }
+      })
     },
     drawRightLine () {
       let Chart = this.$echarts.init(document.getElementById('rightchart'))
       let option = {
-        title: {
-          text: '',
-          x: 'center'
+        grid: {
+          x: 80,
+          y: 20,
+          x2: 50,
+          y2: 50
         },
         tooltip: {
           trigger: 'axis',
+          backgroundColor: '#c77bf4',
           axisPointer: {
-            animation: false
+            animation: false,
+            type: 'line',
+            lineStyle: {
+              color: '#b44ef1',
+              width: 4,
+              type: 'dotted',
+              opacity: 0.2
+            }
           }
         },
         xAxis: {
           type: 'category',
-          data: []
+          data: [],
+          axisLabel: {
+            color: '#666666',
+            fontSize: '16'
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#cccccc',
+              type: 'dotted'
+            }
+          }
         },
         yAxis: [
           {
-            name: '成功率',
             type: 'value',
             axisLabel: {
               show: true,
               interval: 'auto',
-              formatter: '{value} %'
+              formatter: '{value} %',
+              color: '#666666',
+              fontSize: '16'
             },
-            show: true
+            show: true,
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: '#cccccc',
+                type: 'dotted'
+              }
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: '#cccccc',
+                width: 2,
+                type: 'dashed'
+              }
+            }
           }
         ],
         series: [{
           data: [],
           type: 'line',
-          symbol: 'triangle',
+          symbol: 'circle',
           symbolSize: 20,
           lineStyle: {
-            color: '#5470C6',
-            width: 4,
+            color: '#b44ef1',
+            width: 2,
             type: 'dashed'
           },
           itemStyle: {
-            borderWidth: 3,
-            borderColor: '#EE6666',
-            color: 'yellow',
+            borderWidth: 4,
+            borderColor: '#b44ef1',
+            color: '#fff',
             label: { show: true }
           }
         }]
       }
       if (this.language === 'en') {
-        option.title.text = 'Test case success rate'
-        option.yAxis[0].name = 'Success rate'
         option.xAxis.data = this.ChartData[0].nameRightEn
         option.series[0].data = this.ChartData[0].dataRight
       } else if (this.language === 'cn') {
-        option.title.text = '测试用例成功率'
         option.xAxis.data = this.ChartData[0].nameRightCh
         option.series[0].data = this.ChartData[0].dataRight
       }
       Chart.setOption(option)
+      window.addEventListener('resize', () => {
+        if (Chart) {
+          Chart.resize()
+        }
+      })
     },
 
     dateChange (dateStr) {
@@ -455,104 +533,110 @@ export default {
 <style lang='less'>
 .report {
   .report-content {
-    background: white;
-    background-image: url('../../assets/images/edgegallery.png');
+    // background-image: url('../../assets/images/edgegallery.png');
      .logo {
       display: flex;
       justify-content: space-between;
       height: 65px;
       line-height: 65px;
-      padding-left: 25px;
       img {
         height: 65px;
       }
-      .report-tap {
-        display: flex;
-        text-align: center;
-        line-height: 65px;
-        img{
-          margin-top: 5px;
-          width: 50px;
-          height: 50px;
-          line-height: 65px;
-        }
-        h3 {
-          text-align: center;
-          font-size: 25px;
-          color: #55565df2;
-        }
-        p {
-          color: #3399ff;
-          text-align: center;
-        }
-      }
-      .download{
-        text-align: right;
-        margin-right: 30px;
+      h3{
+        font-family: sans-serif;
+        color: #380879;
+        font-size: 24px;
+        font-weight: 800;
       }
     }
-    .report-app-info{
-      position: relative;
-      .app-table {
-        padding-left: 0 !important;
-        margin-left: 25px;
-      }
-      .resulticon{
-        position: absolute;
-        right: 30px;
-        top: -25px;
+    .baseInfo{
+      background-color: #fff;
+      box-shadow: 0 0 10px 2px #e8e6f1;
+      margin-bottom: 30px;
+      border-radius: 6px;
+      .report-app-info{
+        position: relative;
+        .resulticon{
+          position: absolute;
+          right: 20px;
+          top: -30px;
+        }
+        .el-table th,.el-table td{
+          border-bottom: none !important;
+        }
+        .el-table__fixed::before, .el-table__fixed-right::before, .el-table::before{
+          width: 0;
+        }
       }
     }
-
     .title {
-      font-size: 20px;
-      margin: 15px 0;
-    }
-    .title::before {
-      content: "";
-      display: inline-block;
-      width: 3px;
-      background: #3399ff;
-      height: 20px;
-      position: relative;
-      top: 5px;
+      font-family: sans-serif;
+      font-size: 24px;
+      color: #380879;
+      padding-bottom: 10px;
+      .title-text{
+        position: relative;
+        z-index: 100;
+      }
+      .backColor{
+          height: 15px;
+          border-radius: 10px;
+          background-color: #d3b6ff;
+          // float: left;
+          position: relative;
+          top: -10px;
+          left: 8px;
+      }
     }
       .report-chart{
-          span{
-            padding-left: 25px;
-            line-height: 40px;
-            font-size: 16px;
-          }
-          .report_analysis{
-            display: flex;
-            justify-content: space-around;
+        display: flex;
+        margin-bottom: 30px;
+            .left{
+              margin-right: 30px;
+            }
             .left,.right{
               width: 100%;
-              height: 300px;
+              // height: 500px;
+              background-color: #fff;
+              box-shadow: 0 0 10px 2px #e8e6f1;
+              border-radius: 6px;
             }
             .sumchart{
               width: 100%;
-              height: 300px;
+              height: 500px;
             }
             .detailchart{
-              width: 80%;
-              height: 300px;
+              width: 100%;
+              height: 500px;
             }
-          }
       }
     .report-detail{
+      background-color: #fff;
+      box-shadow: 0 0 10px 2px #e8e6f1;
+      border-radius: 6px;
       .detail-content{
         .scene{
           padding-left: 10px;
           line-height: 40px;
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 600;
-          color: #688ef3;
+          color: #a000ff;
         }
           .el-collapse{
             padding: 5px 20px;
+            .el-collapse-item{
+              padding: 8px 0;
+            }
+            .el-collapse-item__content{
+              padding-bottom: 0;
+            }
             .el-collapse-item__header{
-              font-size: 16px !important;
+              font-size: 20px;
+              color: #111111;
+              height: 50px;
+            }
+            .el-collapse-item__wrap{
+              border: none;
             }
           }
           .tableheaderStyle{
@@ -583,13 +667,13 @@ export default {
             background-color: transparent;
            }
            .el-table, .el-table__expanded-cell {
-          background-color: transparent;
+            background-color: transparent;
           }
         }
     }
-    .el-table{
-      font-size: 16px;
-    }
+    // .el-table{
+    //   font-size: 16px;
+    // }
   }
 }
 </style>

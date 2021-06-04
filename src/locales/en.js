@@ -55,7 +55,9 @@ const en = {
     rate: 'Pass rate',
     model: 'Certification template',
     reportDetail: 'Test case details',
-    number: 'Number'
+    number: 'Number',
+    caseDistribution: 'Scenario use case distribution',
+    successfulRate: 'Test case success rate'
   },
   promptMessage: {
     guestUser: 'The guest user has no right to operate. please log in first!',

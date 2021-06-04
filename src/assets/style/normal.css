@@ -143,7 +143,7 @@ a{
 
 /* 折叠面板 */
 .el-collapse{
-  padding: 10px 50px;
+  /* padding: 10px 50px; */
   border: none!important;
 }
 .el-collapse-item{
@@ -151,9 +151,10 @@ a{
 }
 .el-collapse-item__header{
   padding-left: 8px;
-  font-size: 18px !important;
-  height: 30px!important;
-  background-image: linear-gradient(to right, #cad5f3 , #fff);
+  font-size: 20px !important;
+  /* height: 30px!important; */
+  background-image: linear-gradient(to right, rgba(124,156,250,.5) , rgba(249,195,255,.2));
+  border-radius: 2px;
 }
 .el-icon-arrow-right:before {
   color: #000;

@@ -53,7 +53,9 @@ const cn = {
     rate: '通过率',
     model: '认证模板',
     reportDetail: '测试用例详情',
-    number: '数量'
+    number: '数量',
+    caseDistribution: '场景用例分布',
+    successfulRate: '测试用例成功率'
   },
   promptMessage: {
     guestUser: 'guest用户无权操作! 请先登录',
