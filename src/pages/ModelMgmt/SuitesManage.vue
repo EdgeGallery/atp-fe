@@ -791,7 +791,7 @@ export default {
                 white-space: nowrap;
               }
           }
-          .el-form-item:nth-child(2){
+          .el-form-item:nth-child(2),.el-form-item:nth-child(3){
             .el-form-item__content{
               text-overflow: -o-ellipsis-lastline;
               overflow: hidden;

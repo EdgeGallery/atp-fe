@@ -376,6 +376,7 @@ export default {
     },
     getTaskId () {
       if (this.currUrl.indexOf('language') !== -1) {
+        this.IsInternal = ''
         this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
       } else {
         this.IsInternal = 'internal'
