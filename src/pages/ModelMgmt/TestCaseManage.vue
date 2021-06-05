@@ -93,7 +93,7 @@
               size="small"
               @click="excelBringBtn"
             >
-              批量导入
+              {{ this.$t('modelmgmt.import') }}
             </el-button>
             <el-button
               v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
@@ -438,7 +438,7 @@
           :model="batchForm"
           label-width="100px"
         >
-          <el-form-item label="批量导入">
+          <el-form-item :label="this.$t('modelmgmt.import')">
             <el-upload
               action=""
               :limit="1"

@@ -211,8 +211,10 @@ const cn = {
     bannerText3: '测试过程可视化',
     staReport: '统计报告',
     totalNum: '扫描总数',
-    chartTitle: '过去六个月扫描统计数据',
-    getFail: '获取数据失败'
+    chartTitle: '近六个月扫描统计数据',
+    getFail: '获取数据失败',
+    Statistics: '数据统计',
+    modelManagement: '测试模型管理'
   },
   process: {
     modifyStatus: '修改用例状态'
@@ -242,7 +244,8 @@ const cn = {
   modelmgmt: {
     name: '名称:',
     description: '描述:',
-    scene: '场景'
+    scene: '场景:',
+    import: '批量导入'
   },
   footer: {
     about: '关于',

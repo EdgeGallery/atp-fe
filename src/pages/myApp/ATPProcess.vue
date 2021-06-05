@@ -36,10 +36,16 @@
       <div class="header">
         <div class="padding20">
           <div class="title">
-            <span v-if=" isTest === 'running'">
+            <span
+              class="titleTextWidth"
+              v-if=" isTest === 'running'"
+            >
               {{ language==='cn'? '正在测试...':'Testing' }}
             </span>
-            <span v-else>
+            <span
+              class="titleTextWidth"
+              v-else
+            >
               {{ language==='cn'? '测试结果':'Test Result' }}
             </span>
           </div>
@@ -188,6 +194,21 @@
                       {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
                     </template>
                   </el-table-column>
+                  <el-table-column
+                    v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1 && IsInternal==='internal'"
+                    :label="$t('myApp.operation')"
+                    width="100"
+                  >
+                    <template scope="scope">
+                      <el-button
+                        :disabled="scope.row.type==='automatic' || scope.row.result!=='running'"
+                        type="text"
+                        style="font-size:xx-large;"
+                        class="el-icon-edit"
+                        @click="modify(scope.row,item.id,suiteItem.id)"
+                      />
+                    </template>
+                  </el-table-column>
                 </el-table>
               </el-collapse-item>
             </el-collapse>
@@ -310,7 +331,8 @@ export default {
       authorities: [],
       carouselHeight: '',
       alltestCase: [],
-      scoreColor: ''
+      scoreColor: '',
+      IsInternal: ''
     }
   },
   beforeMount () {
@@ -356,7 +378,15 @@ export default {
       if (this.currUrl.indexOf('language') !== -1) {
         this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
       } else {
+        this.IsInternal = 'internal'
         this.taskId = this.$route.query.taskId
+      }
+    },
+    setBackColorWidth () {
+      const titleWidth = document.getElementsByClassName('titleTextWidth')
+      const backColorWidth = document.getElementsByClassName('backColor')
+      for (let index = 0; index < titleWidth.length; index++) {
+        backColorWidth[index].style.width = titleWidth[index].offsetWidth + 'px'
       }
     },
     jumpToReport () {
@@ -444,6 +474,9 @@ export default {
           this.promptWait = function () {}
         }
         this.setDivHeight()
+        this.$nextTick(() => {
+          this.setBackColorWidth()
+        })
       }).catch(() => {
         this.$message({
           duration: 2000,
@@ -562,12 +595,13 @@ export default {
 </script>
 <style lang="less">
 .testing-main{
-  padding: 0 20%;
+  // padding: 0 20%;
+  padding: 0 20px;
 }
 .process{
   background-color: #fff;
   .back{
-    padding: 10px 0  5px;
+    padding: 10px 0  20px;
     text-align: right;
   }
   .icon-loading{
@@ -600,7 +634,6 @@ export default {
       }
     }
     .backColor{
-      width: 125px;
       height: 15px;
       border-radius: 10px;
       background-color: #d3b6ff;

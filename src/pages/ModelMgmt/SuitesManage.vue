@@ -79,7 +79,7 @@
               size="small"
               @click="excelBringBtn"
             >
-              批量导入
+              {{ this.$t('modelmgmt.import') }}
             </el-button>
             <el-button
               v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
@@ -212,13 +212,15 @@
             class="dialog-footer"
           >
             <el-button
+              class="light-button"
+              style="margin-right:40px;"
               @click="handleClose"
               size="small"
             >
               {{ $t('common.cancel') }}
             </el-button>
             <el-button
-              type="primary"
+              class="dark-button"
               size="small"
               @click="confirmAddTestSuite"
             >
@@ -303,13 +305,15 @@
             class="dialog-footer"
           >
             <el-button
+              style="margin-right:40px;"
+              class="light-button"
               @click="handleClose"
               size="small"
             >
               {{ $t('common.cancel') }}
             </el-button>
             <el-button
-              type="primary"
+              class="dark-button"
               size="small"
               @click="confirmEditTestSuite"
             >
@@ -363,7 +367,7 @@
           :model="batchForm"
           label-width="100px"
         >
-          <el-form-item label="批量导入">
+          <el-form-item :label="this.$t('modelmgmt.import')">
             <el-upload
               action=""
               :limit="1"
@@ -761,15 +765,18 @@ export default {
     display: flex;
     flex-wrap: wrap;
     .list {
-      background-color: #fff;
       box-sizing: border-box;
       width: 25%;
       padding: 0 10px;
       margin-bottom: 20px;
       .content{
         box-shadow: 0 0 10px 2px #e8e6f1;
+        background-image: linear-gradient(to right,#fff7fe,#f7f6fb);
         border-radius: 8px;
+        border-bottom-right-radius: 30px;
         padding: 10px;
+        border-right: 2px solid #aa7ded;
+        border-bottom: 2px solid #aa7ded;
         .el-form{
           .el-form-item{
             margin-bottom: 8px;
@@ -777,17 +784,37 @@ export default {
           .el-form-item__label{
             color:#666666;
           }
+          .el-form-item:first-child{
+              .el-form-item__content{
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+          }
+          .el-form-item:nth-child(2){
+            .el-form-item__content{
+              text-overflow: -o-ellipsis-lastline;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              line-clamp: 2;
+              -webkit-box-orient: vertical;
+              line-height: 20px;
+              height: 40px;
+            }
+          }
         }
           .form-content-cn{
             .el-form-item:first-child{
               .el-form-item__content{
-                font-size: 24px;
+                font-size: 22px;
                 color: #333333;
               }
             }
             .el-form-item:nth-child(2),.el-form-item:nth-child(3){
               .el-form-item__content{
-                font-size: 20px;
+                font-size: 18px;
                 color: #666666;
               }
             }
@@ -798,9 +825,6 @@ export default {
             }
           }
           .form-content-en{
-            // .el-form-item__content{
-            //    line-height: 24px;
-            //  }
             .el-form-item:first-child{
               .el-form-item__content{
                 font-size: 16px;
