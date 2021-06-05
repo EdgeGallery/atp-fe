@@ -213,7 +213,9 @@ const en = {
     staReport: 'Statistical Report',
     totalNum: 'Total Number of Scans',
     chartTitle: 'Scan Statistics for Past Six Months',
-    getFail: 'Failed to Get Data'
+    getFail: 'Failed to Get Data',
+    Statistics: 'Statistics',
+    modelManagement: 'Model management'
   },
   process: {
     modifyStatus: 'Modify Case Status'
@@ -230,7 +232,7 @@ const en = {
     status: 'Status',
     type: 'Type',
     description: 'Description',
-    score: 'pts',
+    score: 'Score',
     result: 'Result',
     find: '',
     issue: 'Issues were found in all scenarios',
@@ -243,7 +245,8 @@ const en = {
   modelmgmt: {
     name: 'Name:',
     description: 'Description:',
-    scene: 'Scenario'
+    scene: 'Scenario:',
+    import: 'Batch Import'
   },
   footer: {
     about: 'About',

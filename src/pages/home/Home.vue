@@ -33,12 +33,12 @@
       <div class="left">
         <div class="lefttext">
           <p class="lefttitle">
-            数据统计
+            {{ this.$t('home.Statistics') }}
           </p>
           <p
             class="leftdetail"
           >
-            近六个月扫描统计数据
+            {{ this.$t('home.chartTitle') }}
           </p>
         </div>
       </div>
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div class="modelmanage">
-      <span class="modeltitle">测试模型管理</span>
+      <span class="modeltitle"> {{ this.$t('home.modelManagement') }}</span>
       <div class="modeldetail">
         <ul class="modelcontent">
           <li>
@@ -58,10 +58,10 @@
               alt=""
             >
             <p class="keyword">
-              测试场景管理
+              {{ $t('testCase.testScenarioManagement') }}
             </p>
             <p class="font">
-              测试场景是测试的最大单元集，一个测试场景可以包含多个测试套
+              {{ this.$t('testCase.testScenarioIntro') }}
             </p>
           </li>
           <li>
@@ -70,10 +70,10 @@
               alt=""
             >
             <p class="keyword">
-              测试套管理
+              {{ $t('testCase.testSuiteManagement') }}
             </p>
             <p class="font">
-              测试套是测试类型的分类，一个测试套可以属于一个或者多个测试场景，一个测试套可以包含多个测试用例
+              {{ this.$t('testCase.testSuiteIntro') }}
             </p>
           </li>
           <li>
@@ -82,10 +82,10 @@
               alt=""
             >
             <p class="keyword">
-              测试用例管理
+              {{ $t('atp.testCaseManagement') }}
             </p>
             <p class="font">
-              测试用例是测试的最小执行单元，一个测试用例可以属于一个或者多个测试套
+              {{ this.$t('testCase.testCaseIntro') }}
             </p>
           </li>
         </ul>
@@ -359,9 +359,8 @@ export default {
             color: #666666;
             font-weight: lighter;
             word-wrap: break-word;
-            height: 30px;
-            line-height: 30px;
-            width: 240px;
+            width: 50%;
+            margin: 0 auto;
           }
         }
       }
