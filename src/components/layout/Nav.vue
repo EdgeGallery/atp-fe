@@ -149,6 +149,7 @@ export default {
       userName: '',
       loginPage: '',
       userCenterPage: '',
+      forceModifyPwPage: '',
       ifGuest: true,
       navList: [
         {
@@ -263,6 +264,17 @@ export default {
     },
     openUserAccountCenter () {
       window.open(this.userCenterPage)
+    },
+    jumpToForceModifyPw () {
+      if (this.ifGuest) {
+        return false
+      }
+      if (this.forceModifyPwPage) {
+        window.location.href = this.forceModifyPwPage
+        return true
+      }
+
+      return false
     }
   },
   mounted () {
@@ -275,10 +287,10 @@ export default {
       this.userName = res.data.userName
       this.loginPage = res.data.loginPage
       this.userCenterPage = res.data.userCenterPage
-      if (res.data.userName === 'guest') {
-        this.ifGuest = true
-      } else {
-        this.ifGuest = false
+      this.forceModifyPwPage = res.data.forceModifyPwPage
+      this.ifGuest = res.data.userName === 'guest'
+      if (this.jumpToForceModifyPw()) {
+        return
       }
       if (res.data.authorities.indexOf('ROLE_ATP_ADMIN') === -1) {
         this.navList.splice(3, 1)
