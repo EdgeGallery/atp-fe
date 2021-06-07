@@ -792,6 +792,9 @@ export default {
               }
           }
           .el-form-item:nth-child(2),.el-form-item:nth-child(3){
+            .el-form-item__label{
+              line-height: 20px;
+            }
             .el-form-item__content{
               text-overflow: -o-ellipsis-lastline;
               overflow: hidden;

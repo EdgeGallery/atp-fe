@@ -195,7 +195,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column
-                    v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1 && IsInternal==='internal'"
+                    v-if="(authorities.indexOf('ROLE_ATP_ADMIN')!==-1 && IsInternal==='internal')"
                     :label="$t('myApp.operation')"
                     width="100"
                   >
@@ -362,12 +362,14 @@ export default {
   methods: {
     getLanguage () {
       if (this.currUrl.indexOf('language') !== -1) {
+        this.IsInternal = ''
         let language = this.currUrl.split('language')[1].split('=')[1]
         this.language = language
         localStorage.setItem('language', language)
         this.$i18n.locale = language
         this.$store.commit('changeLaguage', { language: language })
       } else {
+        this.IsInternal = 'internal'
         let language = localStorage.getItem('language')
         this.language = language
         this.$i18n.locale = language
@@ -376,10 +378,8 @@ export default {
     },
     getTaskId () {
       if (this.currUrl.indexOf('language') !== -1) {
-        this.IsInternal = ''
         this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
       } else {
-        this.IsInternal = 'internal'
         this.taskId = this.$route.query.taskId
       }
     },

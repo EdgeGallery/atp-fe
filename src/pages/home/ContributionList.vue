@@ -71,8 +71,17 @@
               prop="type"
               label="贡献类型"
             >
-              <template slot-scope="scope">
+              <template
+                slot-scope="scope"
+                v-if="language==='cn'"
+              >
                 {{ scope.row.type==='script' ? '脚本' : '文本' }}
+              </template>
+              <template
+                slot-scope="scope"
+                v-else
+              >
+                {{ scope.row.type }}
               </template>
             </el-table-column>
             <el-table-column
@@ -175,7 +184,8 @@ export default {
       ids: [],
       form: {
         name: ''
-      }
+      },
+      language: localStorage.getItem('language')
     }
   },
   mounted () {
