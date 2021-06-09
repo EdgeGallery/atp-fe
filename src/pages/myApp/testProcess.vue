@@ -15,7 +15,7 @@
   -->
 <template>
   <div class="padding200">
-    <Atpprocess />
+    <Atpprocess :isinternal="isInternal" />
   </div>
 </template>
 <script>
@@ -24,6 +24,7 @@ export default {
   components: { Atpprocess },
   data () {
     return {
+      isInternal: true
     }
   }
 }

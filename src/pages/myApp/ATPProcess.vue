@@ -195,7 +195,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column
-                    v-if="(authorities.indexOf('ROLE_ATP_ADMIN')!==-1 && IsInternal==='internal')"
+                    v-if="(authorities.indexOf('ROLE_ATP_ADMIN')!==-1 && isinternal)"
                     :label="$t('myApp.operation')"
                     width="100"
                   >
@@ -299,6 +299,12 @@
 <script>
 import { getUserInfo, Userpage } from '../../tools/api.js'
 export default {
+  props: {
+    isinternal: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       currUrl: window.location.href,
@@ -331,8 +337,8 @@ export default {
       authorities: [],
       carouselHeight: '',
       alltestCase: [],
-      scoreColor: '',
-      IsInternal: ''
+      scoreColor: ''
+      // IsInternal: ''
     }
   },
   beforeMount () {
@@ -362,14 +368,14 @@ export default {
   methods: {
     getLanguage () {
       if (this.currUrl.indexOf('language') !== -1) {
-        this.IsInternal = ''
+        // this.IsInternal = ''
         let language = this.currUrl.split('language')[1].split('=')[1]
         this.language = language
         localStorage.setItem('language', language)
         this.$i18n.locale = language
         this.$store.commit('changeLaguage', { language: language })
       } else {
-        this.IsInternal = 'internal'
+        // this.IsInternal = 'internal'
         let language = localStorage.getItem('language')
         this.language = language
         this.$i18n.locale = language
@@ -595,10 +601,10 @@ export default {
 }
 </script>
 <style lang="less">
-.testing-main{
-  // padding: 0 20%;
-  padding: 0 20px;
-}
+// .testing-main{
+//   // padding: 0 20%;
+//   padding: 0 20px;
+// }
 .process{
   background-color: #fff;
   .back{

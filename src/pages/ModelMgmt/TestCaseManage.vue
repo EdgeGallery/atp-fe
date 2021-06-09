@@ -31,13 +31,13 @@
             <el-input
               v-model="form.name"
               prefix-icon="el-icon-search"
-              placeholder="请输入名称进行搜索"
+              :placeholder="$t('testCase.provideNameSearch')"
               size="small"
             />
             <el-select
               size="small"
               v-model="form.type"
-              :placeholder="$t('userpage.choose')"
+              :placeholder="$t('testCase.provideTestType')"
             >
               <el-option
                 v-for="item in testType"
@@ -50,7 +50,7 @@
               size="small"
               v-model="form.testSuiteIdList"
               class="statusSelect"
-              :placeholder="$t('userpage.choose')"
+              :placeholder="$t('testCase.provideTestSuite')"
             >
               <el-option
                 v-for="item in testSuiteList"
@@ -167,6 +167,7 @@
             <el-table-column
               prop="type"
               :label="$t('testCase.caseType')"
+              width="150"
             >
               <template slot-scope="scope">
                 {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}
