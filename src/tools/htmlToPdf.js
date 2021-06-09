@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-// 导出页面为PDF格式
+// Export page asPDFformat
 import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 export default {
