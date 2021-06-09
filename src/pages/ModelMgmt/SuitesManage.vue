@@ -28,7 +28,7 @@
             <el-input
               v-model="form.name"
               prefix-icon="el-icon-search"
-              placeholder="请输入名称进行搜索"
+              :placeholder="$t('testCase.provideNameSearch')"
               size="small"
               @change="getAllSuites"
             />
@@ -688,7 +688,7 @@ export default {
           type: 'warning',
           message: '上传成功'
         })
-        this.getAllcase()
+        this.getAllSuites()
         this.batchForm = {
           batchFile: []
         }
