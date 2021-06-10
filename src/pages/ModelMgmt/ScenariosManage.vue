@@ -659,9 +659,9 @@ export default {
       let image = new Image()
       image.src = file
       image.onload = () => {
-        // 将静态图片转化为base64
+        // Convert static images to base64
         let base64 = this.getBase64Image(image)
-        // base64转化为文件流
+        // Convert base64 to file stream
         this.defaultIconFile.push(this.base64toFile(base64))
         this.addTestScenarioForm.icon = this.defaultIconFile
         this.editTestScenarioForm.icon = this.defaultIconFile
@@ -934,7 +934,7 @@ export default {
               line-clamp: 2;
               -webkit-box-orient: vertical;
               line-height: 20px;
-              max-height: 40px;
+              height: 40px;
             }
           }
         }
@@ -1066,7 +1066,6 @@ export default {
         background-color: #f7f2ff;
         border: 1px solid #380879;
         color: #380879;
-        // font-size: 14px;
         border-radius: 5px;
         box-shadow: 0 5px 5px #deccf9;
       }

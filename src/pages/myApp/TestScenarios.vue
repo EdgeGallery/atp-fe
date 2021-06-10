@@ -304,7 +304,6 @@ export default {
       scenarioIdList: [],
       CaseVisible: false,
       taskId: '',
-      // sceneTitle: '',
       testSuiteData: [],
       language: '',
       addCaseVisible: false,
@@ -453,7 +452,6 @@ export default {
         selectsceneDiv.style.minHeight = appDiv.clientHeight + 'px'
       })
     },
-    // 贡献用例
     confirmAddCase () {
       let fd = new FormData()
       let addcaseForm = this.addcaseForm
@@ -530,15 +528,12 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 0 15px;
-    // margin-bottom: 15px;
     .left{
       font-size: 24px;
-      // line-height: 50px;
       font-weight: 600;
     }
     .right{
       font-size: 20px;
-      // margin-right: 20px;
       cursor: pointer;
       border-bottom: 1px solid #380879;
     }
@@ -551,7 +546,6 @@ export default {
       width: 25%;
       padding: 0 15px 25px;
       .scene{
-        // height: 260px;
         box-shadow: 0 0 10px 2px #e8e6f1;
         border-radius: 20px;
         position: relative;
@@ -637,11 +631,6 @@ export default {
           }
         }
       }
-    //   @media screen and (max-width: 1152px) {
-    //   .scene{
-    //       height: 300px;
-    //   }
-    // }
     }
     @media screen and (max-width: 1320px) {
       .contednt{

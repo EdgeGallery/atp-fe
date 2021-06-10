@@ -324,7 +324,6 @@ export default {
       casefailclass: '',
       allfailNum: 0,
       hasFailActiveName: [],
-      // activeTabsName: '',
       firstScene: '',
       reportData: [],
       form: {
@@ -338,7 +337,6 @@ export default {
       carouselHeight: '',
       alltestCase: [],
       scoreColor: ''
-      // IsInternal: ''
     }
   },
   beforeMount () {
@@ -359,7 +357,6 @@ export default {
   },
   directives: {
     focus: {
-    // 指令的定义
       inserted: function (el, binding, vnode) {
         document.getElementById(vnode.context.testScenarios[0].nameEn).focus()
       }
@@ -368,14 +365,12 @@ export default {
   methods: {
     getLanguage () {
       if (this.currUrl.indexOf('language') !== -1) {
-        // this.IsInternal = ''
         let language = this.currUrl.split('language')[1].split('=')[1]
         this.language = language
         localStorage.setItem('language', language)
         this.$i18n.locale = language
         this.$store.commit('changeLaguage', { language: language })
       } else {
-        // this.IsInternal = 'internal'
         let language = localStorage.getItem('language')
         this.language = language
         this.$i18n.locale = language

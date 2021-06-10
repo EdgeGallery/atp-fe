@@ -551,7 +551,7 @@ export default {
       let para = { locale: '' }
       para.locale = this.language === 'cn' ? 'ch' : 'en'
       await Userpage.getAllSceneApi(para).then(res => {
-        this.testScenes = res.data // 获取所有测试场景
+        this.testScenes = res.data
       })
       this.testScenes.forEach(item => {
         let obj = {
@@ -860,7 +860,6 @@ export default {
         background-color: #f7f2ff;
         border: 1px solid #380879;
         color: #380879;
-        // font-size: 14px;
         border-radius: 5px;
         box-shadow: 0 5px 5px #deccf9;
       }

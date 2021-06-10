@@ -145,7 +145,6 @@ export default {
   name: 'HeaderComp',
   data () {
     return {
-      // language: 'cn',
       language: localStorage.getItem('language'),
       userName: '',
       loginPage: '',

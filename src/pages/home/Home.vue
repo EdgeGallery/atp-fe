@@ -161,9 +161,6 @@ export default {
     drawLine () {
       let myChart = this.$echarts.init(document.getElementById('main'))
       let option = {
-        // textStyle: {
-        //   fontStyle: 'light'
-        // },
         grid: {
           x: 50,
           y: 50,
@@ -262,7 +259,6 @@ export default {
         }]
       }
       myChart.setOption(option)
-      // 根据窗口的大小变动图表
       window.addEventListener('resize', () => {
         if (myChart) {
           myChart.resize()
@@ -293,7 +289,6 @@ export default {
     background-color: #380879;
     height: 720px;
     display: flex;
-    // justify-content: space-between;
     padding: 60px 240px;
     .left{
       width: 20%;
@@ -344,10 +339,8 @@ export default {
       .modelcontent{
         display: flex;
         justify-content: space-around;
-        // justify-content: center;
         padding-top: 50px;
         li{
-          // float: left;
           text-align: center;
           .keyword{
             font-size: 30px;

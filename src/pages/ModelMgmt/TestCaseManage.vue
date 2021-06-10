@@ -654,7 +654,6 @@ export default {
       }
       this.getAllcase()
     },
-    // 获取所有测试用例
     async getAllcase () {
       await this.getALlSuites()
       this.allcaseData = []
@@ -662,7 +661,6 @@ export default {
       Atp.getAllCaseApi(this.form).then(res => {
         this.allcaseData = res.data
         this.allcaseData.forEach(item => {
-        // 测试套
           let testSuiteList = []
           item.testSuiteIdList.forEach(Id => {
             if (this.language === 'cn') {
@@ -718,7 +716,6 @@ export default {
         })
       })
     },
-    // 新增用例弹框
     handleClose () {
       this.addCaseVisible = false
       this.addExcelVisible = false
@@ -922,7 +919,7 @@ export default {
       }
       this.editfile = false
     },
-    // sonarqube重构
+    // sonarqube Refactor
     confirmedit (fd, addcaseForm) {
       if (this.editfile) {
         fd.append('file', addcaseForm.file[0])
@@ -944,7 +941,6 @@ export default {
       this.addCaseVisible = true
       this.addcaseForm = JSON.parse(JSON.stringify(row))
       this.addcaseForm.file = []
-      // this.addcaseForm.testSuiteIdList = row.testSuiteId
     },
     deleteVisibleClose () {
       this.deleteVisible = false
@@ -1072,7 +1068,6 @@ export default {
         background-color: #f7f2ff;
         border: 1px solid #380879;
         color: #380879;
-        // font-size: 14px;
         border-radius: 5px;
         box-shadow: 0 5px 5px #deccf9;
       }
