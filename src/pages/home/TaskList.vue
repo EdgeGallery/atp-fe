@@ -296,12 +296,6 @@ export default {
   beforeDestroy () {
     this.clearInterval()
   },
-  // beforeRouteEnter (to, from, next) {
-  //   if (from.path.indexOf('/test/report') === -1) {
-  //     sessionStorage.removeItem('currentPage')
-  //   }
-  //   next()
-  // },
   methods: {
     getCurrentPageData (val) {
       this.currentData = val
@@ -492,10 +486,5 @@ export default {
       }
     }
   }
-  // .task-content:after {
-  //   content: "";
-  //   display: block;
-  //   clear: both;
-  // }
 }
 </style>

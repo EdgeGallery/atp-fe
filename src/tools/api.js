@@ -53,7 +53,6 @@ function logoutApi () {
   })
 }
 let Home = {
-  // Get homepage chart data
   getStatisticApi: function () {
     let url = 'tasks/action/analysize'
     return GET(url)
@@ -61,7 +60,6 @@ let Home = {
 }
 
 let ModelMgmt = {
-  // Query test suite
   getTestSuite: function (params) {
     let url = 'testsuites'
     return GET(url, params)
@@ -70,7 +68,6 @@ let ModelMgmt = {
     let url = 'testsuites/' + id
     return GET(url)
   },
-  // Query a test suite
   getOneSuite: function (Id) {
     let url = 'testsuites/' + Id
     return GET(url)
@@ -99,7 +96,6 @@ let ModelMgmt = {
     let url = 'testscenarios'
     return POST(url, params)
   },
-  // Batch Import
   importTestModelApi: function (params) {
     let url = 'testmodels/action/import'
     return POST(url, params)
@@ -107,7 +103,6 @@ let ModelMgmt = {
 }
 
 let Taskmgmt = {
-  // Get task list
   taskListApi: function (params) {
     let url = 'tasks'
     return GET(url, params)
@@ -117,7 +112,6 @@ let Taskmgmt = {
     let url = 'tasks/batch_delete'
     return POST(url, params)
   },
-  // Query contribution use cases
   contributionsApi: function (params) {
     let url = 'contributions'
     return GET(url, params)
@@ -146,29 +140,23 @@ let Taskmgmt = {
     })
   }
 }
-// All interfaces on the user plane
 let Userpage = {
-  // Get all scenes
   getAllSceneApi: function (params) {
     let url = 'testscenarios'
     return GET(url, params)
   },
-  // Get scene icon
   getSceneIconApi: function (appId) {
     let url = 'apps/' + appId
     return GET(url)
   },
-  // Get the use case in the scenario
   getSceneCaseApi: function (params) {
     let url = 'testscenarios/testcases'
     return POST(url, params)
   },
-  // Run task
   runTaskApi: function (taskId, params) {
     let url = 'tasks/' + taskId + '/action/run'
     return POST(url, params)
   },
-  // Get task
   getTaskApi: function (taskId) {
     let url = 'tasks/' + taskId
     return GET(url)
@@ -193,9 +181,7 @@ let Userpage = {
   }
 }
 
-// Previous interface
 let Atp = {
-  // new Get all use cases
   getAllCaseApi: function (params) {
     let url = 'testcases'
     return GET(url, params)
@@ -213,43 +199,10 @@ let Atp = {
     let url = 'testcases/' + Id
     return DELETE(url)
   },
-  // Get a list of test cases
-  getTestCaseApi: function () {
-    let url = 'mec-atp/edgegallery/atp/v1/testcases'
-    return axios.get(url, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-      }
-    })
-  },
   // Create test task
   creatTaskApi: function (params) {
     let url = 'mec-atp/edgegallery/atp/v1/tasks'
     return axios.post(url, params, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-      }
-    })
-  },
-  // Run task
-  runTaskApi: function (taskId) {
-    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId + '/action/run'
-    return axios.post(url, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-      }
-    })
-  },
-  // Get progress
-  processApi: function (taskId) {
-    let url = 'mec-atp/edgegallery/atp/v1/tasks/' + taskId
-    return axios.get(url, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
@@ -269,7 +222,7 @@ let Atp = {
       }
     })
   },
-  // download
+  // download testcase
   downLoadCaseApi: function (Id, codeLanguage) {
     let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
     return axios({
