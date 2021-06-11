@@ -29,7 +29,7 @@
             <el-input
               v-model="form.name"
               prefix-icon="el-icon-search"
-              placeholder="请输入名称进行搜索"
+              :placeholder="$t('testCase.provideNameSearch')"
               size="small"
               @change="getAllcontribution"
             />
@@ -65,11 +65,11 @@
             />
             <el-table-column
               prop="name"
-              label="测试用例名称"
+              :label="$t('testCase.caseName')"
             />
             <el-table-column
               prop="type"
-              label="贡献类型"
+              :label="$t('testCase.type')"
             >
               <template
                 slot-scope="scope"
@@ -86,19 +86,19 @@
             </el-table-column>
             <el-table-column
               prop="objective"
-              label="测试目的"
+              :label="$t('testCase.casePurpose')"
             />
             <el-table-column
               prop="step"
-              label="测试步骤"
+              :label="$t('testCase.step')"
             />
             <el-table-column
               prop="expectResult"
-              label="预期结果"
+              :label="$t('testCase.expectedResult')"
             />
             <el-table-column
               prop="createTime"
-              label="创建时间"
+              :label="$t('testCase.createTime')"
             />
             <el-table-column
               :label="$t('myApp.operation')"
@@ -143,7 +143,7 @@
             alt=""
           >
           <p class="prompt-text">
-            是否要继续删除贡献用例?
+            {{ $t('promptMessage.deleteContrubuteCase') }}
           </p>
         </div>
         <div

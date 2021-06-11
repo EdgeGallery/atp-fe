@@ -97,7 +97,9 @@ const cn = {
     testStepEmpty: '步骤不能为空!',
     testSuiteEmpty: '测试套不能为空!',
     fileEmpty: '文件不能为空!',
-    nameLength: '长度为1-16位'
+    nameLength: '长度为1-16位',
+    deleteContrubuteCase: '是否要继续删除贡献用例?',
+    confirmdeleteTask: '是否要继续删除测试任务?'
   },
   common: {
     cancel: '取消',
@@ -147,13 +149,14 @@ const cn = {
     taskManage: '任务管理'
   },
   testCase: {
+    createTime: '创建时间',
     management: '测试用例管理',
     caseName: '测试用例名称',
     caseType: '测试用例类型',
     casePurpose: '测试用例目的',
     step: '测试步骤',
     type: '贡献类型',
-    expectedResult: '测试预期结果',
+    expectedResult: '预期结果',
     language: '测试用例语言',
     verificationModel: '所属认证模板',
     operation: '操作',
@@ -248,7 +251,8 @@ const cn = {
     name: '名称:',
     description: '描述:',
     scene: '场景:',
-    import: '批量导入'
+    import: '批量导入',
+    importCase: '导入测试用例'
   },
   footer: {
     about: '关于',

@@ -432,7 +432,7 @@
         :visible.sync="addExcelVisible"
         :close-on-click-modal="false"
         width="30%"
-        title="导入测试用例"
+        :title="$t('modelmgmt.importCase')"
         class="addtestdialog"
       >
         <el-form
