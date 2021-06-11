@@ -29,7 +29,7 @@
             <el-input
               v-model="form.appName"
               prefix-icon="el-icon-search"
-              placeholder="请输入名称进行搜索"
+              :placeholder="$t('testCase.provideNameSearch')"
               size="small"
             />
             <el-select
@@ -39,9 +39,9 @@
             >
               <el-option
                 v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label"
+                :key="item.index"
+                :label="language==='cn'?item.labelCn:item.labelEn"
+                :value="item.labelEn"
               />
             </el-select>
             <el-button
@@ -153,7 +153,7 @@
             <el-table-column
               fixed="right"
               :label="$t('myApp.operation')"
-              width="250"
+              width="280"
             >
               <template slot-scope="scope">
                 <el-button
@@ -201,7 +201,7 @@
             alt=""
           >
           <p class="prompt-text">
-            是否要继续删除测试任务?
+            {{ $t('promptMessage.confirmdeleteTask') }}
           </p>
         </div>
         <div
@@ -250,28 +250,34 @@ export default {
       caseList: [],
       options: [
         {
-          value: 1,
-          label: 'running'
+          index: 1,
+          labelEn: 'running',
+          labelCn: '测试中'
         },
         {
-          value: 2,
-          label: 'waiting'
+          index: 2,
+          labelEn: 'waiting',
+          labelCn: '等待'
         },
         {
-          value: 3,
-          label: 'success'
+          index: 3,
+          labelEn: 'success',
+          labelCn: '成功'
         },
         {
-          value: 4,
-          label: 'failed'
+          index: 4,
+          labelEn: 'failed',
+          labelCn: '失败'
         },
         {
-          value: 5,
-          label: 'created'
+          index: 5,
+          labelEn: 'created',
+          labelCn: '已创建'
         },
         {
-          value: 6,
-          label: 'create failed'
+          index: 6,
+          labelEn: 'create failed',
+          labelCn: '创建失败'
         }
       ],
       value: '',

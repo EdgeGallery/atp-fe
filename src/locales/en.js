@@ -99,7 +99,9 @@ const en = {
     testStepEmpty: 'Step cannot be empty!',
     testSuiteEmpty: 'Test suite cannot be empty!',
     fileEmpty: 'File cannot be empty!',
-    nameLength: '1-16 digits in length'
+    nameLength: '1-16 digits in length',
+    deleteContrubuteCase: ' Do you want to continue to delete the contribution use case?',
+    confirmdeleteTask: 'Do you want to continue deleting the test task?'
   },
   common: {
     cancel: 'Cancel',
@@ -149,6 +151,7 @@ const en = {
     taskManage: 'Task Management'
   },
   testCase: {
+    createTime: 'createTime',
     management: 'Testcase Management',
     caseName: 'Testcase Name',
     caseType: 'Testcase Type',
@@ -249,7 +252,8 @@ const en = {
     name: 'Name:',
     description: 'Description:',
     scene: 'Scenario:',
-    import: 'Batch Import'
+    import: 'Batch Import',
+    importCase: 'Import test cases'
   },
   footer: {
     about: 'About',
