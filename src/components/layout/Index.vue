@@ -16,17 +16,12 @@
 
 <template>
   <div>
-    <breadcrumb />
     <router-view />
   </div>
 </template>
 
 <script>
-import breadcrumb from '../common/Breadcrumb.vue'
 export default {
-  components: {
-    breadcrumb
-  },
   data () {
     return {
     }

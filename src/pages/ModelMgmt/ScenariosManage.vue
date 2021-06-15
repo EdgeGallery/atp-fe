@@ -17,11 +17,7 @@
   <div>
     <Navcomp />
     <div class="padding200">
-      <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
-        <span>{{ $t('testCase.applicationTestPlatform') }}</span>
-        <span>></span>
-        <span>{{ $t('testCase.testScenarioManagement') }}</span>
-      </div>
+      <breadcrumb />
       <div class="testscenarios-main padding20">
         <div class="flex enter-search">
           <div class="flex">
@@ -53,9 +49,8 @@
               </div>
             </el-tooltip>
           </div>
-          <div>
+          <div v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1">
             <el-button
-              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               class="light-button"
               size="small"
               @click="excelBringBtn"
@@ -63,7 +58,6 @@
               {{ this.$t('modelmgmt.import') }}
             </el-button>
             <el-button
-              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               class="dark-button"
               size="small"
               @click="onclickAdd"
@@ -462,10 +456,11 @@
 </template>
 <script>
 import Navcomp from '../../components/layout/Nav'
+import breadcrumb from '../../components/common/Breadcrumb.vue'
 import { Userpage, ModelMgmt, URL_PREFIX } from '../../tools/api.js'
 
 export default {
-  components: { Navcomp },
+  components: { Navcomp, breadcrumb },
   data () {
     return {
       editId: '',

@@ -18,11 +18,7 @@
   <div>
     <Navcomp />
     <div class="testcase padding100">
-      <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
-        <span>{{ $t('testCase.applicationTestPlatform') }}</span>
-        <span>></span>
-        <span>{{ $t('atp.testCaseManagement') }}</span>
-      </div>
+      <breadcrumb />
       <div
         class="testcase-main"
       >
@@ -536,8 +532,9 @@
 import { Atp, ModelMgmt } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
+import breadcrumb from '../../components/common/Breadcrumb.vue'
 export default {
-  components: { pagination, Navcomp },
+  components: { pagination, Navcomp, breadcrumb },
   name: 'TestCase',
   data () {
     return {
