@@ -20,7 +20,8 @@ const cn = {
     logout: '注销',
     login: '登录',
     userAccountCenter: '我的帐号',
-    atp: 'ATP 测试'
+    atp: '应用测试平台',
+    contributionMgmt: '贡献管理'
   },
   myApp: {
     checkTest: '检查测试',

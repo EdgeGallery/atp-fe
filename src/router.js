@@ -16,6 +16,8 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
+import en from './locales/en.js'
+import cn from './locales/cn.js'
 
 const routerPush = Router.prototype.push
 Router.prototype.push = function push (location) {
@@ -41,27 +43,62 @@ export default new Router({
         {
           path: 'scenarios',
           name: 'scenarios',
-          component: () => import('./pages/ModelMgmt/ScenariosManage.vue')
+          component: () => import('./pages/ModelMgmt/ScenariosManage.vue'),
+          meta: {
+            breadcrumb: [{
+              nameEn: en.testCase.testScenarioManagement,
+              path: '/scenarios',
+              nameCn: cn.testCase.testScenarioManagement
+            }]
+          }
         },
         {
           path: 'suites',
           name: 'suites',
-          component: () => import('./pages/ModelMgmt/SuitesManage.vue')
+          component: () => import('./pages/ModelMgmt/SuitesManage.vue'),
+          meta: {
+            breadcrumb: [{
+              nameEn: en.testCase.testSuiteManagement,
+              path: '/suites',
+              nameCn: cn.testCase.testSuiteManagement
+            }]
+          }
         },
         {
           path: 'testcasemanage',
           name: 'testcasemanage',
-          component: () => import('./pages/ModelMgmt/TestCaseManage.vue')
+          component: () => import('./pages/ModelMgmt/TestCaseManage.vue'),
+          meta: {
+            breadcrumb: [{
+              nameEn: en.testCase.management,
+              path: '/testcasemanage',
+              nameCn: cn.testCase.management
+            }]
+          }
         },
         {
           path: 'tasklist',
           name: 'tasklist',
-          component: () => import('./pages/home/TaskList.vue')
+          component: () => import('./pages/home/TaskList.vue'),
+          meta: {
+            breadcrumb: [{
+              nameEn: en.atp.taskManage,
+              path: '/tasklist',
+              nameCn: cn.atp.taskManage
+            }]
+          }
         },
         {
           path: 'contributionList',
           name: 'contributionList',
-          component: () => import('./pages/home/ContributionList.vue')
+          component: () => import('./pages/home/ContributionList.vue'),
+          meta: {
+            breadcrumb: [{
+              nameEn: en.nav.contributionMgmt,
+              path: '/testcasemanage',
+              nameCn: cn.nav.contributionMgmt
+            }]
+          }
         },
         {
           path: 'app/test/task',

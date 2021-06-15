@@ -17,11 +17,7 @@
   <div>
     <Navcomp />
     <div class="padding200">
-      <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
-        <span>{{ $t('testCase.applicationTestPlatform') }}</span>
-        <span>></span>
-        <span>{{ $t('testCase.testSuiteManagement') }}</span>
-      </div>
+      <breadcrumb />
       <div class="testsuites-main padding20">
         <div class="flex enter-search">
           <div class="flex">
@@ -427,10 +423,11 @@
 </template>
 <script>
 import Navcomp from '../../components/layout/Nav'
+import breadcrumb from '../../components/common/Breadcrumb.vue'
 import { Userpage, ModelMgmt } from '../../tools/api.js'
 
 export default {
-  components: { Navcomp },
+  components: { Navcomp, breadcrumb },
   data () {
     return {
       userName: sessionStorage.getItem('userName'),

@@ -18,11 +18,7 @@
   <div>
     <Navcomp />
     <div class="contribution padding200">
-      <div style="margin:20px 0;font-size:14px;color: #1C1C1C;">
-        <span>{{ $t('testCase.applicationTestPlatform') }}</span>
-        <span>></span>
-        <span>贡献管理</span>
-      </div>
+      <breadcrumb />
       <div class="main">
         <div class="header flex">
           <div class="search flex">
@@ -172,9 +168,10 @@
 import { Taskmgmt } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
+import breadcrumb from '../../components/common/Breadcrumb.vue'
 export default {
   name: 'Apttask',
-  components: { pagination, Navcomp },
+  components: { pagination, Navcomp, breadcrumb },
   data () {
     return {
       currentData: [],
@@ -190,6 +187,11 @@ export default {
   },
   mounted () {
     this.getAllcontribution()
+  },
+  watch: {
+    '$i18n.locale': function () {
+      this.language = localStorage.getItem('language')
+    }
   },
   methods: {
     getCurrentPageData (val) {

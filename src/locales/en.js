@@ -20,7 +20,8 @@ const en = {
     logout: 'Logout',
     login: 'Login',
     userAccountCenter: 'My Account',
-    atp: 'ATP'
+    atp: 'Application test platform',
+    contributionMgmt: 'Contribution Management'
   },
   myApp: {
     checkTest: 'Check Test',

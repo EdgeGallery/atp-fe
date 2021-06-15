@@ -19,9 +19,9 @@
     class="bread-crumb"
     v-if="isShow"
   >
-    <el-breadcrumb separator="/">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/index' }">
-        {{ $t('nav.appstore') }}
+        {{ $t('nav.atp') }}
       </el-breadcrumb-item>
       <el-breadcrumb-item
         v-for="item in breadCrumbData"
@@ -62,10 +62,18 @@ export default {
 </script>
 <style lang='less'>
 .bread-crumb {
-  padding: 0 56px;
   .el-breadcrumb {
-    line-height: 70px;
+    line-height: 60px;
     font-size: 14px;
+    .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link{
+      font-weight: normal;
+      color: #999999;
+    }
+    .el-breadcrumb__item:last-child{
+      .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link{
+         color: #280b4e !important;
+      }
+    }
   }
 }
 </style>
