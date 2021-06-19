@@ -69,42 +69,47 @@
         <div class="allscene">
           <div
             class="list"
-            v-for="item in scenarios"
+            v-for="(item,index) in scenarios"
             :key="item.id"
+            @mouseenter="hoverList(index)"
+            @mouseleave="activeInfo=-1"
           >
             <div class="content">
-              <el-form
-                label-width="auto"
-                :class="language === 'cn' ?'form-content-cn' :'form-content-en'"
+              <img
+                :src="getAppIcon(item)"
+                alt=""
               >
-                <el-form-item :label="$t('modelmgmt.name')">
-                  {{ language === 'cn' ? item.nameCh :item.nameEn }}
-                </el-form-item>
-                <el-form-item :label="$t('modelmgmt.description')">
-                  {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
-                </el-form-item>
-                <el-form-item>
+              <div class="content-info">
+                <p> {{ language === 'cn' ? item.nameCh :item.nameEn }}</p>
+                <span
+                  class="description"
+                  :class="{'showall':activeInfo===index}"
+                >{{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}</span>
+                <div
+                  class="operation-btn"
+                  :class="{'btnNone':activeInfo===index}"
+                >
                   <el-button
                     size="small"
                     class="light-button"
                     @click="deleteTestScenario(item.id)"
-                    style="margin-right:10px;"
+                    style="margin-right:30px;"
                   >
-                    {{ $t('common.delete') }}
+                    <em class="el-icon-delete" />
                   </el-button>
                   <el-button
                     size="small"
                     class="dark-button"
                     @click="editScenario(item)"
                   >
-                    {{ $t('common.edit') }}
+                    <em class="el-icon-edit " />
                   </el-button>
-                </el-form-item>
-              </el-form>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <!-- 新增弹框 -->
+        <!-- add -->
         <el-dialog
           :visible.sync="addTestScenarioVisible"
           :close-on-click-modal="false"
@@ -226,7 +231,7 @@
             </el-button>
           </div>
         </el-dialog>
-        <!-- 编辑弹框 -->
+        <!-- modify -->
         <el-dialog
           :visible.sync="editTestScenarioVisible"
           :title="$t('testCase.editTestScenario')"
@@ -515,11 +520,17 @@ export default {
         descriptionCh: [
           { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
         ]
-      }
-
+      },
+      activeInfo: -1
     }
   },
   methods: {
+    getAppIcon (item) {
+      return URL_PREFIX + 'files/' + item.id
+    },
+    hoverList (index) {
+      this.activeInfo = index
+    },
     getAllScene () {
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       Userpage.getAllSceneApi(this.form).then(res => {
@@ -895,82 +906,64 @@ export default {
       padding: 0 10px;
       margin-bottom: 20px;
       .content{
-        box-shadow: 0 0 10px 2px #e8e6f1;
-        background-image: linear-gradient(to right,#fff7fe,#f7f6fb);
-        border-radius: 8px;
-        border-bottom-right-radius: 30px;
-        padding: 10px;
-        border-right: 2px solid #aa7ded;
-        border-bottom: 2px solid #aa7ded;
-        .el-form{
-          .el-form-item{
-            margin-bottom: 8px;
+        box-shadow: 0 0 20px rgba(27, 7, 118, 0.1);
+        border-radius: 12px;
+        position: relative;
+        padding-bottom: 90px;
+        img{
+          width: 100%;
+          display: block;
+          height: 160px;
+          border-radius: 12px 12px 0 0;
+        }
+        .content-info{
+          // opacity: 0.9;
+          background: #fff;
+          border-radius: 12px;
+          position: absolute;
+          width: 100%;
+          bottom: 0px;
+          z-index: 2;
+          padding: 20px 20px 10px;
+          p{
+            font-size: 20px;
+            color: #111;
+            margin-bottom: 7px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
-          .el-form-item__label{
-            color:#666666;
+          .description{
+            display: block;
+            font-size: 16px;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
-          .el-form-item:first-child{
-              .el-form-item__content{
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              }
+          .description.showall{
+             white-space: normal;
           }
-          .el-form-item:nth-child(2){
-            .el-form-item__label{
-              line-height: 20px;
+          .operation-btn{
+            width: 100%;
+            max-height: 0px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 10px;
+            transition: all 0.6s ease-in-out;
+            .el-button--small {
+              padding: 5px 25px;
             }
-            .el-form-item__content{
-              text-overflow: -o-ellipsis-lastline;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              display: -webkit-box;
-              -webkit-line-clamp: 2;
-              line-clamp: 2;
-              -webkit-box-orient: vertical;
-              line-height: 20px;
-              height: 40px;
-            }
+          }
+          .operation-btn.btnNone{
+            max-height: 40px;
+            transition: all 0.6s ease-in-out;
           }
         }
-          .form-content-cn{
-            .el-form-item:first-child{
-              .el-form-item__content{
-                font-size: 22px;
-                color: #333333;
-              }
-            }
-            .el-form-item:nth-child(2){
-              .el-form-item__content{
-                font-size: 18px;
-                color: #666666;
-              }
-            }
-            .el-form-item:nth-child(3){
-              .el-form-item__content{
-                padding-left: 5%;
-              }
-            }
-          }
-          .form-content-en{
-            .el-form-item:first-child{
-              .el-form-item__content{
-                font-size: 16px;
-                color: #333333;
-              }
-            }
-            .el-form-item:nth-child(2){
-              .el-form-item__content{
-                font-size: 14px;
-                color: #666666;
-              }
-            }
-            .el-form-item:nth-child(3){
-              .el-form-item__content{
-                padding-left: 5%;
-              }
-            }
-          }
+      }
+      .content:hover{
+        box-shadow: 0 0 35px rgba(27, 7, 118, 0.23);
       }
     }
     @media screen and (max-width: 1180px) {
