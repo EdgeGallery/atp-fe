@@ -233,7 +233,8 @@ const en = {
   userpage: {
     selectScene: 'Select Scenario',
     contribution: 'Testcase Contribution',
-    seeDetail: 'See Details',
+    seeDetail: 'View cases',
+    selectTestScene: 'Select Scene',
     caseDetail: 'Testcase Detail',
     name: 'Name',
     status: 'Status',

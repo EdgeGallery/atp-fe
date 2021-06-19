@@ -162,16 +162,19 @@ a{
 
 /* 按钮 */
 .dark-button{
-  background: #380879!important;
+  background: #603994!important;
   color: #fff !important;
   border-radius: 10px !important;
   font-size: 14px !important;
 }
 .light-button{
-  border-color:#380879 !important;
-  color: #380879 !important;
+  border-color:#603994 !important;
+  color: #603994 !important;
   border-radius: 10px !important;
   font-size: 14px !important;
+}
+.dark-button:hover{
+  background: #380879!important;
 }
 
 /* 表格 */

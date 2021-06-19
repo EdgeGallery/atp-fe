@@ -85,15 +85,16 @@
                 class="curp"
                 @click="getDetail(item)"
               >
-                查看用例
+                {{ $t('userpage.seeDetail') }}
               </el-button>
+              <span class="middleLine" />
               <el-button
                 type="text"
                 :disabled="item.nameEn==='EdgeGallery Community Scenario'"
                 class="curp"
                 @click="chooseScene(item)"
               >
-                选择场景
+                {{ $t('userpage.selectTestScene') }}
               </el-button>
             </div>
           </div>
@@ -110,7 +111,7 @@
         </el-button>
       </div>
     </div>
-    <!-- 用例详情弹框 -->
+    <!-- case detail -->
     <el-dialog
       :visible.sync="CaseVisible"
       :title="$t('userpage.caseDetail')"
@@ -626,8 +627,13 @@ export default {
             color: #000000;
             padding: 2% 5%;
           }
-          .el-button--text:first-child {
-            border-right: 2px solid #c9acf6;
+          .middleLine{
+            display: inline-block;
+            width: 2px;
+            height: 20px;
+            background-color: #c9acf6;
+            position: relative;
+            top: 4px;
           }
         }
       }

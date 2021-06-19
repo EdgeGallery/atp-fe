@@ -68,9 +68,8 @@
               </div>
             </el-tooltip>
           </div>
-          <div>
+          <div v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1">
             <el-button
-              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               class="light-button"
               size="small"
               @click="excelBringBtn"
@@ -78,7 +77,6 @@
               {{ this.$t('modelmgmt.import') }}
             </el-button>
             <el-button
-              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               class="dark-button"
               size="small"
               @click="addTestSuiteBtn"
@@ -87,46 +85,89 @@
             </el-button>
           </div>
         </div>
+        <div class="filter">
+          <span
+            v-for="(item,index) in options"
+            :key="item.nameEn"
+            class="curp"
+            @click="selectedCondition(item,index)"
+            :class="{'selected': item.select}"
+          >{{ language == 'cn' ? item.nameCh : item.nameEn }}</span>
+        </div>
         <div
           class="allsuite"
         >
           <div
             class="list"
-            v-for="item in testSuites"
+            v-for="(item,index) in testSuites"
             :key="item.id"
+            @mouseenter="hoverList(index)"
+            @mouseleave="activeInfo=-1"
           >
-            <div class="content">
-              <el-form
-                label-width="auto"
-                :class="language === 'cn' ?'form-content-cn' :'form-content-en'"
-              >
-                <el-form-item :label="$t('modelmgmt.name')">
-                  {{ language === 'cn' ? item.nameCh :item.nameEn }}
-                </el-form-item>
-                <el-form-item :label="$t('modelmgmt.description')">
-                  {{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}
-                </el-form-item>
-                <el-form-item :label="$t('modelmgmt.scene')">
+            <div
+              class="content bgOne"
+              :class="{ 'bgOne': item.bg==='one', 'bgTwo': item.bg==='two','bgThree': item.bg==='three','bgFour': item.bg==='four', }"
+            >
+              <div class="tit flex">
+                <img
+                  v-if="item.bg==='one'"
+                  src="../../assets/images/iconOne.png"
+                  alt=""
+                  :class="{'hoverimg':activeInfo===index}"
+                >
+                <img
+                  v-else-if="item.bg==='two'"
+                  src="../../assets/images/iconTwo.png"
+                  alt=""
+                  :class="{'hoverimg':activeInfo===index}"
+                >
+                <img
+                  v-else-if="item.bg==='three'"
+                  src="../../assets/images/iconThree.png"
+                  alt=""
+                  :class="{'hoverimg':activeInfo===index}"
+                >
+                <img
+                  v-else-if="item.bg==='four'"
+                  src="../../assets/images/iconFour.png"
+                  alt=""
+                  :class="{'hoverimg':activeInfo===index}"
+                >
+                <img
+                  v-else
+                  src="../../assets/images/iconOne.png"
+                  alt=""
+                  :class="{'hoverimg':activeInfo===index}"
+                >
+                <h4 :class="{'hoverh4':activeInfo===index}">
                   {{ item.scenarioNameList }}
-                </el-form-item>
-                <el-form-item v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1">
+                </h4>
+              </div>
+              <div class="content-info">
+                <p>{{ language === 'cn' ? item.nameCh :item.nameEn }}</p>
+                <span class="description">{{ language === 'cn' ? item.descriptionCh :item.descriptionEn }}</span>
+                <div
+                  class="operation-btn"
+                  :class="{'showbtn':activeInfo===index}"
+                  v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+                >
                   <el-button
                     class="light-button"
                     size="small"
                     style="margin-right:10px;"
                     @click="deleteTestSuite(item.id)"
                   >
-                    {{ $t('common.delete') }}
+                    <em class="el-icon-delete" />
                   </el-button>
                   <el-button
                     size="small"
                     class="dark-button"
                     @click="editTestSuite(item)"
                   >
-                    {{ $t('common.edit') }}
+                    <em class="el-icon-edit " />
                   </el-button>
-                </el-form-item>
-              </el-form>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -492,10 +533,24 @@ export default {
         scenarioIdList: [
           { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
         ]
-      }
+      },
+      activeInfo: -1,
+      active: []
     }
   },
   methods: {
+    hoverList (index) {
+      this.activeInfo = index
+    },
+    selectedCondition (item, index) {
+      item.select = !item.select
+      // this.options.forEach(options => {
+      //   if (options.select) {
+      //     this.active.push(options.nameEn)
+      //   }
+      // })
+      // this.active = [...new Set(this.active)]
+    },
     async getAllSuites () {
       await this.fillOptions()
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
@@ -511,6 +566,17 @@ export default {
             }
           })
           suite.scenarioNameList = scenarioList.toString()
+          if (suite.scenarioIdList[0] === '4d203111-1111-4f62-aabb-8ebcec357f87') {
+            suite.bg = 'one'
+          } else if (suite.scenarioIdList[0] === 'e71718a5-864a-49e5-855a-5805a5e9f97d') {
+            suite.bg = 'three'
+          } else if (suite.scenarioIdList[0] === '6fe8581c-b83f-40c2-8f5b-505478f9e30b') {
+            suite.bg = 'two'
+          } else if (suite.scenarioIdList[0] === '96a82e85-d40d-4ce5-beec-2dd1c9a3d41d') {
+            suite.bg = 'four'
+          } else {
+            suite.bg = 'new'
+          }
         })
       }).catch(() => {
         this.$message({
@@ -554,7 +620,8 @@ export default {
         let obj = {
           id: '',
           nameCh: '',
-          nameEn: ''
+          nameEn: '',
+          select: false
         }
         obj.id = item.id
         obj.nameCh = item.nameCh
@@ -668,7 +735,6 @@ export default {
       this.addExcelVisible = true
     },
     excelChange (file, fileList) {
-      console.log('ee')
       this.batchForm.batchFile.push(file.raw)
     },
     excelDelte (file, fileList) {
@@ -757,6 +823,21 @@ export default {
             }
         }
     }
+  .filter{
+    padding: 25px 15px 20px;
+    span{
+      font-size: 16px;
+      color: #333333;
+      margin-right: 50px;
+      padding: 5px 8px;
+    }
+    .selected{
+      color: #603994;
+      border: 1px solid #603994;
+      font-size: 18px;
+      border-radius: 12px;
+    }
+  }
   .allsuite{
     padding-top: 15px;
     display: flex;
@@ -764,85 +845,90 @@ export default {
     .list {
       box-sizing: border-box;
       width: 25%;
-      padding: 0 10px;
+      padding: 0 15px;
       margin-bottom: 20px;
       .content{
-        box-shadow: 0 0 10px 2px #e8e6f1;
-        background-image: linear-gradient(to right,#fff7fe,#f7f6fb);
-        border-radius: 8px;
-        border-bottom-right-radius: 30px;
-        padding: 10px;
-        border-right: 2px solid #aa7ded;
-        border-bottom: 2px solid #aa7ded;
-        .el-form{
-          .el-form-item{
-            margin-bottom: 8px;
+        height: 160px;
+        border-radius: 12px;
+        padding: 15px 20px 15px 25px;
+        position: relative;
+        .tit{
+          position: relative;
+          img{
+            display: block;
           }
-          .el-form-item__label{
-            color:#666666;
+          // .hoverimg{
+          //   display: none;
+          // }
+          h4{
+            margin-left: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
-          .el-form-item:first-child{
-              .el-form-item__content{
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
+          // .hoverh4{
+          //   position: absolute;
+          //   right: 10px;
+          // }
+        }
+        .content-info{
+          p{
+            font-size: 20px;
+            color: #000;
+            padding: 15px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .description{
+            color: #000;
+            text-overflow: -o-ellipsis-lastline;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+          .operation-btn{
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+              width: 100%;
+              // max-height: 0px;
+              text-align: center;
+              // overflow: hidden;
+              // text-overflow: ellipsis;
+              margin-top: 8px;
+              display: none;
+              .el-button--small {
+                padding: 3px 20px;
               }
           }
-          .el-form-item:nth-child(2),.el-form-item:nth-child(3){
-            .el-form-item__label{
-              line-height: 20px;
-            }
-            .el-form-item__content{
-              text-overflow: -o-ellipsis-lastline;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              display: -webkit-box;
-              -webkit-line-clamp: 2;
-              line-clamp: 2;
-              -webkit-box-orient: vertical;
-              line-height: 20px;
-              height: 40px;
-            }
+          .operation-btn.showbtn{
+            display: block;
           }
         }
-          .form-content-cn{
-            .el-form-item:first-child{
-              .el-form-item__content{
-                font-size: 22px;
-                color: #333333;
-              }
-            }
-            .el-form-item:nth-child(2),.el-form-item:nth-child(3){
-              .el-form-item__content{
-                font-size: 18px;
-                color: #666666;
-              }
-            }
-            .el-form-item:nth-child(4){
-              .el-form-item__content{
-                padding-left: 5%;
-              }
-            }
-          }
-          .form-content-en{
-            .el-form-item:first-child{
-              .el-form-item__content{
-                font-size: 16px;
-                color: #333333;
-              }
-            }
-            .el-form-item:nth-child(2),.el-form-item:nth-child(3){
-              .el-form-item__content{
-                font-size: 14px;
-                color: #666666;
-              }
-            }
-            .el-form-item:nth-child(4){
-              .el-form-item__content{
-                padding-left: 5%;
-              }
-            }
-          }
+      }
+      .content:hover{
+        box-shadow: 0 0 35px rgba(27, 7, 118, 0.23);
+        background: #faf9ff
+      }
+      .bgOne,.bgTwo,.bgThree,.bgFour{
+        background-size:100% 100%;
+      }
+      .bgOne{
+        background-image: url('../../assets/images/bgOne.png');
+      }
+      .bgTwo{
+        background-image: url('../../assets/images/bgTwo.png');
+      }
+      .bgThree{
+        background-image: url('../../assets/images/bgThree.png');
+      }
+      .bgFour{
+        background-image: url('../../assets/images/bgFour.png');
       }
     }
     @media screen and (max-width: 1180px) {

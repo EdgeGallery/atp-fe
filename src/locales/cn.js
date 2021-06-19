@@ -232,8 +232,9 @@ const cn = {
   userpage: {
     selectScene: '选择用例场景',
     contribution: '贡献测试用例',
-    seeDetail: '查看用例详情',
+    seeDetail: '查看用例',
     caseDetail: '用例详情',
+    selectTestScene: '选择场景',
     name: '用例名称',
     status: '用例状态',
     type: '类型',
