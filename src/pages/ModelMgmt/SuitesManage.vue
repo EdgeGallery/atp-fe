@@ -79,7 +79,7 @@
             :key="item.nameEn"
             class="curp"
             @click="selectedCondition(item,index)"
-            :class="{'selected': item.select}"
+            :class="{'selected': selectIndex===index}"
           >{{ language == 'cn' ? item.nameCh : item.nameEn }}</span>
         </div>
         <div
@@ -492,7 +492,7 @@ export default {
       form: {
         locale: '',
         name: '',
-        scenarioIdList: []
+        scenarioIdList: ''
       },
       options: [],
       testScenes: [],
@@ -523,7 +523,8 @@ export default {
         ]
       },
       activeInfo: -1,
-      active: []
+      active: '',
+      selectIndex: -1
     }
   },
   methods: {
@@ -531,15 +532,13 @@ export default {
       this.activeInfo = index
     },
     selectedCondition (item, index) {
-      item.select = !item.select
-      this.active = []
-      this.options.forEach(options => {
-        if (options.select && this.active.indexOf(options) === -1) {
-          this.active.push(options.id)
-        }
-      })
-      this.active = [...new Set(this.active)]
-      this.form.scenarioIdList = this.active
+      if (this.form.scenarioIdList === item.id) {
+        this.selectIndex = -1
+        this.form.scenarioIdList = ''
+      } else {
+        this.selectIndex = index
+        this.form.scenarioIdList = item.id
+      }
       this.getAllSuites()
     },
     async getAllSuites () {
@@ -582,9 +581,10 @@ export default {
       this.form = {
         locale: '',
         name: '',
-        scenarioIdList: []
+        scenarioIdList: ''
       }
       this.getAllSuites()
+      this.selectIndex = -1
     },
     handleClose () {
       this.addTestSuiteVisible = false
@@ -612,8 +612,7 @@ export default {
         let obj = {
           id: '',
           nameCh: '',
-          nameEn: '',
-          select: false
+          nameEn: ''
         }
         obj.id = item.id
         obj.nameCh = item.nameCh
