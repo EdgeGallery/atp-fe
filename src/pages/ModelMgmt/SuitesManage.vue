@@ -28,18 +28,6 @@
               size="small"
               @change="getAllSuites"
             />
-            <el-select
-              v-model="form.scenarioIdList"
-              :placeholder="$t('userpage.selectScene')"
-              size="small"
-            >
-              <el-option
-                v-for="item in options"
-                :key="item.nameCh"
-                :label="language == 'cn' ? item.nameCh : item.nameEn"
-                :value="item.id"
-              />
-            </el-select>
             <el-button
               class="light-button"
               size="small"
@@ -504,7 +492,7 @@ export default {
       form: {
         locale: '',
         name: '',
-        scenarioIdList: []
+        scenarioIdList: ''
       },
       options: [],
       testScenes: [],
@@ -544,15 +532,19 @@ export default {
     },
     selectedCondition (item, index) {
       item.select = !item.select
-      // this.options.forEach(options => {
-      //   if (options.select) {
-      //     this.active.push(options.nameEn)
-      //   }
-      // })
-      // this.active = [...new Set(this.active)]
+      this.active = []
+      this.options.forEach(options => {
+        if (options.select && this.active.indexOf(options) === -1) {
+          this.active.push(options.id)
+        }
+      })
+      this.active = [...new Set(this.active)]
+      console.log(this.active)
+      this.form.scenarioIdList = this.active.toString()
+      this.getAllSuites()
     },
     async getAllSuites () {
-      await this.fillOptions()
+      // await this.fillOptions()
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       ModelMgmt.getTestSuite(this.form).then(res => {
         this.testSuites = res.data
@@ -615,6 +607,7 @@ export default {
       para.locale = this.language === 'cn' ? 'ch' : 'en'
       await Userpage.getAllSceneApi(para).then(res => {
         this.testScenes = res.data
+        this.getAllSuites()
       })
       this.testScenes.forEach(item => {
         let obj = {
@@ -786,7 +779,8 @@ export default {
     }
   },
   mounted () {
-    this.getAllSuites()
+    this.fillOptions()
+    // this.getAllSuites()
   },
   watch: {
     '$i18n.locale': function () {
