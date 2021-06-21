@@ -492,7 +492,7 @@ export default {
       form: {
         locale: '',
         name: '',
-        scenarioIdList: ''
+        scenarioIdList: []
       },
       options: [],
       testScenes: [],
@@ -539,8 +539,7 @@ export default {
         }
       })
       this.active = [...new Set(this.active)]
-      console.log(this.active)
-      this.form.scenarioIdList = this.active.toString()
+      this.form.scenarioIdList = this.active
       this.getAllSuites()
     },
     async getAllSuites () {

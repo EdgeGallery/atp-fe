@@ -15,8 +15,10 @@
  */
 
  @font-face {  
-  font-family: 'fzltqh';
-  src: url('../fonts/方正兰亭纤黑.ttf');
+  /* font-family: 'fzltqh'; */
+  font-family: 'Harmony-Regular';
+  /* src: url('../fonts/方正兰亭纤黑.ttf'); */
+  src: url('../fonts/Harmony-Regular.ttf');
   font-weight: normal;  
   font-style: normal;  
 }
