@@ -849,19 +849,14 @@ export default {
           img{
             display: block;
           }
-          // .hoverimg{
-          //   display: none;
-          // }
           h4{
             margin-left: 10px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            font-size: 14px;
+            color: #666666;
           }
-          // .hoverh4{
-          //   position: absolute;
-          //   right: 10px;
-          // }
         }
         .content-info{
           p{
@@ -873,7 +868,7 @@ export default {
             white-space: nowrap;
           }
           .description{
-            color: #000;
+            color: #5d6164;
             text-overflow: -o-ellipsis-lastline;
             overflow: hidden;
             text-overflow: ellipsis;

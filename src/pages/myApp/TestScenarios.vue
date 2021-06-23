@@ -552,18 +552,16 @@ export default {
         position: relative;
         background-color: #fcf9ff;
         .scenariosLogo{
-          text-align:center;
-          background-color: #fff;
           .sceneimage{
-            margin: 0 auto;
-            height: 100px;
+            display: block;
+            width: 100%;
+            height: 160px;
           }
           .select-button{
-            img{
               position: absolute;
+              display: block;
               right: -10px;
-              top: -10px;
-            }
+              top: -25px;
           }
         }
         .choose{

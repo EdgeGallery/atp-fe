@@ -88,6 +88,7 @@
                 <div
                   class="operation-btn"
                   :class="{'btnNone':activeInfo===index}"
+                  v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
                 >
                   <el-button
                     size="small"
