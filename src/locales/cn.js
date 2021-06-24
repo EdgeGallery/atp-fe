@@ -221,7 +221,12 @@ const cn = {
     chartTitle: '近六个月扫描统计数据',
     getFail: '获取数据失败',
     Statistics: '数据统计',
-    modelManagement: '测试模型管理'
+    modelManagement: '测试模型管理',
+    viewList: '查看列表',
+    importTitle: '支持批量导入',
+    importIntro: '批量导入：支持批量定义测试场景、测试套、测试用例，更具导入的下载样例编写即可完成一键导入所有测试模型',
+    taskIntro: '所有测试任务清晰保存在任务管理中，方便查看任务，了解进展，查看报告等。让你的管理变得更加轻松，一键查看所有任务...',
+    contributionIntro: '仅供管理员操作,用户贡献的测试用例和脚本都展示在贡献管理列表中,进入列表即可查看详细内容,下载贡献的用例。一键了解所有贡献内容...'
   },
   process: {
     modifyStatus: '修改用例状态'
