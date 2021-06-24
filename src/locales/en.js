@@ -260,7 +260,9 @@ const en = {
     description: 'Description:',
     scene: 'Scenario:',
     import: 'Batch Import',
-    importCase: 'Import test cases'
+    importCase: 'Import test cases',
+    text: 'Text',
+    script: 'Script'
   },
   footer: {
     about: 'About',

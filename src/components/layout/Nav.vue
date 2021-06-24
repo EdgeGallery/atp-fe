@@ -206,13 +206,6 @@ export default {
       showUserInfo: false
     }
   },
-  computed: {
-    getLanguage () {
-      let language
-      this.language === 'cn' ? language = 'English' : language = '中文'
-      return language
-    }
-  },
   watch: {
     $route (to, from) {
       this.activeIndex = to.path
