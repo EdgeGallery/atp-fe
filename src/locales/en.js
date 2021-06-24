@@ -222,7 +222,12 @@ const en = {
     chartTitle: 'Scan Statistics for Past Six Months',
     getFail: 'Failed to Get Data',
     Statistics: 'Statistics',
-    modelManagement: 'Model management'
+    modelManagement: 'Model management',
+    viewList: 'View List',
+    importTitle: 'Support batch import',
+    importIntro: 'Batch import: support batch definition of test scenarios, test suites, and test cases.Contains imported download samples. After writing, you can import all test models with one click',
+    taskIntro: 'All test tasks are clearly saved in task management. Convenient to view tasks, understand progress, view reports, etc. Make your management easier, view all tasks with one click...',
+    contributionIntro: 'Only for administrators. Test cases and scripts contributed by users are displayed in the contribution management list. Enter the list to view the detailed content and download the contributed use cases. One-click understanding of all contributions...'
   },
   process: {
     modifyStatus: 'Modify Case Status'

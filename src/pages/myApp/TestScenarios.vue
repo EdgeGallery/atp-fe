@@ -556,6 +556,7 @@ export default {
             display: block;
             width: 100%;
             height: 160px;
+            border-radius: 20px 20px 0 0;
           }
           .select-button{
               position: absolute;
@@ -614,7 +615,7 @@ export default {
           }
         }
         .choose-button{
-          background-color: #deccfa;
+          background-color: #c4cdf9;
           border-bottom-left-radius: 10px;
           border-bottom-right-radius: 10px;
           height: 48px;
