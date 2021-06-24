@@ -259,7 +259,9 @@ const cn = {
     description: '描述:',
     scene: '场景:',
     import: '批量导入',
-    importCase: '导入测试用例'
+    importCase: '导入测试用例',
+    text: '文本',
+    script: '脚本'
   },
   footer: {
     about: '关于',

@@ -26,6 +26,9 @@ export default {
   data () {
     return {
     }
+  },
+  beforeMount () {
+    localStorage.setItem('language', 'cn')
   }
 }
 </script>

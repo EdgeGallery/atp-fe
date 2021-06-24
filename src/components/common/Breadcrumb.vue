@@ -40,7 +40,8 @@ export default {
   data () {
     return {
       breadCrumbData: [],
-      isShow: false
+      isShow: false,
+      language: localStorage.getItem('language')
     }
   },
   computed: {
@@ -51,6 +52,9 @@ export default {
       this.isShow = false
       this.breadCrumbData = route.meta.breadcrumb
       if (this.breadCrumbData && this.breadCrumbData.length > 0) this.isShow = true
+    },
+    '$i18n.locale': function () {
+      this.language = localStorage.getItem('language')
     }
   },
   methods: {},

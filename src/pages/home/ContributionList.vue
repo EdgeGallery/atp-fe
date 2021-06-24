@@ -69,15 +69,8 @@
             >
               <template
                 slot-scope="scope"
-                v-if="language==='cn'"
               >
-                {{ scope.row.type==='script' ? '脚本' : '文本' }}
-              </template>
-              <template
-                slot-scope="scope"
-                v-else
-              >
-                {{ scope.row.type }}
+                {{ scope.row.type==='script' ? $t('modelmgmt.script') : $t('modelmgmt.text') }}
               </template>
             </el-table-column>
             <el-table-column
@@ -199,7 +192,6 @@ export default {
     },
     getAllcontribution () {
       Taskmgmt.contributionsApi(this.form).then(res => {
-        this.pageData = res.data
         let data = res.data
         this.dataLoading = false
         data.forEach((item, index) => {

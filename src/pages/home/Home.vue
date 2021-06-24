@@ -420,7 +420,7 @@ export default {
     }
     .el-button.view-case{
       position: absolute;
-      bottom: 180px;
+      bottom: 20%;
       left: 6%;
       min-width: 200px;
       height: 60px;
