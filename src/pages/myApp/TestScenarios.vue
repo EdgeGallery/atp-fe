@@ -116,6 +116,7 @@
       :visible.sync="CaseVisible"
       :title="$t('userpage.caseDetail')"
     >
+      <p>{{ scenarioName }}</p>
       <el-collapse
         :value="opened"
         v-if="!testSuitesNocase"
@@ -178,6 +179,8 @@
       <el-form
         :model="addcaseForm"
         label-width="110px"
+        ref="addcaseForm"
+        :rules="rules"
       >
         <el-form-item
           :label="$t('testCase.caseName')"
@@ -187,6 +190,7 @@
             width="100px"
             size="small"
             v-model="addcaseForm.name"
+            maxlength="64"
           />
         </el-form-item>
         <el-form-item
@@ -197,6 +201,7 @@
             v-model="addcaseForm.objective"
             type="textarea"
             autosize
+            maxlength="255"
           />
         </el-form-item>
         <el-form-item
@@ -207,6 +212,7 @@
             v-model="addcaseForm.step"
             type="textarea"
             autosize
+            maxlength="255"
           />
         </el-form-item>
         <el-form-item
@@ -216,6 +222,7 @@
           <el-input
             size="small"
             v-model="addcaseForm.expectResult"
+            maxlength="255"
           />
         </el-form-item>
         <el-form-item
@@ -316,7 +323,28 @@ export default {
         type: '',
         file: []
       },
-      testSuitesNocase: false
+      testSuitesNocase: false,
+      scenarioName: '',
+      rules: {
+        name: [
+          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+        ],
+        objective: [
+          { required: true, message: '请输入测试目的', trigger: 'blur' }
+        ],
+        step: [
+          { required: true, message: '请输入测试步骤', trigger: 'blur' }
+        ],
+        expectResult: [
+          { required: true, message: '请输入测试预期结果', trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '请选择类型', trigger: 'change' }
+        ],
+        file: [
+          { required: true, message: '请选择文件', trigger: 'change' }
+        ]
+      }
     }
   },
   computed: {
@@ -407,6 +435,7 @@ export default {
     },
     getDetail (item) {
       this.CaseVisible = true
+      this.scenarioName = this.language === 'cn' ? item.nameCh : item.nameEn
       let scenarioIds = []
       scenarioIds.push(item.id)
       let fd = new FormData()
@@ -454,45 +483,51 @@ export default {
       })
     },
     confirmAddCase () {
-      let fd = new FormData()
-      let addcaseForm = this.addcaseForm
-      fd.append('name', addcaseForm.name)
-      fd.append('objective', addcaseForm.objective)
-      fd.append('step', addcaseForm.step)
-      fd.append('expectResult', addcaseForm.expectResult)
-      fd.append('type', addcaseForm.type)
-      if (addcaseForm.file.length > 0) {
-        fd.append('file', addcaseForm.file[0])
-      } else {
-        let objFile = new File([], 'kong.java')
-        addcaseForm.file.push(objFile)
-        fd.append('file', addcaseForm.file[0])
-      }
-      Userpage.contributionApi(fd).then(res => {
-        this.$message({
-          showClose: true,
-          duration: 2000,
-          message: this.$t('promptMessage.submitSuccess'),
-          type: 'success'
-        })
-        this.addCaseVisible = false
-        this.addcaseForm = {
-          name: '',
-          objective: '',
-          step: '',
-          expectResult: '',
-          type: '',
-          file: []
-        }
-      }).catch(() => {
-        this.addCaseVisible = false
-        this.addcaseForm = {
-          name: '',
-          objective: '',
-          step: '',
-          expectResult: '',
-          type: '',
-          file: []
+      this.$refs['addcaseForm'].validate((valid) => {
+        if (valid) {
+          let fd = new FormData()
+          let addcaseForm = this.addcaseForm
+          fd.append('name', addcaseForm.name)
+          fd.append('objective', addcaseForm.objective)
+          fd.append('step', addcaseForm.step)
+          fd.append('expectResult', addcaseForm.expectResult)
+          fd.append('type', addcaseForm.type)
+          if (addcaseForm.file.length > 0) {
+            fd.append('file', addcaseForm.file[0])
+          } else {
+            let objFile = new File([], 'kong.java')
+            addcaseForm.file.push(objFile)
+            fd.append('file', addcaseForm.file[0])
+          }
+          Userpage.contributionApi(fd).then(res => {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: this.$t('promptMessage.submitSuccess'),
+              type: 'success'
+            })
+            this.addCaseVisible = false
+            this.addcaseForm = {
+              name: '',
+              objective: '',
+              step: '',
+              expectResult: '',
+              type: '',
+              file: []
+            }
+          }).catch(() => {
+            this.addCaseVisible = false
+            this.addcaseForm = {
+              name: '',
+              objective: '',
+              step: '',
+              expectResult: '',
+              type: '',
+              file: []
+            }
+          })
+        } else {
+          return false
         }
       })
     },
