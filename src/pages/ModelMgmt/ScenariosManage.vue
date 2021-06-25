@@ -755,6 +755,7 @@ export default {
         })
       } else {
         ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
+          this.getAppIcon(res.data)
           this.getAllScene()
           this.clearFormData(this.editTestScenarioForm)
           this.editTestScenarioVisible = false
