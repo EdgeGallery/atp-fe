@@ -76,7 +76,7 @@
           >
             <div class="content">
               <img
-                :src="getAppIcon(item)+getDate()"
+                :src="getAppIcon(item)"
                 alt=""
               >
               <div class="content-info">
@@ -527,11 +527,7 @@ export default {
   },
   methods: {
     getAppIcon (item) {
-      return URL_PREFIX + 'files/' + item.id
-    },
-    getDate () {
-      let nowDate = new Date()
-      return nowDate.getSeconds()
+      return URL_PREFIX + 'files/' + item.id + '?t=' + Math.random()
     },
     hoverList (index) {
       this.activeInfo = index
