@@ -102,7 +102,8 @@ const en = {
     fileEmpty: 'File cannot be empty!',
     nameLength: '1-16 digits in length',
     deleteContrubuteCase: ' Do you want to continue to delete the contribution use case?',
-    confirmdeleteTask: 'Do you want to continue deleting the test task?'
+    confirmdeleteTask: 'Do you want to continue deleting the test task?',
+    moreThan2: 'Can only upload no more than 2MB!'
   },
   common: {
     cancel: 'Cancel',

@@ -76,7 +76,7 @@
           >
             <div class="content">
               <img
-                :src="getAppIcon(item)"
+                :src="getAppIcon(item)+getDate()"
                 alt=""
               >
               <div class="content-info">
@@ -529,6 +529,10 @@ export default {
     getAppIcon (item) {
       return URL_PREFIX + 'files/' + item.id
     },
+    getDate () {
+      let nowDate = new Date()
+      return nowDate.getSeconds()
+    },
     hoverList (index) {
       this.activeInfo = index
     },
@@ -602,7 +606,12 @@ export default {
         }
         if (file.size / 1024 / 1024 > 2) {
           this.$message.warning(this.$t('promptMessage.moreThan2'))
-          this.logoFileList = []
+          // this.logoFileList = []
+          if (this.scenarioIcon.length > 0) {
+            this.chooseScenarioIcon(this.scenarioIcon[0], 0)
+          } else {
+            this.chooseDefaultIcon(this.defaultIcon[0], 0)
+          }
         }
         let fileTypeArr = ['jpg', 'png']
         this.fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
@@ -755,7 +764,6 @@ export default {
         })
       } else {
         ModelMgmt.editTestScenarioApi(fd, this.editId).then(res => {
-          this.getAppIcon(res.data)
           this.getAllScene()
           this.clearFormData(this.editTestScenarioForm)
           this.editTestScenarioVisible = false
@@ -919,7 +927,6 @@ export default {
           border-radius: 12px 12px 0 0;
         }
         .content-info{
-          // opacity: 0.9;
           background: #fff;
           border-radius: 12px;
           position: absolute;

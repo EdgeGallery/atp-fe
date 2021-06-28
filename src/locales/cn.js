@@ -100,7 +100,8 @@ const cn = {
     fileEmpty: '文件不能为空!',
     nameLength: '长度为1-16位',
     deleteContrubuteCase: '是否要继续删除贡献用例?',
-    confirmdeleteTask: '是否要继续删除测试任务?'
+    confirmdeleteTask: '是否要继续删除测试任务?',
+    moreThan2: '只能上传不超过2MB的文件！'
   },
   common: {
     cancel: '取消',
