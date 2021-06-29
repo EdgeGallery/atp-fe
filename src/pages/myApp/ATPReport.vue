@@ -350,7 +350,7 @@ export default {
     },
     drawLeftLine () {
       let Chart = this.$echarts.init(document.getElementById('leftchart'))
-      let colors = ['#a000ff', '#ffd65e', '#616cf7', '#ff509f', '#9ed0c9']
+      let colors = ['#d3b6ff', '#ffd65e', '#616cf7', '#ff509f', '#9ed0c9']
       let option = {
         color: colors,
         legend: {

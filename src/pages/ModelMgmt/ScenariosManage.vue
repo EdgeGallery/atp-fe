@@ -80,7 +80,9 @@
                 alt=""
               >
               <div class="content-info">
-                <p> {{ language === 'cn' ? item.nameCh :item.nameEn }}</p>
+                <p class="name">
+                  {{ language === 'cn' ? item.nameCh :item.nameEn }}
+                </p>
                 <span
                   class="description"
                   :class="{'showall':activeInfo===index}"
@@ -566,6 +568,7 @@ export default {
         base64Session: false,
         defaultActive: ''
       }
+      this.scenarioIcon = []
     },
     onclickAdd () {
       this.addTestScenarioForm = {
@@ -930,7 +933,7 @@ export default {
           bottom: 0px;
           z-index: 2;
           padding: 20px 20px 10px;
-          p{
+          .name{
             font-size: 20px;
             color: #111;
             margin-bottom: 7px;
@@ -969,6 +972,9 @@ export default {
       }
       .content:hover{
         box-shadow: 0 0 35px rgba(27, 7, 118, 0.23);
+      }
+      .content:hover .name{
+        white-space: normal;
       }
     }
     @media screen and (max-width: 1180px) {

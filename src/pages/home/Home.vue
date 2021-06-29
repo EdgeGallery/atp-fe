@@ -45,15 +45,17 @@
         <div class="mainmodel">
           <div class="title">
             <p class="toptext">
-              测试模型管理
+              {{ $t('home.modelManagement') }}
             </p>
-            <p class="bottomtext">
-              Model management
-            </p>
+            <p class="bottomtext" />
           </div>
           <div class="detailinfo">
-            <p>{{ $t('home.importTitle') }}</p>
-            <p>{{ $t('home.importIntro') }}</p>
+            <p class="importTitle">
+              {{ $t('home.importTitle') }}
+            </p>
+            <p class="importIntro">
+              {{ $t('home.importIntro') }}
+            </p>
           </div>
         </div>
         <div class="modelList">
@@ -126,11 +128,9 @@
         <div class="infoText">
           <div class="title">
             <p class="toptext">
-              任务管理
+              {{ $t('atp.taskManage') }}
             </p>
-            <p class="bottomtext">
-              ask Management
-            </p>
+            <p class="bottomtext" />
             <p class="task-des">
               {{ $t('home.taskIntro') }}
             </p>
@@ -164,11 +164,9 @@
             style="padding-left:5%;"
           >
             <p class="toptext">
-              贡献管理
+              {{ $t('nav.contributionMgmt') }}
             </p>
-            <p class="bottomtext">
-              Contribution Management
-            </p>
+            <p class="bottomtext" />
             <p class="task-des">
               {{ $t('home.contributionIntro') }}
             </p>
@@ -187,11 +185,9 @@
         <div class="left">
           <div class="title">
             <p class="toptext">
-              数据统计
+              {{ $t('home.Statistics') }}
             </p>
-            <p class="bottomtext">
-              Statistics
-            </p>
+            <p class="bottomtext" />
             <p
               class="leftdetail"
             >
@@ -330,7 +326,6 @@ export default {
           axisLabel: {
             fontSize: 24,
             color: '#52278b'
-            // fontWeight: 'lighter'
           }
         },
         yAxis: {
@@ -417,6 +412,7 @@ export default {
     img{
       width: 100%;
       display: block;
+      min-height: 500px;
     }
     .el-button.view-case{
       position: absolute;
@@ -445,11 +441,17 @@ export default {
     padding: 100px 0;
     .mainmodel{
       display: flex;
+      align-items: center;
       .detailinfo{
         padding-left: 50px;
         border-left: 2px solid #987cbb;
-        p{
-          font-size: 22px;
+
+        .importTitle{
+          font-size: 20px;
+          color: #280b4f;
+        }
+        .importIntro{
+          font-size: 16px;
           color: #280b4f;
         }
       }
@@ -547,7 +549,6 @@ export default {
       display: block;
       width: 100%;
     }
-
   }
   .statisticdata{
     height: 720px;
@@ -559,6 +560,7 @@ export default {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
+        padding-right: 0;
       }
       width: 20%;
       .lefttext{
@@ -596,8 +598,12 @@ export default {
         color: #380879;
        }
       .bottomtext{
-        font-size: 22px;
-        color: #280b4f;
+        text-align: center;
+        width: 120px;
+        height: 7px;
+        background-color: #9e7bcd;
+        border-radius: 5px;
+        margin-top: 10px;
       }
     }
 </style>

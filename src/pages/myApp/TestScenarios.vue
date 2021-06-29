@@ -69,7 +69,6 @@
             <div class="choose">
               <el-form
                 label-width="auto"
-                :class="language === 'cn' ?'form-content-cn' :'form-content-en'"
               >
                 <el-form-item :label="$t('modelmgmt.name')">
                   {{ language==='cn'?item.nameCh:item.nameEn }}
@@ -582,7 +581,6 @@ export default {
       width: 25%;
       padding: 0 15px 25px;
       .scene{
-        box-shadow: 0 0 10px 2px #e8e6f1;
         border-radius: 20px;
         position: relative;
         background-color: #fcf9ff;
@@ -613,32 +611,12 @@ export default {
                 margin-bottom: 0;
                 .el-form-item__content{
                   max-width: calc(100% - 100px);
+                  font-size: 16px;
+                  color: #303133;
                   overflow: hidden;
                   text-overflow: ellipsis;
                   white-space: nowrap;
                 }
-
-            }
-            .form-content-cn{
-              .el-form-item:first-child{
-                .el-form-item__content{
-                  font-size: 20px;
-                  color: #333333;
-                }
-              }
-            }
-            .form-content-en{
-              .el-form-item:first-child{
-                .el-form-item__content{
-                  font-size: 16px;
-                  color: #333333;
-                }
-              }
-            }
-            .el-form-item:nth-child(3){
-              .el-form-item__content{
-                margin-left: 0 !important;
-              }
             }
           }
           img{
@@ -653,11 +631,11 @@ export default {
           background-color: #c4cdf9;
           border-bottom-left-radius: 10px;
           border-bottom-right-radius: 10px;
-          height: 48px;
-          line-height: 48px;
+          height: 36px;
+          line-height: 36px;
           text-align: center;
           .el-button--text {
-            font-size: 20px;
+            font-size: 16px;
             color: #000000;
             padding: 2% 5%;
           }
@@ -684,6 +662,11 @@ export default {
   }
 }
 .el-dialog__body{
+  p{
+    font-size: 18px;
+    padding-bottom: 10px;
+    color: #6186f1;
+  }
   .el-collapse {
      padding: 0;
       .el-collapse-item__header{
