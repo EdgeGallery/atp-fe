@@ -366,6 +366,7 @@ export default {
         padding-bottom: 2px;
         border-radius: 6px;
         top: 30px;
+        z-index: 100;
         span{
           display: inline-block;
           width: 100%;

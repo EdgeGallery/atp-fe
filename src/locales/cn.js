@@ -207,9 +207,9 @@ const cn = {
     provideTestSuite: '选择测试套',
     provideTestType: '选择用例类型',
     provideNameSearch: '请输入名称搜索',
-    testScenarioIntro: '测试场景是测试的最大单元集，一个测试场景可以包含多个测试套。',
-    testSuiteIntro: '测试套是测试类型的分类，一个测试套可以属于一个或者多个测试场景，一个测试套可以包含多个测试用例。',
-    testCaseIntro: '测试用例是测试的最小执行单元，一个测试用例可以属于一个或者多个测试套。',
+    testScenarioIntro: '测试场景是测试的最大单元集,是一组测试套的集合。',
+    testSuiteIntro: '是一组相关测试用例的集合,一个测试套可以属于一个或者多个测试场景，一个测试套可以包含多个测试用例。',
+    testCaseIntro: '测试用例是测试的最小执行单元。',
     pleaseInput: '请输入'
   },
   home: {
@@ -219,15 +219,15 @@ const cn = {
     bannerText3: '测试过程可视化',
     staReport: '统计报告',
     totalNum: '扫描总数',
-    chartTitle: '近六个月扫描统计数据',
+    chartTitle: '近六个月扫描次数',
     getFail: '获取数据失败',
     Statistics: '数据统计',
     modelManagement: '测试模型管理',
     viewList: '查看列表',
     importTitle: '支持批量导入',
-    importIntro: '批量导入：支持批量定义测试场景、测试套、测试用例，更具导入的下载样例编写即可完成一键导入所有测试模型',
-    taskIntro: '所有测试任务清晰保存在任务管理中，方便查看任务，了解进展，查看报告等。让你的管理变得更加轻松，一键查看所有任务...',
-    contributionIntro: '仅供管理员操作,用户贡献的测试用例和脚本都展示在贡献管理列表中,进入列表即可查看详细内容,下载贡献的用例。一键了解所有贡献内容...'
+    importIntro: '根据样例,编写完成后即可一键导入',
+    taskIntro: '所有测试任务清晰保存在任务管理中，方便查看任务，了解进展，查看报告等,让你的管理变得更加轻松。',
+    contributionIntro: '仅供管理员操作,用户贡献的测试用例和脚本都展示在贡献管理列表中,进入列表即可查看详细内容,下载贡献的用例。'
   },
   process: {
     modifyStatus: '修改用例状态'

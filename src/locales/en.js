@@ -207,9 +207,9 @@ const en = {
     provideTestSuite: 'Please select Test Suites',
     provideTestType: 'Please select Test Type',
     provideNameSearch: 'Please enter a name to search',
-    testScenarioIntro: 'The test scenario is the largest unit set of the test, a test scenario can contain multiple test suites.',
-    testSuiteIntro: 'A test suite is a classification of test types. A test suite can belong to one or more test scenarios, and a test suite can contain multiple test cases.',
-    testCaseIntro: 'A test case is the smallest execution unit of a test. A test case can belong to one or more test suites.',
+    testScenarioIntro: 'The test scenario is the largest set of units tested. Is a collection of test suites.',
+    testSuiteIntro: 'Is a collection of related test cases. A test suite can belong to one or more test scenarios, and a test suite can contain multiple test cases.',
+    testCaseIntro: 'The test case is the smallest execution unit of the test.',
     pleaseInput: 'Please Input'
 
   },
@@ -220,15 +220,15 @@ const en = {
     bannerText3: 'Visualized Test Process',
     staReport: 'Statistical Report',
     totalNum: 'Total Number of Scans',
-    chartTitle: 'Scan Statistics for Past Six Months',
+    chartTitle: 'Number of scans in the past six months',
     getFail: 'Failed to Get Data',
     Statistics: 'Statistics',
     modelManagement: 'Model management',
     viewList: 'View List',
     importTitle: 'Support batch import',
-    importIntro: 'Batch import: support batch definition of test scenarios, test suites, and test cases.Contains imported download samples. After writing, you can import all test models with one click',
-    taskIntro: 'All test tasks are clearly saved in task management. Convenient to view tasks, understand progress, view reports, etc. Make your management easier, view all tasks with one click...',
-    contributionIntro: 'Only for administrators. Test cases and scripts contributed by users are displayed in the contribution management list. Enter the list to view the detailed content and download the contributed use cases. One-click understanding of all contributions...'
+    importIntro: 'According to the sample, you can import it with one click after writing',
+    taskIntro: 'All test tasks are clearly saved in task management. Convenient to view tasks, understand progress, view reports, etc. Make your management easier.',
+    contributionIntro: 'Only for administrators. Test cases and scripts contributed by users are displayed in the contribution management list. Enter the list to view the detailed content and download the contributed use cases.'
   },
   process: {
     modifyStatus: 'Modify Case Status'
