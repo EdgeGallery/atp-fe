@@ -254,7 +254,8 @@ const en = {
     clickContribution: 'Click to contribute use case',
     choose: 'Please choose',
     failReason: 'Reasons for failure',
-    clickDownloadCase: 'Click to Download the Case'
+    clickDownloadCase: 'Click to Download the Case',
+    contentTip: 'The use case script is packaged into a zip package format and uploaded'
   },
   modelmgmt: {
     name: 'Name:',

@@ -246,6 +246,7 @@
           v-if="addcaseForm.type==='script'"
           :label="$t('testCase.import')"
           prop="file"
+          ref="import"
         >
           <el-upload
             action=""
@@ -266,7 +267,7 @@
             </el-button>
             <el-tooltip
               style="margin-left:10px;"
-              content="用例脚本打包成zip包格式上传"
+              :content="$t('userpage.contentTip')"
               placement="right"
             >
               <em class="el-icon-question" />
@@ -515,20 +516,15 @@ export default {
               file: []
             }
           }).catch(() => {
-            this.addCaseVisible = false
-            this.addcaseForm = {
-              name: '',
-              objective: '',
-              step: '',
-              expectResult: '',
-              type: '',
-              file: []
-            }
+            this.cancelClose()
           })
         } else {
           return false
         }
       })
+      if (this.addcaseForm.file.length !== 0) {
+        this.$refs.import.clearValidate()
+      }
     },
     cancelClose () {
       this.addCaseVisible = false
@@ -548,6 +544,7 @@ export default {
     },
     handleChange (file, fileList) {
       this.addcaseForm.file.push(file.raw)
+      this.$refs.import.clearValidate()
     },
     handleDelte (file, fileList) {
       this.addcaseForm.file = fileList

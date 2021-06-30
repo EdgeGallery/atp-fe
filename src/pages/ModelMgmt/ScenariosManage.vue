@@ -473,7 +473,7 @@ export default {
     return {
       editId: '',
       defaultIcon: [
-        require('../../assets/images/logo.png')
+        require('../../assets/images/defaulticon.png')
       ],
       scenarioIcon: [],
       uploadIcon: false,
@@ -529,7 +529,11 @@ export default {
   },
   methods: {
     getAppIcon (item) {
-      return URL_PREFIX + 'files/' + item.id + '?t=' + Math.random()
+      return URL_PREFIX + 'files/' + item.id + '?t=' + this.getDate()
+    },
+    getDate () {
+      let date = new Date()
+      return date.getSeconds()
     },
     hoverList (index) {
       this.activeInfo = index
