@@ -253,7 +253,8 @@ const cn = {
     clickContribution: '点击贡献用例',
     choose: '请选择',
     failReason: '失败理由',
-    clickDownloadCase: '点击下载用例'
+    clickDownloadCase: '点击下载用例',
+    contentTip: '用例脚本打包成zip包格式上传'
   },
   modelmgmt: {
     name: '名称:',

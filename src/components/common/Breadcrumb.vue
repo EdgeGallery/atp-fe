@@ -35,7 +35,6 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -43,9 +42,6 @@ export default {
       isShow: false,
       language: localStorage.getItem('language')
     }
-  },
-  computed: {
-    // ...mapState(['language'])
   },
   watch: {
     $route (route) {

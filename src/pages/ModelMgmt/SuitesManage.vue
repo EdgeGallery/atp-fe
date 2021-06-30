@@ -869,7 +869,6 @@ export default {
           }
           .description{
             color: #5d6164;
-            text-overflow: -o-ellipsis-lastline;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
