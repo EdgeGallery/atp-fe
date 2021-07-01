@@ -288,7 +288,7 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          padding: 10,
+          padding: 0,
           backgroundColor: '#ffffff',
           axisPointer: {
             type: 'line',
@@ -303,12 +303,38 @@ export default {
             color: '#380879',
             fontSize: 24
           },
-          shadowBlur: 5,
-          shadowOffsetY: 5,
-          shadowOffsetX: 2,
-          shadowColor: '#ffffff',
-          shadowStyle: {
-            opacity: 0.3
+          formatter: function (params) {
+            let year = params[0].name.split('-')[0]
+            let month = params[0].name.split('-')[1]
+            let data = params[0].data
+            var tipHtml = ''
+            if (localStorage.getItem('language') === 'en') {
+              tipHtml = `<div style="background-color:#fff;width: 165px;height:85px;padding:5px 10px;box-shadow: 5px 5px 10px rgba(56, 8, 121, 0.1);">
+        <p style="color:380879;font-size:32px;">` +
+           `${data}` + `
+        </p>
+        <p style="color:380879;font-size:24px;">
+          <span>` + `${year}` + `</span>
+          <span>Y</span>
+          <span>` + `${month}` + `</span>
+          <span>M</span>
+        </p>
+      </div>`
+            } else {
+              tipHtml = `<div style="background-color:#fff;width: 165px;height:85px;padding:5px 10px;box-shadow: 5px 5px 10px rgba(56, 8, 121, 0.1);">
+        <p style="color:380879;font-size:32px;">
+          ` +
+           `${data}` + `
+        </p>
+        <p style="color:380879;font-size:24px;">
+          <span>` + `${year}` + `</span>
+          <span>年</span>
+          <span>` + `${month}` + `</span>
+          <span>月</span>
+        </p>
+      </div>`
+            }
+            return tipHtml
           }
         },
         xAxis: {
@@ -329,7 +355,6 @@ export default {
           }
         },
         yAxis: {
-          // name: '测试数量',
           type: 'value',
           splitLine: {
             show: true,
