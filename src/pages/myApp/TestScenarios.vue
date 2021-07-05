@@ -51,7 +51,7 @@
               <el-button
                 class="select-button"
                 type="text"
-                :disabled="item.nameEn==='EdgeGallery Community Scenario'"
+                :disabled="item.nameEn==='China Unicom Scenario'"
                 @click="chooseScene(item)"
               >
                 <img
@@ -89,7 +89,7 @@
               <span class="middleLine" />
               <el-button
                 type="text"
-                :disabled="item.nameEn==='EdgeGallery Community Scenario'"
+                :disabled="item.nameEn==='China Unicom Scenario'"
                 class="curp"
                 @click="chooseScene(item)"
               >
@@ -387,7 +387,7 @@ export default {
       Userpage.getAllSceneApi().then(res => {
         let data = res.data
         data.forEach(item => {
-          if (item.nameEn === 'EdgeGallery Community Scenario') {
+          if (item.nameEn === 'China Unicom Scenario') {
             item.selected = true
           } else {
             item.selected = false
