@@ -22,7 +22,7 @@
     <div class="report-content padding20">
       <div class="logo">
         <img
-          src="../../assets/images/logo.png"
+          src="../../assets/images/unicom.png"
           alt=""
         >
         <h3> {{ $t('report.testReport') }}</h3>
