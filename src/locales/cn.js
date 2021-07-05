@@ -38,7 +38,7 @@ const cn = {
     provider: '供应商'
   },
   report: {
-    testReport: 'EdgeGallery测试认证报告',
+    testReport: '联通测试认证报告',
     downloadReport: '下载报告',
     reportanalysis: '测试报告分析',
     version: '版本',
