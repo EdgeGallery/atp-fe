@@ -51,7 +51,6 @@
               <el-button
                 class="select-button"
                 type="text"
-                :disabled="item.nameEn==='China Unicom Scenario'"
                 @click="chooseScene(item)"
               >
                 <img
@@ -89,7 +88,6 @@
               <span class="middleLine" />
               <el-button
                 type="text"
-                :disabled="item.nameEn==='China Unicom Scenario'"
                 class="curp"
                 @click="chooseScene(item)"
               >
