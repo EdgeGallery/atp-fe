@@ -517,8 +517,7 @@ export default {
       deleteId: '',
       rules: {
         nameCh: [
-          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' },
-          { pattern: /^[\da-zA-Z_\u4e00-\u9f5a]{1,16}$/, message: this.$t('promptMessage.nameLength') }
+          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
         ],
         descriptionCh: [
           { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }

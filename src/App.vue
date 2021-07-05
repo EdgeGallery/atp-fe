@@ -28,7 +28,10 @@ export default {
     }
   },
   beforeMount () {
-    localStorage.setItem('language', 'cn')
+    if (!localStorage.getItem('language')) { localStorage.setItem('language', 'cn') }
+  },
+  beforeDestroy () {
+    localStorage.removeItem('language')
   }
 }
 </script>
