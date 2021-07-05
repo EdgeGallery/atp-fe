@@ -24,7 +24,8 @@ const message = {
   en, cn
 }
 
-let language = 'cn'
+if (!localStorage.getItem('language')) { localStorage.setItem('language', 'cn') }
+let language = localStorage.getItem('language')
 const i18n = new VueI18n({
   locale: language,
   messages: message
