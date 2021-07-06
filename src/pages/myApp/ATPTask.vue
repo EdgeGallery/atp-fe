@@ -58,7 +58,7 @@
             size="small"
             class="dark-button"
             @click="deleteTask"
-            :disabled="taskIds.length===0?true:false"
+            :disabled="ids.length===0?true:false"
           >
             {{ $t('common.delete') }}
           </el-button>
@@ -283,7 +283,7 @@ export default {
       telnetid: '',
       dataLoading: true,
       currentData: [],
-      taskIds: [],
+      ids: [],
       userId: sessionStorage.getItem('userId'),
       userName: sessionStorage.getItem('userName'),
       authorities: sessionStorage.getItem('authorities'),
@@ -342,9 +342,9 @@ export default {
       window.open(routeData.href, '_blank')
     },
     handleSelectionChange (val) {
-      this.taskIds = []
+      this.ids = []
       val.forEach(item => {
-        this.taskIds.push(item.id)
+        this.ids.push(item.id)
       })
     },
     contrastTime () {
@@ -403,7 +403,7 @@ export default {
     confirmDeleteTask () {
       this.deleteVisible = false
       let param = {
-        taskIds: this.taskIds
+        ids: this.ids
       }
       Taskmgmt.deleteTaskApi(param).then(res => {
         this.$message({
