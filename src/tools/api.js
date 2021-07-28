@@ -178,6 +178,10 @@ let Userpage = {
   contributionApi: function (params) {
     let url = 'contributions'
     return POST(url, params)
+  },
+  uploadReportApi: function (taskId, params) {
+    let url = 'tasks/' + taskId + '/action/upload-report'
+    return POST(url, params)
   }
 }
 
