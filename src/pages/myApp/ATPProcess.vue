@@ -23,6 +23,14 @@
         class="back"
       >
         <el-button
+          :disabled="report || userName==='guest'"
+          class="light-button"
+          icon="el-icon-upload"
+          @click="uploadPdfVisible=true"
+        >
+          {{ $t('userpage.uploadReport') }}
+        </el-button>
+        <el-button
           :disabled="report"
           id="back_button"
           class="dark-button"
@@ -292,6 +300,50 @@
             </el-button>
           </div>
         </el-dialog>
+        <el-dialog
+          :visible.sync="uploadPdfVisible"
+          width="30%"
+          class="uploadPdfDialog"
+        >
+          <div class="uploadReport">
+            <img
+              src="../../assets/images/uploadReport.png"
+              alt=""
+            >
+            <div class="uploadpdf">
+              自测报告上传
+            </div>
+            <p>若有自测报告，可在此处上传报告</p>
+            <span>(报告文件必须为pdf格式)</span>
+          </div>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button
+              style="margin-right:40px;"
+              @click="uploadPdfVisible=false"
+              class="light-button"
+            >
+              以后再说
+            </el-button>
+            <el-upload
+              :show-file-list="false"
+              action=""
+              :limit="1"
+              :auto-upload="false"
+              :file-list="pdfFile"
+              accept=".pdf"
+              :on-change="handleChangePdf"
+            >
+              <el-button
+                class="dark-button"
+              >
+                立即上传
+              </el-button>
+            </el-upload>
+          </div>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -336,7 +388,9 @@ export default {
       authorities: [],
       carouselHeight: '',
       alltestCase: [],
-      scoreColor: ''
+      scoreColor: '',
+      uploadPdfVisible: false,
+      pdfFile: []
     }
   },
   beforeMount () {
@@ -403,6 +457,7 @@ export default {
       Userpage.getTaskApi(this.taskId).then(res => {
         let data = res.data.testScenarios
         let taskStatus = res.data.status
+        let reportPath = res.data.hasOwnProperty('reportPath')
         this.testScenarios = data
         this.setCollaspe()
         this.setCollaspe = function () {}
@@ -465,7 +520,7 @@ export default {
         this.percentage = Number(((allsuccessNum + allfailNum) / allNum * 100).toFixed(0))
         this.allfailNum = allfailNum
         // 页面标题显示和class
-        this.IsFinish()
+        this.IsFinish(reportPath)
         this.setTitle(taskStatus, data)
         // 判断是否只剩下手动类型
         let everyBoolan = this.alltestCase.some(function (item) {
@@ -489,12 +544,15 @@ export default {
         this.clearInterval()
       })
     },
-    IsFinish () {
+    IsFinish (reportPath) {
       if (this.percentage === 100) {
         this.report = false
         this.isTest = 'finished'
         this.activeName = this.finishActiveName
         this.clearInterval()
+        if (this.userName !== 'guest' && !reportPath) {
+          this.uploadPdfVisible = true
+        }
       } else {
         this.statusTitle = ['正在测试...', 'Testing...']
         this.isTest = 'running'
@@ -588,6 +646,23 @@ export default {
     clearInterval () {
       clearTimeout(this.interval)
       this.interval = null
+    },
+    // pdf
+    handleChangePdf (file, fileList) {
+      this.pdfFile.push(file.raw)
+      let fd = new FormData()
+      fd.append('file', this.pdfFile[0])
+      if (this.pdfFile.length > 0) {
+        this.uploadPdfVisible = false
+        Userpage.uploadReportApi(this.taskId, fd).then(res => {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: this.$t('promptMessage.uploadSuc'),
+            type: 'success'
+          })
+        })
+      }
     }
   },
   beforeDestroy () {
@@ -817,5 +892,30 @@ export default {
 }
   .el-tooltip__popper.is-light{
     border: 1px solid #688ef3!important;
+  }
+  .uploadPdfDialog{
+    .el-dialog__header {
+      border: none;
+    }
+    .uploadReport{
+      text-align: center;
+      .uploadpdf{
+        font-size: 24px;
+        color: #333333;
+      }
+      p{
+        font-size: 18px;
+        color: #666666;
+        padding: 5px 0;
+      }
+      span{
+        font-size: 14px;
+        color: #666666;
+      }
+    }
+    .dialog-footer{
+      display: flex;
+      justify-content: center;
+    }
   }
 </style>

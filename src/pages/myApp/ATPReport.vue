@@ -38,6 +38,9 @@
           </el-button>
         </div>
       </div>
+      <p class="reportTitle">
+        {{ $t('userpage.platformReport') }}
+      </p>
       <div class="baseInfo padding20">
         <div class="title">
           <div class="title-text">
@@ -207,21 +210,77 @@
         </div>
       </div>
     </div>
+    <div v-if="pdfShow">
+      <p
+        class="reportTitle"
+      >
+        {{ $t('userpage.applicationReport') }}
+      </p>
+      <div
+        class="pdf-main"
+        v-show="printShow"
+      >
+        <div class="totalnum">
+          <span class="curp"> {{ $t('userpage.pageNum') }}:{{ pageNum }}/{{ pageTotalNum }}</span>
+        </div>
+        <div class="pdf-content">
+          <div class="pagearrow">
+            <span
+              class="el-icon-arrow-left"
+              @click.stop="prePage"
+            />
+          </div>
+          <div
+            class="pdf"
+          >
+            <pdf
+              ref="pdf"
+              :src="pdfUrl"
+              :page="pageNum"
+              @num-pages="pageTotalNum=$event"
+              @error="pdfError($event)"
+              @link-clicked="page = $event"
+            />
+          </div>
+          <div class="pagearrow">
+            <span
+              class="el-icon-arrow-right"
+              @click.stop="nextPage"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        v-show="!printShow"
+        style="box-shadow: 0 0 10px 2px #e8e6f1;margin: 20px;"
+      >
+        <pdf
+          v-for="i in numPages"
+          :key="i"
+          :src="pdfUrl"
+          :page="i"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { Userpage } from '../../tools/api.js'
+import pdf from 'vue-pdf'
 
 export default {
   name: 'Atpreport',
+  components: {
+    pdf
+  },
   data () {
     return {
       testScenarios: [],
       language: '',
       activeName: [],
       resulticon: '',
-      htmlTitle: 'report',
+      htmlTitle: '',
       currUrl: window.location.href,
       taskId: '',
       scenarioId: '',
@@ -229,7 +288,13 @@ export default {
       ChartData: [],
       finishActiveName: [],
       downloadBtn: true,
-      interval: ''
+      interval: '',
+      pdfUrl: '',
+      pdfShow: true,
+      printShow: true,
+      pageNum: 1,
+      pageTotalNum: 1,
+      numPages: 1
     }
   },
   mounted () {
@@ -269,8 +334,17 @@ export default {
     getReport () {
       Userpage.getTaskApiV2(this.taskId).then(res => {
         let data = res.data.data
-        // 基本信息显示
+        // pdf report
+        if (data.reportPath) {
+          this.pdfShow = true
+          this.pdfUrl = this.currUrl.split('#')[0] + 'mec-atp' + data.reportPath
+          this.getNumPages(this.pdfUrl)
+        } else {
+          this.pdfShow = false
+        }
+        this.htmlTitle = data.id
         this.tableData.push(data)
+        // 基本信息显示
         if (this.tableData[0].status === 'success') {
           this.resulticon = require('../../assets/images/success.png')
         } else {
@@ -521,10 +595,32 @@ export default {
     downLoadReport () {
       this.activeName = this.finishActiveName
       this.downloadBtn = false
+      this.printShow = false
       setTimeout(() => {
         this.getPdf('#pdfDom')
         this.downloadBtn = true
-      }, 1000)
+        this.printShow = true
+      }, 3000)
+    },
+    // pdf
+    getNumPages (pdfUrl) {
+      this.pdfUrl = pdf.createLoadingTask(pdfUrl)
+      this.pdfUrl.promise.then(pdf => {
+        this.numPages = pdf.numPages
+      }).catch(() => {})
+    },
+    prePage () {
+      let p = this.pageNum
+      p = p > 1 ? p - 1 : this.pageTotalNum
+      this.pageNum = p
+    },
+    nextPage () {
+      let p = this.pageNum
+      p = p < this.pageTotalNum ? p + 1 : 1
+      this.pageNum = p
+    },
+    pdfError (error) {
+      console.error(error)
     }
   }
 }
@@ -674,6 +770,39 @@ export default {
     // .el-table{
     //   font-size: 16px;
     // }
+  }
+  .pdf-main{
+    .totalnum{
+      text-align: center;
+      font-size: xx-large;
+    }
+    .pdf-content{
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      box-shadow: 0 0 10px 2px #e8e6f1;
+      margin: 20px;
+      .pagearrow{
+        font-size: xxx-large;
+      }
+      .pdf{
+        width: 100%;
+      }
+    }
+  }
+  .pdfpage{
+    text-align: center;
+    font-size: xx-large;
+    padding-bottom: 20px;
+    span{
+      padding: 0 20px;
+    }
+  }
+  .reportTitle{
+    color: #380879;
+    padding: 10px;
+    font-size: 30px;
+    font-weight: bolder;
   }
 }
 </style>

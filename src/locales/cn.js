@@ -101,7 +101,8 @@ const cn = {
     nameLength: '长度为1-16位',
     deleteContrubuteCase: '是否要继续删除贡献用例?',
     confirmdeleteTask: '是否要继续删除测试任务?',
-    moreThan2: '只能上传不超过2MB的文件！'
+    moreThan2: '只能上传不超过2MB的文件！',
+    uploadSuc: '上传成功'
   },
   common: {
     cancel: '取消',
@@ -254,7 +255,11 @@ const cn = {
     choose: '请选择',
     failReason: '失败理由',
     clickDownloadCase: '点击下载用例',
-    contentTip: '用例脚本打包成zip包格式上传'
+    contentTip: '用例脚本打包成zip包格式上传',
+    uploadReport: '上传自测报告',
+    platformReport: '平台测试报告',
+    applicationReport: '应用自测报告',
+    pageNum: '页码'
   },
   modelmgmt: {
     name: '名称:',
