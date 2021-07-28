@@ -103,7 +103,8 @@ const en = {
     nameLength: '1-16 digits in length',
     deleteContrubuteCase: ' Do you want to continue to delete the contribution use case?',
     confirmdeleteTask: 'Do you want to continue deleting the test task?',
-    moreThan2: 'Can only upload no more than 2MB!'
+    moreThan2: 'Can only upload no more than 2MB!',
+    uploadSuc: 'Upload Succcess'
   },
   common: {
     cancel: 'Cancel',
@@ -255,7 +256,11 @@ const en = {
     choose: 'Please choose',
     failReason: 'Reasons for failure',
     clickDownloadCase: 'Click to Download the Case',
-    contentTip: 'The use case script is packaged into a zip package format and uploaded'
+    contentTip: 'The use case script is packaged into a zip package format and uploaded',
+    uploadReport: 'Upload self-test report',
+    platformReport: 'Platform test report',
+    applicationReport: 'Application self-test report',
+    pageNum: 'Page Number'
   },
   modelmgmt: {
     name: 'Name:',
