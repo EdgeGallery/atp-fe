@@ -524,9 +524,12 @@ export default {
         this.setTitle(taskStatus, data)
         // 判断是否只剩下手动类型
         let everyBoolan = this.alltestCase.some(function (item) {
-          return (item.result === 'running' && item.type === 'automatic')
+          return (item.result === 'running' && item.type === 'manual')
         })
-        if (!everyBoolan && this.percentage !== 100) {
+        let automaticBoolan = this.alltestCase.some(function (item) {
+          return ((item.result === 'running' || item.result === 'waiting') && item.type === 'automatic')
+        })
+        if (everyBoolan && !automaticBoolan && this.percentage !== 100) {
           this.promptWait()
           this.promptWait = function () {}
         }
