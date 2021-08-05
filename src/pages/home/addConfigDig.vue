@@ -240,6 +240,9 @@ export default {
   methods: {
     closeAddDig () {
       this.$emit('closedig')
+      this.$nextTick(() => {
+        this.$refs['configForm'].resetFields()
+      })
     },
     configParameter () {
       this.configParameterVis = true
@@ -294,12 +297,13 @@ export default {
       }
     },
     confirmData () {
+      let configuration = this.form.configuration.split(';')
       let fd = new FormData()
       fd.append('nameCh', this.form.nameCh)
       fd.append('nameEn', this.form.nameEn)
       fd.append('descriptionCh', this.form.descriptionCh)
       fd.append('descriptionEn', this.form.descriptionEn)
-      fd.append('configuration', this.form.configuration)
+      fd.append('configuration', configuration)
       if (this.operate === 'add') {
         Taskmgmt.createConfigApi(fd).then(res => {
           this.$message({
@@ -309,9 +313,6 @@ export default {
             message: this.$t('promptMessage.addSuccess')
           })
           this.$parent.getConfigList()
-          this.$nextTick(() => {
-            this.$refs['configForm'].resetFields()
-          })
         })
       } else {
         Taskmgmt.modifyConfigApi(this.modifyId, fd).then(res => {
@@ -322,11 +323,11 @@ export default {
             message: this.$t('promptMessage.modifySuccess')
           })
           this.$parent.getConfigList()
-          this.$nextTick(() => {
-            this.$refs['configForm'].resetFields()
-          })
         })
       }
+      this.$nextTick(() => {
+        this.$refs['configForm'].resetFields()
+      })
       this.$emit('closedig')
     },
     closedeletedig () {
