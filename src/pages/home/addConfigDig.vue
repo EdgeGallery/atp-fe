@@ -69,7 +69,7 @@
           <el-col :span="22">
             <el-form-item
               label="配置参数"
-              prop="parameter"
+              prop="configuration"
             >
               <el-input
                 v-model="form.configuration"
@@ -303,7 +303,7 @@ export default {
       fd.append('nameEn', this.form.nameEn)
       fd.append('descriptionCh', this.form.descriptionCh)
       fd.append('descriptionEn', this.form.descriptionEn)
-      fd.append('configuration', configuration)
+      fd.append('configuration', JSON.stringify(configuration))
       if (this.operate === 'add') {
         Taskmgmt.createConfigApi(fd).then(res => {
           this.$message({
