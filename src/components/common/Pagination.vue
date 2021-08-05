@@ -24,7 +24,7 @@
       :current-page="currentPage"
       :page-sizes="pageSizeArr"
       :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
+      layout=" sizes, prev, pager, next,total"
       :total="totalNum"
     />
   </div>
@@ -40,6 +40,10 @@ export default {
     size: {
       type: Number,
       default: 5
+    },
+    listTotal: {
+      default: 0,
+      type: Number
     }
   },
   data () {
@@ -53,11 +57,20 @@ export default {
   watch: {
     tableData (val) {
       this.data = val
-      this.totalNum = val.length
-      this.handleCurrentPageChange(1)
+      if (this.listTotal) {
+        this.totalNum = this.listTotal
+      } else {
+        this.totalNum = val.length
+      }
+      this.returnTableData()
+      let page = sessionStorage.getItem('currentPage') ? Number(sessionStorage.getItem('currentPage')) : 1
+      this.handleCurrentPageChange(page)
     },
-    size (val) {
-      this.handlePageSizeChange(val * 2)
+    // size (val) {
+    //   this.handlePageSizeChange(val * 2)
+    // },
+    listTotal (val) {
+      this.totalNum = val
     }
   },
   computed: {
@@ -73,6 +86,8 @@ export default {
   methods: {
     handlePageSizeChange (val) {
       this.pageSize = val
+      sessionStorage.setItem('currentPage', 1)
+      this.currentPage = 1
       this.returnTableData()
     },
     handleCurrentPageChange (val) {
@@ -83,31 +98,58 @@ export default {
       let start = (this.currentPage - 1) * this.pageSize
       let end = this.currentPage * this.pageSize
       let currentPageData = this.data.slice(start, end)
-      this.$emit('getCurrentPageData', currentPageData)
+      this.$emit('getCurrentPageData', currentPageData, this.pageSize, start)
     }
   }
 }
 
 </script>
 <style lang="less">
-  .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-color: #f7f3ff;
-    color: #9f6dee;
-    border-radius: 50%;
+  .my-pagination{
+    .el-pagination.is-background .btn-prev, .el-pagination.is-background .btn-next, .el-pagination.is-background .el-pager li {
+      min-width: 24px;
+    }
+    .el-input--mini .el-input__inner,.el-pager li,.el-pagination button, .el-pagination span:not([class*=suffix]),.el-pagination__editor.el-input .el-input__inner{
+      height: 24px;
+      line-height: 24px;
+    }
+    .el-pager li:not(.disabled).active {
+      background-color: #5844be!important;
+      color: #fff;
+      border-radius: 50%;
+    }
+    .el-pagination.is-background .el-pager li {
+      background-color: #fff;
+      color: #4e4e4e;
+    }
+    .el-pagination.is-background .btn-prev, .el-pagination.is-background .btn-next{
+      background-color: #fff;
+    }
+    .el-pagination.is-background .el-pager li:not(.disabled):hover {
+      color: #9f6dee;
+    }
+    .el-pagination__total{
+      margin-left: 20px;
+    }
+    .el-pagination .btn-prev .el-icon, .el-pagination .btn-next .el-icon{
+      font-size: large;
+    }
+    .el-pagination__total{
+      color: #333333;
+      font-size: 14px;
+    }
+    .el-pagination .el-select .el-input .el-input__inner{
+      border: none;
+      background-color: #efefef;
+      border-radius: 10px;
+    }
+    .el-select .el-input .el-select__caret{
+      font-size: 18px;
+      color: #000;
+      opacity: 0.4;
+    }
   }
-  .el-pagination.is-background .el-pager li {
-    background-color: #fff;
-    color: #4e4e4e;
-  }
-  .el-pagination.is-background .btn-prev, .el-pagination.is-background .btn-next{
-    background-color: #f7f3ff;
-    color: #4d4d4e;
-    border-radius: 50%;
-  }
-  .el-pagination.is-background .el-pager li:not(.disabled):hover {
-    color: #9f6dee;
-  }
-  .el-pagination.is-background .btn-prev:disabled, .el-pagination.is-background .btn-next:disabled {
-    display: none;
-  }
+    .el-select-dropdown__item.selected{
+      color: #380879 !important;
+    }
 </style>

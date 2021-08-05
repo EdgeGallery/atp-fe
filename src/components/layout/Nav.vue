@@ -18,11 +18,11 @@
   <div id="headerComp">
     <el-row>
       <el-col
-        :span="6"
+        :span="4"
       >
         <div class="logo">
           <img
-            src="../../assets/images/logo.png"
+            src="../../assets/images/logonav.png"
             class="curp"
             @click="jumpTo('/index')"
             alt
@@ -30,7 +30,7 @@
         </div>
       </el-col>
       <el-col
-        :span="11"
+        :span="13"
       >
         <div class="navList">
           <el-menu
@@ -38,7 +38,7 @@
             :unique-opened="true"
             router
             text-color="#fff"
-            background-color="#280b4e"
+            background-color="#5e40c8"
             active-text-color="#fff"
             :default-active="activeIndex"
             @select="handleSelect"
@@ -199,6 +199,13 @@ export default {
           route: '/contributionlist',
           display: true,
           pageId: '4'
+        },
+        {
+          labelEn: 'Configuration Management',
+          labelCn: '配置管理',
+          route: '/configurationlist',
+          display: true,
+          pageId: '5'
         }
       ],
       activeIndex: '/',
@@ -304,7 +311,7 @@ export default {
 #headerComp {
   height: 65px;
   color: #fff;
-  background: #280b4e;
+  background: #5e40c8;
   padding-left: 25px;
   top: 0px;
   width: 100%;
@@ -312,9 +319,10 @@ export default {
   .logo {
     height: 65px;
     line-height: 65px;
-    text-align: center;
+    text-align: right;
+    margin-right: 15px;
     img {
-      height: 65px;
+      margin-top: 20px;
     }
     span {
       font-size: 18px;

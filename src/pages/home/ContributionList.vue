@@ -18,7 +18,10 @@
   <div>
     <Navcomp />
     <div class="contribution padding200">
-      <breadcrumb />
+      <div class="title_top title_left defaultFontBlod">
+        {{ $t('nav.contributionMgmt') }}
+        <span class="line_bot" />
+      </div>
       <div class="main">
         <div class="header flex">
           <div class="search flex">
@@ -161,10 +164,9 @@
 import { Taskmgmt } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
-import breadcrumb from '../../components/common/Breadcrumb.vue'
 export default {
   name: 'Apttask',
-  components: { pagination, Navcomp, breadcrumb },
+  components: { pagination, Navcomp },
   data () {
     return {
       currentData: [],
@@ -262,7 +264,8 @@ export default {
 .contribution{
   .main{
     background: #fff;
-    padding: 15px 10px 35px;
+    padding: 20px 20px 35px;
+    border-radius: 20px;
     .header{
       justify-content: space-between;
       .el-input__inner{

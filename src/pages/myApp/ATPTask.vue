@@ -457,7 +457,7 @@ export default {
 <style lang='less'>
   .task-main {
     background-color: #fff;
-    padding: 15px 10px 35px;
+    padding: 20px 20px 35px;
     .enter-search{
       justify-content: space-between;
       .el-input, .el-select{

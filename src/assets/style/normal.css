@@ -15,12 +15,12 @@
  */
 
  @font-face {  
-  /* font-family: 'fzltqh'; */
   font-family: 'Harmony-Regular';
-  /* src: url('../fonts/方正兰亭纤黑.ttf'); */
   src: url('../fonts/Harmony-Regular.ttf');
-  font-weight: normal;  
-  font-style: normal;  
+}
+@font-face {
+  font-family: 'Harmony-SemiBold';
+  src: url(../fonts/Harmony-SemiBold.ttf);
 }
 html, body, #app{
   height: 100%;
@@ -75,7 +75,9 @@ fieldset:before,fieldset:after {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-
+.defaultFontBlod{
+  font-family: Harmony-SemiBold, Arial, Helvetica, sans-serif;
+}
 .clearfix:after {
     content: ".";
     display: block;
@@ -131,6 +133,25 @@ a{
     padding: 0 56px;
   }
 }
+/* title */
+.title_top {
+  padding: 80px 0 60px!important;
+  position: relative;
+}
+.title_left {
+    margin-left: 140px;
+    font-size: 36px;
+    color: #380879;
+}
+.line_bot{
+  display: block;
+  width: 88px;
+  height: 7px;
+  border-radius: 4px;
+  background: rgba(158, 123, 205, 0.2);
+  margin-top: 15px;
+  flex-shrink: 0;
+}
 
 /* 弹框 */
 .el-dialog__close {
@@ -166,6 +187,9 @@ a{
   border-radius: 10px !important;
   font-size: 14px !important;
 }
+.dark-button .el-button:active,.light-button .el-button:active{
+  border: none !important;
+}
 .light-button{
   border-color:#603994 !important;
   color: #603994 !important;
@@ -178,17 +202,19 @@ a{
 
 /* 表格 */
 .headerStyle{
-  background: #f7f5f9 !important;
-  color: #666666 !important;
+  background: #edeef8 !important;
+  color: #62517a !important;
   padding: 0 !important;
   height: 60px !important;
   line-height: 60px !important;
+  font-size: 18px;
+  font-weight: normal;
 }
-.el-table th:first-child{
+.has-gutter th:first-child{
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
-.el-table th:nth-child(8){
+.has-gutter th:nth-last-child(2){
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
