@@ -17,7 +17,10 @@
   <div>
     <Navcomp />
     <div class="task padding200">
-      <breadcrumb />
+      <div class="title_top title_left defaultFontBlod">
+        {{ $t('atp.taskManage') }}
+        <span class="line_bot" />
+      </div>
       <Atptask :isinternal="isInternal" />
     </div>
   </div>
@@ -25,9 +28,8 @@
 <script>
 import Atptask from '../myApp/ATPTask.vue'
 import Navcomp from '../../components/layout/Nav.vue'
-import breadcrumb from '../../components/common/Breadcrumb.vue'
 export default {
-  components: { Atptask, Navcomp, breadcrumb },
+  components: { Atptask, Navcomp },
   data () {
     return {
       isInternal: true

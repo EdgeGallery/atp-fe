@@ -138,6 +138,27 @@ let Taskmgmt = {
       document.body.appendChild(link)
       link.click()
     })
+  },
+  // config
+  getConfigApi: function (params) {
+    let url = 'configs'
+    return GET(url, params)
+  },
+  createConfigApi: function (params) {
+    let url = 'configs'
+    return POST(url, params)
+  },
+  modifyConfigApi: function (id, params) {
+    let url = 'configs/' + id
+    return PUT(url, params)
+  },
+  deleteConfigApi: function (id) {
+    let url = 'configs/' + id
+    return DELETE(url)
+  },
+  getOneConfigApi: function (id) {
+    let url = 'configs/' + id
+    return GET(url)
   }
 }
 let Userpage = {

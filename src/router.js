@@ -101,6 +101,18 @@ export default new Router({
           }
         },
         {
+          path: 'configurationlist',
+          name: 'configurationlist',
+          component: () => import('./pages/home/Configuration.vue'),
+          meta: {
+            breadcrumb: [{
+              nameEn: en.nav.contributionMgmt,
+              path: '/testcasemanage',
+              nameCn: cn.nav.contributionMgmt
+            }]
+          }
+        },
+        {
           path: 'app/test/task',
           name: 'apttask',
           component: () => import('./pages/myApp/ATPTask.vue')
