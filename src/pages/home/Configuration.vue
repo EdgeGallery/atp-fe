@@ -74,7 +74,12 @@
             <el-table-column
               prop="configuration"
               label="参数"
-            />
+              :show-overflow-tooltip="false"
+            >
+              <template slot-scope="scope">
+                <span>{{ scope.row.configuration | ellipsis }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               :label="$t('myApp.operation')"
               width="180"
@@ -143,6 +148,15 @@ export default {
       operate: '',
       modifyData: {},
       deleteid: ''
+    }
+  },
+  filters: {
+    ellipsis (value) {
+      if (!value) return ''
+      if (value.length > 50) {
+        return value.slice(0, 50) + '...'
+      }
+      return value
     }
   },
   mounted () {

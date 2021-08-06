@@ -92,14 +92,14 @@
           size="small"
           @click="closeAddDig"
         >
-          取消
+          {{ $t('common.cancel') }}
         </el-button>
         <el-button
           class="dark-button"
           size="small"
           @click="confirmData"
         >
-          确认
+          {{ $t('common.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -145,14 +145,14 @@
           size="small"
           @click="configParameterVis=false"
         >
-          取消
+          {{ $t('common.cancel') }}
         </el-button>
         <el-button
           class="dark-button"
           size="small"
           @click="confirmParameterData"
         >
-          确认
+          {{ $t('common.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -178,12 +178,14 @@
         <el-button
           class="light-button"
           @click="closedeletedig"
+          size="small"
         >
           {{ $t('common.cancel') }}
         </el-button>
         <el-button
           class="dark-button"
           @click="confirmDelete"
+          size="small"
         >
           {{ $t('common.confirm') }}
         </el-button>
@@ -238,11 +240,16 @@ export default {
     }
   },
   methods: {
+
     closeAddDig () {
       this.$emit('closedig')
-      this.$nextTick(() => {
-        this.$refs['configForm'].resetFields()
-      })
+      this.form = {
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
+        configuration: ''
+      }
     },
     configParameter () {
       this.configParameterVis = true
@@ -297,15 +304,14 @@ export default {
       }
     },
     confirmData () {
-      let configuration = this.form.configuration.split(';')
-      let fd = new FormData()
-      fd.append('nameCh', this.form.nameCh)
-      fd.append('nameEn', this.form.nameEn)
-      fd.append('descriptionCh', this.form.descriptionCh)
-      fd.append('descriptionEn', this.form.descriptionEn)
-      fd.append('configuration', JSON.stringify(configuration))
+      let params = {}
+      params.nameCh = this.form.nameCh
+      params.nameEn = this.form.nameEn
+      params.descriptionCh = this.form.descriptionCh
+      params.descriptionEn = this.form.descriptionEn
+      params.configuration = this.form.configuration.split(';')
       if (this.operate === 'add') {
-        Taskmgmt.createConfigApi(fd).then(res => {
+        Taskmgmt.createConfigApi(params).then(res => {
           this.$message({
             showClose: true,
             duration: 2000,
@@ -315,7 +321,7 @@ export default {
           this.$parent.getConfigList()
         })
       } else {
-        Taskmgmt.modifyConfigApi(this.modifyId, fd).then(res => {
+        Taskmgmt.modifyConfigApi(this.modifyId, params).then(res => {
           this.$message({
             showClose: true,
             duration: 2000,

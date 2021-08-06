@@ -30,15 +30,9 @@
               prefix-icon="el-icon-search"
               :placeholder="$t('testCase.provideNameSearch')"
               size="small"
+              @clear="getAllcontribution"
               @change="getAllcontribution"
             />
-            <el-button
-              size="small"
-              class="dark-button"
-              @click="getAllcontribution"
-            >
-              {{ $t('myApp.inquire') }}
-            </el-button>
           </div>
           <div>
             <el-button
