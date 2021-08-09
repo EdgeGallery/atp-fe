@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       :visible.sync="addConfigVisible"
-      :title="this.operate==='add'?'新建配置项':'编辑配置项'"
+      :title="this.operate==='add'? $t('home.addConfig'):$t('home.modifyConfig')"
       :close-on-click-modal="false"
       class="addConfig"
     >
@@ -14,7 +14,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item
-              label="中文名称"
+              :label="$t('testCase.nameCn')"
               prop="nameCh"
             >
               <el-input
@@ -28,7 +28,7 @@
             :span="10"
           >
             <el-form-item
-              label="英文名称"
+              :label="$t('testCase.nameEn')"
               prop="nameEn"
             >
               <el-input
@@ -41,7 +41,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item
-              label="中文描述"
+              :label="$t('testCase.descriptionCn')"
               prop="descriptionCh"
             >
               <el-input
@@ -55,7 +55,7 @@
             :span="10"
           >
             <el-form-item
-              label="英文描述"
+              :label="$t('testCase.descriptionEn')"
               prop="descriptionEn"
             >
               <el-input
@@ -68,7 +68,7 @@
         <el-row>
           <el-col :span="22">
             <el-form-item
-              label="配置参数"
+              :label="$t('home.configParam')"
               prop="configuration"
             >
               <el-input
@@ -106,7 +106,7 @@
     <el-dialog
       :visible.sync="configParameterVis"
       width="45%"
-      title="配置参数"
+      :title="$t('home.configParam')"
       :close-on-click-modal="false"
       class="innerSelectConfig"
     >

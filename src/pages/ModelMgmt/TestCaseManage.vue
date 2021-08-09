@@ -131,7 +131,7 @@
             />
             <el-table-column
               prop="configNameList"
-              label="配置项"
+              :label="$t('home.configuration')"
             />
             <el-table-column
               prop="descriptionCh"
@@ -695,7 +695,7 @@ export default {
           })
           item.testSuiteNameList = testSuiteList.toString()
           let configList = []
-          if (item.configIdList.length > 0) {
+          if (item.hasOwnProperty('configIdList')) {
             item.configIdList.forEach(Id => {
               if (this.language === 'cn') {
                 configList.push(this.configCh.get(Id))
