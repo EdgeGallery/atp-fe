@@ -82,9 +82,8 @@
               </div>
             </el-tooltip>
           </div>
-          <div>
+          <div v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1">
             <el-button
-              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               class="light-button"
               size="small"
               @click="excelBringBtn"
@@ -92,7 +91,6 @@
               {{ this.$t('modelmgmt.import') }}
             </el-button>
             <el-button
-              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
               class="dark-button"
               size="small"
               @click="addTestBtn"
@@ -130,6 +128,10 @@
             <el-table-column
               prop="testSuiteNameList"
               :label="$t('testCase.testSuiteList')"
+            />
+            <el-table-column
+              prop="configNameList"
+              label="配置项"
             />
             <el-table-column
               prop="descriptionCh"
@@ -403,6 +405,24 @@
               </a>
             </el-upload>
           </el-form-item>
+          <el-form-item
+            label="配置项"
+            prop="configIdList"
+          >
+            <el-select
+              multiple
+              size="small"
+              v-model="addcaseForm.configIdList"
+              :placeholder="$t('userpage.choose')"
+            >
+              <el-option
+                v-for="item in configList"
+                :key="item.id"
+                :label="language==='cn'?item.nameCh:item.nameEn"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
         </el-form>
         <div
           slot="footer"
@@ -412,6 +432,7 @@
             @click="handleClose"
             style="margin-right:40px;"
             class="light-button"
+            size="small"
           >
             {{ $t('common.cancel') }}
           </el-button>
@@ -419,6 +440,7 @@
             id="upload_package_ipload"
             class="dark-button"
             @click="confirmAddCase"
+            size="small"
           >
             {{ $t('common.confirm') }}
           </el-button>
@@ -529,7 +551,7 @@
 </template>
 
 <script>
-import { Atp, ModelMgmt } from '../../tools/api.js'
+import { Atp, ModelMgmt, Taskmgmt } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 import Navcomp from '../../components/layout/Nav.vue'
 import breadcrumb from '../../components/common/Breadcrumb.vue'
@@ -591,7 +613,8 @@ export default {
         testStepCh: '',
         testStepEn: '',
         type: '',
-        file: []
+        file: [],
+        configIdList: []
       },
       addExcelVisible: false,
       batchForm: {
@@ -602,6 +625,9 @@ export default {
       batchDemo: './batch_import.zip',
       mapCh: new Map(),
       mapEn: new Map(),
+      configCh: new Map(),
+      configEh: new Map(),
+      configList: [],
       kongrules: {
         testSuiteIdList: [
           { required: false }
@@ -653,6 +679,7 @@ export default {
     },
     async getAllcase () {
       await this.getALlSuites()
+      await this.getALlConfig()
       this.allcaseData = []
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       Atp.getAllCaseApi(this.form).then(res => {
@@ -667,6 +694,19 @@ export default {
             }
           })
           item.testSuiteNameList = testSuiteList.toString()
+          let configList = []
+          if (item.configIdList.length > 0) {
+            item.configIdList.forEach(Id => {
+              if (this.language === 'cn') {
+                configList.push(this.configCh.get(Id))
+              } else {
+                configList.push(this.configEh.get(Id))
+              }
+            })
+            item.configNameList = configList.toString()
+          } else {
+            item.configNameList = '/'
+          }
         })
       }).catch(() => {
         this.$message({
@@ -693,6 +733,26 @@ export default {
           this.testSuiteList.push(obj)
           this.mapCh.set(obj.id, obj.nameCh)
           this.mapEn.set(obj.id, obj.nameEn)
+        })
+      })
+    },
+    async getALlConfig () {
+      this.configList = []
+      const params = { limit: 100, offset: 0 }
+      await Taskmgmt.getConfigApi(params).then(res => {
+        let data = res.data.results
+        data.forEach(item => {
+          let obj = {
+            id: '',
+            nameCh: '',
+            nameEn: ''
+          }
+          obj.id = item.id
+          obj.nameCh = item.nameCh
+          obj.nameEn = item.nameEn
+          this.configList.push(obj)
+          this.configCh.set(obj.id, obj.nameCh)
+          this.configEh.set(obj.id, obj.nameEn)
         })
       })
     },
@@ -774,7 +834,8 @@ export default {
         testStepCh: '',
         testStepEn: '',
         type: '',
-        file: []
+        file: [],
+        configIdList: []
       }
     },
     confirmAddCase () {
@@ -791,6 +852,7 @@ export default {
       fd.append('testSuiteIdList', addcaseForm.testSuiteIdList)
       fd.append('testStepCh', addcaseForm.testStepCh)
       fd.append('testStepEn', addcaseForm.testStepEn)
+      fd.append('configIdList', addcaseForm.configIdList)
       if (this.confirmBtnApi === 'add') {
         fd.append('file', addcaseForm.file[0])
         if (!addcaseForm.nameCh) {
