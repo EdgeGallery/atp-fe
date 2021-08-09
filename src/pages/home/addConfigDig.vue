@@ -240,7 +240,6 @@ export default {
     }
   },
   methods: {
-
     closeAddDig () {
       this.$emit('closedig')
       this.form = {
@@ -297,7 +296,7 @@ export default {
         this.otherData.forEach(item => {
           str += item.name + '=' + item.value + ';'
         })
-        this.form.configuration = str.substr(0, str.length - 1)
+        this.form.configuration = str
         this.configParameterVis = false
       } else {
         this.$message.warning('请填写完整的信息')
@@ -309,7 +308,7 @@ export default {
       params.nameEn = this.form.nameEn
       params.descriptionCh = this.form.descriptionCh
       params.descriptionEn = this.form.descriptionEn
-      params.configuration = this.form.configuration.split(';')
+      params.configuration = this.form.configuration
       if (this.operate === 'add') {
         Taskmgmt.createConfigApi(params).then(res => {
           this.$message({
