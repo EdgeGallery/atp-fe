@@ -109,7 +109,7 @@ const cn = {
     confirm: '确定',
     delete: '删除',
     search: '搜索',
-    edit: '编辑',
+    modify: '编辑',
     close: '关闭'
   },
   atp: {
@@ -228,7 +228,15 @@ const cn = {
     importTitle: '支持批量导入',
     importIntro: '根据样例,编写完成后即可一键导入',
     taskIntro: '所有测试任务清晰保存在任务管理中，方便查看任务，了解进展，查看报告等,让你的管理变得更加轻松。',
-    contributionIntro: '仅供管理员操作,用户贡献的测试用例和脚本都展示在贡献管理列表中,进入列表即可查看详细内容,下载贡献的用例。'
+    contributionIntro: '仅供管理员操作,用户贡献的测试用例和脚本都展示在贡献管理列表中,进入列表即可查看详细内容,下载贡献的用例。',
+    configMgmt: '配置管理',
+    addConfig: '新增配置项',
+    modifyConfig: '编辑配置项',
+    configName: '配置项名称',
+    configId: '配置项ID',
+    configParam: '参数',
+    configDesc: '描述',
+    configuration: '配置项'
   },
   process: {
     modifyStatus: '修改用例状态'

@@ -18,7 +18,7 @@
     <Navcomp />
     <div class="config-main padding200">
       <div class="title_top title_left defaultFontBlod">
-        配置管理
+        {{ $t('home.configMgmt') }}
         <span class="line_bot" />
         <el-button
           type="button"
@@ -27,7 +27,7 @@
         >
           <span
             @click="addConfig"
-          ><em class="new_icon" /> 新建配置管理 </span>
+          ><em class="new_icon" /> {{ $t('home.addConfig') }} </span>
         </el-button>
       </div>
       <div class="project-list">
@@ -55,17 +55,17 @@
           >
             <el-table-column
               prop="id"
-              label="配置项ID"
+              :label="$t('home.configId')"
             />
             <el-table-column
-              label="配置项名称"
+              :label="$t('home.configName')"
             >
               <template scope="scope">
                 {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
               </template>
             </el-table-column>
             <el-table-column
-              label="描述"
+              :label="$t('home.description')"
             >
               <template scope="scope">
                 {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
@@ -73,7 +73,7 @@
             </el-table-column>
             <el-table-column
               prop="configuration"
-              label="参数"
+              :label="$t('home.configParam')"
               :show-overflow-tooltip="false"
             >
               <template slot-scope="scope">
@@ -89,13 +89,13 @@
                   class="configBtn"
                   @click="deleteConfig(scope.row.id)"
                 >
-                  删除
+                  {{ $t('common.delete') }}
                 </el-button>
                 <el-button
                   class="configBtn"
                   @click="modifyConfig(scope.row)"
                 >
-                  编辑
+                  {{ $t('common.modify') }}
                 </el-button>
               </template>
             </el-table-column>

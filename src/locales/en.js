@@ -86,7 +86,7 @@ const en = {
     addFail: 'Add failed',
     addSuccess: 'Add successful',
     modifySuccess: 'Successfully modified',
-    modifyFail: 'Fail to edit',
+    modifyFail: 'Fail to modify',
     submitSuccess: 'Submitted successfully',
     manualTip: 'There are also manual use cases, which need to be completed manually by the administrator',
     noCase: 'There is no use case for this scenario',
@@ -166,7 +166,7 @@ const en = {
     verificationModel: 'Testcase Model',
     operation: 'Operation',
     delete: 'Delete',
-    edit: 'Edit',
+    edit: 'Modify',
     add: 'Add',
     model: 'Model',
     standard: 'Community Standards',
@@ -229,7 +229,15 @@ const en = {
     importTitle: 'Support batch import',
     importIntro: 'According to the sample, you can import it with one click after writing',
     taskIntro: 'All test tasks are clearly saved in task management. Convenient to view tasks, understand progress, view reports, etc. Make your management easier.',
-    contributionIntro: 'Only for administrators. Test cases and scripts contributed by users are displayed in the contribution management list. Enter the list to view the detailed content and download the contributed use cases.'
+    contributionIntro: 'Only for administrators. Test cases and scripts contributed by users are displayed in the contribution management list. Enter the list to view the detailed content and download the contributed use cases.',
+    configMgmt: 'Configuration Management',
+    addConfig: 'Add Configuration',
+    modifyConfig: 'Modify Configuration',
+    configName: 'Configuration name',
+    configId: 'Configuration ID',
+    configparam: 'Configuration Parameter',
+    configDesc: 'Description',
+    configuration: 'Configuration'
   },
   process: {
     modifyStatus: 'Modify Case Status'
