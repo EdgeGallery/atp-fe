@@ -101,7 +101,6 @@
       </div>
       <div class="start-button">
         <el-button
-          v-if="userName!=='guest'"
           class="dark-button"
           size="large"
           @click="startTest()"
