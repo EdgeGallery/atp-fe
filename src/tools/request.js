@@ -16,7 +16,7 @@
  */
 
 import axios from 'axios'
-import { URL_PREFIX } from './api'
+import { URL_PREFIX, URL_PREFIX_V2 } from './api'
 
 function getCookie (name) {
   let arr = []
@@ -29,8 +29,13 @@ function getCookie (name) {
 }
 
 // type: appstore&developer
-function GET (url, params) {
-  let baseUrl = URL_PREFIX + url
+function GET (url, params, type) {
+  let baseUrl = ''
+  if (type === 'v2') {
+    baseUrl = URL_PREFIX_V2 + url
+  } else {
+    baseUrl = URL_PREFIX + url
+  }
   return new Promise((resolve, reject) => {
     axios.get(baseUrl, {
       params: params,
@@ -47,8 +52,13 @@ function GET (url, params) {
   })
 }
 
-function POST (url, params) {
-  let baseUrl = URL_PREFIX + url
+function POST (url, params, type) {
+  let baseUrl = ''
+  if (type === 'v2') {
+    baseUrl = URL_PREFIX_V2 + url
+  } else {
+    baseUrl = URL_PREFIX + url
+  }
   return new Promise((resolve, reject) => {
     axios.post(baseUrl, params, {
       withCredentials: true,
@@ -64,8 +74,13 @@ function POST (url, params) {
   })
 }
 
-function DELETE (url, params) {
-  let baseUrl = URL_PREFIX + url
+function DELETE (url, params, type) {
+  let baseUrl = ''
+  if (type === 'v2') {
+    baseUrl = URL_PREFIX_V2 + url
+  } else {
+    baseUrl = URL_PREFIX + url
+  }
   return new Promise((resolve, reject) => {
     axios.delete(baseUrl, {
       params: params,
@@ -82,8 +97,13 @@ function DELETE (url, params) {
   })
 }
 
-function PUT (url, params) {
-  let baseUrl = URL_PREFIX + url
+function PUT (url, params, type) {
+  let baseUrl = ''
+  if (type === 'v2') {
+    baseUrl = URL_PREFIX_V2 + url
+  } else {
+    baseUrl = URL_PREFIX + url
+  }
   return new Promise((resolve, reject) => {
     axios.put(baseUrl, params, {
       withCredentials: true,

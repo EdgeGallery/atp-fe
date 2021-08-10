@@ -101,7 +101,6 @@
       </div>
       <div class="start-button">
         <el-button
-          v-if="userName!=='guest'"
           class="dark-button"
           size="large"
           @click="startTest()"
@@ -311,7 +310,8 @@ export default {
       dataen: [],
       scenarioIdList: [],
       CaseVisible: false,
-      taskId: '',
+      // taskId: '',
+      taskId: 'e6e326d1-74ad-455c-abc9-0230a05c9d39',
       testSuiteData: [],
       language: '',
       addCaseVisible: false,
@@ -463,6 +463,7 @@ export default {
       })
       let fd = new FormData()
       fd.append('scenarioIdList', this.scenarioIdList)
+      // Userpage.runTaskApi(this.taskId, fd).then(res => {
       Userpage.runTaskApi(this.taskId, fd).then(res => {
         sessionStorage.setItem('taskId', this.taskId)
         this.$router.push({ name: 'atpprocess', query: { taskId: this.taskId } })

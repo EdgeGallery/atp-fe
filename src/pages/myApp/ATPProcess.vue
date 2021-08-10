@@ -23,7 +23,7 @@
         class="back"
       >
         <el-button
-          :disabled="report || userName==='guest'"
+          :disabled="report"
           class="light-button"
           icon="el-icon-upload"
           @click="uploadPdfVisible=true"
@@ -553,7 +553,7 @@ export default {
         this.isTest = 'finished'
         this.activeName = this.finishActiveName
         this.clearInterval()
-        if (this.userName !== 'guest' && !reportPath) {
+        if (!reportPath) {
           this.uploadPdfVisible = true
         }
       } else {

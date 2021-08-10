@@ -21,6 +21,7 @@ import {
 import axios from 'axios'
 
 const URL_PREFIX = '/mec-atp/edgegallery/atp/v1/'
+const URL_PREFIX_V2 = '/mec-atp/edgegallery/atp/v2/'
 
 function getUserInfo () {
   let url = '/auth/login-info'
@@ -142,23 +143,23 @@ let Taskmgmt = {
   // config
   getConfigApi: function (params) {
     let url = 'configs'
-    return GET(url, params)
+    return GET(url, params, 'v2')
   },
   createConfigApi: function (params) {
     let url = 'configs'
-    return POST(url, params)
+    return POST(url, params, 'v2')
   },
   modifyConfigApi: function (id, params) {
     let url = 'configs/' + id
-    return PUT(url, params)
+    return PUT(url, params, 'v2')
   },
   deleteConfigApi: function (id) {
     let url = 'configs/' + id
-    return DELETE(url)
+    return DELETE(url, '', 'v2')
   },
   getOneConfigApi: function (id) {
     let url = 'configs/' + id
-    return GET(url)
+    return GET(url, '', 'v2')
   }
 }
 let Userpage = {
@@ -184,13 +185,7 @@ let Userpage = {
   },
   getTaskApiV2: function (taskId) {
     let url = 'mec-atp/edgegallery/atp/v2/tasks/' + taskId
-    return axios.get(url, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-      }
-    })
+    return axios.get(url)
   },
   modifyStatusApi: function (taskId, params) {
     let url = 'tasks/' + taskId + '/testcase'
@@ -202,7 +197,7 @@ let Userpage = {
   },
   uploadReportApi: function (taskId, params) {
     let url = 'tasks/' + taskId + '/action/upload-report'
-    return POST(url, params)
+    return POST(url, params, 'v2')
   }
 }
 
@@ -271,6 +266,7 @@ let Atp = {
 
 export {
   URL_PREFIX,
+  URL_PREFIX_V2,
   getUserInfo,
   logoutApi,
   Atp,
