@@ -346,6 +346,7 @@ export default {
           type: 'success',
           message: this.$t('promptMessage.deleteSuccess')
         })
+        this.$emit('closedeletedig')
         this.$parent.getConfigList()
       })
     }

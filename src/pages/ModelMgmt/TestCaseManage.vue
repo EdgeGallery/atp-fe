@@ -737,7 +737,13 @@ export default {
       })
     },
     async getALlConfig () {
-      this.configList = []
+      this.configList = [
+        {
+          id: '',
+          nameCh: '无',
+          nameEn: 'NA'
+        }
+      ]
       const params = { limit: 100, offset: 0 }
       await Taskmgmt.getConfigApi(params).then(res => {
         let data = res.data.results
