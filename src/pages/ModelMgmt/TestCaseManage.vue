@@ -132,6 +132,7 @@
             <el-table-column
               prop="configNameList"
               :label="$t('home.configuration')"
+              width="100"
             />
             <el-table-column
               prop="descriptionCh"
