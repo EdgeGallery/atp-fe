@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="addConfigDig">
     <el-dialog
       :visible.sync="addConfigVisible"
       :title="this.operate==='add'? $t('home.addConfig'):$t('home.modifyConfig')"
@@ -354,6 +354,7 @@ export default {
 }
 </script>
 <style lang="less">
+.addConfigDig{
     .el-dialog{
       border-radius: 10px;
     }
@@ -450,4 +451,5 @@ export default {
       }
     }
   }
+}
 </style>
