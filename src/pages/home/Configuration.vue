@@ -65,7 +65,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('home.description')"
+              :label="$t('testCase.description')"
             >
               <template scope="scope">
                 {{ language==='cn'?scope.row.descriptionCh:scope.row.descriptionEn }}
