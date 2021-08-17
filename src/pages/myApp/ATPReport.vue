@@ -16,7 +16,7 @@
 
 <template>
   <div
-    class="report padding200"
+    class="report padding_deafult"
     id="pdfDom"
   >
     <div class="report-content padding20">

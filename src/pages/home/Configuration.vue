@@ -16,7 +16,7 @@
 <template>
   <div>
     <Navcomp />
-    <div class="config-main padding200">
+    <div class="config-main padding_deafult">
       <div class="title_top title_left defaultFontBlod">
         {{ $t('home.configMgmt') }}
         <span class="line_bot" />

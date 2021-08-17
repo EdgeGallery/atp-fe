@@ -14,7 +14,7 @@
   -  limitations under the License.
   -->
 <template>
-  <div class="padding200">
+  <div class="padding_deafult">
     <Atpprocess :isinternal="isInternal" />
   </div>
 </template>

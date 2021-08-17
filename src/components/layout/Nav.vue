@@ -18,7 +18,7 @@
   <div id="headerComp">
     <el-row>
       <el-col
-        :span="4"
+        :span="2"
       >
         <div class="logo">
           <img
@@ -30,18 +30,18 @@
         </div>
       </el-col>
       <el-col
-        :span="13"
+        :span="18"
       >
         <div class="navList">
           <el-menu
-            mode="horizontal"
             :unique-opened="true"
             router
-            text-color="#fff"
-            background-color="#5e40c8"
-            active-text-color="#fff"
             :default-active="activeIndex"
             @select="handleSelect"
+            text-color="#bdb1e4"
+            background-color="#5e40c8"
+            active-text-color="#fff"
+            mode="horizontal"
           >
             <template
               v-for="item in navList"
@@ -76,7 +76,7 @@
         </div>
       </el-col>
       <el-col
-        :span="7"
+        :span="4"
       >
         <div class="user_right flex">
           <div
@@ -160,8 +160,8 @@ export default {
           pageId: '1'
         },
         {
-          labelEn: 'Model Management',
-          labelCn: '测试模型管理',
+          labelEn: 'Test Model',
+          labelCn: '测试模型',
           display: true,
           pageId: '2',
           children: [
@@ -187,21 +187,21 @@ export default {
           ]
         },
         {
-          labelEn: 'Task Management',
+          labelEn: 'Task',
           labelCn: '任务管理',
           route: '/tasklist',
           display: true,
           pageId: '3'
         },
         {
-          labelEn: 'Contribution Management',
+          labelEn: 'Contribution Case',
           labelCn: '贡献管理',
           route: '/contributionlist',
           display: true,
           pageId: '4'
         },
         {
-          labelEn: 'Configuration Management',
+          labelEn: 'Configuration',
           labelCn: '配置管理',
           route: '/configurationlist',
           display: true,
@@ -311,17 +311,17 @@ export default {
 #headerComp {
   height: 65px;
   color: #fff;
-  background: #5e40c8;
-  padding-left: 25px;
+  padding: 0 13%;
+  background-color: #5e40c8;
   top: 0px;
   width: 100%;
   z-index: 2;
   .logo {
     height: 65px;
     line-height: 65px;
-    text-align: right;
-    margin-right: 15px;
+    text-align: left;
     img {
+      width: 100%;
       margin-top: 20px;
     }
     span {
@@ -337,14 +337,12 @@ export default {
       .el-menu--horizontal>.el-menu-item {
         height: 65px;
         line-height: 65px;
-        font-size: 14px;
-        font-weight: 700;
+        font-size: 16px;
         margin-right: 0px;
         vertical-align: bottom;
       }
       .el-submenu__title {
-        font-size: 14px;
-        font-weight: 700;
+        font-size: 16px;
       }
       .el-menu--horizontal>.el-submenu .el-submenu__title {
         height: 65px;
@@ -352,12 +350,11 @@ export default {
       }
     }
     .user_right{
-      text-align: center;
+      float: right;
       color: #fff;
       height: 26px;
       line-height: 26px;
       margin-top: 20px;
-      padding: 0 35%;
       .user_icon{
         margin: 0 20px;
         cursor: pointer;
@@ -392,18 +389,6 @@ export default {
           color: #fff;
         }
       }
-  }
-  @media only screen and (max-width: 991px){
-    .logo{
-      img{
-      height: 50px;
-      margin: 5px 0 0 0;
-    }
-      span{
-        font-size: 14px;
-        margin: 5px 0 0 0;
-      }
-    }
   }
 }
 </style>
