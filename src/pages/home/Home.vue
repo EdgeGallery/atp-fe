@@ -39,7 +39,7 @@
     </div>
     <div
       style="background-color: #f7f5f9;"
-      class="padding200"
+      class="padding_deafult"
     >
       <div class="modelmanage">
         <div class="mainmodel">

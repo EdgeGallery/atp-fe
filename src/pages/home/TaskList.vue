@@ -16,7 +16,7 @@
 <template>
   <div>
     <Navcomp />
-    <div class="task padding200">
+    <div class="task padding_deafult">
       <div class="title_top title_left defaultFontBlod">
         {{ $t('atp.taskManage') }}
         <span class="line_bot" />

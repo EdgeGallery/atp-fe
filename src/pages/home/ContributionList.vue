@@ -17,7 +17,7 @@
 <template>
   <div>
     <Navcomp />
-    <div class="contribution padding200">
+    <div class="contribution padding_deafult">
       <div class="title_top title_left defaultFontBlod">
         {{ $t('nav.contributionMgmt') }}
         <span class="line_bot" />

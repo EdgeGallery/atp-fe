@@ -16,7 +16,7 @@
 <template>
   <div>
     <Navcomp />
-    <div class="padding200">
+    <div class="padding_deafult">
       <breadcrumb />
       <div class="testscenarios-main padding20">
         <div class="flex enter-search">
