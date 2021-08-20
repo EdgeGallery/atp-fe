@@ -649,7 +649,7 @@ export default {
           pointer-events: none;
         }
       }
-      @media screen and (max-width: 1420px) {
+      @media screen and (max-width: 900px) {
         .contednt{
             width: 33%;
         }
