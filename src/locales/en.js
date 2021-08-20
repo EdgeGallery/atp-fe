@@ -130,7 +130,7 @@ const en = {
     sandboxTest: 'Sandbox Test',
     review: 'Review',
     testCase: 'Test Case',
-    startTest: 'Start Test',
+    startTest: 'Start',
     result: 'ATP Result',
     caseName: 'CaseName',
     caseDetail: 'CaseDetail',
@@ -248,7 +248,7 @@ const en = {
   userpage: {
     selectScene: 'Select Scenario',
     contribution: 'Testcase Contribution',
-    seeDetail: 'View cases',
+    seeDetail: 'Detail',
     selectTestScene: 'Select Scene',
     caseDetail: 'Testcase Detail',
     name: 'Name',

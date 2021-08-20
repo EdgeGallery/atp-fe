@@ -128,7 +128,7 @@ const cn = {
     sandboxTest: '沙箱测试',
     review: '审核',
     testCase: '测试用例',
-    startTest: '开始测试',
+    startTest: '启动',
     result: '测试结果',
     caseName: '用例名称',
     caseDetail: '用例详情',
@@ -247,7 +247,7 @@ const cn = {
   userpage: {
     selectScene: '选择用例场景',
     contribution: '贡献测试用例',
-    seeDetail: '查看用例',
+    seeDetail: '详情',
     caseDetail: '用例详情',
     selectTestScene: '选择场景',
     name: '用例名称',

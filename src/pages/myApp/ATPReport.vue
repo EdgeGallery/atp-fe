@@ -720,16 +720,23 @@ export default {
         }
           .el-collapse{
             padding: 5px 20px;
+            border: none;
             .el-collapse-item{
               padding: 8px 0;
             }
+            .el-collapse-item__header{
+              padding-left: 8px;
+              font-size: 16px;
+              background-image: linear-gradient(to right, rgba(124,156,250,.5) , rgba(249,195,255,.2));
+              border-radius: 2px;
+              color: #111111;
+              height: 30px;
+            }
+            .el-icon-arrow-right:before {
+              color: #000;
+            }
             .el-collapse-item__content{
               padding-bottom: 0;
-            }
-            .el-collapse-item__header{
-              font-size: 20px;
-              color: #111111;
-              height: 50px;
             }
             .el-collapse-item__wrap{
               border: none;
