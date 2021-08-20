@@ -136,6 +136,11 @@ export default new Router({
           path: 'selectscene',
           name: 'selectscene',
           component: () => import('./pages/myApp/TestScenarios.vue')
+        },
+        {
+          path: 'allscene',
+          name: 'allscene',
+          component: () => import('./pages/myApp/selectScenarios.vue')
         }
       ]
     }

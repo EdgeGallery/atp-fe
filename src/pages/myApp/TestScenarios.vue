@@ -14,26 +14,33 @@
   -  limitations under the License.
   -->
 <template>
-  <div>
+  <div class="insideScene">
     <div
-      class="selectscene padding20"
+      class="selectscene"
       id="selectscene"
     >
       <div class="toptitle">
-        <div class="left">
-          {{ $t('userpage.selectScene') }}
+        <div class="left flex">
+          <div class="left-text">
+            <img
+              src="../../assets/images/selectsceneIcon.png"
+              alt=""
+              style="margin-right:20px;"
+            >
+            {{ $t('userpage.selectScene') }}
+          </div>
         </div>
-        <el-tooltip
-          :content="$t('userpage.clickContribution')"
-          placement="left"
+        <div
+          class="right"
+          @click="addCaseVisible = true"
         >
-          <div
-            class="right"
-            @click="addCaseVisible = true"
+          <el-button
+            class="dark-button"
+            size="small"
           >
             {{ $t('userpage.contribution') }}
-          </div>
-        </el-tooltip>
+          </el-button>
+        </div>
       </div>
       <div class="scene-main">
         <div
@@ -41,7 +48,11 @@
           v-for="(item,index) in sceneData"
           :key="index"
         >
-          <div class="scene">
+          <div
+            class="scene"
+            @click="chooseScene(item)"
+            :class="{'cannotclick': item.nameEn==='EdgeGallery Community Scenario'}"
+          >
             <div class="scenariosLogo">
               <img
                 :src="getAppIcon(item)"
@@ -52,7 +63,6 @@
                 class="select-button"
                 type="text"
                 :disabled="item.nameEn==='EdgeGallery Community Scenario'"
-                @click="chooseScene(item)"
               >
                 <img
                   src="../../assets/images/selected.png"
@@ -67,54 +77,33 @@
               </el-button>
             </div>
             <div class="choose">
-              <el-form
-                label-width="auto"
-              >
-                <el-form-item :label="$t('modelmgmt.name')">
-                  {{ language==='cn'?item.nameCh:item.nameEn }}
-                </el-form-item>
-                <el-form-item :label="$t('modelmgmt.description')">
-                  {{ language==='cn'?item.descriptionCh:item.descriptionEn }}
-                </el-form-item>
-              </el-form>
+              <p>{{ language==='cn'?item.nameCh:item.nameEn }}</p>
+              <span>{{ language==='cn'?item.descriptionCh:item.descriptionEn }}</span>
             </div>
-            <div class="choose-button">
-              <el-button
-                type="text"
-                class="curp"
+            <div class="choose-detail">
+              <span
                 @click="getDetail(item)"
-              >
-                {{ $t('userpage.seeDetail') }}
-              </el-button>
-              <span class="middleLine" />
-              <el-button
-                type="text"
-                :disabled="item.nameEn==='EdgeGallery Community Scenario'"
+                @click.stop="getDetail()"
                 class="curp"
-                @click="chooseScene(item)"
-              >
-                {{ $t('userpage.selectTestScene') }}
-              </el-button>
+              >{{ $t('userpage.seeDetail') }}</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="start-button">
-        <el-button
-          class="dark-button"
-          size="large"
-          @click="startTest()"
-        >
-          {{ $t('atp.startTest') }}
-        </el-button>
+      <div
+        class="start-button curp"
+        @click="startTest()"
+      >
+        <span>{{ $t('atp.startTest') }}</span>
       </div>
     </div>
     <!-- case detail -->
     <el-dialog
       :visible.sync="CaseVisible"
       :title="$t('userpage.caseDetail')"
+      width="85%"
     >
-      <p>{{ scenarioName }}</p>
+      <!-- <p>{{ scenarioName }}</p> -->
       <el-collapse
         :value="opened"
         v-if="!testSuitesNocase"
@@ -127,6 +116,7 @@
         >
           <el-table
             :data="item.testCases"
+            header-cell-class-name="caseHearder"
           >
             <el-table-column
               :label="$t('userpage.name')"
@@ -303,7 +293,8 @@ import { getUserInfo, Userpage, URL_PREFIX } from '../../tools/api.js'
 export default {
   data () {
     return {
-      currUrl: window.location.href,
+      // currUrl: window.location.href,
+      currUrl: 'https://119.8.63.144:30094/#/selectscene?taskId=524ec5b5-d3a2-4ab0-a93d-cd9f4da9a0dc&language=cn',
       userName: '',
       sceneData: [],
       datacn: [],
@@ -323,7 +314,7 @@ export default {
         file: []
       },
       testSuitesNocase: false,
-      scenarioName: '',
+      // scenarioName: '',
       rules: {
         name: [
           { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
@@ -434,7 +425,7 @@ export default {
     },
     getDetail (item) {
       this.CaseVisible = true
-      this.scenarioName = this.language === 'cn' ? item.nameCh : item.nameEn
+      // this.scenarioName = this.language === 'cn' ? item.nameCh : item.nameEn
       let scenarioIds = []
       scenarioIds.push(item.id)
       let fd = new FormData()
@@ -478,7 +469,7 @@ export default {
       this.$nextTick(() => {
         const selectsceneDiv = document.getElementById('selectscene')
         const appDiv = document.getElementById('app')
-        selectsceneDiv.style.minHeight = appDiv.clientHeight + 'px'
+        selectsceneDiv.style.minHeight = appDiv.clientHeight - 230 + 'px'
       })
     },
     confirmAddCase () {
@@ -552,147 +543,247 @@ export default {
 }
 </script>
 <style lang="less">
-.selectscene{
-  background-color: #fff;
-  .toptitle{
-    color: #380879;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 15px;
-    .left{
-      font-size: 24px;
-      font-weight: 600;
-    }
-    .right{
-      font-size: 20px;
-      cursor: pointer;
-      border-bottom: 1px solid #380879;
-    }
-  }
-  .scene-main{
-    display: flex;
-    padding: 30px 0;
-    flex-wrap: wrap;
-    .contednt{
-      width: 25%;
-      padding: 0 15px 25px;
-      .scene{
-        border-radius: 20px;
-        position: relative;
-        background-color: #fcf9ff;
-        .scenariosLogo{
-          .sceneimage{
-            display: block;
-            width: 100%;
-            height: 160px;
-            border-radius: 20px 20px 0 0;
-          }
-          .select-button{
-              position: absolute;
-              display: block;
-              right: -10px;
-              top: -25px;
-          }
-        }
-        .choose{
-          display: flex;
-          justify-content: space-between;
-          .el-form{
-            width: 100%;
-            .el-form-item__label{
-              padding-left: 8px;
-              color: #666666;
-            }
-            .el-form-item{
-                margin-bottom: 0;
-                .el-form-item__content{
-                  max-width: calc(100% - 100px);
-                  font-size: 16px;
-                  color: #303133;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                }
-            }
-          }
-          img{
-            width: 30px;
-            height: 30px;
-            position: absolute;
-            right: 10px;
-            bottom: 15px;
-          }
-        }
-        .choose-button{
-          background-color: #c4cdf9;
-          border-bottom-left-radius: 10px;
-          border-bottom-right-radius: 10px;
-          height: 36px;
-          line-height: 36px;
-          text-align: center;
-          .el-button--text {
-            font-size: 16px;
-            color: #000000;
-            padding: 2% 5%;
-          }
-          .middleLine{
-            display: inline-block;
-            width: 2px;
-            height: 20px;
-            background-color: #c9acf6;
-            position: relative;
-            top: 4px;
-          }
+.insideScene{
+  .selectscene{
+    position: relative;
+    background-color: #fbf5f8;
+    padding: 50px 20px 0;
+    border-radius: 16px;
+    display: block;
+    box-shadow: inset 4px 4px 25px 5px rgba(36, 20, 119, 0.11);
+    .toptitle{
+      color: #380879;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 15px;
+      position: relative;
+      .left{
+        font-family: 'Harmony-Light';
+        width: 70%;
+        .left-text{
+          position: relative;
+          z-index: 2;
+          padding: 10px 15px;
+          border-radius: 12px;
+          height: 47px;
+          width: 100%;
+          font-size: 20px;
+          background-image: linear-gradient(to right, rgba(251,251,251) , rgba(246,245,248));
         }
       }
+    .left::after{
+        content: '';
+        border-radius: 12px;
+        width: 60%;
+        height: 47px;
+        position: absolute;
+        bottom: -4px;
+        background-image: linear-gradient(to right, #aa9ec1, #f0eef4);
+        filter: blur(0.65rem);
+        opacity: 0.7;
+        z-index: 1;
     }
-    @media screen and (max-width: 1320px) {
+      .right{
+        font-size: 20px;
+        cursor: pointer;
+        padding-top: 10px;
+      }
+    }
+    .scene-main{
+      display: flex;
+      padding: 30px 0;
+      flex-wrap: wrap;
       .contednt{
-          width: 33%;
+        width: 25%;
+        padding: 0 15px 25px;
+        .scene{
+          border-radius: 10px;
+          position: relative;
+          background-color: #fff;
+          .scenariosLogo{
+            .sceneimage{
+              display: block;
+              // width: calc(100% - 24px);
+              width: 100%;
+              text-align: center;
+              border-radius: 20px 20px 0 0;
+              padding: 60px 0 20px;
+            }
+            .select-button{
+                position: absolute;
+                display: block;
+                right: 12px;
+                top: 0px;
+            }
+          }
+          .choose{
+            padding: 0px 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            p{
+              font-size: 14px;
+              color: #380879;
+              font-family: 'Harmony-Light';
+
+            }
+            span{
+              font-size: 12px;
+              color: #b7a8dc;
+              font-family: 'Harmony-UltraLight';
+            }
+          }
+          .choose-detail{
+            padding: 15px;
+            span{
+              font-family: 'Harmony-Thin';
+              color: #fff;
+              font-size: 12px;
+              padding: 5px 12px;
+              background-color: #cfc8e6;
+              border-radius: 10px;
+            }
+          }
+        }
+        .cannotclick{
+          pointer-events: none;
+        }
+      }
+      @media screen and (max-width: 1420px) {
+        .contednt{
+            width: 33%;
+        }
       }
     }
+    .start-button{
+      position: absolute;
+      right: 5%;
+      top: 70%;
+      background-image: linear-gradient(122deg, rgba(68,68,208), rgba(103,36,203) 64%,rgba(103,36,203));
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      text-align: center;
+        span{
+          display: inline-block;
+          font-size: 20px;
+          color: #fff;
+          margin: 26px 0;
+          position: relative;
+          z-index: 2;
+        }
+    }
+    .start-button::after{
+        content: '';
+        border-radius: 50%;
+        width: 86%;
+        height: 100%;
+        position: absolute;
+        right: 7%;
+        bottom: -10px;
+        background: inherit;
+        filter: blur(0.65rem);
+        opacity: 0.7;
+        z-index: 1;
+    }
   }
-  .start-button{
-    text-align: right;
-    margin: 0px 25px;
-  }
-}
-.el-dialog__body{
-  p{
-    font-size: 18px;
-    padding-bottom: 10px;
-    color: #6186f1;
-  }
-  .el-collapse {
-     padding: 0;
-      .el-collapse-item__header{
-        border-radius: 5px;
-        padding-left: 8px;
-        font-size: 18px;
-        color: #111111;
-        height: 30px;
-        background-image: linear-gradient(to right, rgba(124,156,250,0.6) , rgba(249,195,255,0.2));
+
+  .el-dialog{
+    border-radius: 10px;
+    background-color: #efefef;
+      .el-dialog__header{
+        border: none;
+        padding: 40px 40px 0;
+        border-radius: 10px 10px 0 0;
+        .el-dialog__headerbtn{
+          display: none;
+        }
+      }
+      .el-dialog__title{
+          font-family: 'Harmony-Light';
+          font-size: 20px !important;
+          color: #380879 !important;
+      }
+      .el-dialog__title::before{
+        content: '';
+        display:inline-block;
+        width:17px;
+        height:17px;
+        margin-right:20px;
+        background-image: url('../../assets/images/casedetail.png');
+        position: relative;
+        top: 2px;
+      }
+    .el-dialog__body{
+      padding: 20px 40px 0 !important;
+      .el-collapse {
+        padding: 0;
+        .el-collapse-item {
+          margin-bottom: 15px;
+          .el-collapse-item__content{
+            padding: 0;
+          }
+          .el-collapse-item__header{
+            font-family: 'Harmony-Light';
+            border-radius: 10px 10px 0 0;
+            height: 35px;
+            padding-left: 15px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #9d95c9!important;
+          }
+          .el-collapse-item__wrap{
+            border-radius: 0 0 10px 10px;
+          }
+          .caseHearder{
+            background: #dedae9;
+            color: #6d5d83;
+            padding: 0 10px;
+            height: 35px;
+            line-height: 35px;
+            font-size: 16px;
+            font-weight: normal;
+          }
+          .has-gutter th{
+            border-radius: 0;
+          }
+          .el-table tr {
+            background-color: #f1f2f6;
+            height: 37px;
+          }
+          .el-table td{
+            padding: 0 10px;
+            color: #6f6084;
+            vertical-align: top;
+          }
+          .el-table__body{
+            .cell{
+              padding-top: 5px;
+            }
+          }
+        }
+      }
+        .el-icon-arrow-right:before {
+          color: #fff;
+        }
+        .el-table::before {
+            width: 0;
+        }
+        table th,table td{
+          border-bottom: none !important;
+          height: 20px;
+        }
       }
   }
-  .el-icon-arrow-right:before {
-    color: #000;
+  .addCasedialog{
+    .form-button{
+          background-color: #f7f2ff;
+          border: 1px solid #380879;
+          color: #380879;
+          border-radius: 5px;
+          box-shadow: 0 5px 5px #deccf9;
+        }
   }
-  .el-table::before {
-      width: 0;
-  }
-  table th,table td{
-    border-bottom: none !important;
-    height: 30px;
-  }
-}
-.addCasedialog{
-  .form-button{
-        background-color: #f7f2ff;
-        border: 1px solid #380879;
-        color: #380879;
-        border-radius: 5px;
-        box-shadow: 0 5px 5px #deccf9;
-      }
 }
 
 </style>
