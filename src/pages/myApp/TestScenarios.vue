@@ -51,7 +51,6 @@
           <div
             class="scene"
             @click="chooseScene(item)"
-            :class="{'cannotclick': item.nameEn==='EdgeGallery Community Scenario'}"
           >
             <div class="scenariosLogo">
               <img
@@ -293,8 +292,7 @@ import { getUserInfo, Userpage, URL_PREFIX } from '../../tools/api.js'
 export default {
   data () {
     return {
-      // currUrl: window.location.href,
-      currUrl: 'https://119.8.63.144:30094/#/selectscene?taskId=524ec5b5-d3a2-4ab0-a93d-cd9f4da9a0dc&language=cn',
+      currUrl: window.location.href,
       userName: '',
       sceneData: [],
       datacn: [],
