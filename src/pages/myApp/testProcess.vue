@@ -14,8 +14,23 @@
   -  limitations under the License.
   -->
 <template>
-  <div class="padding_deafult">
-    <Atpprocess :isinternal="isInternal" />
+  <div class="padding_deafult mainProcess">
+    <div class="content flex">
+      <img
+        src="../../assets/images/testscenario.png"
+        alt=""
+        style="height:100%;width: 20%;margin-top:30px;"
+        class="leftimg"
+      >
+      <div class="contentProcess">
+        <img
+          src="../../assets/images/processIcontwo.png"
+          alt=""
+          class="leftimg"
+        >
+        <Atpprocess :isinternal="isInternal" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -29,3 +44,20 @@ export default {
   }
 }
 </script>
+<style lang="less">
+  .mainProcess{
+    margin: 30px 0;
+    .content{
+      background-color: #fbfbfb;
+      border-radius: 20px;
+      .leftimg{
+        padding: 25px 0;
+      }
+      .contentProcess{
+        padding: 20px 30px 50px;
+        // width: calc(100% - 287px);
+        width: 80%;
+      }
+    }
+  }
+</style>

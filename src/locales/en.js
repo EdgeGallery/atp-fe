@@ -268,7 +268,8 @@ const en = {
     uploadReport: 'Upload self-test report',
     platformReport: 'Platform test report',
     applicationReport: 'Application self-test report',
-    pageNum: 'Page Number'
+    pageNum: 'Page Number',
+    waitManual: 'Wait for the manual case to complete'
   },
   modelmgmt: {
     name: 'Name:',

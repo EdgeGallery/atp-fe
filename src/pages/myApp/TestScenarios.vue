@@ -584,7 +584,7 @@ export default {
       .right{
         font-size: 20px;
         cursor: pointer;
-        padding-top: 10px;
+        padding-top: 8px;
       }
     }
     .scene-main{
