@@ -267,7 +267,8 @@ const cn = {
     uploadReport: '上传自测报告',
     platformReport: '平台测试报告',
     applicationReport: '应用自测报告',
-    pageNum: '页码'
+    pageNum: '页码',
+    waitManual: '等待手动用例完成'
   },
   modelmgmt: {
     name: '名称:',
