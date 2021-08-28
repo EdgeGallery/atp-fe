@@ -106,7 +106,7 @@ let ModelMgmt = {
 let Taskmgmt = {
   taskListApi: function (params) {
     let url = 'tasks'
-    return GET(url, params)
+    return GET(url, params, 'v2')
   },
   // Batch delete tasks
   deleteTaskApi: function (params) {
