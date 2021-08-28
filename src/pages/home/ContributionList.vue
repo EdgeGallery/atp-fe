@@ -30,8 +30,8 @@
               prefix-icon="el-icon-search"
               :placeholder="$t('testCase.provideNameSearch')"
               size="small"
-              @clear="getAllcontribution"
-              @change="getAllcontribution"
+              @clear="selectContributionList"
+              @change="selectContributionList"
             />
           </div>
           <div>
@@ -48,7 +48,7 @@
         <div class="content">
           <el-table
             v-loading="dataLoading"
-            :data="currentData"
+            :data="pageData"
             header-cell-class-name="headerStyle"
             @selection-change="handleSelectionChange"
           >
@@ -112,6 +112,7 @@
             <pagination
               :table-data="pageData"
               @getCurrentPageData="getCurrentPageData"
+              :list-total="listTotal"
             />
           </div>
         </div>
@@ -163,7 +164,6 @@ export default {
   components: { pagination, Navcomp },
   data () {
     return {
-      currentData: [],
       pageData: [],
       dataLoading: true,
       deleteVisible: false,
@@ -171,7 +171,10 @@ export default {
       form: {
         name: ''
       },
-      language: localStorage.getItem('language')
+      language: localStorage.getItem('language'),
+      limitSize: 5,
+      offsetPage: 0,
+      listTotal: 0
     }
   },
   mounted () {
@@ -180,15 +183,30 @@ export default {
   watch: {
     '$i18n.locale': function () {
       this.language = localStorage.getItem('language')
+    },
+    offsetPage (val, oldVal) {
+      this.offsetPage = val
+      this.getAllcontribution()
+    },
+    limitSize (val, oldVal) {
+      this.limitSize = val
+      this.getAllcontribution()
     }
   },
   methods: {
-    getCurrentPageData (val) {
-      this.currentData = val
+    selectContributionList () {
+      sessionStorage.setItem('currentPage', 1)
+      this.getAllcontribution()
+    },
+    getCurrentPageData (val, pageSize, start) {
+      this.limitSize = pageSize
+      this.offsetPage = start
     },
     getAllcontribution () {
-      Taskmgmt.contributionsApi(this.form).then(res => {
-        let data = res.data
+      const params = { name: this.form.name, limit: this.limitSize, offset: this.offsetPage }
+      Taskmgmt.contributionsApi(params).then(res => {
+        let data = res.data.results
+        this.listTotal = res.data.total
         this.dataLoading = false
         data.forEach((item, index) => {
           let newDateBegin = this.dateChange(item.createTime)

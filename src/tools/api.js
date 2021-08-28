@@ -115,7 +115,7 @@ let Taskmgmt = {
   },
   contributionsApi: function (params) {
     let url = 'contributions'
-    return GET(url, params)
+    return GET(url, params, 'v2')
   },
   deleteCaseApi: function (params) {
     let url = 'contributions/batch_delete'
@@ -204,7 +204,7 @@ let Userpage = {
 let Atp = {
   getAllCaseApi: function (params) {
     let url = 'testcases'
-    return GET(url, params)
+    return GET(url, params, 'v2')
   },
   // Create test cases
   createCaseApi: function (params) {
