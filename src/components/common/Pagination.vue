@@ -66,9 +66,6 @@ export default {
       let page = sessionStorage.getItem('currentPage') ? Number(sessionStorage.getItem('currentPage')) : 1
       this.handleCurrentPageChange(page)
     },
-    // size (val) {
-    //   this.handlePageSizeChange(val * 2)
-    // },
     listTotal (val) {
       this.totalNum = val
     }
@@ -93,6 +90,7 @@ export default {
     handleCurrentPageChange (val) {
       this.currentPage = val
       this.returnTableData()
+      sessionStorage.setItem('currentPage', val)
     },
     returnTableData () {
       let start = (this.currentPage - 1) * this.pageSize
