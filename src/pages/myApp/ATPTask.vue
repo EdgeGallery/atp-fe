@@ -47,7 +47,7 @@
           <el-button
             size="small"
             class="dark-button"
-            @click="getTaskList"
+            @click="selectList"
           >
             {{ $t('myApp.inquire') }}
           </el-button>
@@ -67,7 +67,7 @@
       <div class="task-content">
         <el-table
           v-loading="dataLoading"
-          :data="currentData"
+          :data="pageData"
           style="width: 100%;"
           header-cell-class-name="headerStyle"
           @selection-change="handleSelectionChange"
@@ -177,6 +177,7 @@
           <pagination
             :table-data="pageData"
             @getCurrentPageData="getCurrentPageData"
+            :list-total="listTotal"
           />
         </div>
       </div>
@@ -282,7 +283,6 @@ export default {
       dialogTitle: '',
       telnetid: '',
       dataLoading: true,
-      currentData: [],
       ids: [],
       userId: sessionStorage.getItem('userId'),
       userName: sessionStorage.getItem('userName'),
@@ -290,7 +290,10 @@ export default {
       reportData: [],
       language: localStorage.getItem('language'),
       visible: false,
-      deleteVisible: false
+      deleteVisible: false,
+      limitSize: 5,
+      offsetPage: 0,
+      listTotal: 0
     }
   },
   mounted () {
@@ -300,6 +303,14 @@ export default {
   watch: {
     '$i18n.locale': function () {
       this.language = localStorage.getItem('language')
+    },
+    offsetPage (val, oldVal) {
+      this.offsetPage = val
+      this.getTaskList()
+    },
+    limitSize (val, oldVal) {
+      this.limitSize = val
+      this.getTaskList()
     }
   },
   beforeDestroy () {
@@ -317,9 +328,17 @@ export default {
         this.language = localStorage.getItem('language')
       }
     },
-    getCurrentPageData (val) {
-      this.currentData = val
-      this.getOneTaskStatus()
+    // getCurrentPageData (val) {
+    //   this.currentData = val
+    //   this.getOneTaskStatus()
+    // },
+    selectList () {
+      sessionStorage.setItem('currentPage', 1)
+      this.getTaskList()
+    },
+    getCurrentPageData (val, pageSize, start) {
+      this.limitSize = pageSize
+      this.offsetPage = start
     },
     clearInterval () {
       clearTimeout(this.interval)
@@ -358,8 +377,10 @@ export default {
       }
     },
     getTaskList () {
-      Taskmgmt.taskListApi(this.form).then(res => {
-        let data = res.data
+      const params = { appName: this.form.appName, status: this.form.status, limit: this.limitSize, offset: this.offsetPage }
+      Taskmgmt.taskListApi(params).then(res => {
+        let data = res.data.results
+        this.listTotal = res.data.total
         data.forEach((item, index) => {
           let newDateBegin = this.dateChange(item.createTime)
           item.createTime = newDateBegin
@@ -367,7 +388,6 @@ export default {
           item.endTime = newDateEnd
         })
         this.pageData = data
-        this.totalNum = this.pageData.length
         this.dataLoading = false
       }).catch(() => {
         this.dataLoading = false
