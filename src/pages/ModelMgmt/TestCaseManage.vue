@@ -65,7 +65,7 @@
             <el-button
               class="dark-button"
               size="small"
-              @click="getAllcase()"
+              @click="selectcaseList"
             >
               {{ $t('myApp.inquire') }}
             </el-button>
@@ -101,7 +101,7 @@
         </div>
         <div class="testcase-content">
           <el-table
-            :data="currentData"
+            :data="pageData"
             header-cell-class-name="headerStyle"
           >
             <el-table-column
@@ -199,8 +199,9 @@
             style="margin-top: 20px"
           >
             <pagination
-              :table-data="allcaseData"
+              :table-data="pageData"
               @getCurrentPageData="getCurrentPageData"
+              :list-total="listTotal"
             />
           </div>
         </div>
@@ -593,8 +594,7 @@ export default {
         }
       ],
       testSuiteList: [],
-      allcaseData: [],
-      currentData: [],
+      pageData: [],
       addCaseVisible: false,
       deleteVisible: false,
       deleteId: '',
@@ -659,15 +659,23 @@ export default {
         file: [
           { required: true, message: this.$t('userpage.choose'), trigger: 'change' }
         ]
-      }
+      },
+      limitSize: 5,
+      offsetPage: 0,
+      listTotal: 0
     }
   },
   mounted () {
     this.getAllcase()
   },
   methods: {
-    getCurrentPageData (val) {
-      this.currentData = val
+    selectcaseList () {
+      sessionStorage.setItem('currentPage', 1)
+      this.getAllcase()
+    },
+    getCurrentPageData (val, pageSize, start) {
+      this.limitSize = pageSize
+      this.offsetPage = start
     },
     resetForm () {
       this.form = {
@@ -676,16 +684,22 @@ export default {
         type: '',
         locale: ''
       }
-      this.getAllcase()
     },
     async getAllcase () {
       await this.getALlSuites()
       await this.getALlConfig()
-      this.allcaseData = []
+      this.pageData = []
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
-      Atp.getAllCaseApi(this.form).then(res => {
-        this.allcaseData = res.data
-        this.allcaseData.forEach(item => {
+      const params = { name: this.form.name,
+        type: this.form.type,
+        locale: this.form.locale,
+        testSuiteList: this.form.testSuiteList,
+        limit: this.limitSize,
+        offset: this.offsetPage }
+      Atp.getAllCaseApi(params).then(res => {
+        let data = res.data.results
+        this.listTotal = res.data.total
+        data.forEach(item => {
           let testSuiteList = []
           item.testSuiteIdList.forEach(Id => {
             if (this.language === 'cn') {
@@ -709,6 +723,7 @@ export default {
             item.configNameList = '/'
           }
         })
+        this.pageData = data
       }).catch(() => {
         this.$message({
           showClose: true,
@@ -1068,6 +1083,13 @@ export default {
     '$i18n.locale': function () {
       let language = localStorage.getItem('language')
       this.language = language
+    },
+    offsetPage (val, oldVal) {
+      this.offsetPage = val
+      this.getAllcase()
+    },
+    limitSize (val, oldVal) {
+      this.limitSize = val
       this.getAllcase()
     }
   }
