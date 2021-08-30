@@ -679,7 +679,7 @@ export default {
     },
     resetForm () {
       this.form = {
-        testSuiteList: [],
+        testSuiteIdList: [],
         name: '',
         type: '',
         locale: ''
@@ -693,7 +693,7 @@ export default {
       const params = { name: this.form.name,
         type: this.form.type,
         locale: this.form.locale,
-        testSuiteList: this.form.testSuiteList,
+        testSuiteIdList: this.form.testSuiteIdList,
         limit: this.limitSize,
         offset: this.offsetPage }
       Atp.getAllCaseApi(params).then(res => {
