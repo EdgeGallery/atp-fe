@@ -684,6 +684,7 @@ export default {
         type: '',
         locale: ''
       }
+      this.getAllcase()
     },
     async getAllcase () {
       await this.getALlSuites()

@@ -268,7 +268,12 @@ const cn = {
     platformReport: '平台测试报告',
     applicationReport: '应用自测报告',
     pageNum: '页码',
-    waitManual: '等待手动用例完成'
+    waitManual: '等待手动用例完成',
+    selftestUpload: '自测报告上传',
+    haveReport: '若有自测报告，可在此处上传报告',
+    pdfFormat: '(报告文件必须为pdf格式)',
+    later: '以后再说',
+    uploadNow: '立即上传'
   },
   modelmgmt: {
     name: '名称:',
