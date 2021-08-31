@@ -21,7 +21,13 @@ const en = {
     login: 'Login',
     userAccountCenter: 'My Account',
     atp: 'Application test platform',
-    contributionMgmt: 'Contribution Management'
+    contributionMgmt: 'Contribution Management',
+    hsInvalidHintForTimeout: 'You have not operated for a long time, ',
+    hsInvalidHintForLogout: 'You have logged in or logged out through other pages, ',
+    hsInvalidHintForServerStopped: 'The server has been upgraded, ',
+    hsInvalidHint: 'the current session has expired. Please choose to refresh the page or log in again.',
+    refresh: 'Refresh',
+    reLogin: 'Login'
   },
   myApp: {
     checkTest: 'Check Test',

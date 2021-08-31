@@ -210,7 +210,10 @@ export default {
       ],
       activeIndex: '/',
       fromPath: '',
-      showUserInfo: false
+      showUserInfo: false,
+      wsSocketConn: null,
+      wsMsgSendInterval: null,
+      manualLoggout: false
     }
   },
   watch: {
@@ -247,11 +250,17 @@ export default {
       }
     },
     logout () {
+      this.manualLoggout = true
       logoutApi().then(res => {
-        window.location.href = this.loginPage + '&return_to=' + 'https://' + window.location.host
+        this.enterLoginPage()
       }).catch(error => {
         this.$message.error(error.message)
+        this.enterLoginPage()
       })
+    },
+    enterLoginPage () {
+      let _protocol = window.location.href.indexOf('https') > -1 ? 'https://' : 'http://'
+      window.location.href = this.loginPage + '&return_to=' + _protocol + window.location.host
     },
     beforeLogout () {
       this.$confirm(this.$t('promptMessage.confirmLogout'), this.$t('promptMessage.prompt'), {
@@ -275,6 +284,45 @@ export default {
       }
 
       return false
+    },
+    startHttpSessionInvalidListener (sessId) {
+      if (typeof (WebSocket) === 'undefined') {
+        return
+      }
+      let _wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://'
+      this.wsSocketConn = new WebSocket(_wsProtocol + window.location.host + '/wsserver/' + sessId)
+      let _thisObj = this
+      this.wsSocketConn.onmessage = function (msg) {
+        clearTimeout(_thisObj.wsMsgSendInterval)
+        _thisObj.wsMsgSendInterval = null
+        if (_thisObj.manualLoggout) {
+          return
+        }
+        let _hintInfo = _thisObj.$t('nav.hsInvalidHint')
+        if (msg && msg.data) {
+          if (msg.data === '1') {
+            _hintInfo = _thisObj.$t('nav.hsInvalidHintForTimeout') + _hintInfo
+          } else if (msg.data === '2') {
+            _hintInfo = _thisObj.$t('nav.hsInvalidHintForLogout') + _hintInfo
+          } else if (msg.data === '3') {
+            _hintInfo = _thisObj.$t('nav.hsInvalidHintForServerStopped') + _hintInfo
+          } else {
+            _hintInfo = _thisObj.$t('nav.hsInvalidHintForTimeout') + _hintInfo
+          }
+        }
+        _thisObj.$confirm(_hintInfo, _thisObj.$t('promptMessage.prompt'), {
+          confirmButtonText: _thisObj.$t('nav.reLogin'),
+          cancelButtonText: _thisObj.$t('nav.refresh'),
+          type: 'warning'
+        }).then(() => {
+          _thisObj.logout()
+        }).catch(() => {
+          window.location.reload()
+        })
+      }
+      this.wsMsgSendInterval = setInterval(() => {
+        this.wsSocketConn.send('')
+      }, 10000)
     }
   },
   mounted () {
@@ -294,6 +342,7 @@ export default {
       if (res.data.authorities.indexOf('ROLE_ATP_ADMIN') === -1) {
         this.navList.splice(3, 2)
       }
+      this.startHttpSessionInvalidListener(res.data.sessId)
     })
     let historyRoute = sessionStorage.getItem('historyRoute')
     if (historyRoute) {
@@ -303,6 +352,8 @@ export default {
   },
   beforeDestroy () {
     sessionStorage.setItem('historyRoute', this.$route.path)
+    clearTimeout(this.wsMsgSendInterval)
+    this.wsMsgSendInterval = null
   }
 }
 </script>
