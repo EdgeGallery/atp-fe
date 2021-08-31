@@ -111,7 +111,7 @@ const en = {
     confirm: 'Confirm',
     delete: 'Delete',
     search: 'Search',
-    edit: 'Modify',
+    modify: 'Modify',
     close: 'Close'
   },
   atp: {
@@ -235,7 +235,7 @@ const en = {
     modifyConfig: 'Modify Configuration',
     configName: 'Configuration name',
     configId: 'Configuration ID',
-    configparam: 'Configuration Parameter',
+    configParam: 'Configuration Parameter',
     configDesc: 'Description',
     configuration: 'Configuration'
   },
@@ -269,7 +269,12 @@ const en = {
     platformReport: 'Platform test report',
     applicationReport: 'Application self-test report',
     pageNum: 'Page Number',
-    waitManual: 'Wait for the manual case to complete'
+    waitManual: 'Wait for the manual case to complete',
+    selftestUpload: 'Self-test report upload',
+    haveReport: 'If you have a self-test report, you can upload the report here',
+    pdfFormat: '(The report file must be in pdf format)',
+    later: 'Tell you later',
+    uploadNow: 'Upload Now'
   },
   modelmgmt: {
     name: 'Name:',

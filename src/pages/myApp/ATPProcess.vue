@@ -258,10 +258,10 @@
               alt=""
             >
             <div class="uploadpdf">
-              自测报告上传
+              {{ $t('userpage.selftestUpload') }}
             </div>
-            <p>若有自测报告，可在此处上传报告</p>
-            <span>(报告文件必须为pdf格式)</span>
+            <p>{{ $t('userpage.haveReport') }}</p>
+            <span>{{ $t('userpage.pdfFormat') }}</span>
           </div>
           <div
             slot="footer"
@@ -272,7 +272,7 @@
               @click="uploadPdfVisible=false"
               class="light-button"
             >
-              以后再说
+              {{ $t('userpage.later') }}
             </el-button>
             <el-upload
               :show-file-list="false"
@@ -286,7 +286,7 @@
               <el-button
                 class="dark-button"
               >
-                立即上传
+                {{ $t('userpage.uploadNow') }}
               </el-button>
             </el-upload>
           </div>
