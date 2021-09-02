@@ -409,9 +409,10 @@ export default {
           type: 'success',
           message: this.$t('promptMessage.deleteSuccess')
         })
-        this.$emit('closedeletedig')
+        this.closedeletedig()
         this.$parent.getConfigList()
       }).catch(error => {
+        this.closedeletedig()
         if (error.response.data.message.indexOf('canfig is used by test case') !== -1) {
           this.$message({
             showClose: true,

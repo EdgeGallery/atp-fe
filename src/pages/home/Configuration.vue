@@ -332,6 +332,7 @@ export default {
       .el-popover{
         border-radius: 10px !important;
         word-wrap: normal;
+        max-width: 400px;
       }
     }
   }
