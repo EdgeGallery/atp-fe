@@ -24,10 +24,9 @@
           type="button"
           class="el-button newproject_btn linearGradient"
           id="newproject_btn"
+          @click="addConfig"
         >
-          <span
-            @click="addConfig"
-          ><em class="new_icon" /> {{ $t('home.addConfig') }} </span>
+          <span><em class="new_icon" /> {{ $t('home.addConfig') }} </span>
         </el-button>
       </div>
       <div class="project-list">
@@ -77,7 +76,17 @@
               :show-overflow-tooltip="false"
             >
               <template slot-scope="scope">
-                <span>{{ scope.row.configuration | ellipsis }}</span>
+                <el-popover
+                  placement="top"
+                  trigger="hover"
+                  v-if="scope.row.configuration.length>50"
+                >
+                  <span>{{ scope.row.configuration }}</span>
+                  <div slot="reference">
+                    {{ scope.row.configuration | ellipsis }}
+                  </div>
+                </el-popover>
+                <span v-else>{{ scope.row.configuration | ellipsis }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -147,7 +156,8 @@ export default {
       deleteVisible: false,
       operate: '',
       modifyData: {},
-      deleteid: ''
+      deleteid: '',
+      authorities: sessionStorage.getItem('authorities')
     }
   },
   filters: {
@@ -316,6 +326,10 @@ export default {
         border: none;
         background-color: #efefef;
         padding: 5px 9px;
+      }
+      .el-popover{
+        border-radius: 10px !important;
+        word-wrap: normal;
       }
     }
   }

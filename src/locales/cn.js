@@ -100,6 +100,7 @@ const cn = {
     nameEmpty: '名称不能为空!',
     typeEmpty: '类型不能为空!',
     descriptionEmpty: '描述不能为空!',
+    configEmpty: '参数不能为空',
     expectResultEmpty: '预期结果不能为空!',
     testStepEmpty: '步骤不能为空!',
     testSuiteEmpty: '测试套不能为空!',
@@ -108,7 +109,8 @@ const cn = {
     deleteContrubuteCase: '是否要继续删除贡献用例?',
     confirmdeleteTask: '是否要继续删除测试任务?',
     moreThan2: '只能上传不超过2MB的文件！',
-    uploadSuc: '上传成功'
+    uploadSuc: '上传成功',
+    configUsed: '配置项被使用,不能删除!'
   },
   common: {
     cancel: '取消',
