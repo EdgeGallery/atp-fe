@@ -21,6 +21,7 @@
         {{ $t('home.configMgmt') }}
         <span class="line_bot" />
         <el-button
+          v-if="authorities.includes('ROLE_ATP_ADMIN')"
           type="button"
           class="el-button newproject_btn linearGradient"
           id="newproject_btn"
@@ -92,6 +93,7 @@
             <el-table-column
               :label="$t('myApp.operation')"
               width="180"
+              v-if="authorities.includes('ROLE_ATP_ADMIN')"
             >
               <template slot-scope="scope">
                 <el-button
