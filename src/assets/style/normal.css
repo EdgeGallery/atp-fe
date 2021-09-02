@@ -321,3 +321,8 @@ a{
   border-bottom:2px solid #61cdd0;
   transform: scale(1);
 }
+
+.el-popover{
+  border-radius: 10px !important;
+  max-width: 400px;
+}
