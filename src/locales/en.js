@@ -102,6 +102,7 @@ const en = {
     nameEmpty: 'Name is required!',
     typeEmpty: 'Type cannot be empty!',
     descriptionEmpty: 'Description cannot be empty!',
+    configEmpty: 'Parameter cannot be empty!',
     expectResultEmpty: 'Expected result cannot be empty!',
     testStepEmpty: 'Step cannot be empty!',
     testSuiteEmpty: 'Test suite cannot be empty!',
@@ -110,7 +111,8 @@ const en = {
     deleteContrubuteCase: ' Do you want to continue to delete the contribution use case?',
     confirmdeleteTask: 'Do you want to continue deleting the test task?',
     moreThan2: 'Can only upload no more than 2MB!',
-    uploadSuc: 'Upload Succcess'
+    uploadSuc: 'Upload Succcess',
+    configUsed: 'Config is used by test case. can not be deleted.'
   },
   common: {
     cancel: 'Cancel',

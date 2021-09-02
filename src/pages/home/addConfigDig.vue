@@ -10,6 +10,7 @@
         label-width="auto"
         :model="form"
         ref="configForm"
+        :rules="rules"
       >
         <el-row>
           <el-col :span="10">
@@ -20,6 +21,7 @@
               <el-input
                 v-model="form.nameCh"
                 placeholder="请输入"
+                maxlength="64"
               />
             </el-form-item>
           </el-col>
@@ -34,6 +36,7 @@
               <el-input
                 v-model="form.nameEn"
                 placeholder="请输入"
+                maxlength="64"
               />
             </el-form-item>
           </el-col>
@@ -47,6 +50,7 @@
               <el-input
                 v-model="form.descriptionCh"
                 placeholder="请输入"
+                maxlength="255"
               />
             </el-form-item>
           </el-col>
@@ -61,6 +65,7 @@
               <el-input
                 v-model="form.descriptionEn"
                 placeholder="请输入"
+                maxlength="255"
               />
             </el-form-item>
           </el-col>
@@ -75,6 +80,7 @@
                 v-model="form.configuration"
                 placeholder="请输入"
                 @focus="configParameter"
+                maxlength="2000"
               >
                 <em
                   slot="suffix"
@@ -210,9 +216,10 @@ export default {
       default: ''
     },
     modifyData: {
-      required: false,
       type: Object,
-      default: () => {}
+      default: function () {
+        return {}
+      }
     },
     deleteVisible: {
       type: Boolean,
@@ -220,6 +227,28 @@ export default {
     }
   },
   data () {
+    var validateNameEmpty = (rule, value, callback) => {
+      console.log(value)
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.nameEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var validateDescEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.descriptionEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var validateConfigEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.configEmpty')))
+      } else {
+        callback()
+      }
+    }
     return {
       configParameterVis: false,
       otherData: [],
@@ -230,16 +259,50 @@ export default {
         descriptionEn: '',
         configuration: ''
       },
-      modifyId: ''
+      modifyId: '',
+      rules: {
+        nameCh: [
+          { required: true, validator: validateNameEmpty, trigger: 'blur' }
+        ],
+        descriptionCh: [
+          { required: true, validator: validateDescEmpty, trigger: 'blur' }
+        ],
+        configuration: [
+          { required: true, validator: validateConfigEmpty, trigger: 'blur' }
+        ]
+      }
     }
   },
   watch: {
-    modifyData: function () {
-      this.form = JSON.parse(JSON.stringify(this.modifyData))
-      this.modifyId = this.modifyData.id
+    addConfigVisible: function () {
+      if (this.addConfigVisible) {
+        this.init()
+      }
     }
   },
   methods: {
+    resetForm () {
+      if (this.$refs['configForm']) {
+        this.$refs['configForm'].resetFields()
+      }
+    },
+    init () {
+      this.resetForm()
+      if (this.operate === 'modify') {
+        if (this.modifyData) {
+          this.form = JSON.parse(JSON.stringify(this.modifyData))
+          this.modifyId = this.modifyData.id
+        }
+      } else {
+        this.form = {
+          nameCh: '',
+          nameEn: '',
+          descriptionCh: '',
+          descriptionEn: '',
+          configuration: ''
+        }
+      }
+    },
     closeAddDig () {
       this.$emit('closedig')
       this.form = {
@@ -348,6 +411,22 @@ export default {
         })
         this.$emit('closedeletedig')
         this.$parent.getConfigList()
+      }).catch(error => {
+        if (error.response.data.message.indexOf('canfig is used by test case') !== -1) {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: this.$t('promptMessage.configUsed'),
+            type: 'warning'
+          })
+        } else {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: this.$t('promptMessage.deleteFail'),
+            type: 'warning'
+          })
+        }
       })
     }
   }

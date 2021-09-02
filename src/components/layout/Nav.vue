@@ -340,7 +340,7 @@ export default {
         return
       }
       if (res.data.authorities.indexOf('ROLE_ATP_ADMIN') === -1) {
-        this.navList.splice(3, 2)
+        this.navList.splice(3, 1)
       }
       this.startHttpSessionInvalidListener(res.data.sessId)
     })

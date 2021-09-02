@@ -160,7 +160,7 @@
       :visible.sync="addCaseVisible"
       :title="$t('userpage.contribution')"
       :close-on-click-modal="false"
-      width="30%"
+      width="45%"
       class="addCasedialog"
     >
       <el-form
@@ -620,14 +620,14 @@ export default {
             text-overflow: ellipsis;
             white-space: nowrap;
             p{
-              font-size: 14px;
+              font-size: 16px;
               color: #380879;
               font-family: 'Harmony-Light';
 
             }
             span{
-              font-size: 12px;
-              color: #b7a8dc;
+              font-size: 14px;
+              color: #380879;
               font-family: 'Harmony-UltraLight';
             }
           }
