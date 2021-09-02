@@ -329,11 +329,6 @@ export default {
         background-color: #efefef;
         padding: 5px 9px;
       }
-      .el-popover{
-        border-radius: 10px !important;
-        word-wrap: normal;
-        max-width: 400px;
-      }
     }
   }
 }
