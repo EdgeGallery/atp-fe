@@ -228,7 +228,6 @@ export default {
   },
   data () {
     var validateNameEmpty = (rule, value, callback) => {
-      console.log(value)
       if (value === '') {
         callback(new Error(this.$t('promptMessage.nameEmpty')))
       } else {
@@ -366,37 +365,43 @@ export default {
       }
     },
     confirmData () {
-      let params = {}
-      params.nameCh = this.form.nameCh
-      params.nameEn = this.form.nameEn
-      params.descriptionCh = this.form.descriptionCh
-      params.descriptionEn = this.form.descriptionEn
-      params.configuration = this.form.configuration
-      if (this.operate === 'add') {
-        Taskmgmt.createConfigApi(params).then(res => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'success',
-            message: this.$t('promptMessage.addSuccess')
+      this.$refs['configForm'].validate((valid) => {
+        if (valid) {
+          let params = {}
+          params.nameCh = this.form.nameCh
+          params.nameEn = this.form.nameEn
+          params.descriptionCh = this.form.descriptionCh
+          params.descriptionEn = this.form.descriptionEn
+          params.configuration = this.form.configuration
+          if (this.operate === 'add') {
+            Taskmgmt.createConfigApi(params).then(res => {
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                type: 'success',
+                message: this.$t('promptMessage.addSuccess')
+              })
+              this.$parent.getConfigList()
+            })
+          } else {
+            Taskmgmt.modifyConfigApi(this.modifyId, params).then(res => {
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                type: 'success',
+                message: this.$t('promptMessage.modifySuccess')
+              })
+              this.$parent.getConfigList()
+            })
+          }
+          this.$nextTick(() => {
+            this.$refs['configForm'].resetFields()
           })
-          this.$parent.getConfigList()
-        })
-      } else {
-        Taskmgmt.modifyConfigApi(this.modifyId, params).then(res => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'success',
-            message: this.$t('promptMessage.modifySuccess')
-          })
-          this.$parent.getConfigList()
-        })
-      }
-      this.$nextTick(() => {
-        this.$refs['configForm'].resetFields()
+          this.$emit('closedig')
+        } else {
+          return false
+        }
       })
-      this.$emit('closedig')
     },
     closedeletedig () {
       this.$emit('closedeletedig')
