@@ -105,6 +105,8 @@ const cn = {
     testStepEmpty: '步骤不能为空!',
     testSuiteEmpty: '测试套不能为空!',
     fileEmpty: '文件不能为空!',
+    languageEmpty: '语言不能为空!',
+    configIdEmpty: '配置项不能不选!',
     nameLength: '长度为1-16位',
     deleteContrubuteCase: '是否要继续删除贡献用例?',
     confirmdeleteTask: '是否要继续删除测试任务?',
@@ -219,7 +221,8 @@ const cn = {
     testScenarioIntro: '测试场景是测试的最大单元集，是一组测试套的集合。',
     testSuiteIntro: '是一组相关测试用例的集合，一个测试套可以属于一个或者多个测试场景，一个测试套可以包含多个测试用例。',
     testCaseIntro: '测试用例是测试的最小执行单元。',
-    pleaseInput: '请输入'
+    pleaseInput: '请输入',
+    download: '下载'
   },
   home: {
     bannerTitle: '应用测试认证平台',

@@ -107,6 +107,8 @@ const en = {
     testStepEmpty: 'Step cannot be empty!',
     testSuiteEmpty: 'Test suite cannot be empty!',
     fileEmpty: 'File cannot be empty!',
+    languageEmpty: 'Language cannot be empty!',
+    configIdEmpty: 'Please select a configuration item!',
     nameLength: '1-16 digits in length',
     deleteContrubuteCase: ' Do you want to continue to delete the contribution use case?',
     confirmdeleteTask: 'Do you want to continue deleting the test task?',
@@ -219,7 +221,8 @@ const en = {
     testScenarioIntro: 'The test scenario is the largest set of units tested. Is a collection of test suites.',
     testSuiteIntro: 'Is a collection of related test cases. A test suite can belong to one or more test scenarios, and a test suite can contain multiple test cases.',
     testCaseIntro: 'The test case is the smallest execution unit of the test.',
-    pleaseInput: 'Please Input'
+    pleaseInput: 'Please Input',
+    download: 'Download'
 
   },
   home: {
