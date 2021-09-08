@@ -58,7 +58,7 @@
             <el-button
               class="light-button"
               size="small"
-              @click="resetForm"
+              @click="resetSearchForm"
             >
               {{ $t('myApp.reset') }}
             </el-button>
@@ -107,24 +107,7 @@
             <el-table-column
               prop="nameCh"
               :label="$t('testCase.caseName')"
-            >
-              <template slot-scope="scope">
-                <el-tooltip
-                  effect="light"
-                  :content="$t('userpage.clickDownloadCase')"
-                  placement="right"
-                  v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
-                >
-                  <el-button
-                    type="text"
-                    @click="downLoadCase(scope.row)"
-                  >
-                    {{ language==='cn'?scope.row.nameCh :scope.row.nameEn }}
-                  </el-button>
-                </el-tooltip>
-                <span v-else>{{ language==='cn'?scope.row.nameCh :scope.row.nameEn }}</span>
-              </template>
-            </el-table-column>
+            />
             <el-table-column
               prop="testSuiteNameList"
               :label="$t('testCase.testSuiteList')"
@@ -174,23 +157,30 @@
             </el-table-column>
             <el-table-column
               :label="$t('testCase.operation')"
-              width="180"
+              width="220"
               v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
             >
               <template slot-scope="scope">
                 <el-button
-                  class="light-button"
+                  class="configBtn"
                   size="small"
                   @click="deleteCase(scope.row)"
                 >
                   {{ $t('testCase.delete') }}
                 </el-button>
                 <el-button
-                  class="dark-button"
+                  class="configBtn"
                   size="small"
                   @click="editCase(scope.row)"
                 >
                   {{ $t('testCase.edit') }}
+                </el-button>
+                <el-button
+                  class="configBtn"
+                  size="small"
+                  @click="downLoadCase(scope.row)"
+                >
+                  {{ $t('testCase.download') }}
                 </el-button>
               </template>
             </el-table-column>
@@ -218,11 +208,11 @@
           :model="addcaseForm"
           label-width="150px"
           ref="addcaseForm"
+          :rules="rules"
         >
           <el-form-item
             :label="$t('testCase.nameCn')"
             prop="nameCh"
-            :rules="confirmBtnApi === 'add'?rules.nameCh:kongrules"
           >
             <el-input
               width="100px"
@@ -247,7 +237,6 @@
           <el-form-item
             :label="$t('testCase.caseType')"
             prop="type"
-            :rules="confirmBtnApi === 'add'?rules.type:kongrules"
           >
             <el-select
               size="small"
@@ -266,7 +255,6 @@
           <el-form-item
             :label="$t('testCase.descriptionCn')"
             prop="descriptionCh"
-            :rules="confirmBtnApi === 'add'?rules.descriptionCh:kongrules"
           >
             <el-input
               v-model="addcaseForm.descriptionCh"
@@ -289,7 +277,6 @@
           <el-form-item
             :label="$t('testCase.expecteCn')"
             prop="expectResultCh"
-            :rules="confirmBtnApi === 'add'?rules.expectResultCh:kongrules"
           >
             <el-input
               size="small"
@@ -312,7 +299,6 @@
           <el-form-item
             :label="$t('testCase.language')"
             prop="codeLanguage"
-            :rules="confirmBtnApi === 'add'?rules.codeLanguage:kongrules"
           >
             <el-select
               size="small"
@@ -331,7 +317,6 @@
           <el-form-item
             :label="$t('testCase.testSuiteList')"
             prop="testSuiteIdList"
-            :rules="confirmBtnApi === 'add'?rules.testSuiteIdList:kongrules.testSuiteIdList"
           >
             <el-select
               multiple
@@ -350,7 +335,6 @@
           <el-form-item
             :label="$t('testCase.stepCn')"
             prop="testStepCh"
-            :rules="confirmBtnApi === 'add'?rules.testStepCh:kongrules"
           >
             <el-input
               size="small"
@@ -408,7 +392,7 @@
             </el-upload>
           </el-form-item>
           <el-form-item
-            label="配置项"
+            :label="$t('home.configuration')"
             prop="configIdList"
           >
             <el-select
@@ -418,10 +402,16 @@
               :placeholder="$t('userpage.choose')"
             >
               <el-option
+                :label="language==='cn'?'空':'NULL'"
+                value=""
+                @click.native="selectConfig('')"
+              />
+              <el-option
                 v-for="item in configList"
                 :key="item.id"
                 :label="language==='cn'?item.nameCh:item.nameEn"
                 :value="item.id"
+                @click.native="selectConfig(item.id)"
               />
             </el-select>
           </el-form-item>
@@ -561,6 +551,69 @@ export default {
   components: { pagination, Navcomp, breadcrumb },
   name: 'TestCase',
   data () {
+    var NameEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.nameEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var DescEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.descriptionEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var LanguageEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.languageEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var ResultEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.expectResultEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var SuiteIdListEmpty = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error(this.$t('promptMessage.testSuiteEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var StepEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.testStepEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var typeEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.typeEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var fileEmpty = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error(this.$t('promptMessage.fileEmpty')))
+      } else {
+        callback()
+      }
+    }
+    var configEmpty = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error(this.$t('promptMessage.configIdEmpty')))
+      } else {
+        callback()
+      }
+    }
     return {
       language: localStorage.getItem('language'),
       userName: sessionStorage.getItem('userName'),
@@ -629,35 +682,33 @@ export default {
       configCh: new Map(),
       configEh: new Map(),
       configList: [],
-      kongrules: {
-        testSuiteIdList: [
-          { required: false }
-        ]
-      },
       rules: {
         nameCh: [
-          { required: true, message: this.$t('testCase.pleaseInput'), trigger: 'blur' }
+          { required: true, validator: NameEmpty, trigger: 'blur' }
         ],
         descriptionCh: [
-          { required: true, message: this.$t('testCase.pleaseInput'), trigger: 'blur' }
+          { required: true, validator: DescEmpty, trigger: 'blur' }
         ],
         codeLanguage: [
-          { required: true, message: this.$t('userpage.choose'), trigger: 'blur' }
+          { required: true, validator: LanguageEmpty, trigger: 'change' }
         ],
         expectResultCh: [
-          { required: true, message: this.$t('testCase.pleaseInput'), trigger: 'blur' }
+          { required: true, validator: ResultEmpty, trigger: 'blur' }
         ],
         testSuiteIdList: [
-          { required: true, message: this.$t('userpage.choose') }
+          { required: true, validator: SuiteIdListEmpty, trigger: 'blur' }
         ],
         testStepCh: [
-          { required: true, message: this.$t('testCase.pleaseInput'), trigger: 'blur' }
+          { required: true, validator: StepEmpty, trigger: 'blur' }
         ],
         type: [
-          { required: true, message: this.$t('userpage.choose'), trigger: 'blur' }
+          { required: true, validator: typeEmpty, trigger: 'blur' }
         ],
         file: [
-          { required: true, message: this.$t('userpage.choose'), trigger: 'change' }
+          { required: true, validator: fileEmpty, trigger: 'change' }
+        ],
+        configIdList: [
+          { required: true, validator: configEmpty, trigger: 'change' }
         ]
       },
       limitSize: 5,
@@ -669,6 +720,11 @@ export default {
     this.getAllcase()
   },
   methods: {
+    resetForm () {
+      if (this.$refs['addcaseForm']) {
+        this.$refs['addcaseForm'].resetFields()
+      }
+    },
     selectcaseList () {
       sessionStorage.setItem('currentPage', 1)
       this.getAllcase()
@@ -677,7 +733,7 @@ export default {
       this.limitSize = pageSize
       this.offsetPage = start
     },
-    resetForm () {
+    resetSearchForm () {
       this.form = {
         testSuiteIdList: [],
         name: '',
@@ -754,13 +810,7 @@ export default {
       })
     },
     async getALlConfig () {
-      this.configList = [
-        {
-          id: '',
-          nameCh: '无',
-          nameEn: 'NA'
-        }
-      ]
+      this.configList = []
       const params = { limit: 100, offset: 0 }
       await Taskmgmt.getConfigApi(params).then(res => {
         let data = res.data.results
@@ -841,165 +891,79 @@ export default {
       })
     },
     addTestBtn () {
+      this.resetForm()
       this.confirmBtnApi = 'add'
       this.dialogTitle = this.$t('testCase.addCase')
       this.cannotEdit = false
       this.addCaseVisible = true
-      this.addcaseForm = {
-        nameCh: '',
-        nameEn: '',
-        descriptionCh: '',
-        descriptionEn: '',
-        codeLanguage: '',
-        expectResultCh: '',
-        expectResultEn: '',
-        testSuiteIdList: [],
-        testStepCh: '',
-        testStepEn: '',
-        type: '',
-        file: [],
-        configIdList: []
-      }
     },
     confirmAddCase () {
-      let fd = new FormData()
-      let addcaseForm = this.addcaseForm
-      fd.append('nameCh', addcaseForm.nameCh)
-      fd.append('nameEn', addcaseForm.nameEn)
-      fd.append('type', addcaseForm.type)
-      fd.append('descriptionCh', addcaseForm.descriptionCh)
-      fd.append('descriptionEn', addcaseForm.descriptionEn)
-      fd.append('codeLanguage', addcaseForm.codeLanguage)
-      fd.append('expectResultCh', addcaseForm.expectResultCh)
-      fd.append('expectResultEn', addcaseForm.expectResultEn)
-      fd.append('testSuiteIdList', addcaseForm.testSuiteIdList)
-      fd.append('testStepCh', addcaseForm.testStepCh)
-      fd.append('testStepEn', addcaseForm.testStepEn)
-      fd.append('configIdList', addcaseForm.configIdList)
-      if (this.confirmBtnApi === 'add') {
-        fd.append('file', addcaseForm.file[0])
-        if (!addcaseForm.nameCh) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.nameEmpty')
-          })
-        } else if (!addcaseForm.type) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.typeEmpty')
-          })
-        } else if (!addcaseForm.descriptionCh) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.descriptionEmpty')
-          })
-        } else if (!addcaseForm.expectResultCh) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.expectResultEmpty')
-          })
-        } else if (!addcaseForm.testStepCh) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.testStepEmpty')
-          })
-        } else if (addcaseForm.file.length === 0) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.fileEmpty')
-          })
-        } else if (addcaseForm.testSuiteIdList.length === 0) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.testSuiteEmpty')
-          })
+      this.$refs['addcaseForm'].validate((valid) => {
+        if (valid) {
+          let fd = new FormData()
+          let addcaseForm = this.addcaseForm
+          fd.append('nameCh', addcaseForm.nameCh)
+          fd.append('nameEn', addcaseForm.nameEn)
+          fd.append('type', addcaseForm.type)
+          fd.append('descriptionCh', addcaseForm.descriptionCh)
+          fd.append('descriptionEn', addcaseForm.descriptionEn)
+          fd.append('codeLanguage', addcaseForm.codeLanguage)
+          fd.append('expectResultCh', addcaseForm.expectResultCh)
+          fd.append('expectResultEn', addcaseForm.expectResultEn)
+          fd.append('testSuiteIdList', addcaseForm.testSuiteIdList)
+          fd.append('testStepCh', addcaseForm.testStepCh)
+          fd.append('testStepEn', addcaseForm.testStepEn)
+          fd.append('configIdList', addcaseForm.configIdList)
+          if (this.confirmBtnApi === 'add') {
+            fd.append('file', addcaseForm.file[0])
+            Atp.createCaseApi(fd).then(res => {
+              this.addCaseVisible = false
+              this.getAllcase()
+              this.$message({
+                duration: 2000,
+                showClose: true,
+                message: this.$t('promptMessage.addSuccess'),
+                type: 'success'
+              })
+            }).catch(() => {
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                message: this.$t('promptMessage.addFail'),
+                type: 'warning'
+              })
+              this.addCaseVisible = false
+            })
+          } else if (this.confirmBtnApi === 'edit') {
+            fd.append('id', this.editid)
+            this.confirmedit(fd, addcaseForm)
+            Atp.editCaseApi(fd).then(res => {
+              this.addCaseVisible = false
+              this.getAllcase()
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                message: this.$t('promptMessage.modifySuccess'),
+                type: 'success'
+              })
+            }).catch(() => {
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                message: this.$t('promptMessage.modifyFail'),
+                type: 'warning'
+              })
+              this.addCaseVisible = false
+            })
+          }
+          this.editfile = false
         } else {
-          Atp.createCaseApi(fd).then(res => {
-            this.addCaseVisible = false
-            this.getAllcase()
-            this.$message({
-              duration: 2000,
-              showClose: true,
-              message: this.$t('promptMessage.addSuccess'),
-              type: 'success'
-            })
-          }).catch(() => {
-            this.$message({
-              showClose: true,
-              duration: 2000,
-              message: this.$t('promptMessage.addFail'),
-              type: 'warning'
-            })
-            this.addCaseVisible = false
-          })
+          return false
         }
-      } else if (this.confirmBtnApi === 'edit') {
-        if (!addcaseForm.descriptionCh || !addcaseForm.descriptionEn) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.descriptionEmpty')
-          })
-        } else if (!addcaseForm.expectResultCh || !addcaseForm.expectResultEn) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.expectResultEmpty')
-          })
-        } else if (!addcaseForm.testStepCh || !addcaseForm.testStepEn) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.testStepEmpty')
-          })
-        } else if (addcaseForm.testSuiteIdList.length === 0) {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            type: 'warning',
-            message: this.$t('promptMessage.testSuiteEmpty')
-          })
-        } else {
-          fd.append('id', this.editid)
-          this.confirmedit(fd, addcaseForm)
-          Atp.editCaseApi(fd).then(res => {
-            this.addCaseVisible = false
-            this.getAllcase()
-            this.$message({
-              showClose: true,
-              duration: 2000,
-              message: this.$t('promptMessage.modifySuccess'),
-              type: 'success'
-            })
-          }).catch(() => {
-            this.$message({
-              showClose: true,
-              duration: 2000,
-              message: this.$t('promptMessage.modifyFail'),
-              type: 'warning'
-            })
-            this.addCaseVisible = false
-          })
+        if (this.addcaseForm.file.length !== 0) {
+          this.$refs.addcaseForm.clearValidate(['file'])
         }
-      }
-      this.editfile = false
+      })
     },
     // sonarqube Refactor
     confirmedit (fd, addcaseForm) {
@@ -1015,7 +979,27 @@ export default {
         }
       }
     },
+    selectConfig (item) {
+      if (this.addcaseForm.configIdList.indexOf(item) === -1) {
+        if (item === '') {
+          this.addcaseForm.configIdList = ['']
+        }
+      } else {
+        if (item === '') {
+          this.addcaseForm.configIdList = ['']
+        } else {
+          let pos = this.addcaseForm.configIdList.indexOf('')
+          if (pos !== -1) {
+            this.addcaseForm.configIdList.splice(pos, 1)
+          }
+        }
+      }
+    },
     editCase (row) {
+      this.resetForm()
+      if (!row.hasOwnProperty('configIdList')) {
+        row.configIdList = ['']
+      }
       this.editid = row.id
       this.confirmBtnApi = 'edit'
       this.dialogTitle = this.$t('testCase.editCase')
@@ -1058,6 +1042,7 @@ export default {
     },
     handleChange (file, fileList) {
       this.addcaseForm.file.push(file.raw)
+      this.$refs.addcaseForm.clearValidate(['file'])
     },
     handleDelte (file, fileList) {
       this.addcaseForm.file = fileList
@@ -1134,6 +1119,12 @@ export default {
       .el-button--text{
         color: #380879;
         font-size: 16px;
+      }
+      .el-button.configBtn{
+        color: #7a6e8a;
+        border: none;
+        background-color: #efefef;
+        padding: 5px 9px;
       }
     }
   }
