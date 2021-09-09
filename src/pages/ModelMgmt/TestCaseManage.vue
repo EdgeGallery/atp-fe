@@ -107,7 +107,11 @@
             <el-table-column
               prop="nameCh"
               :label="$t('testCase.caseName')"
-            />
+            >
+              <template slot-scope="scope">
+                {{ language==='cn'?scope.row.nameCh :scope.row.nameEn }}
+              </template>
+            </el-table-column>
             <el-table-column
               prop="testSuiteNameList"
               :label="$t('testCase.testSuiteList')"
@@ -157,27 +161,24 @@
             </el-table-column>
             <el-table-column
               :label="$t('testCase.operation')"
-              width="220"
+              width="240"
               v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
             >
               <template slot-scope="scope">
                 <el-button
                   class="configBtn"
-                  size="small"
                   @click="deleteCase(scope.row)"
                 >
                   {{ $t('testCase.delete') }}
                 </el-button>
                 <el-button
                   class="configBtn"
-                  size="small"
                   @click="editCase(scope.row)"
                 >
                   {{ $t('testCase.edit') }}
                 </el-button>
                 <el-button
                   class="configBtn"
-                  size="small"
                   @click="downLoadCase(scope.row)"
                 >
                   {{ $t('testCase.download') }}
@@ -896,6 +897,21 @@ export default {
       this.dialogTitle = this.$t('testCase.addCase')
       this.cannotEdit = false
       this.addCaseVisible = true
+      this.addcaseForm = {
+        nameCh: '',
+        nameEn: '',
+        descriptionCh: '',
+        descriptionEn: '',
+        codeLanguage: '',
+        expectResultCh: '',
+        expectResultEn: '',
+        testSuiteIdList: [],
+        testStepCh: '',
+        testStepEn: '',
+        type: '',
+        file: [],
+        configIdList: []
+      }
     },
     confirmAddCase () {
       this.$refs['addcaseForm'].validate((valid) => {
