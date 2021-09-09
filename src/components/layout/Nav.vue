@@ -227,14 +227,27 @@ export default {
       } else if (path === '/scenarios' || path === '/suites' || path === '/testcasemanage') {
         this.activeIndex = '/scenarios'
       }
+      // post message to unified platform
+      window.parent.postMessage({
+        cmd: 'routeTo',
+        params: {
+          module: 'atp',
+          path: to.path,
+          activeMenuPath: this.activeIndex
+        }
+      }, '*')
     }
   },
   methods: {
     jumpTo (newPath) {
       this.$router.push(newPath)
     },
-    changeLanguage () {
-      if (this.language === 'cn') {
+    changeLanguage (lan) {
+      if (lan === 'cn') {
+        this.language = 'cn'
+      } else if (lan === 'en') {
+        this.language = 'en'
+      } else if (this.language === 'cn') {
         this.language = 'en'
       } else {
         this.language = 'cn'
@@ -349,6 +362,23 @@ export default {
       this.$router.push(historyRoute)
       sessionStorage.setItem('historyRoute', '')
     }
+    // Switch language
+    let lanIndex = window.location.href.search('language')
+    if (lanIndex > 0) {
+      let lang = window.location.href.substring(lanIndex + 9, lanIndex + 11)
+      this.changeLanguage(lang)
+    }
+    // message listener, message from unified platform
+    window.addEventListener('message', (event) => {
+      var data = event.data
+      console.log('handleMessage, message info: ' + JSON.stringify(data))
+      switch (data.cmd) {
+        case 'iframeLanguageChange':
+          let lang = data.params.lang
+          this.changeLanguage(lang)
+          break
+      }
+    })
   },
   beforeDestroy () {
     sessionStorage.setItem('historyRoute', this.$route.path)
