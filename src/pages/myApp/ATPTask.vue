@@ -81,15 +81,13 @@
             :label="$t('myApp.taskNumber')"
           >
             <template slot-scope="scope">
-              <el-button
-                id="checkReportProess"
-                type="text"
-                size="small"
+              <el-link
+                :underline="false"
                 @click="handleClickTaskNo(scope.row)"
                 :disabled="(scope.row.status==='success' || scope.row.status==='failed' || scope.row.status==='running')?false:true"
               >
                 {{ scope.row.id }}
-              </el-button>
+              </el-link>
             </template>
           </el-table-column>
           <el-table-column
@@ -132,7 +130,13 @@
                 src="../../assets/images/create failed.png"
                 alt=""
               >
-              <span> {{ scope.row.status }}</span>
+              <span v-if="language==='en'"> {{ scope.row.status }}</span>
+              <span v-else-if="scope.row.status=='success'"> 成功</span>
+              <span v-else-if="scope.row.status=='failed'"> 失败</span>
+              <span v-else-if="scope.row.status=='running'"> 测试中</span>
+              <span v-else-if="scope.row.status=='waiting'"> 等待</span>
+              <span v-else-if="scope.row.status=='created'"> 已创建</span>
+              <span v-else-if="scope.row.status=='create failed'"> 创建失败</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -146,7 +150,7 @@
           <el-table-column
             fixed="right"
             :label="$t('myApp.operation')"
-            width="280"
+            width="290"
           >
             <template slot-scope="scope">
               <el-button
@@ -511,14 +515,14 @@ export default {
         color: #380879;
         font-size: 16px;
       }
-      .el-button--text{
+      .el-link{
         color: #380879;
         font-size: 16px;
         span{
           border-bottom: 1px solid #5d3692;
         }
       }
-      .el-button--text.is-disabled{
+      .el-button--text.is-disabled,.el-link.is-disabled{
         span{
           color: #999999;
           border-bottom: none;
