@@ -458,6 +458,27 @@ import { Userpage, ModelMgmt } from '../../tools/api.js'
 export default {
   components: { Navcomp, breadcrumb },
   data () {
+    const NameEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('testCase.provideNameCn')))
+      } else {
+        callback()
+      }
+    }
+    const DescEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('testCase.provideDescriptionCn')))
+      } else {
+        callback()
+      }
+    }
+    const scenarioListEmpty = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error(this.$t('testCase.provideTestScenario')))
+      } else {
+        callback()
+      }
+    }
     return {
       userName: sessionStorage.getItem('userName'),
       authorities: sessionStorage.getItem('authorities'),
@@ -500,24 +521,24 @@ export default {
       deleteId: '',
       rules: {
         nameCh: [
-          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+          { required: true, validator: NameEmpty, trigger: 'blur' }
         ],
         descriptionCh: [
-          { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
+          { required: true, validator: DescEmpty, trigger: 'blur' }
         ],
         scenarioList: [
-          { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
+          { required: true, validator: scenarioListEmpty, trigger: 'change' }
         ]
       },
       modifyrules: {
         nameCh: [
-          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+          { required: true, validator: NameEmpty, trigger: 'blur' }
         ],
         descriptionCh: [
-          { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
+          { required: true, validator: DescEmpty, trigger: 'blur' }
         ],
         scenarioIdList: [
-          { required: true, message: this.$t('testCase.provideTestScenario'), trigger: 'change' }
+          { required: true, validator: scenarioListEmpty, trigger: 'change' }
         ]
       },
       activeInfo: -1,
@@ -526,6 +547,11 @@ export default {
     }
   },
   methods: {
+    resetRules () {
+      if (this.$refs['addcaseForm']) {
+        this.$refs['addcaseForm'].resetFields()
+      }
+    },
     hoverList (index) {
       this.activeInfo = index
     },
@@ -589,6 +615,7 @@ export default {
       this.editTestSuiteVisible = false
     },
     addTestSuiteBtn () {
+      this.resetRules()
       this.addTestSuiteVisible = true
       this.addTestSuiteForm = {
         nameCh: '',
@@ -675,6 +702,7 @@ export default {
       })
     },
     editTestSuite (item) {
+      this.resetRules()
       this.editTestSuiteForm.nameCh = item.nameCh
       this.editTestSuiteForm.nameEn = item.nameEn
       this.editTestSuiteForm.descriptionCh = item.descriptionCh
