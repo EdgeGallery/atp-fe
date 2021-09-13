@@ -168,7 +168,7 @@
           <el-form
             :model="addTestSuiteForm"
             ref="addTestSuiteForm"
-            label-width="150px"
+            label-width="auto"
             :rules="rules"
           >
             <el-form-item
@@ -262,7 +262,7 @@
           <el-form
             :model="editTestSuiteForm"
             ref="editTestSuiteForm"
-            label-width="150px"
+            label-width="auto"
             :rules="modifyrules"
           >
             <el-form-item
@@ -390,7 +390,7 @@
       >
         <el-form
           :model="batchForm"
-          label-width="100px"
+          label-width="auto"
         >
           <el-form-item :label="this.$t('modelmgmt.import')">
             <el-upload
@@ -547,9 +547,14 @@ export default {
     }
   },
   methods: {
-    resetRules () {
-      if (this.$refs['addcaseForm']) {
-        this.$refs['addcaseForm'].resetFields()
+    resetAdd () {
+      if (this.$refs['addTestSuiteForm']) {
+        this.$refs['addTestSuiteForm'].resetFields()
+      }
+    },
+    resetEdit () {
+      if (this.$refs['editTestSuiteForm']) {
+        this.$refs['editTestSuiteForm'].resetFields()
       }
     },
     hoverList (index) {
@@ -566,7 +571,6 @@ export default {
       this.getAllSuites()
     },
     async getAllSuites () {
-      // await this.fillOptions()
       this.form.locale = this.language === 'cn' ? 'ch' : 'en'
       ModelMgmt.getTestSuite(this.form).then(res => {
         this.testSuites = res.data
@@ -615,7 +619,7 @@ export default {
       this.editTestSuiteVisible = false
     },
     addTestSuiteBtn () {
-      this.resetRules()
+      this.resetAdd()
       this.addTestSuiteVisible = true
       this.addTestSuiteForm = {
         nameCh: '',
@@ -702,7 +706,7 @@ export default {
       })
     },
     editTestSuite (item) {
-      this.resetRules()
+      this.resetEdit()
       this.editTestSuiteForm.nameCh = item.nameCh
       this.editTestSuiteForm.nameEn = item.nameEn
       this.editTestSuiteForm.descriptionCh = item.descriptionCh
