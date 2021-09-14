@@ -1161,6 +1161,13 @@ export default {
       .el-textarea__inner{
         height: 15px;
       }
+      .el-select__tags-text{
+        display: inline-block;
+        max-width: 175px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       .form-button{
         background-color: #f7f2ff;
         border: 1px solid #380879;
