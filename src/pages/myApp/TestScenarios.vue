@@ -118,6 +118,7 @@
           >
             <el-table-column
               :label="$t('userpage.name')"
+              width="210"
             >
               <template scope="scope">
                 {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
