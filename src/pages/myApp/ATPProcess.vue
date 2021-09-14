@@ -34,7 +34,7 @@
           class="right"
         >
           <el-button
-            :disabled="report"
+            :disabled="report && userName!=='guest'"
             class="light-button"
             icon="el-icon-upload"
             size="small"
@@ -123,6 +123,7 @@
                 >
                   <el-table-column
                     :label="$t('userpage.name')"
+                    width="270"
                   >
                     <template scope="scope">
                       <img
@@ -151,6 +152,7 @@
                   </el-table-column>
                   <el-table-column
                     :label="$t('userpage.type')"
+                    width="120"
                   >
                     <template scope="scope">
                       {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}
@@ -336,7 +338,8 @@ export default {
       uploadPdfVisible: false,
       pdfFile: [],
       customColor: '#5844be',
-      manualTitle: false
+      manualTitle: false,
+      uploadUser: ''
     }
   },
   beforeMount () {
@@ -389,6 +392,7 @@ export default {
       Userpage.getTaskApi(this.taskId).then(res => {
         let data = res.data.testScenarios
         let taskStatus = res.data.status
+        this.uploadUser = res.data.user.userName
         let reportPath = res.data.hasOwnProperty('reportPath')
         this.testScenarios = data
         this.setCollaspe()
@@ -461,7 +465,7 @@ export default {
         this.activeNameTabs = this.firstScene
         this.activeName = this.finishActiveName
         this.clearInterval()
-        if (!reportPath) {
+        if (!reportPath && this.uploadUser === this.userName && this.userName !== 'guest') {
           this.uploadPdfVisible = true
         }
       } else {
