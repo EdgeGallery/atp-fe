@@ -153,10 +153,10 @@
           <el-table-column
             fixed="right"
             :label="$t('myApp.operation')"
-            width="290"
           >
             <template slot-scope="scope">
               <el-button
+                class="operaBtn"
                 type="text"
                 :disabled="(scope.row.status==='success' || scope.row.status==='failed')?false:true"
                 size="small"
@@ -165,8 +165,10 @@
               >
                 {{ $t('myApp.checkReport') }}
               </el-button>
+              <br>
               <el-button
                 v-if="(authorities.indexOf('ROLE_ATP_ADMIN')!==-1 && isinternal)"
+                class="operaBtn"
                 type="text"
                 :disabled="scope.row.status==='running'?false:true"
                 size="small"
@@ -530,6 +532,9 @@ export default {
           color: #999999;
           border-bottom: none;
         }
+      }
+      .el-button.operaBtn{
+        padding: 3px 15px;
       }
     }
   }
