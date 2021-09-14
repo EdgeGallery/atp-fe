@@ -276,7 +276,7 @@ export default {
 .contribution{
   .main{
     background: #fff;
-    padding: 20px 20px 35px;
+    padding: 30px 60px 60px;
     border-radius: 20px;
     .header{
       justify-content: space-between;

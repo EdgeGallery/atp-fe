@@ -424,7 +424,7 @@ export default {
       Userpage.getAllSceneApi().then(res => {
         let data = res.data
         data.forEach(item => {
-          if (item.nameEn === 'EdgeGallery Community Scenario') {
+          if (item.label === 'EdgeGallery') {
             item.selected = true
           } else {
             item.selected = false

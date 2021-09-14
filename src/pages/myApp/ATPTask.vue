@@ -486,7 +486,7 @@ export default {
 <style lang='less'>
   .task-main {
     background-color: #fff;
-    padding: 20px 20px 35px;
+    padding: 30px 60px 60px;
     border-radius: 20px;
     .enter-search{
       justify-content: space-between;

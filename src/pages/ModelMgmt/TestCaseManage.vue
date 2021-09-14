@@ -1105,7 +1105,8 @@ export default {
 .testcase {
   .testcase-main {
     background: #fff;
-    padding: 15px 15px 35px;
+    padding: 30px 60px 60px;
+    border-radius: 20px;
     .enter-search{
       justify-content: space-between;
       height: 34px;
