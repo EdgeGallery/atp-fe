@@ -43,6 +43,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   background: #f6f5f8;
+  min-width: 1200px;
   overflow: auto;
 }
 </style>

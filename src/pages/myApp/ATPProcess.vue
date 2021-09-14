@@ -34,7 +34,7 @@
           class="right"
         >
           <el-button
-            :disabled="report && userName!=='guest'"
+            :disabled="report || userName==='guest'"
             class="light-button"
             icon="el-icon-upload"
             size="small"
