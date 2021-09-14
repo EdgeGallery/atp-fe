@@ -821,6 +821,8 @@ export default {
 <style lang="less">
 .testsuites-main{
   background-color: #fff;
+  padding: 30px 60px 60px;
+  border-radius: 20px;
     .enter-search{
       justify-content: space-between;
       height: 34px;

@@ -122,7 +122,7 @@
           <el-form
             :model="addTestScenarioForm"
             ref="addTestScenarioForm"
-            label-width="150px"
+            label-width="auto"
             :rules="rules"
           >
             <el-form-item
@@ -130,7 +130,6 @@
               prop="nameCh"
             >
               <el-input
-                width="100px"
                 size="small"
                 v-model="addTestScenarioForm.nameCh"
                 maxlength="64"
@@ -140,7 +139,6 @@
               :label=" $t('testCase.testScenarioEn')"
             >
               <el-input
-                width="100px"
                 size="small"
                 v-model="addTestScenarioForm.nameEn"
                 maxlength="64"
@@ -151,7 +149,6 @@
               prop="descriptionCh"
             >
               <el-input
-                width="100px"
                 size="small"
                 v-model="addTestScenarioForm.descriptionCh"
                 maxlength="255"
@@ -161,7 +158,6 @@
               :label=" $t('testCase.testScenarioDescriptionEn')"
             >
               <el-input
-                width="100px"
                 size="small"
                 v-model="addTestScenarioForm.descriptionEn"
                 maxlength="255"
@@ -243,15 +239,15 @@
         >
           <el-form
             :model="editTestScenarioForm"
-            label-width="150px"
+            label-width="auto"
             :rules="rules"
+            ref="editTestScenarioForm"
           >
             <el-form-item
               :label=" $t('testCase.testScenarioCn')"
               prop="nameCh"
             >
               <el-input
-                width="100px"
                 size="small"
                 v-model="editTestScenarioForm.nameCh"
                 maxlength="64"
@@ -262,7 +258,6 @@
               prop="nameEn"
             >
               <el-input
-                width="100px"
                 size="small"
                 v-model="editTestScenarioForm.nameEn"
                 maxlength="64"
@@ -273,7 +268,6 @@
               prop="descriptionCh"
             >
               <el-input
-                width="100px"
                 size="small"
                 v-model="editTestScenarioForm.descriptionCh"
                 maxlength="255"
@@ -284,7 +278,6 @@
               prop="descriptionEn"
             >
               <el-input
-                width="100px"
                 size="small"
                 v-model="editTestScenarioForm.descriptionEn"
                 maxlength="255"
@@ -401,7 +394,7 @@
       >
         <el-form
           :model="batchForm"
-          label-width="100px"
+          label-width="auto"
         >
           <el-form-item :label="this.$t('modelmgmt.import')">
             <el-upload
@@ -470,6 +463,20 @@ import { Userpage, ModelMgmt, URL_PREFIX } from '../../tools/api.js'
 export default {
   components: { Navcomp, breadcrumb },
   data () {
+    const NameEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('testCase.provideNameCn')))
+      } else {
+        callback()
+      }
+    }
+    const DescEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('testCase.provideDescriptionCn')))
+      } else {
+        callback()
+      }
+    }
     return {
       editId: '',
       defaultIcon: [
@@ -517,10 +524,10 @@ export default {
       deleteId: '',
       rules: {
         nameCh: [
-          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+          { required: true, validator: NameEmpty, trigger: 'blur' }
         ],
         descriptionCh: [
-          { required: true, message: this.$t('testCase.provideDescriptionCn'), trigger: 'blur' }
+          { required: true, validator: DescEmpty, trigger: 'blur' }
         ]
       },
       activeInfo: -1
@@ -582,6 +589,9 @@ export default {
         icon: [],
         base64Session: false,
         defaultActive: ''
+      }
+      if (this.$refs['addTestScenarioForm']) {
+        this.$refs['addTestScenarioForm'].resetFields()
       }
       this.addTestScenarioVisible = true
       this.chooseDefaultIcon(this.defaultIcon[0], 0)
@@ -665,6 +675,9 @@ export default {
       this.chooseScenarioIcon(this.scenarioIcon[0], 0)
     },
     editScenario (item) {
+      if (this.$refs['editTestScenarioForm']) {
+        this.$refs['editTestScenarioForm'].resetFields()
+      }
       this.scenarioIcon = []
       this.editTestScenarioForm = JSON.parse(JSON.stringify(item))
       this.editId = item.id
@@ -886,6 +899,8 @@ export default {
 <style lang="less">
 .testscenarios-main{
     background-color: #fff;
+    padding: 30px 60px 60px;
+    border-radius: 20px;
   .enter-search{
     justify-content: space-between;
     height: 34px;
