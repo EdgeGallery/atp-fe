@@ -100,6 +100,7 @@ const en = {
     cannotDeleteScenario: 'This scenario is used by some test suites, so can not be delete.',
     selectIcon: 'Please select an icon',
     nameEmpty: 'Name is required!',
+    objectiveEmpty: 'Purpose cannot be empty!!',
     typeEmpty: 'Type cannot be empty!',
     descriptionEmpty: 'Description cannot be empty!',
     configEmpty: 'Parameter cannot be empty!',
