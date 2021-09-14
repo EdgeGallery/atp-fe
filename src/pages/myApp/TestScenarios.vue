@@ -32,7 +32,7 @@
         </div>
         <div
           class="right"
-          @click="addCaseVisible = true"
+          @click="contribution()"
         >
           <el-button
             class="dark-button"
@@ -102,7 +102,6 @@
       :title="$t('userpage.caseDetail')"
       width="85%"
     >
-      <!-- <p>{{ scenarioName }}</p> -->
       <el-collapse
         :value="opened"
         v-if="!testSuitesNocase"
@@ -165,7 +164,7 @@
     >
       <el-form
         :model="addcaseForm"
-        label-width="110px"
+        label-width="auto"
         ref="addcaseForm"
         :rules="rules"
       >
@@ -217,6 +216,7 @@
           prop="type"
         >
           <el-select
+            size="small"
             v-model="addcaseForm.type"
             :placeholder="$t('userpage.choose')"
           >
@@ -291,6 +291,48 @@ import { getUserInfo, Userpage, URL_PREFIX } from '../../tools/api.js'
 
 export default {
   data () {
+    const NameEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.nameEmpty')))
+      } else {
+        callback()
+      }
+    }
+    const objectiveEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.objectiveEmpty')))
+      } else {
+        callback()
+      }
+    }
+    const ResultEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.expectResultEmpty')))
+      } else {
+        callback()
+      }
+    }
+    const typeEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.typeEmpty')))
+      } else {
+        callback()
+      }
+    }
+    const StepEmpty = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('promptMessage.testStepEmpty')))
+      } else {
+        callback()
+      }
+    }
+    const fileEmpty = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error(this.$t('promptMessage.fileEmpty')))
+      } else {
+        callback()
+      }
+    }
     return {
       currUrl: window.location.href,
       userName: '',
@@ -312,25 +354,24 @@ export default {
         file: []
       },
       testSuitesNocase: false,
-      // scenarioName: '',
       rules: {
         name: [
-          { required: true, message: this.$t('testCase.provideNameCn'), trigger: 'blur' }
+          { required: true, validator: NameEmpty, trigger: 'blur' }
         ],
         objective: [
-          { required: true, message: '请输入测试目的', trigger: 'blur' }
+          { required: true, validator: objectiveEmpty, trigger: 'blur' }
         ],
         step: [
-          { required: true, message: '请输入测试步骤', trigger: 'blur' }
+          { required: true, validator: StepEmpty, trigger: 'blur' }
         ],
         expectResult: [
-          { required: true, message: '请输入测试预期结果', trigger: 'blur' }
+          { required: true, validator: ResultEmpty, trigger: 'blur' }
         ],
         type: [
-          { required: true, message: '请选择类型', trigger: 'change' }
+          { required: true, validator: typeEmpty, trigger: 'change' }
         ],
         file: [
-          { required: true, message: '请选择文件', trigger: 'change' }
+          { required: true, validator: fileEmpty, trigger: 'change' }
         ]
       }
     }
@@ -370,6 +411,12 @@ export default {
         this.taskId = this.currUrl.split('?')[1].split('=')[1].split('&')[0]
         sessionStorage.setItem('taskId', this.taskId)
       }
+    },
+    contribution () {
+      if (this.$refs['addcaseForm']) {
+        this.$refs['addcaseForm'].resetFields()
+      }
+      this.addCaseVisible = true
     },
     getAllScene () {
       Userpage.getAllSceneApi().then(res => {
@@ -423,7 +470,6 @@ export default {
     },
     getDetail (item) {
       this.CaseVisible = true
-      // this.scenarioName = this.language === 'cn' ? item.nameCh : item.nameEn
       let scenarioIds = []
       scenarioIds.push(item.id)
       let fd = new FormData()

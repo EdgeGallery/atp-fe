@@ -98,6 +98,7 @@ const cn = {
     cannotDeleteScenario: '该测试场景被某些测试套所使用，无法删除!',
     selectIcon: '请选择图标',
     nameEmpty: '名称不能为空!',
+    objectiveEmpty: '目的不能为空!',
     typeEmpty: '类型不能为空!',
     descriptionEmpty: '描述不能为空!',
     configEmpty: '参数不能为空',
