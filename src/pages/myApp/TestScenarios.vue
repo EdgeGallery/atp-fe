@@ -125,6 +125,7 @@
             </el-table-column>
             <el-table-column
               :label="$t('userpage.type')"
+              width="120"
             >
               <template scope="scope">
                 {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}

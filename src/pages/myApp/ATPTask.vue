@@ -98,7 +98,10 @@
             prop="providerId"
             :label="$t('myApp.provider')"
           />
-          <el-table-column :label="$t('myApp.testStatus')">
+          <el-table-column
+            :label="$t('myApp.testStatus')"
+            width="150"
+          >
             <template slot-scope="scope">
               <img
                 v-if="scope.row.status=='success'"
