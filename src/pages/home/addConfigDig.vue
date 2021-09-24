@@ -227,23 +227,43 @@ export default {
     }
   },
   data () {
-    var validateNameEmpty = (rule, value, callback) => {
+    const validateNameEmpty = (rule, value, callback) => {
       if (value === '') {
         callback(new Error(this.$t('promptMessage.nameEmpty')))
       } else {
         callback()
       }
     }
-    var validateDescEmpty = (rule, value, callback) => {
+    const validateDescEmpty = (rule, value, callback) => {
       if (value === '') {
         callback(new Error(this.$t('promptMessage.descriptionEmpty')))
       } else {
         callback()
       }
     }
-    var validateConfigEmpty = (rule, value, callback) => {
+    const validateConfigEmpty = (rule, value, callback) => {
       if (value === '') {
         callback(new Error(this.$t('promptMessage.configEmpty')))
+      } else {
+        callback()
+      }
+    }
+    const validateNameEnEmpty = (rule, value, callback) => {
+      let reg = /^(?!\s)[^\u4E00-\u9FA5]{1,64}$/g
+      if (!value) {
+        callback(new Error(this.$t('promptMessage.nameEmpty')))
+      } else if (!reg.test(value)) {
+        callback(new Error(this.$t('promptMessage.configNameEn')))
+      } else {
+        callback()
+      }
+    }
+    const validateDescEnEmpty = (rule, value, callback) => {
+      let reg = /^(?!\s)[^\u4E00-\u9FA5]{1,255}$/g
+      if (!value) {
+        callback(new Error(this.$t('promptMessage.descriptionEmpty')))
+      } else if (!reg.test(value)) {
+        callback(new Error(this.$t('promptMessage.configDescEn')))
       } else {
         callback()
       }
@@ -261,10 +281,16 @@ export default {
       modifyId: '',
       rules: {
         nameCh: [
-          { required: true, validator: validateNameEmpty, trigger: 'blur' }
+          { required: true, validator: validateNameEmpty }
+        ],
+        nameEn: [
+          { required: false, validator: validateNameEnEmpty }
         ],
         descriptionCh: [
-          { required: true, validator: validateDescEmpty, trigger: 'blur' }
+          { required: true, validator: validateDescEmpty }
+        ],
+        descriptionEn: [
+          { required: false, validator: validateDescEnEmpty }
         ],
         configuration: [
           { required: true, validator: validateConfigEmpty, trigger: 'blur' }

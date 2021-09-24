@@ -113,7 +113,9 @@ const cn = {
     confirmdeleteTask: '是否要继续删除测试任务?',
     moreThan2: '只能上传不超过2MB的文件！',
     uploadSuc: '上传成功',
-    configUsed: '配置项被使用,不能删除!'
+    configUsed: '配置项被使用,不能删除!',
+    configNameEn: '请输入长度1-64的英文名称，开头不能为空!',
+    configDescEn: '请输入长度1-255的英文描述，开头不能为空!'
   },
   common: {
     cancel: '取消',

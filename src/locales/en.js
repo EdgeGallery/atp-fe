@@ -115,7 +115,9 @@ const en = {
     confirmdeleteTask: 'Do you want to continue deleting the test task?',
     moreThan2: 'Can only upload no more than 2MB!',
     uploadSuc: 'Upload Succcess',
-    configUsed: 'Config is used by test case. can not be deleted.'
+    configUsed: 'Config is used by test case. can not be deleted.',
+    configNameEn: 'Please enter a English name with a length of 1-64, and the beginning cannot be empty',
+    configDescEn: 'Please enter a English description with a length of 1-255, and the beginning cannot be empty'
   },
   common: {
     cancel: 'Cancel',
