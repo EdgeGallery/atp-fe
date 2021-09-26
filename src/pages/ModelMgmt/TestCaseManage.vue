@@ -714,11 +714,16 @@ export default {
       },
       limitSize: 5,
       offsetPage: 0,
-      listTotal: 0
+      listTotal: 0,
+      currentPage: 1
     }
   },
   mounted () {
     this.getAllcase()
+  },
+  beforeRouteEnter (to, from, next) {
+    sessionStorage.removeItem('currentPage')
+    next()
   },
   methods: {
     resetForm () {

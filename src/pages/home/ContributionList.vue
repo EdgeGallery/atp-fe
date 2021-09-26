@@ -174,7 +174,8 @@ export default {
       language: localStorage.getItem('language'),
       limitSize: 5,
       offsetPage: 0,
-      listTotal: 0
+      listTotal: 0,
+      currentPage: 1
     }
   },
   mounted () {
@@ -268,6 +269,10 @@ export default {
         console.log('download success')
       })
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    sessionStorage.removeItem('currentPage')
+    next()
   }
 }
 </script>

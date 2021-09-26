@@ -159,7 +159,8 @@ export default {
       operate: '',
       modifyData: {},
       deleteid: '',
-      authorities: sessionStorage.getItem('authorities')
+      authorities: sessionStorage.getItem('authorities'),
+      currentPage: 1
     }
   },
   filters: {
@@ -226,6 +227,10 @@ export default {
     closedeletedig () {
       this.deleteVisible = false
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    sessionStorage.removeItem('currentPage')
+    next()
   }
 }
 </script>
