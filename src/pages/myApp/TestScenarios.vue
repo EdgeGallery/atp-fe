@@ -50,6 +50,7 @@
         >
           <div
             class="scene"
+            :class="item.label === 'EdgeGallery'? 'cannotclick':''"
             @click="chooseScene(item)"
           >
             <div class="scenariosLogo">
@@ -681,6 +682,7 @@ export default {
           }
           .choose-detail{
             padding: 15px;
+            pointer-events: all;
             span{
               font-family: 'Harmony-Thin';
               color: #fff;
