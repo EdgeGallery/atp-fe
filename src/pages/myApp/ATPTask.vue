@@ -230,7 +230,7 @@
 </template>
 
 <script>
-import { Taskmgmt, Userpage } from '../../tools/api.js'
+import { Taskmgmt, Userpage, getUserInfo } from '../../tools/api.js'
 import pagination from '../../components/common/Pagination.vue'
 export default {
   name: 'Apttask',
@@ -293,9 +293,9 @@ export default {
       telnetid: '',
       dataLoading: true,
       ids: [],
-      userId: sessionStorage.getItem('userId'),
-      userName: sessionStorage.getItem('userName'),
-      authorities: sessionStorage.getItem('authorities'),
+      userId: '',
+      userName: '',
+      authorities: [],
       reportData: [],
       language: localStorage.getItem('language'),
       visible: false,
@@ -305,6 +305,14 @@ export default {
       listTotal: 0,
       currentPage: 1
     }
+  },
+  beforeMount () {
+    getUserInfo().then(res => {
+      sessionStorage.setItem('userId', res.data.userId)
+      sessionStorage.setItem('userName', res.data.userName)
+      this.userName = res.data.userName
+      this.authorities = res.data.authorities
+    })
   },
   mounted () {
     this.getLanguage()
