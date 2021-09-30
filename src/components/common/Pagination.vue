@@ -126,13 +126,11 @@ export default {
     .el-pagination.is-background .el-pager li:not(.disabled):hover {
       color: #9f6dee;
     }
-    .el-pagination__total{
-      margin-left: 20px;
-    }
     .el-pagination .btn-prev .el-icon, .el-pagination .btn-next .el-icon{
       font-size: large;
     }
     .el-pagination__total{
+      margin-left: 20px;
       color: #333333;
       font-size: 14px;
     }

@@ -605,7 +605,7 @@ export default {
       padding: 0 15px;
       position: relative;
       .left{
-        font-family: 'Harmony-Light';
+        font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
         width: 70%;
         .left-text{
           position: relative;
@@ -671,20 +671,20 @@ export default {
             p{
               font-size: 16px;
               color: #380879;
-              font-family: 'Harmony-Light';
+              font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
 
             }
             span{
               font-size: 14px;
               color: #380879;
-              font-family: 'Harmony-UltraLight';
+              font-family: 'Harmony-UltraLight', Arial, Helvetica, sans-serif;
             }
           }
           .choose-detail{
             padding: 15px;
             pointer-events: all;
             span{
-              font-family: 'Harmony-Thin';
+              font-family: 'Harmony-Thin', Arial, Helvetica, sans-serif;
               color: #fff;
               font-size: 12px;
               padding: 5px 12px;
@@ -748,7 +748,7 @@ export default {
         }
       }
       .el-dialog__title{
-          font-family: 'Harmony-Light';
+          font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
           font-size: 20px !important;
           color: #380879 !important;
       }
@@ -772,7 +772,7 @@ export default {
             padding: 0;
           }
           .el-collapse-item__header{
-            font-family: 'Harmony-Light';
+            font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
             border-radius: 10px 10px 0 0;
             height: 35px;
             padding-left: 15px;

@@ -605,9 +605,9 @@ export default {
     // pdf
     getNumPages (pdfUrl) {
       this.pdfUrl = pdf.createLoadingTask(pdfUrl)
-      this.pdfUrl.promise.then(pdf => {
-        this.numPages = pdf.numPages
-      }).catch(() => {})
+      this.pdfUrl.promise.then(pdfitem => {
+        this.numPages = pdfitem.numPages
+      })
     },
     prePage () {
       let p = this.pageNum
@@ -774,9 +774,6 @@ export default {
           }
         }
     }
-    // .el-table{
-    //   font-size: 16px;
-    // }
   }
   .pdf-main{
     .totalnum{
