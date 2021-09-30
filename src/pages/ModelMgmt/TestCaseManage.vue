@@ -773,18 +773,7 @@ export default {
           })
           item.testSuiteNameList = testSuiteList.toString()
           let configList = []
-          if (item.hasOwnProperty('configIdList')) {
-            item.configIdList.forEach(Id => {
-              if (this.language === 'cn') {
-                configList.push(this.configCh.get(Id))
-              } else {
-                configList.push(this.configEh.get(Id))
-              }
-            })
-            item.configNameList = configList.toString()
-          } else {
-            item.configNameList = '/'
-          }
+          this.setConfig(item, configList)
         })
         this.pageData = data
       }).catch(() => {
@@ -795,6 +784,20 @@ export default {
           type: 'warning'
         })
       })
+    },
+    setConfig (item, configList) {
+      if (item.hasOwnProperty('configIdList')) {
+        item.configIdList.forEach(Id => {
+          if (this.language === 'cn') {
+            configList.push(this.configCh.get(Id))
+          } else {
+            configList.push(this.configEh.get(Id))
+          }
+        })
+        item.configNameList = configList.toString()
+      } else {
+        item.configNameList = '/'
+      }
     },
     async getALlSuites () {
       this.testSuiteList = []
@@ -1184,3 +1187,18 @@ export default {
   }
 }
 </style>
+
+  function newFunction(item, configList) {
+    if(item.hasOwnProperty('configIdList')) {
+      item.configIdList.forEach(Id => {
+        if(this.language==='cn') {
+          configList.push(this.configCh.get(Id))
+        } else {
+          configList.push(this.configEh.get(Id))
+        }
+      })
+      item.configNameList=configList.toString()
+    } else {
+      item.configNameList='/'
+    }
+  }

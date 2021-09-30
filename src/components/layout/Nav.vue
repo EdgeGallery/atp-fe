@@ -376,11 +376,9 @@ export default {
     window.addEventListener('message', (event) => {
       var data = event.data
       console.log('handleMessage, message info: ' + JSON.stringify(data))
-      switch (data.cmd) {
-        case 'iframeLanguageChange':
-          let lang = data.params.lang
-          this.changeLanguage(lang)
-          break
+      if (data.cmd === 'iframeLanguageChange') {
+        let lang = data.params.lang
+        this.changeLanguage(lang)
       }
     })
   },

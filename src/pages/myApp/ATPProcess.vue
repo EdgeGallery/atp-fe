@@ -75,7 +75,7 @@
         <span
           v-if=" isTest === 'running'"
           v-show="manualTitle"
-          style="font-family: 'Harmony-SemiBold';font-size: 16px;color: #380879;"
+          class="waitManual"
         >{{ $t('userpage.waitManual') }}</span>
         <span
           v-else
@@ -426,8 +426,6 @@ export default {
                 }
               }
             })
-          // 一个测试套测试完成后收起
-          // this.setactiveName(ele, element)
           })
         })
         // 分数和进度百分比
@@ -437,16 +435,7 @@ export default {
         this.IsFinish(reportPath)
         this.setTitle(taskStatus, data)
         // 判断是否只剩下手动类型
-        let everyBoolan = this.alltestCase.some(function (item) {
-          return (item.result === 'running' && item.type === 'manual')
-        })
-        let automaticBoolan = this.alltestCase.some(function (item) {
-          return ((item.result === 'running' || item.result === 'waiting') && item.type === 'automatic')
-        })
-        if (everyBoolan && !automaticBoolan && this.percentage !== 100) {
-          this.promptWait()
-          this.promptWait = function () {}
-        }
+        this.IsManualPrompt()
         this.setDivHeight()
       }).catch(() => {
         this.$message({
@@ -502,6 +491,18 @@ export default {
         type: 'success',
         message: this.$t('promptMessage.manualTip')
       })
+    },
+    IsManualPrompt () {
+      let everyBoolan = this.alltestCase.some(function (item) {
+        return (item.result === 'running' && item.type === 'manual')
+      })
+      let automaticBoolan = this.alltestCase.some(function (item) {
+        return ((item.result === 'running' || item.result === 'waiting') && item.type === 'automatic')
+      })
+      if (everyBoolan && !automaticBoolan && this.percentage !== 100) {
+        this.promptWait()
+        this.promptWait = function () { }
+      }
     },
     // 设置所有面板打开
     setCollaspe () {
@@ -596,7 +597,7 @@ export default {
       margin-bottom: 20px;
       position: relative;
       .left{
-        font-family: 'Harmony-Light';
+        font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
         width: 55%;
         .left-text{
           position: relative;
@@ -649,7 +650,7 @@ export default {
             padding-right: 15%;
           }
           .el-progress__text{
-            font-family: 'Harmony-SemiBold';
+            font-family: 'Harmony-SemiBold', Arial, Helvetica, sans-serif;
             font-size: 33px !important;
             color: #380879;
             margin-left: -30px;
@@ -675,14 +676,19 @@ export default {
           color: #380879;
           font-size: 14px;
           margin-left: 20px;
-          font-family: 'Harmony-Light';
+          font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
         }
         .test-result{
           position: relative;
-          font-family: 'Harmony-SemiBold';
+          font-family: 'Harmony-SemiBold', Arial, Helvetica, sans-serif;
           font-size: 16px;
           color: #380879;
           margin-left: 30px;
+        }
+        .waitManual{
+          font-family: 'Harmony-SemiBold', Arial, Helvetica, sans-serif;
+          font-size: 16px;
+          color: #380879;
         }
         .testFailed::before{
           content: '';
@@ -707,7 +713,7 @@ export default {
           left: -30px;
         }
         .findproblem{
-          font-family: 'Harmony-Light';
+          font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
           position: relative;
           font-size: 14px;
           color: #380879;
@@ -745,7 +751,7 @@ export default {
         background-color: #f6f5f8;
         margin: 0;
         border: none;
-        font-family: 'Harmony-Light';
+        font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
         .el-tabs__nav,.el-tabs__item{
           border: none;
         }
@@ -774,7 +780,7 @@ export default {
             padding: 0;
           }
           .el-collapse-item__header{
-            font-family: 'Harmony-Light';
+            font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
             border-radius: 10px 10px 0 0;
             height: 35px;
             padding-left: 15px;
@@ -805,6 +811,8 @@ export default {
             padding: 0 10px;
             color: #6f6084;
             vertical-align: top;
+            height: 37px;
+            line-height: 37px;
           }
           .el-table__body{
             .cell{
@@ -822,11 +830,6 @@ export default {
               margin-right: 10px;
             }
           }
-        }
-        .el-table td{
-          padding: 0;
-          height: 37px;
-          line-height: 37px;
         }
         }
       }
