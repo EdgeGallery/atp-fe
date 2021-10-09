@@ -227,15 +227,6 @@ export default {
       } else if (path === '/scenarios' || path === '/suites' || path === '/testcasemanage') {
         this.activeIndex = '/scenarios'
       }
-      // post message to unified platform
-      window.parent.postMessage({
-        cmd: 'routeTo',
-        params: {
-          module: 'atp',
-          path: to.path,
-          activeMenuPath: this.activeIndex
-        }
-      }, '*')
     }
   },
   methods: {
