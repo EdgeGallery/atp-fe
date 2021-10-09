@@ -25,11 +25,14 @@ Router.prototype.push = function push (location) {
 }
 Vue.use(Router)
 
+const currUrl = window.location.href
+const iframeUrl = currUrl.split('#')[1]
+
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/index'
+      redirect: currUrl.indexOf('language') !== -1 ? iframeUrl : '/index'
     },
     {
       path: '',
