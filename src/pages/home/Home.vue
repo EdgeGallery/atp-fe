@@ -578,7 +578,7 @@ export default {
   .statisticdata{
     height: 720px;
     display: flex;
-    padding: 100px 0;
+    padding-top: 100px;
     .left{
       position: relative;
       .title{
