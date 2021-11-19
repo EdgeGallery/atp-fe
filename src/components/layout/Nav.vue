@@ -141,6 +141,7 @@
 import {
   getUserInfo,
   logoutApi } from '../../tools/api.js'
+import { PROXY_PREFIX_CURRENTSERVER } from '../../tools/constant.js'
 export default {
   name: 'HeaderComp',
   data () {
@@ -263,8 +264,7 @@ export default {
       })
     },
     enterLoginPage () {
-      let _protocol = window.location.href.indexOf('https') > -1 ? 'https://' : 'http://'
-      window.location.href = this.loginPage + '&return_to=' + _protocol + window.location.host
+      window.location.href = this.loginPage + '&return_to=' + window.location.origin + PROXY_PREFIX_CURRENTSERVER
     },
     beforeLogout () {
       this.$confirm(this.$t('promptMessage.confirmLogout'), this.$t('promptMessage.prompt'), {

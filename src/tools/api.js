@@ -17,14 +17,17 @@
 import {
   getCookie, GET, POST, DELETE, PUT
 } from './request.js'
+import {
+  PROXY_PREFIX_CURRENTSERVER
+} from './constant.js'
 
 import axios from 'axios'
 
-const URL_PREFIX = '/mec-atp/edgegallery/atp/v1/'
-const URL_PREFIX_V2 = '/mec-atp/edgegallery/atp/v2/'
+const URL_PREFIX = PROXY_PREFIX_CURRENTSERVER + '/mec-atp/edgegallery/atp/v1/'
+const URL_PREFIX_V2 = PROXY_PREFIX_CURRENTSERVER + '/mec-atp/edgegallery/atp/v2/'
 
 function getUserInfo () {
-  let url = '/auth/login-info'
+  let url = PROXY_PREFIX_CURRENTSERVER + '/auth/login-info'
   return new Promise((resolve, reject) => {
     axios({
       method: 'GET',
@@ -45,7 +48,7 @@ function getUserInfo () {
 function logoutApi () {
   return axios({
     method: 'POST',
-    url: '/logout',
+    url: PROXY_PREFIX_CURRENTSERVER + '/logout',
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
@@ -122,7 +125,7 @@ let Taskmgmt = {
     return POST(url, params)
   },
   downLoadCaseApi: function (Id) {
-    let url = 'mec-atp/edgegallery/atp/v1/contributions/' + Id + '/action/download'
+    let url = PROXY_PREFIX_CURRENTSERVER + '/mec-atp/edgegallery/atp/v1/contributions/' + Id + '/action/download'
     return axios({
       method: 'get',
       url: url,
@@ -184,7 +187,7 @@ let Userpage = {
     return GET(url)
   },
   getTaskApiV2: function (taskId) {
-    let url = 'mec-atp/edgegallery/atp/v2/tasks/' + taskId
+    let url = PROXY_PREFIX_CURRENTSERVER + '/mec-atp/edgegallery/atp/v2/tasks/' + taskId
     return axios.get(url)
   },
   modifyStatusApi: function (taskId, params) {
@@ -221,7 +224,7 @@ let Atp = {
   },
   // Create test task
   creatTaskApi: function (params) {
-    let url = 'mec-atp/edgegallery/atp/v1/tasks'
+    let url = PROXY_PREFIX_CURRENTSERVER + '/mec-atp/edgegallery/atp/v1/tasks'
     return axios.post(url, params, {
       withCredentials: true,
       headers: {
@@ -232,7 +235,7 @@ let Atp = {
   },
   // Get task list
   taskListApi: function (params) {
-    let url = 'mec-atp/edgegallery/atp/v1/tasks'
+    let url = PROXY_PREFIX_CURRENTSERVER + '/mec-atp/edgegallery/atp/v1/tasks'
     return axios.get(url, {
       params: params,
       withCredentials: true,
@@ -244,7 +247,7 @@ let Atp = {
   },
   // download testcase
   downLoadCaseApi: function (Id, codeLanguage) {
-    let url = 'mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
+    let url = PROXY_PREFIX_CURRENTSERVER + '/mec-atp/edgegallery/atp/v1/testcases/' + Id + '/action/download'
     return axios({
       method: 'get',
       url: url,
@@ -271,5 +274,6 @@ export {
   logoutApi,
   Atp,
   ModelMgmt,
-  Home, Taskmgmt, Userpage
+  Home, Taskmgmt, Userpage,
+  PROXY_PREFIX_CURRENTSERVER
 }
