@@ -28,6 +28,8 @@
 
 <script>
 import EgFooter from 'eg-view/src/components/EgFooter.vue'
+import { common } from '../../tools/common.js'
+import { PLATFORMNAME_APPSTORE, PLATFORMNAME_DEVELOPER, PLATFORMNAME_MECM } from '../../tools/constant.js'
 export default {
   name: 'Layout',
   components: {
@@ -74,16 +76,9 @@ export default {
       }
     },
     getPlatformUrl () {
-      let currUrl = window.location.origin
-      if (currUrl.indexOf('30094') !== -1) {
-        this.appStoreUrl = currUrl.replace('30094', '30091')
-        this.devUrl = currUrl.replace('30094', '30092')
-        this.mecmUrl = currUrl.replace('30094', '30093')
-      } else {
-        this.appStoreUrl = currUrl.replace('atp', 'appstore')
-        this.devUrl = currUrl.replace('atp', 'atp')
-        this.mecmUrl = currUrl.replace('atp', 'mecm')
-      }
+      this.appStoreUrl = common.getPlatformUrlPrefix(PLATFORMNAME_APPSTORE)
+      this.devUrl = common.getPlatformUrlPrefix(PLATFORMNAME_DEVELOPER)
+      this.mecmUrl = common.getPlatformUrlPrefix(PLATFORMNAME_MECM)
       this.platformData.forEach(item => {
         if (item.name === 'AppStore') {
           item.url = this.appStoreUrl
