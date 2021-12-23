@@ -813,7 +813,10 @@ export default {
     }
   },
   mounted () {
-    this.initUser()
+    let _timer = setTimeout(() => {
+      clearTimeout(_timer)
+      this.initUser()
+    }, 1000)
     this.fillOptions()
     // this.getAllSuites()
   },
