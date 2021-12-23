@@ -82,7 +82,7 @@
               </div>
             </el-tooltip>
           </div>
-          <div v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1">
+          <div v-if="isAdmin">
             <el-button
               class="light-button"
               size="small"
@@ -162,7 +162,7 @@
             <el-table-column
               :label="$t('testCase.operation')"
               width="240"
-              v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+              v-if="isAdmin"
             >
               <template slot-scope="scope">
                 <el-button
@@ -618,7 +618,6 @@ export default {
     return {
       language: localStorage.getItem('language'),
       userName: sessionStorage.getItem('userName'),
-      authorities: sessionStorage.getItem('authorities'),
       taskId: '',
       form: {
         testSuiteIdList: [],
@@ -715,10 +714,12 @@ export default {
       limitSize: 5,
       offsetPage: 0,
       listTotal: 0,
-      currentPage: 1
+      currentPage: 1,
+      isAdmin: false
     }
   },
   mounted () {
+    this.initUser()
     this.getAllcase()
   },
   beforeRouteEnter (to, from, next) {
@@ -726,6 +727,12 @@ export default {
     next()
   },
   methods: {
+    initUser () {
+      let _authorities = sessionStorage.getItem('authorities')
+      if (_authorities && _authorities.length > 0) {
+        this.isAdmin = _authorities.includes('ROLE_ATP_ADMIN')
+      }
+    },
     resetForm () {
       if (this.$refs['addcaseForm']) {
         this.$refs['addcaseForm'].resetFields()
