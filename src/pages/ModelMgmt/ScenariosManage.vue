@@ -49,7 +49,7 @@
               </div>
             </el-tooltip>
           </div>
-          <div v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1">
+          <div v-if="isAdmin">
             <el-button
               class="light-button"
               size="small"
@@ -90,7 +90,7 @@
                 <div
                   class="operation-btn"
                   :class="{'btnNone':activeInfo===index}"
-                  v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+                  v-if="isAdmin"
                 >
                   <el-button
                     size="small"
@@ -515,7 +515,6 @@ export default {
       },
       userName: sessionStorage.getItem('userName'),
       language: localStorage.getItem('language'),
-      authorities: sessionStorage.getItem('authorities'),
       form: {
         name: '',
         locale: ''
@@ -530,7 +529,8 @@ export default {
           { required: true, validator: DescEmpty, trigger: 'blur' }
         ]
       },
-      activeInfo: -1
+      activeInfo: -1,
+      isAdmin: false
     }
   },
   methods: {
@@ -882,9 +882,16 @@ export default {
           batchFile: []
         }
       })
+    },
+    initUser () {
+      let _authorities = sessionStorage.getItem('authorities')
+      if (_authorities && _authorities.length > 0) {
+        this.isAdmin = _authorities.includes('ROLE_ATP_ADMIN')
+      }
     }
   },
   mounted () {
+    this.initUser()
     this.getAllScene()
     this.showErr = this.logoFileList
   },

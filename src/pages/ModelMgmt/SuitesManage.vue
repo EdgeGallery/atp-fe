@@ -56,7 +56,7 @@
               </div>
             </el-tooltip>
           </div>
-          <div v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1">
+          <div v-if="isAdmin">
             <el-button
               class="light-button"
               size="small"
@@ -137,7 +137,7 @@
                 <div
                   class="operation-btn"
                   :class="{'showbtn':activeInfo===index}"
-                  v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
+                  v-if="isAdmin"
                 >
                   <el-button
                     class="light-button"
@@ -480,8 +480,8 @@ export default {
       }
     }
     return {
+      isAdmin: false,
       userName: sessionStorage.getItem('userName'),
-      authorities: sessionStorage.getItem('authorities'),
       addTestSuiteVisible: false,
       editTestSuiteVisible: false,
       deleteVisible: false,
@@ -804,9 +804,16 @@ export default {
       form.descriptionCh = ''
       form.descriptionEn = ''
       form.scenarioIdList = []
+    },
+    initUser () {
+      let _authorities = sessionStorage.getItem('authorities')
+      if (_authorities && _authorities.length > 0) {
+        this.isAdmin = _authorities.includes('ROLE_ATP_ADMIN')
+      }
     }
   },
   mounted () {
+    this.initUser()
     this.fillOptions()
     // this.getAllSuites()
   },
