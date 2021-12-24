@@ -21,7 +21,7 @@
         {{ $t('home.configMgmt') }}
         <span class="line_bot" />
         <el-button
-          v-if="authorities.includes('ROLE_ATP_ADMIN')"
+          v-if="isAdmin"
           type="button"
           class="el-button newproject_btn linearGradient"
           id="newproject_btn"
@@ -93,7 +93,7 @@
             <el-table-column
               :label="$t('myApp.operation')"
               width="180"
-              v-if="authorities.includes('ROLE_ATP_ADMIN')"
+              v-if="isAdmin"
             >
               <template slot-scope="scope">
                 <el-button
@@ -159,8 +159,8 @@ export default {
       operate: '',
       modifyData: {},
       deleteid: '',
-      authorities: sessionStorage.getItem('authorities'),
-      currentPage: 1
+      currentPage: 1,
+      isAdmin: false
     }
   },
   filters: {
@@ -173,6 +173,10 @@ export default {
     }
   },
   mounted () {
+    let _timer = setTimeout(() => {
+      clearTimeout(_timer)
+      this.initUser()
+    })
     this.getConfigList()
   },
   watch: {
@@ -189,6 +193,12 @@ export default {
     }
   },
   methods: {
+    initUser () {
+      let _authorities = sessionStorage.getItem('authorities')
+      if (_authorities && _authorities.length > 0) {
+        this.isAdmin = _authorities.includes('ROLE_ATP_ADMIN')
+      }
+    },
     getCurrentPageData (val, pageSize, start) {
       this.limitSize = pageSize
       this.offsetPage = start

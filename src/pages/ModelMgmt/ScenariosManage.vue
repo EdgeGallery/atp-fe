@@ -894,8 +894,7 @@ export default {
     let _timer = setTimeout(() => {
       clearTimeout(_timer)
       this.initUser()
-    }, 1000)
-    this.initUser()
+    })
     this.getAllScene()
     this.showErr = this.logoFileList
   },
