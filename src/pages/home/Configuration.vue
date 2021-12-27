@@ -176,7 +176,7 @@ export default {
     let _timer = setTimeout(() => {
       clearTimeout(_timer)
       this.initUser()
-    })
+    }, 500)
     this.getConfigList()
   },
   watch: {
