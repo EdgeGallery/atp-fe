@@ -289,6 +289,14 @@ export default {
 
       return false
     },
+    sendPageLoadedMsg (userId) {
+      if (window.parent !== window) {
+        window.top.postMessage({
+          cmd: 'subpageLoaded',
+          params: { userId }
+        }, '*')
+      }
+    },
     startHttpSessionInvalidListener (sessId) {
       if (typeof (WebSocket) === 'undefined') {
         return
@@ -352,6 +360,7 @@ export default {
         this.navList.splice(3, 1)
       }
       this.startHttpSessionInvalidListener(res.data.sessId)
+      this.sendPageLoadedMsg(res.data.userId)
     })
     let historyRoute = sessionStorage.getItem('historyRoute')
     if (historyRoute) {
