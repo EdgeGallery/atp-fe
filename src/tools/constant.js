@@ -21,6 +21,7 @@ const DOMAIN_CURRENTSERVER = 'atp'
 const PLATFORMNAME_APPSTORE = 'APPSTORE'
 const PLATFORMNAME_DEVELOPER = 'DEVELOPER'
 const PLATFORMNAME_MECM = 'MECM'
+const PLATFORMNAME_EG = 'EG'
 
 const PLATFORM_LIST = [
   {
@@ -40,6 +41,12 @@ const PLATFORM_LIST = [
     port: '30093',
     domain: 'mecm',
     proxyPrefix: '/edgegallery/mecm'
+  },
+  {
+    name: PLATFORMNAME_EG,
+    port: '30095',
+    domain: 'edgegallery',
+    proxyPrefix: '/edgegallery/web'
   }
 ]
 
@@ -50,5 +57,6 @@ export {
   PLATFORMNAME_APPSTORE,
   PLATFORMNAME_DEVELOPER,
   PLATFORMNAME_MECM,
+  PLATFORMNAME_EG,
   PLATFORM_LIST
 }
