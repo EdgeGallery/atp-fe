@@ -141,7 +141,12 @@
 import {
   getUserInfo,
   logoutApi } from '../../tools/api.js'
-import { PROXY_PREFIX_CURRENTSERVER } from '../../tools/constant.js'
+import {
+  PROXY_PREFIX_CURRENTSERVER,
+  PLATFORMNAME_EG,
+  PLATFORMNAME_APPSTORE,
+  PLATFORMNAME_DEVELOPER } from '../../tools/constant.js'
+import { common } from '../../tools/common.js'
 export default {
   name: 'HeaderComp',
   data () {
@@ -264,7 +269,7 @@ export default {
       })
     },
     enterLoginPage () {
-      window.location.href = this.loginPage + '&return_to=' + window.location.origin + PROXY_PREFIX_CURRENTSERVER
+      window.location.href = this.loginPage + '&return_to=' + window.location.origin + PROXY_PREFIX_CURRENTSERVER + '&lang=' + this.language
     },
     beforeLogout () {
       this.$confirm(this.$t('promptMessage.confirmLogout'), this.$t('promptMessage.prompt'), {
@@ -276,7 +281,7 @@ export default {
       })
     },
     openUserAccountCenter () {
-      window.open(this.userCenterPage)
+      window.open(this.userCenterPage + '?lang=' + this.language)
     },
     jumpToForceModifyPw () {
       if (this.ifGuest) {
@@ -288,6 +293,24 @@ export default {
       }
 
       return false
+    },
+    sendPageLoadedMsg (userId) {
+      if (window.parent !== window) {
+        let _possibleTopWinOriginUrlList = []
+        if (PROXY_PREFIX_CURRENTSERVER) {
+          _possibleTopWinOriginUrlList.push(window.location.origin)
+        } else {
+          _possibleTopWinOriginUrlList.push(common.getPlatformUrlPrefix(PLATFORMNAME_EG))
+          _possibleTopWinOriginUrlList.push(common.getPlatformUrlPrefix(PLATFORMNAME_APPSTORE))
+          _possibleTopWinOriginUrlList.push(common.getPlatformUrlPrefix(PLATFORMNAME_DEVELOPER))
+        }
+        _possibleTopWinOriginUrlList.forEach(_possibleTopWinOriginUrl => {
+          window.top.postMessage({
+            cmd: 'subpageLoaded',
+            params: { userId }
+          }, _possibleTopWinOriginUrl)
+        })
+      }
     },
     startHttpSessionInvalidListener (sessId) {
       if (typeof (WebSocket) === 'undefined') {
@@ -352,6 +375,7 @@ export default {
         this.navList.splice(3, 1)
       }
       this.startHttpSessionInvalidListener(res.data.sessId)
+      this.sendPageLoadedMsg(res.data.userId)
     })
     let historyRoute = sessionStorage.getItem('historyRoute')
     if (historyRoute) {
