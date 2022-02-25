@@ -16,124 +16,20 @@
 
 <template>
   <div id="headerComp">
-    <el-row>
-      <el-col
-        :span="2"
-      >
-        <div class="logo">
-          <img
-            src="../../assets/images/logonav.png"
-            class="curp"
-            @click="jumpTo('/index')"
-            alt
-          >
-        </div>
-      </el-col>
-      <el-col
-        :span="18"
-      >
-        <div class="navList">
-          <el-menu
-            :unique-opened="true"
-            router
-            :default-active="activeIndex"
-            @select="handleSelect"
-            text-color="#bdb1e4"
-            background-color="#5e40c8"
-            active-text-color="#fff"
-            mode="horizontal"
-          >
-            <template
-              v-for="item in navList"
-            >
-              <el-submenu
-                v-if="item.children && item.children.length"
-                :index="item.route+ ''"
-                :key="item.pageId"
-              >
-                <template
-                  slot="title"
-                >
-                  {{ language === 'cn' ? item.labelCn : item.labelEn }}
-                </template>
-                <el-menu-item
-                  v-for="itemChild in item.children"
-                  :index="itemChild.route+ ''"
-                  :key="itemChild.pageId"
-                >
-                  {{ language === 'cn' ? itemChild.labelCn : itemChild.labelEn }}
-                </el-menu-item>
-              </el-submenu>
-              <el-menu-item
-                v-else
-                :index="item.route"
-                :key="item.pageId"
-              >
-                {{ language === 'cn' ? item.labelCn : item.labelEn }}
-              </el-menu-item>
-            </template>
-          </el-menu>
-        </div>
-      </el-col>
-      <el-col
-        :span="4"
-      >
-        <div class="user_right flex">
-          <div
-            class="user_icon"
-            v-if="ifGuest"
-          >
-            <img
-              src="../../assets/images/nav_user.png"
-              alt=""
-              title="登录"
-              @click="logout()"
-            >
-          </div>
-          <div
-            class="nav-tabs"
-            v-if="!ifGuest"
-          >
-            <div
-              class="userName"
-              @mouseenter="showUserInfo=true"
-              @mouseleave="showUserInfo=false"
-            >
-              {{ userName }}
-              <el-collapse-transition>
-                <div
-                  class="user_info"
-                  v-show="showUserInfo"
-                >
-                  <span
-                    class="userAccountCenter"
-                    @click="openUserAccountCenter()"
-                  >{{ $t('nav.userAccountCenter') }}</span>
-                  <span
-                    @click="beforeLogout()"
-                  >{{ $t('nav.logout') }}</span>
-                </div>
-              </el-collapse-transition>
-            </div>
-          </div>
-          <div
-            class="curp"
-            @click="changeLanguage"
-          >
-            <img
-              src="../../assets/images/nav_en.png"
-              alt=""
-              v-if="language==='cn'"
-            >
-            <img
-              src="../../assets/images/nav_cn.png"
-              alt=""
-              v-else
-            >
-          </div>
-        </div>
-      </el-col>
-    </el-row>
+    <Navcomp
+      :scroll-top-prop="scrollTop"
+      class="clearfix"
+      @clickLogo="clickLogo"
+      @changeLange="changeLanguage"
+      @logout="logout"
+      :if-guest-prop="ifGuest"
+      :user-name-prop="userName"
+      :user-center-page-prop="userCenterPage"
+      @beforeLogout="beforeLogout"
+      :json-data-prop="jsonData"
+      :nav-menu-fontsize-prop="navMenuFontsize"
+      :version-prop="version"
+    />
   </div>
 </template>
 
@@ -147,8 +43,10 @@ import {
   PLATFORMNAME_APPSTORE,
   PLATFORMNAME_DEVELOPER } from '../../tools/constant.js'
 import { common } from '../../tools/common.js'
+import Navcomp from 'eg-view/src/components/EgNav.vue'
 export default {
   name: 'HeaderComp',
+  components: { Navcomp },
   data () {
     return {
       language: localStorage.getItem('language'),
@@ -159,59 +57,102 @@ export default {
       ifGuest: true,
       navList: [
         {
-          labelEn: 'Home',
-          labelCn: '首页',
-          route: '/index',
-          display: true,
-          pageId: '1'
+          id: '1',
+          name: '首页',
+          path: '/index',
+          display: true
         },
         {
-          labelEn: 'Test Model',
-          labelCn: '测试模型',
+          id: '2',
+          name: '测试模型',
           display: true,
-          pageId: '2',
+          path: '/scenarios',
           children: [
             {
-              labelEn: 'Scenarios Management',
-              labelCn: '测试场景管理',
-              route: '/scenarios',
+              name: '测试场景管理',
+              path: '/scenarios',
               display: true,
-              pageId: '2.1'
+              id: '2.1'
             }, {
-              labelEn: 'Suites Management',
-              labelCn: '测试套管理',
-              route: '/suites',
+              name: '测试套管理',
+              path: '/suites',
               display: true,
-              pageId: '2.2'
+              id: '2.2'
             }, {
-              labelEn: 'Case Management',
-              labelCn: '测试用例管理',
-              route: '/testcasemanage',
+              name: '测试用例管理',
+              path: '/testcasemanage',
               display: true,
-              pageId: '2.3'
+              id: '2.3'
             }
           ]
         },
         {
-          labelEn: 'Task',
-          labelCn: '任务管理',
-          route: '/tasklist',
+          name: '任务管理',
+          path: '/tasklist',
           display: true,
-          pageId: '3'
+          id: '3'
         },
         {
-          labelEn: 'Contribution Case',
-          labelCn: '贡献管理',
-          route: '/contributionlist',
+          name: '贡献管理',
+          path: '/contributionlist',
           display: true,
-          pageId: '4'
+          id: '4'
         },
         {
-          labelEn: 'Configuration',
-          labelCn: '配置管理',
-          route: '/configurationlist',
+          name: '配置管理',
+          path: '/configurationlist',
           display: true,
-          pageId: '5'
+          id: '5'
+        }
+      ],
+      navListEn: [
+        {
+          id: '1',
+          name: 'Home',
+          path: '/index',
+          display: true
+        },
+        {
+          name: 'Test Model',
+          display: true,
+          path: '/scenarios',
+          id: '2',
+          children: [
+            {
+              name: 'Scenarios Management',
+              path: '/scenarios',
+              display: true,
+              id: '2.1'
+            }, {
+              name: 'Suites Management',
+              path: '/suites',
+              display: true,
+              id: '2.2'
+            }, {
+              name: 'Case Management',
+              path: '/testcasemanage',
+              display: true,
+              id: '2.3'
+            }
+          ]
+        },
+        {
+          name: 'Task',
+          path: '/tasklist',
+          display: true,
+          id: '3'
+        },
+        {
+          name: 'Contribution Case',
+          path: '/contributionlist',
+          display: true,
+          id: '4'
+        },
+        {
+          name: 'Configuration',
+          path: '/configurationlist',
+          display: true,
+          id: '5'
         }
       ],
       activeIndex: '/',
@@ -219,7 +160,11 @@ export default {
       showUserInfo: false,
       wsSocketConn: null,
       wsMsgSendInterval: null,
-      manualLoggout: false
+      manualLoggout: false,
+      scrollTop: 0,
+      navMenuFontsize: 18,
+      version: 'v1.5.1',
+      jsonData: []
     }
   },
   watch: {
@@ -236,17 +181,21 @@ export default {
     }
   },
   methods: {
-    jumpTo (newPath) {
-      this.$router.push(newPath)
+    clickLogo () {
+      this.$router.push('/index')
     },
     changeLanguage (lan) {
       if (lan === 'cn') {
+        this.jsonData = this.navList
         this.language = 'cn'
       } else if (lan === 'en') {
+        this.jsonData = this.navListEn
         this.language = 'en'
       } else if (this.language === 'cn') {
+        this.jsonData = this.navListEn
         this.language = 'en'
       } else {
+        this.jsonData = this.navList
         this.language = 'cn'
       }
       localStorage.setItem('language', this.language)
@@ -256,7 +205,6 @@ export default {
     handleSelect (index, path, item) {
       if (index) {
         this.activeIndex = index
-        // this.$router.push(this.activeIndex)
       }
     },
     logout () {
@@ -356,6 +304,18 @@ export default {
       }, 10000)
     }
   },
+  beforeMount () {
+    if (!localStorage.getItem('language')) {
+      localStorage.setItem('language', 'cn')
+    }
+    let language = localStorage.getItem('language') || 'cn'
+    this.$i18n.locale = language
+    if (language === 'en') {
+      this.jsonData = this.navListEn
+    } else {
+      this.jsonData = this.navList
+    }
+  },
   mounted () {
     this.activeIndex = this.$route.fullPath
     getUserInfo().then(res => {
@@ -373,7 +333,15 @@ export default {
       }
       if (res.data.authorities.indexOf('ROLE_ATP_ADMIN') === -1) {
         this.navList.splice(3, 1)
+        this.navListEn.splice(3, 1)
       }
+      let language = localStorage.getItem('language')
+      if (language === 'en') {
+        this.jsonData = this.navListEn
+      } else {
+        this.jsonData = this.navList
+      }
+      this.jsonData = this.navList
       this.startHttpSessionInvalidListener(res.data.sessId)
       this.sendPageLoadedMsg(res.data.userId)
     })
@@ -405,89 +373,3 @@ export default {
   }
 }
 </script>
-
-<style lang='less' >
-#headerComp {
-  height: 65px;
-  color: #fff;
-  padding: 0 13%;
-  background-color: #5e40c8;
-  top: 0px;
-  width: 100%;
-  z-index: 2;
-  .logo {
-    height: 65px;
-    line-height: 65px;
-    text-align: left;
-    img {
-      width: 100%;
-      margin-top: 20px;
-    }
-    span {
-      font-size: 18px;
-      vertical-align: text-bottom;
-    }
-  }
-    .navList {
-      text-align: center;
-      .el-menu--horizontal {
-        border: none;
-      }
-      .el-menu--horizontal>.el-menu-item {
-        height: 65px;
-        line-height: 65px;
-        font-size: 16px;
-        margin-right: 0px;
-        vertical-align: bottom;
-      }
-      .el-submenu__title {
-        font-size: 16px;
-      }
-      .el-menu--horizontal>.el-submenu .el-submenu__title {
-        height: 65px;
-        line-height: 65px;
-      }
-    }
-    .user_right{
-      float: right;
-      color: #fff;
-      height: 26px;
-      line-height: 26px;
-      margin-top: 20px;
-      .user_icon{
-        margin: 0 20px;
-        cursor: pointer;
-      }
-      .userName{
-        position: relative;
-        cursor: pointer;
-        margin:0 20px;
-      }
-      .user_info{
-        background: #6319c2;
-        position: absolute;
-        width: 90px;
-        padding-bottom: 2px;
-        border-radius: 6px;
-        top: 30px;
-        z-index: 100;
-        span{
-          display: inline-block;
-          width: 100%;
-          height: 44px;
-          line-height: 44px;
-          font-size: 14px;
-          background: #3b0b7a;
-          border-radius: 6px;
-          margin-top: 2px;
-          text-align: center;
-          color: #acacac;
-        }
-        span:hover{
-          background: #2b0064;
-          color: #fff;
-        }
-      }
-  }
-}
-</style>

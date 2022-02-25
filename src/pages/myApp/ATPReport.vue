@@ -29,7 +29,7 @@
         <div>
           <el-button
             v-if="downloadBtn"
-            class="dark-button"
+            class="common-btn"
             icon="el-icon-download"
             plain
             @click="downLoadReport()"
@@ -41,7 +41,7 @@
       <p class="reportTitle">
         {{ $t('userpage.platformReport') }}
       </p>
-      <div class="baseInfo padding20">
+      <div class="baseInfo common-div">
         <div class="title">
           <div class="title-text">
             <span class="titleTextWidth">
@@ -56,6 +56,7 @@
           <el-table
             :data="tableData"
             style="width: 100%"
+            header-cell-class-name="caseHearder"
           >
             <el-table-column
               fixed
@@ -102,10 +103,10 @@
       </div>
       <div class="report-chart">
         <div
-          class="left"
+          class="left common-div"
           id="chartwidth"
         >
-          <div class="title padding20">
+          <div class="title">
             <div class="title-text">
               <span class="titleTextWidth">
                 {{ $t('report.caseDistribution') }}
@@ -121,10 +122,10 @@
           />
         </div>
         <div
-          class="right"
+          class="right common-div"
           id="chartwidth"
         >
-          <div class="title padding20">
+          <div class="title">
             <div class="title-text">
               <span class="titleTextWidth">
                 {{ $t('report.successfulRate') }}
@@ -140,7 +141,7 @@
           />
         </div>
       </div>
-      <div class="report-detail padding20">
+      <div class="report-detail padding20 common-div">
         <div class="title">
           <div class="title-text">
             <span
@@ -172,7 +173,7 @@
             >
               <el-table
                 :data="suiteItem.testCases"
-                header-cell-class-name="tableheaderStyle"
+                header-cell-class-name="caseHearder"
               >
                 <el-table-column
                   :label="$t('userpage.name')"
@@ -217,7 +218,7 @@
         {{ $t('userpage.applicationReport') }}
       </p>
       <div
-        class="pdf-main"
+        class="pdf-main common-div"
         v-show="printShow"
       >
         <div class="totalnum">
@@ -285,7 +286,7 @@ export default {
       taskId: '',
       scenarioId: '',
       tableData: [],
-      ChartData: [],
+      chartData: [],
       finishActiveName: [],
       downloadBtn: true,
       interval: '',
@@ -406,7 +407,7 @@ export default {
           chartobj.dataEn.push(objDataEn)
           let passRate = Number((testScenarios.successNum / testScenarios.totalNum * 100).toFixed(0))
           chartobj.dataRight.push(passRate)
-          this.ChartData.push(chartobj)
+          this.chartData.push(chartobj)
         })
         this.$nextTick(() => {
           this.drawLeftLine()
@@ -423,14 +424,17 @@ export default {
       })
     },
     drawLeftLine () {
-      let Chart = this.$echarts.init(document.getElementById('leftchart'))
-      let colors = ['#d3b6ff', '#ffd65e', '#616cf7', '#ff509f', '#9ed0c9']
+      let _chart = this.$echarts.init(document.getElementById('leftchart'))
+      let colors = ['#3AC372', '#ffd65e', '#616cf7', '#ff509f', '#9ed0c9']
       let option = {
         color: colors,
         legend: {
           top: '0%',
           orient: 'vertical',
-          left: 'right'
+          left: 'right',
+          textStyle: {
+            color: '#fff'
+          }
         },
         tooltip: {
           trigger: 'item',
@@ -441,7 +445,6 @@ export default {
             name: '测试场景',
             type: 'pie',
             radius: ['30%', '60%'],
-            // avoidLabelOverlap: false,
             label: {
               formatter: '{b} \n用例数量: {@2012} ({d}%)',
               minMargin: 10,
@@ -458,21 +461,24 @@ export default {
       }
       if (this.language === 'en') {
         option.series[0].name = 'Test Scenarios'
-        option.series[0].data = this.ChartData[0].dataEn
+        option.series[0].data = this.chartData[0].dataEn
         option.series[0].label.formatter = '{b} Cases: {@2012} ({d}%)'
       } else if (this.language === 'cn') {
         option.series[0].name = '测试场景'
-        option.series[0].data = this.ChartData[0].dataCh
+        option.series[0].data = this.chartData[0].dataCh
       }
-      Chart.setOption(option)
+      _chart.setOption(option)
+      this.reSizeFun(_chart)
+    },
+    reSizeFun (_chart) {
       window.addEventListener('resize', () => {
-        if (Chart) {
-          Chart.resize()
+        if (_chart) {
+          _chart.resize()
         }
       })
     },
     drawRightLine () {
-      let Chart = this.$echarts.init(document.getElementById('rightchart'))
+      let _chart = this.$echarts.init(document.getElementById('rightchart'))
       let option = {
         grid: {
           x: 80,
@@ -487,7 +493,7 @@ export default {
             animation: false,
             type: 'line',
             lineStyle: {
-              color: '#b44ef1',
+              color: '#fff',
               width: 4,
               type: 'dotted',
               opacity: 0.2
@@ -498,13 +504,13 @@ export default {
           type: 'category',
           data: [],
           axisLabel: {
-            color: '#666666',
+            color: '#fff',
             fontSize: '16'
           },
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#cccccc',
+              color: '#fff',
               type: 'dotted'
             }
           }
@@ -516,21 +522,21 @@ export default {
               show: true,
               interval: 'auto',
               formatter: '{value} %',
-              color: '#666666',
+              color: '#fff',
               fontSize: '16'
             },
             show: true,
             splitLine: {
               show: true,
               lineStyle: {
-                color: '#cccccc',
+                color: '#fff',
                 type: 'dotted'
               }
             },
             axisLine: {
               show: true,
               lineStyle: {
-                color: '#cccccc',
+                color: '#fff',
                 width: 2,
                 type: 'dashed'
               }
@@ -556,18 +562,14 @@ export default {
         }]
       }
       if (this.language === 'en') {
-        option.xAxis.data = this.ChartData[0].nameRightEn
-        option.series[0].data = this.ChartData[0].dataRight
+        option.xAxis.data = this.chartData[0].nameRightEn
+        option.series[0].data = this.chartData[0].dataRight
       } else if (this.language === 'cn') {
-        option.xAxis.data = this.ChartData[0].nameRightCh
-        option.series[0].data = this.ChartData[0].dataRight
+        option.xAxis.data = this.chartData[0].nameRightCh
+        option.series[0].data = this.chartData[0].dataRight
       }
-      Chart.setOption(option)
-      window.addEventListener('resize', () => {
-        if (Chart) {
-          Chart.resize()
-        }
-      })
+      _chart.setOption(option)
+      this.reSizeFun(_chart)
     },
 
     dateChange (dateStr) {
@@ -596,11 +598,12 @@ export default {
       this.activeName = this.finishActiveName
       this.downloadBtn = false
       this.printShow = false
-      setTimeout(() => {
+      let _timer = setTimeout(() => {
+        clearTimeout(_timer)
         this.getPdf('#pdfDom')
         this.downloadBtn = true
         this.printShow = true
-      }, 3000)
+      }, 1000)
     },
     // pdf
     getNumPages (pdfUrl) {
@@ -640,16 +643,13 @@ export default {
       }
       h3{
         font-family: sans-serif;
-        color: #380879;
+        color: #fff;
         font-size: 24px;
         font-weight: 800;
       }
     }
     .baseInfo{
-      background-color: #fff;
-      box-shadow: 0 0 10px 2px #e8e6f1;
       margin-bottom: 30px;
-      border-radius: 6px;
       .report-app-info{
         position: relative;
         .resulticon{
@@ -668,7 +668,7 @@ export default {
     .title {
       font-family: sans-serif;
       font-size: 24px;
-      color: #380879;
+      color: #fff;
       padding-bottom: 10px;
       .title-text{
         position: relative;
@@ -677,8 +677,7 @@ export default {
       .backColor{
           height: 15px;
           border-radius: 10px;
-          background-color: #d3b6ff;
-          // float: left;
+          background-color: #8963c2;
           position: relative;
           top: -10px;
           left: 8px;
@@ -692,10 +691,6 @@ export default {
             }
             .left,.right{
               width: 100%;
-              // height: 500px;
-              background-color: #fff;
-              box-shadow: 0 0 10px 2px #e8e6f1;
-              border-radius: 6px;
             }
             .sumchart{
               width: 100%;
@@ -707,9 +702,6 @@ export default {
             }
       }
     .report-detail{
-      background-color: #fff;
-      box-shadow: 0 0 10px 2px #e8e6f1;
-      border-radius: 6px;
       .detail-content{
         .scene{
           padding-left: 10px;
@@ -718,76 +710,93 @@ export default {
           font-weight: 600;
           color: #a000ff;
         }
-          .el-collapse{
-            padding: 5px 20px;
-            border: none;
-            .el-collapse-item{
-              padding: 8px 0;
-            }
-            .el-collapse-item__header{
-              padding-left: 8px;
-              font-size: 16px;
-              background-image: linear-gradient(to right, rgba(124,156,250,.5) , rgba(249,195,255,.2));
-              border-radius: 2px;
-              color: #111111;
-              height: 30px;
-            }
-            .el-icon-arrow-right:before {
-              color: #000;
-            }
-            .el-collapse-item__content{
-              padding-bottom: 0;
-            }
-            .el-collapse-item__wrap{
-              border: none;
-            }
-          }
-          .tableheaderStyle{
+      .el-collapse {
+        border: none;
+        padding: 0;
+        .el-collapse-item {
+          margin-bottom: 15px;
+          .el-collapse-item__content{
             padding: 0;
+          }
+          .el-collapse-item__header{
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
             height: 40px;
-            line-height: 40px;
-            font-size: 15px;
+            padding-left: 15px;
+            font-size: 19px;
+            color: #fff;
+            background-color: #5F499D;
+            border-radius: 19.5px;
+            border: none;
           }
-          .el-table::before {
-            width: 0;
-          }
-          .el-table td{
-            padding: 0;
-            height: 45px;
-            line-height: 45px;
-          }
-          .el-table tr{
+          .el-collapse-item__wrap{
+            padding-left: 15px;
             background-color: transparent;
-          }
-          .el-table {
-            background-color: transparent;
-          }
-          table th,table td{
-            border-bottom: none !important;
-            background-color: transparent;
-          }
-          .el-collapse-item__wrap {
-            background-color: transparent;
-           }
-           .el-table, .el-table__expanded-cell {
-            background-color: transparent;
+            border: none;
           }
         }
+      }
+        }
     }
+          .caseHearder{
+            background-color: transparent;
+            color: #fff;
+            padding: 0 10px;
+            height: 35px;
+            line-height: 35px;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+          }
+          .el-table tr {
+            height: 37px;
+            background-color: transparent;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+          }
+          .el-table td{
+            padding: 0 10px;
+            color: #fff;
+            vertical-align: top;
+            height: 37px;
+            line-height: 37px;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+          }
+          .el-table__body{
+            .cell{
+              padding-top: 5px;
+            }
+          }
+         .el-table::before {
+          width: 0;
+        }
+        .el-table{
+          background-color: transparent;
+          .cell{
+            display: table-cell;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            img{
+              vertical-align: middle;
+              margin-right: 10px;
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
   }
   .pdf-main{
     .totalnum{
       text-align: center;
       font-size: xx-large;
+      color: #fff;
     }
     .pdf-content{
       display: flex;
       align-items: center;
-      background-color: #fff;
-      box-shadow: 0 0 10px 2px #e8e6f1;
       margin: 20px;
       .pagearrow{
         font-size: xxx-large;
+        color: #fff;
       }
       .pdf{
         width: 100%;
@@ -803,7 +812,7 @@ export default {
     }
   }
   .reportTitle{
-    color: #380879;
+    color: #fff;
     padding: 10px;
     font-size: 30px;
     font-weight: bolder;

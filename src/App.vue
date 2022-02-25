@@ -42,7 +42,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background: #f6f5f8;
   overflow: auto;
+  padding-top: 80px;
+  background: url('./assets/images/common_bg_inner1.png') #3E279B -10px 92% no-repeat;
+  background-size: cover;
 }
 </style>

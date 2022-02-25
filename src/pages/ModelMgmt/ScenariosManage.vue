@@ -18,19 +18,18 @@
     <Navcomp />
     <div class="padding_deafult">
       <breadcrumb />
-      <div class="testscenarios-main padding20">
+      <div class="testscenarios-main common-div">
         <div class="flex enter-search">
           <div class="flex">
             <el-input
               v-model="form.name"
               prefix-icon="el-icon-search"
               :placeholder="$t('testCase.provideNameSearch')"
-              size="small"
+              class="common-input right-space"
               @change="getAllScene"
             />
             <el-button
-              class="dark-button"
-              size="small"
+              class="common-btn"
               @click="getAllScene"
             >
               {{ $t('common.search') }}
@@ -51,15 +50,13 @@
           </div>
           <div v-if="isAdmin">
             <el-button
-              class="light-button"
-              size="small"
+              class="common-btn"
               @click="excelBringBtn"
             >
               {{ this.$t('modelmgmt.import') }}
             </el-button>
             <el-button
-              class="dark-button"
-              size="small"
+              class="common-btn"
               @click="onclickAdd"
             >
               {{ $t('testCase.add') }}
@@ -94,7 +91,7 @@
                 >
                   <el-button
                     size="small"
-                    class="light-button"
+                    class="btn"
                     @click="deleteTestScenario(item.id)"
                     style="margin-right:30px;"
                   >
@@ -102,7 +99,7 @@
                   </el-button>
                   <el-button
                     size="small"
-                    class="dark-button"
+                    class="btn"
                     @click="editScenario(item)"
                   >
                     <em class="el-icon-edit " />
@@ -908,22 +905,10 @@ export default {
 </script>
 <style lang="less">
 .testscenarios-main{
-    background-color: #fff;
-    padding: 30px 60px 60px;
-    border-radius: 20px;
   .enter-search{
     justify-content: space-between;
-    height: 34px;
-      .el-input{
+      .right-space{
         margin-right: 20px;
-        width: auto!important;
-      }
-      .el-input__inner{
-        border: 1px solid #380879;
-      }
-      .el-input__inner:focus {
-        outline: none;
-        border-color: #380879;
       }
       .questionIcon {
         margin-left: 10px;
@@ -933,29 +918,32 @@ export default {
       }
   }
   .allscene{
-    padding-top: 15px;
+    margin-top: 30px;
+    position: relative;
+    z-index: 0;
     display: flex;
     flex-wrap: wrap;
     .list {
-      background-color: #fff;
       box-sizing: border-box;
       width: 25%;
-      padding: 0 10px;
-      margin-bottom: 20px;
+      padding: 0 2%;
+      margin-bottom: 30px;
       .content{
         box-shadow: 0 0 20px rgba(27, 7, 118, 0.1);
-        border-radius: 12px;
+        border-radius: 8px;
         position: relative;
         padding-bottom: 90px;
+        background-color: #ffffff;
         img{
           width: 100%;
+          height: 138px;
+          text-align: center;
           display: block;
-          height: 160px;
-          border-radius: 12px 12px 0 0;
+          border-radius: 8px 8px 0 0;
         }
         .content-info{
-          background: #fff;
-          border-radius: 12px;
+          background: #4E3494;
+          border-radius: 0 0 8px 8px;
           position: absolute;
           width: 100%;
           bottom: 0px;
@@ -963,7 +951,7 @@ export default {
           padding: 20px 20px 10px;
           .name{
             font-size: 20px;
-            color: #111;
+            color: #fff;
             margin-bottom: 7px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -972,7 +960,7 @@ export default {
           .description{
             display: block;
             font-size: 16px;
-            color: #666;
+            color: #fff;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -988,6 +976,11 @@ export default {
             text-overflow: ellipsis;
             margin-top: 10px;
             transition: all 0.6s ease-in-out;
+            .btn{
+              color: #5944C0;
+              background-color: #fff;
+              border-radius: 30px;
+            }
             .el-button--small {
               padding: 5px 25px;
             }
@@ -1038,7 +1031,6 @@ export default {
   .upload-demo{
     float: left;
     .el-button--primary{
-      background-color: #fff;
       border-color: #688ef3;
       color: #688ef3;
       padding: 6px 20px;

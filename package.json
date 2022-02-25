@@ -16,7 +16,7 @@
     "core-js": "^2.6.5",
     "dot-prop": "^4.2.1",
     "echarts": "^4.9.0",
-    "eg-view": "^0.0.25",
+    "eg-view": "^0.0.33",
     "element-ui": "^2.12.0",
     "elliptic": "^6.5.3",
     "html2canvas": "^1.0.0-rc.7",

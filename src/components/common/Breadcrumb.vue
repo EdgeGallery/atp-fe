@@ -67,11 +67,11 @@ export default {
     font-size: 14px;
     .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link{
       font-weight: normal;
-      color: #999999;
+      color: #e9e6e6;
     }
     .el-breadcrumb__item:last-child{
       .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link{
-         color: #280b4e !important;
+         color: #fff !important;
       }
     }
   }

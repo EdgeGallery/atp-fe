@@ -18,26 +18,24 @@
     <Navcomp />
     <div class="padding_deafult">
       <breadcrumb />
-      <div class="testsuites-main padding20">
+      <div class="testsuites-main common-div">
         <div class="flex enter-search">
           <div class="flex">
             <el-input
+              class="common-input right-space"
               v-model="form.name"
               prefix-icon="el-icon-search"
               :placeholder="$t('testCase.provideNameSearch')"
-              size="small"
               @change="getAllSuites"
             />
             <el-button
-              class="light-button"
-              size="small"
+              class="common-btn"
               @click="resetForm"
             >
               {{ $t('myApp.reset') }}
             </el-button>
             <el-button
-              class="dark-button"
-              size="small"
+              class="common-btn"
               @click="getAllSuites"
             >
               {{ $t('common.search') }}
@@ -58,15 +56,13 @@
           </div>
           <div v-if="isAdmin">
             <el-button
-              class="light-button"
-              size="small"
+              class="common-btn"
               @click="excelBringBtn"
             >
               {{ this.$t('modelmgmt.import') }}
             </el-button>
             <el-button
-              class="dark-button"
-              size="small"
+              class="common-btn"
               @click="addTestSuiteBtn"
             >
               {{ $t('testCase.add') }}
@@ -830,44 +826,34 @@ export default {
 </script>
 <style lang="less">
 .testsuites-main{
-  background-color: #fff;
-  padding: 30px 60px 60px;
-  border-radius: 20px;
     .enter-search{
       justify-content: space-between;
-      height: 34px;
-        .el-select{
-          width: auto!important;
-        }
-        .el-input{
-          margin-right: 20px;
-          width: auto!important;
-        }
-        .el-input__inner{
-          border: 1px solid #380879;
-        }
-        .el-input__inner:focus {
-          outline: none;
-          border-color: #380879;
-        }
         .questionIcon {
           margin-left: 10px;
             img{
               padding-top: 5px;
             }
         }
+        .right-space{
+          margin-right: 20px;
+        }
     }
   .filter{
     padding: 25px 15px 20px;
     span{
       font-size: 16px;
-      color: #333333;
+      color: #fff;
       margin-right: 50px;
       padding: 5px 8px;
     }
+    span:hover{
+      color: #fff;
+      border: 1px solid #fff;
+      border-radius: 12px;
+    }
     .selected{
-      color: #603994;
-      border: 1px solid #603994;
+      color: #fff;
+      border: 1px solid #fff;
       font-size: 18px;
       border-radius: 12px;
     }

@@ -20,18 +20,18 @@
     <div class="testcase padding100">
       <breadcrumb />
       <div
-        class="testcase-main"
+        class="testcase-main common-div"
       >
         <div class="flex enter-search">
           <div class="flex">
             <el-input
+              class="common-input right-space"
               v-model="form.name"
               prefix-icon="el-icon-search"
               :placeholder="$t('testCase.provideNameSearch')"
-              size="small"
             />
             <el-select
-              size="small"
+              class="common-select right-space"
               v-model="form.type"
               :placeholder="$t('testCase.provideTestType')"
             >
@@ -43,9 +43,8 @@
               />
             </el-select>
             <el-select
-              size="small"
+              class="common-select right-space"
               v-model="form.testSuiteIdList"
-              class="statusSelect"
               :placeholder="$t('testCase.provideTestSuite')"
             >
               <el-option
@@ -56,15 +55,13 @@
               />
             </el-select>
             <el-button
-              class="light-button"
-              size="small"
+              class="common-btn"
               @click="resetSearchForm"
             >
               {{ $t('myApp.reset') }}
             </el-button>
             <el-button
-              class="dark-button"
-              size="small"
+              class="common-btn"
               @click="selectcaseList"
             >
               {{ $t('myApp.inquire') }}
@@ -84,15 +81,13 @@
           </div>
           <div v-if="isAdmin">
             <el-button
-              class="light-button"
-              size="small"
+              class="common-btn"
               @click="excelBringBtn"
             >
               {{ this.$t('modelmgmt.import') }}
             </el-button>
             <el-button
-              class="dark-button"
-              size="small"
+              class="common-btn"
               @click="addTestBtn"
             >
               {{ $t('testCase.add') }}
@@ -102,7 +97,7 @@
         <div class="testcase-content">
           <el-table
             :data="pageData"
-            header-cell-class-name="headerStyle"
+            class="common-table"
           >
             <el-table-column
               prop="nameCh"
@@ -1122,25 +1117,10 @@ export default {
   }
 .testcase {
   .testcase-main {
-    background: #fff;
-    padding: 30px 60px 60px;
-    border-radius: 20px;
     .enter-search{
       justify-content: space-between;
-      height: 34px;
-      .el-select{
-        width: auto!important;
-      }
-      .el-input{
+      .right-space{
         margin-right: 20px;
-        width: auto!important;
-      }
-      .el-input__inner{
-        border: 1px solid #380879;
-      }
-      .el-input__inner:focus {
-        outline: none;
-        border-color: #380879;
       }
       .questionIcon {
         margin-left: 10px;

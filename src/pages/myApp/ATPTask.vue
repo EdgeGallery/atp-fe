@@ -20,13 +20,13 @@
       <div class="flex enter-search">
         <div class="flex">
           <el-input
+            class="common-input right-space"
             v-model="form.appName"
             prefix-icon="el-icon-search"
             :placeholder="$t('testCase.provideNameSearch')"
-            size="small"
           />
           <el-select
-            size="small"
+            class="common-select right-space"
             v-model="form.status"
             :placeholder="$t('myApp.testStatus')"
           >
@@ -38,15 +38,13 @@
             />
           </el-select>
           <el-button
-            size="small"
-            class="light-button"
+            class="common-btn"
             @click="resetForm"
           >
             {{ $t('myApp.reset') }}
           </el-button>
           <el-button
-            size="small"
-            class="dark-button"
+            class="common-btn"
             @click="selectList"
           >
             {{ $t('myApp.inquire') }}
@@ -54,9 +52,7 @@
         </div>
         <div>
           <el-button
-            v-if="authorities.indexOf('ROLE_ATP_ADMIN')!==-1"
-            size="small"
-            class="dark-button"
+            class="common-btn"
             @click="deleteTask"
             :disabled="ids.length===0?true:false"
           >
@@ -69,7 +65,7 @@
           v-loading="dataLoading"
           :data="pageData"
           style="width: 100%;"
-          header-cell-class-name="headerStyle"
+          class="common-table"
           @selection-change="handleSelectionChange"
         >
           <el-table-column
@@ -151,7 +147,6 @@
             :label="$t('myApp.endTime')"
           />
           <el-table-column
-            fixed="right"
             :label="$t('myApp.operation')"
           >
             <template slot-scope="scope">
@@ -498,24 +493,10 @@ export default {
 
 <style lang='less'>
   .task-main {
-    background-color: #fff;
-    padding: 30px 60px 60px;
-    border-radius: 20px;
     .enter-search{
       justify-content: space-between;
-      .el-input, .el-select{
-        margin-right: 20px !important;
-      }
-      .el-input__inner{
-        border: 1px solid #380879 !important;
-      }
-      .el-input__inner:focus {
-        outline: none !important;
-        border-color: #380879 !important;
-      }
-      .el-button:active {
-          border-color: #380879;
-          outline: none;
+      .right-space{
+        margin-right: 20px;
       }
       .el-button.is-disabled, .el-button.is-disabled:hover, .el-button.is-disabled:focus {
         color: #fff;
@@ -527,17 +508,17 @@ export default {
   .task-content {
     padding: 20px 0;
       img{
-        vertical-align: middle;
+        vertical-align: center;
       }
       span{
-        color: #380879;
+        color: #fff;
         font-size: 16px;
       }
       .el-link{
-        color: #380879;
+        color: #fff;
         font-size: 16px;
         span{
-          border-bottom: 1px solid #5d3692;
+          border-bottom: 1px solid #fff;
         }
       }
       .el-button--text.is-disabled,.el-link.is-disabled{
