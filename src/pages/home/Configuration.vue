@@ -30,28 +30,23 @@
           <span><em class="new_icon" /> {{ $t('home.addConfig') }} </span>
         </el-button>
       </div>
-      <div class="project-list">
+      <div class="project-list  common-div">
         <div class="search">
           <el-input
             v-model="enterQuery"
             :placeholder="$t('testCase.provideNameSearch')"
             id="inputProjectName"
-            class="enterinput"
+            prefix-icon="el-icon-search"
+            class="common-input enterinput"
             @clear="selectConfigList"
             @change="selectConfigList"
-          >
-            <em
-              slot="suffix"
-              class="search_icon"
-              @click="selectConfigList"
-            />
-          </el-input>
+          />
         </div>
         <div class="content">
           <el-table
             v-loading="dataLoading"
             :data="pageData"
-            header-cell-class-name="headerStyle"
+            class="common-table"
           >
             <el-table-column
               prop="id"
@@ -292,52 +287,8 @@ export default {
     }
   .project-list{
     margin-bottom: 100px;
-    background-color: #fff;
-    padding: 30px 60px 60px;
-    border-radius: 20px;
-    .search {
-      font-size: 20px;
-      color: #282b33;
-      position: relative;
-      line-height: 24px;
-      margin: 20px 0;
-      .el-input {
-        width: 300px;
-      }
-      .enterinput {
-        display: inline-block;
-        width: 200px;
-        margin-right: 20px;
-        .el-input__inner {
-          border: 1px solid #380879;
-          border-radius: 8px;
-        }
-        .search_icon{
-          display: inline-block;
-          width: 15px;
-          height: 15px;
-          background: url('../../assets/images/work_project_search_icon.png');
-          position: relative;
-          top: 8px;
-          cursor: pointer;
-          margin-right: 5px;
-        }
-      }
-      .searchBtn {
-        width: 65px;
-        height: 30px;
-        line-height: 34px;
-        margin-left: 10px;
-        padding: 0 10px;
-      }
-      .el-input__inner {
-        height: 34px;
-      }
-      .el-input__icon {
-        line-height: 34px;
-      }
-    }
     .content{
+      padding: 20px 0;
       .el-button.configBtn{
         color: #7a6e8a;
         border: none;

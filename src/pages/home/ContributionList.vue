@@ -22,22 +22,21 @@
         {{ $t('nav.contributionMgmt') }}
         <span class="line_bot" />
       </div>
-      <div class="main">
+      <div class="main  common-div">
         <div class="header flex">
           <div class="search flex">
             <el-input
+              class="common-input"
               v-model="form.name"
               prefix-icon="el-icon-search"
               :placeholder="$t('testCase.provideNameSearch')"
-              size="small"
               @clear="selectContributionList"
               @change="selectContributionList"
             />
           </div>
           <div>
             <el-button
-              size="small"
-              class="dark-button"
+              class="common-btn"
               @click="deleteCase"
               :disabled="ids.length===0?true:false"
             >
@@ -49,8 +48,8 @@
           <el-table
             v-loading="dataLoading"
             :data="pageData"
-            header-cell-class-name="headerStyle"
             @selection-change="handleSelectionChange"
+            class="common-table"
           >
             <el-table-column
               type="selection"
@@ -280,9 +279,6 @@ export default {
 <style lang='less'>
 .contribution{
   .main{
-    background: #fff;
-    padding: 30px 60px 60px;
-    border-radius: 20px;
     .header{
       justify-content: space-between;
       .el-input__inner{
@@ -300,15 +296,6 @@ export default {
       padding: 20px 0;
     }
   }
-    .el-button:active {
-        border-color: #380879;
-        outline: none;
-    }
-    .el-button:hover, .el-button:focus {
-        color: #fff;
-        border-color: #380879;
-        background-color: #380879;
-    }
     .el-button.is-disabled, .el-button.is-disabled:hover, .el-button.is-disabled:focus {
         color: #fff;
         background-image: none;

@@ -21,7 +21,10 @@
         {{ $t('atp.taskManage') }}
         <span class="line_bot" />
       </div>
-      <Atptask :isinternal="isInternal" />
+      <Atptask
+        :isinternal="isInternal"
+        class="common-div"
+      />
     </div>
   </div>
 </template>

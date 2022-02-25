@@ -21,7 +21,8 @@
       :platform-data="platformData"
       :show-full-footer-page="showFullFooterPage"
       :specific-bg="specificBg"
-      specific-bg-color="#ffffff"
+      specific-bg-color="#f7f5f9"
+      :footer-paddingtop-prop="footerPaddingtop"
     />
   </div>
 </template>
@@ -56,7 +57,9 @@ export default {
         }
       ],
       showFullFooterPage: true,
-      specificBg: false
+      specificBg: false,
+      footerBgcolor: '',
+      footerPaddingtop: 0
     }
   },
   watch: {
@@ -71,8 +74,10 @@ export default {
     getPagePath (path) {
       if (path === '/index') {
         this.showFullFooterPage = true
+        this.specificBg = true
       } else {
         this.showFullFooterPage = false
+        this.specificBg = false
       }
     },
     getPlatformUrl () {
