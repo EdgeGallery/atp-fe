@@ -191,7 +191,8 @@
       :close-on-click-modal="false"
       title="提示"
       width="25%"
-      class="prompt-dialog"
+      append-to-body
+      class="prompt-dialog commondlg"
     >
       <div style="text-align: center;">
         <img
@@ -208,13 +209,13 @@
       >
         <el-button
           style="margin-right:40px;"
-          class="light-button"
+          class="common-btn"
           @click="handleClose"
         >
           {{ $t('common.cancel') }}
         </el-button>
         <el-button
-          class="dark-button"
+          class="common-btn"
           @click="confirmDeleteTask"
         >
           {{ $t('common.confirm') }}

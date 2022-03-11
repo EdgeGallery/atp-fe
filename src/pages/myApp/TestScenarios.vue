@@ -16,7 +16,7 @@
 <template>
   <div class="insideScene">
     <div
-      class="selectscene"
+      class="selectscene common-div"
       id="selectscene"
     >
       <div class="toptitle">
@@ -35,7 +35,7 @@
           @click="contribution()"
         >
           <el-button
-            class="dark-button"
+            class="common-btn"
             size="small"
           >
             {{ $t('userpage.contribution') }}
@@ -102,6 +102,7 @@
       :visible.sync="CaseVisible"
       :title="$t('userpage.caseDetail')"
       width="85%"
+      class="commondlg"
     >
       <el-collapse
         :value="opened"
@@ -116,6 +117,7 @@
           <el-table
             :data="item.testCases"
             header-cell-class-name="caseHearder"
+            class="common-table"
           >
             <el-table-column
               :label="$t('userpage.name')"
@@ -151,7 +153,7 @@
         slot="footer"
       >
         <el-button
-          class="dark-button"
+          class="common-btn"
           @click="handleClose()"
         >
           {{ $t('common.close') }}
@@ -163,7 +165,7 @@
       :title="$t('userpage.contribution')"
       :close-on-click-modal="false"
       width="45%"
-      class="addCasedialog"
+      class="commondlg"
     >
       <el-form
         :model="addcaseForm"
@@ -176,6 +178,7 @@
           prop="name"
         >
           <el-input
+            class="dlg-input"
             width="100px"
             size="small"
             v-model="addcaseForm.name"
@@ -187,6 +190,7 @@
           prop="objective"
         >
           <el-input
+            class="dlg-input"
             v-model="addcaseForm.objective"
             type="textarea"
             autosize
@@ -198,6 +202,7 @@
           prop="step"
         >
           <el-input
+            class="dlg-input"
             v-model="addcaseForm.step"
             type="textarea"
             autosize
@@ -209,6 +214,7 @@
           prop="expectResult"
         >
           <el-input
+            class="dlg-input"
             size="small"
             v-model="addcaseForm.expectResult"
             maxlength="255"
@@ -219,6 +225,7 @@
           prop="type"
         >
           <el-select
+            class="dlg-select"
             size="small"
             v-model="addcaseForm.type"
             :placeholder="$t('userpage.choose')"
@@ -252,7 +259,7 @@
             <el-button
               slot="trigger"
               size="small"
-              class="form-button"
+              class="inner-btn"
             >
               {{ $t('testCase.import') }}
             </el-button>
@@ -273,14 +280,14 @@
         <el-button
           id="upload_package_close"
           @click="cancelClose"
-          class="light-button"
+          class="common-btn"
           style="margin-right:20px;"
         >
           {{ $t('common.cancel') }}
         </el-button>
         <el-button
           id="upload_package_ipload"
-          class="dark-button"
+          class="common-btn"
           @click="confirmAddCase()"
         >
           {{ $t('common.confirm') }}
@@ -593,13 +600,9 @@ export default {
 .insideScene{
   .selectscene{
     position: relative;
-    background-color: #fbf5f8;
-    padding: 50px 20px 0;
-    border-radius: 16px;
     display: block;
-    box-shadow: inset 4px 4px 25px 5px rgba(36, 20, 119, 0.11);
     .toptitle{
-      color: #380879;
+      color: #fff;
       display: flex;
       justify-content: space-between;
       padding: 0 15px;
@@ -614,22 +617,9 @@ export default {
           border-radius: 12px;
           height: 47px;
           width: 100%;
-          font-size: 20px;
-          background-image: linear-gradient(to right, rgba(251,251,251) , rgba(246,245,248));
+          font-size: 24px;
         }
       }
-    .left::after{
-        content: '';
-        border-radius: 12px;
-        width: 60%;
-        height: 47px;
-        position: absolute;
-        bottom: -4px;
-        background-image: linear-gradient(to right, #aa9ec1, #f0eef4);
-        filter: blur(0.65rem);
-        opacity: 0.7;
-        z-index: 1;
-    }
       .right{
         font-size: 20px;
         cursor: pointer;
@@ -646,11 +636,10 @@ export default {
         .scene{
           border-radius: 10px;
           position: relative;
-          background-color: #fff;
+          background-color: #4e3494;
           .scenariosLogo{
             .sceneimage{
               display: block;
-              // width: calc(100% - 24px);
               width: 100%;
               text-align: center;
               border-radius: 20px 20px 0 0;
@@ -670,13 +659,13 @@ export default {
             white-space: nowrap;
             p{
               font-size: 16px;
-              color: #380879;
+              color: #fff;
               font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
 
             }
             span{
               font-size: 14px;
-              color: #380879;
+              color: #fff;
               font-family: 'Harmony-UltraLight', Arial, Helvetica, sans-serif;
             }
           }
@@ -684,11 +673,10 @@ export default {
             padding: 15px;
             pointer-events: all;
             span{
-              font-family: 'Harmony-Thin', Arial, Helvetica, sans-serif;
-              color: #fff;
+              color: #4e3494;
               font-size: 12px;
               padding: 5px 12px;
-              background-color: #cfc8e6;
+              background-color: #fff;
               border-radius: 10px;
             }
           }
@@ -735,36 +723,9 @@ export default {
         z-index: 1;
     }
   }
-
   .el-dialog{
-    border-radius: 10px;
-    background-color: #efefef;
-      .el-dialog__header{
-        border: none;
-        padding: 40px 40px 0;
-        border-radius: 10px 10px 0 0;
-        .el-dialog__headerbtn{
-          display: none;
-        }
-      }
-      .el-dialog__title{
-          font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
-          font-size: 20px !important;
-          color: #380879 !important;
-      }
-      .el-dialog__title::before{
-        content: '';
-        display:inline-block;
-        width:17px;
-        height:17px;
-        margin-right:20px;
-        background-image: url('../../assets/images/casedetail.png');
-        position: relative;
-        top: 2px;
-      }
-    .el-dialog__body{
-      padding: 20px 40px 0 !important;
       .el-collapse {
+        border: none;
         padding: 0;
         .el-collapse-item {
           margin-bottom: 15px;
@@ -772,64 +733,53 @@ export default {
             padding: 0;
           }
           .el-collapse-item__header{
-            font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
-            border-radius: 10px 10px 0 0;
-            height: 35px;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            height: 40px;
             padding-left: 15px;
-            font-size: 18px;
+            font-size: 19px;
             color: #fff;
-            background-color: #9d95c9!important;
+            background-color: #5F499D;
+            border-radius: 19.5px;
+            border: none;
           }
           .el-collapse-item__wrap{
-            border-radius: 0 0 10px 10px;
+            padding-left: 15px;
+            background-color: transparent;
+            border: none;
           }
+        }
+      }
           .caseHearder{
-            background: #dedae9;
-            color: #6d5d83;
+            background-color: transparent;
+            color: #fff;
             padding: 0 10px;
             height: 35px;
             line-height: 35px;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
             font-size: 16px;
-            font-weight: normal;
-          }
-          .has-gutter th{
-            border-radius: 0;
           }
           .el-table tr {
-            background-color: #f1f2f6;
             height: 37px;
+            background-color: transparent;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
           }
           .el-table td{
             padding: 0 10px;
-            color: #6f6084;
+            color: #fff;
             vertical-align: top;
+            height: 37px;
+            line-height: 37px;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
           }
           .el-table__body{
             .cell{
               padding-top: 5px;
             }
           }
-        }
-      }
-        .el-icon-arrow-right:before {
-          color: #fff;
-        }
-        .el-table::before {
-            width: 0;
-        }
-        table th,table td{
-          border-bottom: none !important;
-          height: 20px;
-        }
-      }
-  }
-  .addCasedialog{
-    .form-button{
-          background-color: #f7f2ff;
-          border: 1px solid #380879;
-          color: #380879;
-          border-radius: 5px;
-          box-shadow: 0 5px 5px #deccf9;
+         .el-table::before {
+          width: 0;
         }
   }
 }

@@ -136,7 +136,7 @@
             </p>
             <p>
               <el-button
-                class="dark-button"
+                class="common-btn"
                 @click="jumpTo('/tasklist')"
               >
                 {{ $t('home.viewList') }}
@@ -172,7 +172,7 @@
             </p>
             <p>
               <el-button
-                class="dark-button"
+                class="common-btn"
                 @click="jumpTo('/contributionList')"
               >
                 {{ $t('home.viewList') }}

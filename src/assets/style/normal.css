@@ -173,10 +173,10 @@ a{
 
 /* 弹框 */
 .el-dialog__close {
-  color: #000 !important;
+  color: #fff !important;
 }
 .el-icon-close:before{
-  color:#000 !important;
+  color:#fff !important;
 }
 
 .el-checkbox__input.is-checked .el-checkbox__inner {
@@ -255,25 +255,56 @@ th{
 
 /* 弹框确认 */
   .el-dialog__header{
-    border: 1px solid #c9c9c9;
+    border-radius: 16px 16px 0 0;
   }
   .el-dialog__title{
-    font-size: 20px !important;
-    color: #333333 !important;
+    font-size: 18px !important;
+    color: #fff !important;
   }
   .el-dialog__body{
     padding: 20px 20px !important;
   }
   .prompt-text{
-    font-size: 18px;
-    color: #666666;
+    font-size: 16px;
+    color: #fff;
     padding-top: 10px;
   }
   .el-dialog__footer{
     text-align: center !important;
+    border-radius: 0 0 16px 16px;
   }
   .el-dialog__headerbtn{
-    font-size: 22px !important;
+    font-size: 18px !important;
+  }
+  .commondlg .el-dialog{
+    background: transparent;
+  }
+  .commondlg .el-form-item__label{
+    color: #fff;
+    height: 36px;
+    line-height: 36px;
+  }
+  .commondlg .el-dialog__header,.commondlg .el-dialog__body,.commondlg .el-dialog__footer{
+    background: rgba(46, 20, 124, 0.7);
+    backdrop-filter: blur(6px);
+    clear: both;
+    color: #fff;
+  }
+  .commondlg  .el-dialog__title::before{
+    content: '';
+    display:inline-block;
+    width:10px;
+    height:10px;
+    margin-right:10px;
+    border-radius: 50%;
+    background: #43F6AD;
+    position: relative;
+   }
+   .el-input.dlg-input .el-input__inner,.el-select.dlg-select .el-input__inner,.el-textarea.dlg-input .el-textarea__inner,.dlg-input.el-input.is-disabled .el-input__inner,.el-select .el-input.is-disabled .el-input__inner{
+    color: #fff;
+    background-color: rgba(255,255,255,.45);
+    border: none;
+    height: 30px;
   }
 
   /* 提示框 */
@@ -282,10 +313,10 @@ th{
     color: #280b4e !important;
     font-size: 16px !important;
 }
-.el-tooltip__popper .popper__arrow, .el-tooltip__popper .popper__arrow::after{
-  /* border-color:#ebe0fb !important; */
-  border-color: transparent;
-}
+  .el-tooltip__popper .popper__arrow, .el-tooltip__popper .popper__arrow::after{
+    /* border-color:#ebe0fb !important; */
+    border-color: transparent;
+  }
 
 /* 导航鼠标划过样式 */
 .el-menu--horizontal > .el-menu-item.is-active,
@@ -361,10 +392,10 @@ th{
 }
 .el-button.inner-btn{
   color: #fff !important;
-  font-size: 16px !important;
+  font-size: 14px !important;
   background-color: #4e3494 !important;
   border: none;
-  padding: 14px 30px;
+  padding: 7px 10px;
 }
 .el-button.inner-btn:hover{
   color: #806bbc !important;
