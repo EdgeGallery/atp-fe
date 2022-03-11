@@ -115,6 +115,8 @@
           :close-on-click-modal="false"
           :title=" $t('testCase.addTestScenario')"
           width="30%"
+          append-to-body
+          class="commondlg"
         >
           <el-form
             :model="addTestScenarioForm"
@@ -127,6 +129,7 @@
               prop="nameCh"
             >
               <el-input
+                class="dlg-input"
                 size="small"
                 v-model="addTestScenarioForm.nameCh"
                 maxlength="64"
@@ -136,6 +139,7 @@
               :label=" $t('testCase.testScenarioEn')"
             >
               <el-input
+                class="dlg-input"
                 size="small"
                 v-model="addTestScenarioForm.nameEn"
                 maxlength="64"
@@ -146,6 +150,7 @@
               prop="descriptionCh"
             >
               <el-input
+                class="dlg-input"
                 size="small"
                 v-model="addTestScenarioForm.descriptionCh"
                 maxlength="255"
@@ -155,6 +160,7 @@
               :label=" $t('testCase.testScenarioDescriptionEn')"
             >
               <el-input
+                class="dlg-input"
                 size="small"
                 v-model="addTestScenarioForm.descriptionEn"
                 maxlength="255"
@@ -214,12 +220,12 @@
               style="margin-right:40px;"
               @click="handleClose"
               size="small"
-              class="light-button"
+              class="common-btn"
             >
               {{ $t('common.cancel') }}
             </el-button>
             <el-button
-              class="dark-button"
+              class="common-btn"
               size="small"
               @click="confirmAddTestScenario"
             >
@@ -233,6 +239,8 @@
           :title="$t('testCase.editTestScenario')"
           :close-on-click-modal="false"
           width="30%"
+          append-to-body
+          class="commondlg"
         >
           <el-form
             :model="editTestScenarioForm"
@@ -245,6 +253,7 @@
               prop="nameCh"
             >
               <el-input
+                class="dlg-input"
                 size="small"
                 v-model="editTestScenarioForm.nameCh"
                 maxlength="64"
@@ -255,6 +264,7 @@
               prop="nameEn"
             >
               <el-input
+                class="dlg-input"
                 size="small"
                 v-model="editTestScenarioForm.nameEn"
                 maxlength="64"
@@ -265,6 +275,7 @@
               prop="descriptionCh"
             >
               <el-input
+                class="dlg-input"
                 size="small"
                 v-model="editTestScenarioForm.descriptionCh"
                 maxlength="255"
@@ -275,6 +286,7 @@
               prop="descriptionEn"
             >
               <el-input
+                class="dlg-input"
                 size="small"
                 v-model="editTestScenarioForm.descriptionEn"
                 maxlength="255"
@@ -331,7 +343,7 @@
             class="dialog-footer"
           >
             <el-button
-              class="light-button"
+              class="common-btn"
               style="margin-right:40px;"
               @click="handleClose"
               size="small"
@@ -339,7 +351,7 @@
               {{ $t('common.cancel') }}
             </el-button>
             <el-button
-              class="dark-button"
+              class="common-btn"
               size="small"
               @click="confirmEditTestScenario()"
             >
@@ -353,7 +365,8 @@
         :close-on-click-modal="false"
         title="提示"
         width="25%"
-        class="prompt-dialog"
+        append-to-body
+        class="prompt-dialog commondlg"
       >
         <div style="text-align: center;">
           <img
@@ -369,13 +382,13 @@
         >
           <el-button
             style="margin-right:40px;"
-            class="light-button"
+            class="common-btn"
             @click="deleteVisibleClose"
           >
             {{ $t('common.cancel') }}
           </el-button>
           <el-button
-            class="dark-button"
+            class="common-btn"
             @click="onDelete"
           >
             {{ $t('common.confirm') }}
@@ -387,7 +400,8 @@
         :close-on-click-modal="false"
         width="30%"
         :title="$t('modelmgmt.importCase')"
-        class="addtestdialog"
+        append-to-body
+        class="addtestdialog commondlg"
       >
         <el-form
           :model="batchForm"
@@ -433,7 +447,7 @@
           <el-button
             id="upload_package_close"
             @click="BatchImportClose"
-            class="light-button"
+            class="common-btn"
             size="small"
             style="margin-right:40px;"
           >
@@ -443,7 +457,7 @@
             id="upload_package_ipload"
             size="small"
             @click="BatchImport"
-            class="dark-button"
+            class="common-btn"
           >
             {{ $t('common.confirm') }}
           </el-button>
@@ -932,7 +946,7 @@ export default {
         box-shadow: 0 0 20px rgba(27, 7, 118, 0.1);
         border-radius: 8px;
         position: relative;
-        padding-bottom: 90px;
+        padding-bottom: 85px;
         background-color: #ffffff;
         img{
           width: 100%;
@@ -1004,30 +1018,7 @@ export default {
       }
     }
   }
-  .default-icon{
-    float: left;
-    display: flex;
-    flex-wrap: wrap;
-    .box{
-      position: relative;
-      width: 44px;
-      height: 44px;
-      margin: 0 15px 0 0;
-      img{
-        width: 40px;
-        height: 40px;
-      }
-      em{
-        display: inline-block;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-      }
-      .active{
-        color: #409EFF;
-      }
-    }
-  }
+}
   .upload-demo{
     float: left;
     .el-button--primary{
@@ -1079,7 +1070,30 @@ export default {
     display: block;
     clear: both;
   }
-}
+  .default-icon{
+    float: left;
+    display: flex;
+    flex-wrap: wrap;
+    .box{
+      position: relative;
+      width: 44px;
+      height: 44px;
+      margin: 0 15px 0 0;
+      img{
+        width: 40px;
+        height: 40px;
+      }
+      em{
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+      .active{
+        color: #409EFF;
+      }
+    }
+  }
 .addtestdialog{
   .form-button{
         background-color: #f7f2ff;

@@ -47,9 +47,7 @@ export default {
   .mainScene{
     margin: 30px 0;
     .content{
-      background-color: #fbfbfb;
       border-radius: 20px;
-      box-shadow: 4px 4px 30px 8px rgba(94,64,200,0.06);
       .leftimg{
         padding: 25px 0;
       }

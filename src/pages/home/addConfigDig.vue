@@ -1,5 +1,5 @@
 <template>
-  <div class="addConfigDig">
+  <div class="addConfigDig commondlg">
     <el-dialog
       :visible.sync="addConfigVisible"
       :title="this.operate==='add'? $t('home.addConfig'):$t('home.modifyConfig')"
@@ -19,6 +19,7 @@
               prop="nameCh"
             >
               <el-input
+                class="dlg-input"
                 v-model="form.nameCh"
                 placeholder="请输入"
                 maxlength="64"
@@ -34,6 +35,7 @@
               prop="nameEn"
             >
               <el-input
+                class="dlg-input"
                 v-model="form.nameEn"
                 placeholder="请输入"
                 maxlength="64"
@@ -48,6 +50,7 @@
               prop="descriptionCh"
             >
               <el-input
+                class="dlg-input"
                 v-model="form.descriptionCh"
                 placeholder="请输入"
                 maxlength="255"
@@ -63,6 +66,7 @@
               prop="descriptionEn"
             >
               <el-input
+                class="dlg-input"
                 v-model="form.descriptionEn"
                 placeholder="请输入"
                 maxlength="255"
@@ -77,6 +81,7 @@
               prop="configuration"
             >
               <el-input
+                class="dlg-input"
                 v-model="form.configuration"
                 placeholder="请输入"
                 @focus="configParameter"
@@ -94,14 +99,14 @@
       </el-form>
       <div slot="footer">
         <el-button
-          class="light-button"
+          class="common-btn"
           size="small"
           @click="closeAddDig"
         >
           {{ $t('common.cancel') }}
         </el-button>
         <el-button
-          class="dark-button"
+          class="common-btn"
           size="small"
           @click="confirmData"
         >
@@ -129,12 +134,14 @@
           class="container clear"
         >
           <el-input
+            class="dlg-input"
             type="text"
             size="small"
             v-model="item.name"
           />
           <span class="equal">=</span>
           <el-input
+            class="dlg-input"
             type="text"
             size="small"
             v-model="item.value"
@@ -147,14 +154,14 @@
       </div>
       <div slot="footer">
         <el-button
-          class="light-button"
+          class="common-btn"
           size="small"
           @click="configParameterVis=false"
         >
           {{ $t('common.cancel') }}
         </el-button>
         <el-button
-          class="dark-button"
+          class="common-btn"
           size="small"
           @click="confirmParameterData"
         >
@@ -466,42 +473,6 @@ export default {
 </script>
 <style lang="less">
 .addConfigDig{
-    .el-dialog{
-      border-radius: 10px;
-    }
-    .el-dialog__header{
-      border: none;
-      padding: 28px 60px;
-      background-color: #e5e5e5;
-      border-radius: 10px 10px 0 0;
-      .el-dialog__headerbtn{
-        display: none;
-      }
-    }
-    .el-dialog__title{
-        font-size: 20px !important;
-        color: #5e40c8 !important;
-    }
-    .el-dialog__title::before{
-      content: '';
-      display:inline-block;
-      width:10px;
-      height:10px;
-      margin-right:10px;
-      background: #5633cd;
-      position: relative;
-      border-radius: 2px;
-    }
-    .el-dialog__body{
-      padding: 3%  7% !important;
-      text-align: center;
-    }
-    .el-dialog__footer{
-      border-radius: 0 0 10px 10px;
-    }
-    .el-dialog__body,.el-dialog__footer{
-      background-color: #efefef;
-    }
       .el-input__inner{
         border-radius: 8px;
         border: none;
@@ -510,11 +481,6 @@ export default {
       }
   .addConfig{
     .el-form-item{
-      .el-form-item__label{
-        color: #5844be;
-        height: 36px;
-        line-height: 36px;
-      }
       .search_icon{
           display: inline-block;
           width: 17px;

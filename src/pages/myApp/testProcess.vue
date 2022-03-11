@@ -48,14 +48,12 @@ export default {
   .mainProcess{
     margin: 30px 0;
     .content{
-      background-color: #fbfbfb;
       border-radius: 20px;
       .leftimg{
         padding: 25px 0;
       }
       .contentProcess{
         padding: 20px 30px 50px;
-        // width: calc(100% - 287px);
         width: 80%;
       }
     }

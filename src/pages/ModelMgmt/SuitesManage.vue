@@ -136,8 +136,8 @@
                   v-if="isAdmin"
                 >
                   <el-button
-                    class="light-button"
                     size="small"
+                    class="btn"
                     style="margin-right:10px;"
                     @click="deleteTestSuite(item.id)"
                   >
@@ -145,7 +145,7 @@
                   </el-button>
                   <el-button
                     size="small"
-                    class="dark-button"
+                    class="btn"
                     @click="editTestSuite(item)"
                   >
                     <em class="el-icon-edit " />
@@ -160,6 +160,8 @@
           :title="$t('testCase.addTestSuite')"
           :close-on-click-modal="false"
           width="30%"
+          append-to-body
+          class="commondlg"
         >
           <el-form
             :model="addTestSuiteForm"
@@ -172,6 +174,7 @@
               prop="nameCh"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="addTestSuiteForm.nameCh"
@@ -183,6 +186,7 @@
               :label=" $t('testCase.testSuiteEn')"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="addTestSuiteForm.nameEn"
@@ -194,6 +198,7 @@
               prop="descriptionCh"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="addTestSuiteForm.descriptionCh"
@@ -204,6 +209,7 @@
               :label=" $t('testCase.testSuiteDescriptionEn')"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="addTestSuiteForm.descriptionEn"
@@ -215,6 +221,7 @@
               prop="scenarioList"
             >
               <el-select
+                class="dlg-select"
                 multiple
                 v-model="addTestSuiteForm.scenarioList"
                 :placeholder="$t('userpage.selectScene')"
@@ -233,7 +240,7 @@
             class="dialog-footer"
           >
             <el-button
-              class="light-button"
+              class="common-btn"
               style="margin-right:40px;"
               @click="handleClose"
               size="small"
@@ -241,7 +248,7 @@
               {{ $t('common.cancel') }}
             </el-button>
             <el-button
-              class="dark-button"
+              class="common-btn"
               size="small"
               @click="confirmAddTestSuite"
             >
@@ -254,6 +261,8 @@
           :title="$t('testCase.editTestSuite')"
           :close-on-click-modal="false"
           width="30%"
+          append-to-body
+          class="commondlg"
         >
           <el-form
             :model="editTestSuiteForm"
@@ -266,6 +275,7 @@
               prop="nameCh"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="editTestSuiteForm.nameCh"
@@ -276,6 +286,7 @@
               :label="$t('testCase.testSuiteEn')"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="editTestSuiteForm.nameEn"
@@ -287,6 +298,7 @@
               prop="descriptionCh"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="editTestSuiteForm.descriptionCh"
@@ -297,6 +309,7 @@
               :label="$t('testCase.testSuiteDescriptionEn')"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="editTestSuiteForm.descriptionEn"
@@ -308,6 +321,7 @@
               prop="scenarioIdList"
             >
               <el-select
+                class="dlg-select"
                 v-model="editTestSuiteForm.scenarioIdList"
                 :placeholder="$t('userpage.selectScene')"
                 multiple
@@ -327,14 +341,14 @@
           >
             <el-button
               style="margin-right:40px;"
-              class="light-button"
+              class="common-btn"
               @click="handleClose"
               size="small"
             >
               {{ $t('common.cancel') }}
             </el-button>
             <el-button
-              class="dark-button"
+              class="common-btn"
               size="small"
               @click="confirmEditTestSuite"
             >
@@ -348,7 +362,8 @@
         :close-on-click-modal="false"
         title="提示"
         width="25%"
-        class="prompt-dialog"
+        append-to-body
+        class="prompt-dialog commondlg"
       >
         <div style="text-align: center;">
           <img
@@ -364,13 +379,13 @@
         >
           <el-button
             style="margin-right:40px;"
-            class="light-button"
+            class="common-btn"
             @click="deleteVisibleClose"
           >
             {{ $t('common.cancel') }}
           </el-button>
           <el-button
-            class="dark-button"
+            class="common-btn"
             @click="confirmdeleteTestSuite"
           >
             {{ $t('common.confirm') }}
@@ -382,7 +397,8 @@
         :close-on-click-modal="false"
         width="30%"
         :title="$t('modelmgmt.importCase')"
-        class="addtestdialog"
+        append-to-body
+        class="addtestdialog commondlg"
       >
         <el-form
           :model="batchForm"
@@ -427,7 +443,7 @@
           <el-button
             id="upload_package_close"
             @click="BatchImportClose"
-            class="light-button"
+            class="common-btn"
             size="small"
             style="margin-right:40px;"
           >
@@ -437,7 +453,7 @@
             id="upload_package_ipload"
             size="small"
             @click="BatchImport"
-            class="dark-button"
+            class="common-btn"
           >
             {{ $t('common.confirm') }}
           </el-button>
@@ -916,6 +932,11 @@ export default {
               // text-overflow: ellipsis;
               margin-top: 8px;
               display: none;
+              .btn{
+                color: #5944C0;
+                background-color: #fff;
+                border-radius: 30px;
+              }
               .el-button--small {
                 padding: 3px 20px;
               }

@@ -198,7 +198,8 @@
         :title="dialogTitle"
         :close-on-click-modal="false"
         width="35%"
-        class="addtestdialog"
+        append-to-body
+        class="addtestdialog commondlg"
       >
         <el-form
           :model="addcaseForm"
@@ -211,6 +212,7 @@
             prop="nameCh"
           >
             <el-input
+              class="dlg-input"
               width="100px"
               size="small"
               v-model="addcaseForm.nameCh"
@@ -223,6 +225,7 @@
             prop="nameEn"
           >
             <el-input
+              class="dlg-input"
               width="100px"
               size="small"
               v-model="addcaseForm.nameEn"
@@ -235,6 +238,7 @@
             prop="type"
           >
             <el-select
+              class="dlg-select"
               size="small"
               v-model="addcaseForm.type"
               :disabled="cannotEdit"
@@ -253,9 +257,9 @@
             prop="descriptionCh"
           >
             <el-input
+              class="dlg-input"
               v-model="addcaseForm.descriptionCh"
               type="textarea"
-              autosize
               maxlength="255"
             />
           </el-form-item>
@@ -264,6 +268,7 @@
             prop="descriptionEn"
           >
             <el-input
+              class="dlg-input"
               v-model="addcaseForm.descriptionEn"
               type="textarea"
               autosize
@@ -275,6 +280,7 @@
             prop="expectResultCh"
           >
             <el-input
+              class="dlg-input"
               size="small"
               type="textarea"
               v-model="addcaseForm.expectResultCh"
@@ -286,6 +292,7 @@
             prop="expectResultEn"
           >
             <el-input
+              class="dlg-input"
               size="small"
               type="textarea"
               v-model="addcaseForm.expectResultEn"
@@ -297,6 +304,7 @@
             prop="codeLanguage"
           >
             <el-select
+              class="dlg-select"
               size="small"
               v-model="addcaseForm.codeLanguage"
               @change="languageChange"
@@ -315,6 +323,7 @@
             prop="testSuiteIdList"
           >
             <el-select
+              class="dlg-select"
               multiple
               size="small"
               v-model="addcaseForm.testSuiteIdList"
@@ -333,6 +342,7 @@
             prop="testStepCh"
           >
             <el-input
+              class="dlg-input"
               size="small"
               type="textarea"
               v-model="addcaseForm.testStepCh"
@@ -344,6 +354,7 @@
             prop="testStepEn"
           >
             <el-input
+              class="dlg-input"
               size="small"
               type="textarea"
               v-model="addcaseForm.testStepEn"
@@ -368,7 +379,7 @@
               <el-button
                 slot="trigger"
                 size="small"
-                class="form-button"
+                class="inner-btn"
               >
                 {{ $t('testCase.import') }}
               </el-button>
@@ -378,7 +389,7 @@
                 style="padding-left:10px;"
               >
                 <el-button
-                  class="form-button"
+                  class="inner-btn"
                   slot="trigger"
                   size="small"
                 >
@@ -392,6 +403,7 @@
             prop="configIdList"
           >
             <el-select
+              class="dlg-select"
               multiple
               size="small"
               v-model="addcaseForm.configIdList"
@@ -419,14 +431,14 @@
             id="upload_package_close"
             @click="handleClose"
             style="margin-right:40px;"
-            class="light-button"
+            class="common-btn"
             size="small"
           >
             {{ $t('common.cancel') }}
           </el-button>
           <el-button
             id="upload_package_ipload"
-            class="dark-button"
+            class="common-btn"
             @click="confirmAddCase"
             size="small"
           >
@@ -439,7 +451,8 @@
         :close-on-click-modal="false"
         width="30%"
         :title="$t('modelmgmt.importCase')"
-        class="addtestdialog"
+        append-to-body
+        class="addtestdialog commondlg"
       >
         <el-form
           :model="batchForm"
@@ -458,7 +471,7 @@
               <el-button
                 slot="trigger"
                 size="small"
-                class="form-button"
+                class="inner-btn"
               >
                 {{ $t('testCase.import') }}
               </el-button>
@@ -470,7 +483,7 @@
                 <el-button
                   slot="trigger"
                   size="small"
-                  class="form-button"
+                  class="inner-btn"
                 >
                   {{ $t('testCase.sample') }}
                 </el-button>
@@ -484,7 +497,7 @@
           <el-button
             id="upload_package_close"
             @click="handleClose"
-            class="light-button"
+            class="common-btn"
             size="small"
             style="margin-right:40px;"
           >
@@ -494,7 +507,7 @@
             id="upload_package_ipload"
             size="small"
             @click="BatchImport"
-            class="dark-button"
+            class="common-btn"
           >
             {{ $t('common.confirm') }}
           </el-button>
@@ -505,7 +518,8 @@
         :close-on-click-modal="false"
         title="提示"
         width="25%"
-        class="prompt-dialog"
+        append-to-body
+        class="prompt-dialog commondlg"
       >
         <div style="text-align: center;">
           <img
@@ -521,13 +535,13 @@
         >
           <el-button
             style="margin-right:40px;"
-            class="light-button"
+            class="common-btn"
             @click="deleteVisibleClose"
           >
             {{ $t('common.cancel') }}
           </el-button>
           <el-button
-            class="dark-button"
+            class="common-btn"
             @click="confirmdeleteCase"
           >
             {{ $t('common.confirm') }}
@@ -1167,11 +1181,11 @@ export default {
         white-space: nowrap;
       }
       .form-button{
-        background-color: #f7f2ff;
-        border: 1px solid #380879;
+        background-color: #f7f2ff !important;
+        border: 1px solid #380879 !important;
         color: #380879;
         border-radius: 5px;
-        box-shadow: 0 5px 5px #deccf9;
+        box-shadow: 0 5px 5px #deccf9 !important;
       }
     }
   }

@@ -116,40 +116,42 @@
           </div>
         </div>
       </div>
-      <el-dialog
-        :visible.sync="deleteVisible"
-        :close-on-click-modal="false"
-        title="提示"
-        width="25%"
-        class="prompt-dialog"
-      >
-        <div style="text-align: center;">
-          <img
-            src="../../assets/images/deleteicon.png"
-            alt=""
-          >
-          <p class="prompt-text">
-            {{ $t('promptMessage.deleteContrubuteCase') }}
-          </p>
-        </div>
-        <div
-          slot="footer"
+      <div class="commondlg">
+        <el-dialog
+          :visible.sync="deleteVisible"
+          :close-on-click-modal="false"
+          title="提示"
+          width="25%"
+          class="prompt-dialog"
         >
-          <el-button
-            style="margin-right:40px;"
-            class="light-button"
-            @click="handleClose"
+          <div style="text-align: center;">
+            <img
+              src="../../assets/images/deleteicon.png"
+              alt=""
+            >
+            <p class="prompt-text">
+              {{ $t('promptMessage.deleteContrubuteCase') }}
+            </p>
+          </div>
+          <div
+            slot="footer"
           >
-            {{ $t('common.cancel') }}
-          </el-button>
-          <el-button
-            class="dark-button"
-            @click="confirmDeleteCase"
-          >
-            {{ $t('common.confirm') }}
-          </el-button>
-        </div>
-      </el-dialog>
+            <el-button
+              style="margin-right:40px;"
+              class="common-btn"
+              @click="handleClose"
+            >
+              {{ $t('common.cancel') }}
+            </el-button>
+            <el-button
+              class="common-btn"
+              @click="confirmDeleteCase"
+            >
+              {{ $t('common.confirm') }}
+            </el-button>
+          </div>
+        </el-dialog>
+      </div>
     </div>
   </div>
 </template>

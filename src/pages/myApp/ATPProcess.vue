@@ -16,7 +16,7 @@
 <template>
   <div class="testing-main">
     <div
-      class="process"
+      class="process common-div"
       id="process"
     >
       <div class="toptitle">
@@ -35,7 +35,7 @@
         >
           <el-button
             :disabled="report || userName==='guest'"
-            class="light-button"
+            class="common-btn"
             icon="el-icon-upload"
             size="small"
             @click="uploadPdfVisible=true"
@@ -45,7 +45,7 @@
           <el-button
             size="small"
             :disabled="report"
-            id="back_button"
+            id="common-btn"
             class="dark-button"
             icon="el-icon-document"
             @click="jumpToReport()"
@@ -189,6 +189,7 @@
           :title="$t('process.modifyStatus')"
           :visible.sync="dialogVisible"
           width="30%"
+          class="commondlg"
         >
           <el-form
             :model="form"
@@ -198,6 +199,7 @@
               :label="$t('userpage.name')"
             >
               <el-input
+                class="dlg-input"
                 width="100px"
                 size="small"
                 v-model="form.name"
@@ -207,6 +209,7 @@
               :label="$t('userpage.status')"
             >
               <el-select
+                class="dlg-select"
                 v-model="form.result"
                 :placeholder="$t('userpage.choose')"
               >
@@ -224,6 +227,7 @@
               :label="$t('userpage.failReason')"
             >
               <el-input
+                class="dlg-input"
                 type="textarea"
                 autosize
                 v-model="form.reason"
@@ -235,14 +239,15 @@
             class="dialog-footer"
           >
             <el-button
+              class="common-btn"
               size="small"
               @click="dialogVisible = false"
             >
               {{ $t('common.cancel') }}
             </el-button>
             <el-button
+              class="common-btn"
               size="small"
-              type="primary"
               @click="confirmModify()"
             >
               {{ $t('common.confirm') }}
@@ -252,7 +257,7 @@
         <el-dialog
           :visible.sync="uploadPdfVisible"
           width="30%"
-          class="uploadPdfDialog"
+          class="uploadPdfDialog commondlg"
         >
           <div class="uploadReport">
             <img
@@ -272,7 +277,7 @@
             <el-button
               style="margin-right:40px;"
               @click="uploadPdfVisible=false"
-              class="light-button"
+              class="common-btn"
             >
               {{ $t('userpage.later') }}
             </el-button>
@@ -286,7 +291,7 @@
               :on-change="handleChangePdf"
             >
               <el-button
-                class="dark-button"
+                class="common-btn"
               >
                 {{ $t('userpage.uploadNow') }}
               </el-button>
@@ -585,13 +590,9 @@ export default {
 .testing-main{
   .process{
       min-width: 660px;
-      background-color: #f6f5f8;
-      padding: 50px 35px 15px;
-      border-radius: 16px;
       display: block;
-      box-shadow: inset 4px 4px 25px 5px rgba(36, 20, 119, 0.11);
     .toptitle{
-      color: #380879;
+      color: #fff;
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
@@ -606,21 +607,8 @@ export default {
           border-radius: 12px;
           height: 47px;
           width: 100%;
-          font-size: 20px;
-          background-image: linear-gradient(to right, rgba(251,251,251) , rgba(246,245,248));
+          font-size: 24px;
         }
-      }
-      .left::after{
-          content: '';
-          border-radius: 12px;
-          width: 50%;
-          height: 47px;
-          position: absolute;
-          bottom: -4px;
-          background-image: linear-gradient(to right, #aa9ec1, #f0eef4);
-          filter: blur(0.65rem);
-          opacity: 0.7;
-          z-index: 1;
       }
         .right{
           font-size: 20px;
@@ -638,7 +626,7 @@ export default {
         position: relative;
         z-index: 100;
         span{
-          color: #333333;
+          color: #fff;
           font-size: 28px;
           font-weight: bolder;
         }
@@ -652,7 +640,7 @@ export default {
           .el-progress__text{
             font-family: 'Harmony-SemiBold', Arial, Helvetica, sans-serif;
             font-size: 33px !important;
-            color: #380879;
+            color: #fff;
             margin-left: -30px;
           }
           .el-progress-bar__outer{
@@ -666,14 +654,14 @@ export default {
         height:6px;
         border-radius: 50%;
         margin-right: 11px;
-        background-color: #a698b9;
+        background-color: #43F6AD;
         position: absolute;
         top: 7px;
         left: -15px;
       }
         .testing-case{
           position: relative;
-          color: #380879;
+          color: #fff;
           font-size: 14px;
           margin-left: 20px;
           font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
@@ -682,13 +670,13 @@ export default {
           position: relative;
           font-family: 'Harmony-SemiBold', Arial, Helvetica, sans-serif;
           font-size: 16px;
-          color: #380879;
+          color: #fff;
           margin-left: 30px;
         }
         .waitManual{
           font-family: 'Harmony-SemiBold', Arial, Helvetica, sans-serif;
           font-size: 16px;
-          color: #380879;
+          color: #fff;
         }
         .testFailed::before{
           content: '';
@@ -716,7 +704,7 @@ export default {
           font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
           position: relative;
           font-size: 14px;
-          color: #380879;
+          color: #fff;
           margin-left: 120px;
           em{
             padding: 0 5px;
@@ -748,7 +736,7 @@ export default {
       }
     .content{
       .el-tabs__header{
-        background-color: #f6f5f8;
+        background: transparent;
         margin: 0;
         border: none;
         font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
@@ -757,19 +745,19 @@ export default {
         }
         .el-tabs__item{
           color: #fff;
-          background-color: #9a92c7;
+          background: transparent;
           border-radius: 12px 12px 0 0;
           font-size: 20px;
         }
         .el-tabs__item.is-active{
-          color: #380879;
-          background-color: #fff;
+          color: #fff;
+          background: transparent;
         }
       }
       .el-tabs__content{
         padding: 35px;
         border-radius: 0 20px 20px 20px;
-        background-color: #fff;
+        background: transparent;
       }
       .el-collapse {
         border: none;
@@ -780,59 +768,54 @@ export default {
             padding: 0;
           }
           .el-collapse-item__header{
-            font-family: 'Harmony-Light', Arial, Helvetica, sans-serif;
-            border-radius: 10px 10px 0 0;
-            height: 35px;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            height: 40px;
             padding-left: 15px;
-            font-size: 18px;
+            font-size: 19px;
             color: #fff;
-            background-color: #9d95c9!important;
+            background-color: #5F499D;
+            border-radius: 19.5px;
+            border: none;
           }
           .el-collapse-item__wrap{
-            border-radius: 0 0 10px 10px;
+            padding-left: 15px;
+            background-color: transparent;
+            border: none;
           }
+        }
+      }
           .caseHearder{
-            background: #dedae9;
-            color: #6d5d83;
+            background-color: transparent;
+            color: #fff;
             padding: 0 10px;
             height: 35px;
             line-height: 35px;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
             font-size: 16px;
-            font-weight: normal;
-          }
-          .has-gutter th{
-            border-radius: 0;
           }
           .el-table tr {
-            background-color: #f1f2f6;
             height: 37px;
+            background-color: transparent;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
           }
           .el-table td{
             padding: 0 10px;
-            color: #6f6084;
+            color: #fff;
             vertical-align: top;
             height: 37px;
             line-height: 37px;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
           }
           .el-table__body{
             .cell{
               padding-top: 5px;
             }
           }
-      .el-table::before {
+         .el-table::before {
           width: 0;
         }
-        .el-table{
-          .cell{
-            display: table-cell;
-            img{
-              vertical-align: middle;
-              margin-right: 10px;
-            }
-          }
-        }
-        }
-      }
     }
   }
     .el-tooltip__popper.is-light{
