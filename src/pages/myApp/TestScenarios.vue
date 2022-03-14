@@ -121,7 +121,7 @@
           >
             <el-table-column
               :label="$t('userpage.name')"
-              width="210"
+              min-width="25%"
             >
               <template scope="scope">
                 {{ language==='cn'?scope.row.nameCh:scope.row.nameEn }}
@@ -129,7 +129,7 @@
             </el-table-column>
             <el-table-column
               :label="$t('userpage.type')"
-              width="120"
+              min-width="20%"
             >
               <template scope="scope">
                 {{ language==='en'?scope.row.type:scope.row.type==='automatic'?'自动化类型':'手动类型' }}

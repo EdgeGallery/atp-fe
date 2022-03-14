@@ -652,6 +652,12 @@ export default {
       margin-bottom: 30px;
       .report-app-info{
         position: relative;
+        .el-table tr,.el-table td{
+            background-color: transparent;
+          }
+          .el-table {
+            background-color: transparent;
+          }
         .resulticon{
           position: absolute;
           right: 20px;

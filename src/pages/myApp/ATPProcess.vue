@@ -816,6 +816,20 @@ export default {
          .el-table::before {
           width: 0;
         }
+        .el-table{
+          background-color: transparent;
+          .cell{
+            display: table-cell;
+            font-family: defaultFontLight, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            img{
+              vertical-align: middle;
+              margin-right: 10px;
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
     }
   }
     .el-tooltip__popper.is-light{
