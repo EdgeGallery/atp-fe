@@ -257,6 +257,7 @@
         <el-dialog
           :visible.sync="uploadPdfVisible"
           width="30%"
+          append-to-body
           class="uploadPdfDialog commondlg"
         >
           <div class="uploadReport">
@@ -843,16 +844,16 @@ export default {
         text-align: center;
         .uploadpdf{
           font-size: 24px;
-          color: #333333;
+          color: #fff;
         }
         p{
           font-size: 18px;
-          color: #666666;
+          color: #fff;
           padding: 5px 0;
         }
         span{
           font-size: 14px;
-          color: #666666;
+          color: #fff;
         }
       }
       .dialog-footer{
